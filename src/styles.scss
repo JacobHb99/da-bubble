@@ -1,7 +1,11 @@
-/* You can add global styles to this file, and also import other style files */
-// $bgColor: #ECEEFE;
-// $bgColor-m: #35373C;
-// $bgColor-l: #313338;
-// $secondColor: #29D1DD;
-// $secondHover: rgb(0, 0, 0, 0.2);
-// $fontColor: #E2E2E2;
+
+$bgHover: #ECEEFE;
+$contHover: #535AF1;
+
+@mixin dFlex($jc: center, $ai: center, $fd: row, $gap: 0) {
+    display: flex;
+    flex-direction: $fd;
+    justify-content: $jc;
+    align-items: $ai;
+    gap: $gap;
+  }

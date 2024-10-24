@@ -1,0 +1,76 @@
+@import './../../../styles.scss';
+
+.all{
+    @include dFlex($gap: 20px, $ai: null, $jc: null);
+    height: 100vh;
+    width: 100vw;
+    background-color: $bgHover;
+}
+
+.side-nav{
+    background-color: red;
+    width: 25%;
+    height: 100vh;
+    border-radius: 30px;
+}
+
+.thread{
+    background-color: red;
+    width: 25%;
+    height: 100vh;
+    border-radius: 30px;
+}
+
+.main {
+    background-color: white;
+    height: 100vh;
+    border-radius: 30px;
+    width: 990px;
+}
+
+header{
+    @include dFlex($jc: space-between);
+    color: black;
+    padding: 25px 45px;
+    box-shadow: 0 .125rem .625rem #00000014;
+}
+
+.channel{
+    @include dFlex($gap: 10px);
+    height: 45px;
+    font-size: 24px;
+    font-weight: 700;
+    padding: 6px 10px;
+    cursor: pointer;
+
+    &:hover{
+        background-color: $bgHover;
+        color: $contHover;        
+        border-radius: 100px;
+
+        svg{
+            path{
+                fill: $contHover;
+            }            
+        }
+    }
+}
+
+.users{
+    @include dFlex($gap: 10px);
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.addToChannel{
+    cursor: pointer;
+    &:hover {
+        svg{
+            path{
+                fill: $contHover;
+                scale: 1.05;
+                transition: ease-in 0.15s;
+            } 
+    }
+}
+}
