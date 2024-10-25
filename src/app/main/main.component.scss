@@ -1,0 +1,18 @@
+@import './../../styles.scss';
+
+.main{
+    @include dFlex($gap:20px);
+    padding: 0 20px 25px 20px;
+}
+
+app-side-nav{
+    width: 20%;
+}
+
+app-channel-chat{
+    width: 60%;
+}
+
+app-thread{
+    width: 20%;
+}

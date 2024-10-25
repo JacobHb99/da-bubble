@@ -11,7 +11,7 @@
         }@else {
             <img class="big-img" src="{{chosenAvatar}}" alt="">
         }
-        <span class="username">Name und Nachname</span>
+        <span class="username">{{currentData.username}}</span>
         <div class="width-100">
             <p class="ta-start">Aus der Liste wählen:</p>
         </div>        
@@ -27,7 +27,7 @@
 
         </div>
         <div class="btn-box width-100">
-            <button class="btn-blue" (click)="submitRegistration()">Weiter</button>
+            <button class="btn-blue" [disabled]="!chosenAvatar" [class.btn-inactive]="!chosenAvatar" (click)="submitRegistration()">Weiter</button>
         </div>
     </div>
 </section>

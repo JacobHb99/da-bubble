@@ -1,0 +1,105 @@
+@import './../../../../styles.scss';
+
+section {
+    font-family: 'Nunito';
+    padding: 40px 35px;
+}
+
+.main {
+    border: 1px solid #ADB0D9;
+    border-radius: 20px;
+    padding: 20px;
+
+    &:hover {
+        border-color: #797EF3;
+    }
+
+    &:focus-within {
+        border-color: #444DF2;
+    }
+
+    textarea {
+        width: 100%;
+        border: none;
+        resize: none;
+        outline: none;
+        font-weight: 400;
+    }
+}
+
+.interactDiv {
+    @include dFlex($jc: space-between);
+
+    .addDiv {
+        @include dFlex($gap: 5px);
+    }
+}
+
+.addFile {
+    background-image: url("/icons/add-grey.png");
+    height: 40px;
+    width: 40px;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+
+    &:hover {
+        background-image: url("/icons/add-blue.png");
+        background-color: $bgHover;
+        border-radius: 50%;
+    }
+
+    &:active {
+        background-image: url("/icons/add-black.png");
+    }
+}
+
+.addReaction {
+    background-image: url("/icons/sentiment_satisfied-grey.png");
+    height: 40px;
+    width: 40px;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+
+    &:hover {
+        background-image: url("/icons/sentiment_satisfied-blue.png");
+        background-color: $bgHover;
+        border-radius: 50%;
+    }
+
+    &:active {
+        background-image: url("/icons/sentiment_satisfied-black.png");
+    }
+}
+
+.tagUser {
+    background-image: url("/icons/alternate_email-grey.png");
+    height: 40px;
+    width: 40px;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+
+    &:hover {
+        background-image: url("/icons/alternate_email-blue.png");
+        background-color: $bgHover;
+        border-radius: 50%;
+    }
+
+    &:active {
+        background-image: url("/icons/alternate_email-black.png");
+    }
+}
+
+.sendIcon {
+    cursor: pointer;
+
+    &:hover {
+        svg {
+            path {
+                fill: #797EF3;
+            }
+        }
+    }
+}

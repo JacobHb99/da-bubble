@@ -7,6 +7,7 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { provideHttpClient } from '@angular/common/http';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,5 +21,5 @@ export const appConfig: ApplicationConfig = {
           "storageBucket":"dabubble379.appspot.com",
           "apiKey":"AIzaSyCj1Qw3pyvijElMIDYirvzorPvO_fm3Tos",
           "authDomain":"dabubble379.firebaseapp.com","messagingSenderId":"778800442422"})),
-           provideAuth(() => getAuth()), provideFirestore(() => getFirestore()), provideStorage(() => getStorage())]
+           provideAuth(() => getAuth()), provideFirestore(() => getFirestore()), provideStorage(() => getStorage()), provideAnimationsAsync()]
 };
