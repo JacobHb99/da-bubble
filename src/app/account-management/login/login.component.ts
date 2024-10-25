@@ -44,7 +44,7 @@ export class LoginComponent {
       )
       .subscribe(() => {
         if (!this.loginFailed) {
-          this.router.navigate(['/landing']);
+          this.router.navigate(['/main']);
         }
       });
   }
