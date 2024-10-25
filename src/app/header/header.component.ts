@@ -1,10 +1,11 @@
 
 import { CommonModule } from '@angular/common';
-import {Component} from '@angular/core';
-import {MatIconModule} from '@angular/material/icon';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {FormsModule} from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { AuthService } from './../services/auth.service';
 
 
 @Component({
@@ -15,5 +16,5 @@ import {FormsModule} from '@angular/forms';
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-
+  authService = inject(AuthService);
 }

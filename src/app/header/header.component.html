@@ -8,7 +8,7 @@
             <img src="./icons/search-thin-grey.png" alt="">
         </div>
         <div class="user-container">
-            <p>USERNAME</p>
+            <p>{{ authService.currentUserSig()?.username }}</p>
             <div class="avatar-with-status">
                 <img src="./img/avatars/avatar_0.png" alt="">
                 <img class="status" src="./icons/Online.png" alt="">
