@@ -5,6 +5,7 @@ import { FirebaseService } from '../../services/firebase.service';
 import { Router } from '@angular/router';
 import { FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { catchError, of } from 'rxjs';
+import { IntroAnimationComponent } from '../intro-animation/intro-animation.component';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,8 @@ import { catchError, of } from 'rxjs';
   imports: [
     HeaderSignComponent,
     FormsModule,
-    ReactiveFormsModule
+    IntroAnimationComponent,
+    ReactiveFormsModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'

@@ -14,6 +14,8 @@ export class AuthService {
   currentRegData!: { email: any; username: string; password: string, response?: UserCredential };
   currentUserSig = signal<UserInterface | null | undefined>(undefined);
   currentCredentials!: UserCredential;
+  showAnimation: boolean = true;
+
 
 
   constructor() { }
@@ -71,12 +73,12 @@ export class AuthService {
     return from(promise);
   }
 
-  setCurrentUserData(user: UserInfo) {
+  setCurrentUserData(user: any) {
     this.currentUserSig.set({
-      email: this.currentCredentials.user.email!,
-      username: this.currentCredentials.user.displayName!,
-      uid: this.currentCredentials.user.uid!,
-      avatar: this.currentCredentials.user.photoURL!
+      email: user.email!,
+      username: user.displayName!,
+      uid: user.uid!,
+      avatar: user.photoURL!
     });
   }
 
@@ -85,6 +87,8 @@ export class AuthService {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
       if (user) {
+        console.log(user);
+        
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/auth.user
         const uid = user.uid;

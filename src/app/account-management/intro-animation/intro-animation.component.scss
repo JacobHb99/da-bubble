@@ -1,0 +1,99 @@
+.animation-container {
+    position: absolute;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    background: linear-gradient(1.46deg, #313AE6 1.22%, #797EF3 98.76%);
+    z-index: 210;
+    overflow: hidden;
+    animation: fadeOutContainer 1s ease-in-out forwards;
+    animation-delay: 2.8s;
+
+    .logo {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 64px;
+        font-weight: 700;
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 32px;
+        animation: fadeOutLogo 1s ease-in-out forwards;
+        animation-delay: 2s;
+
+
+        img {
+            width: 180px;
+            transform: translateX(162px);
+            animation: fadeInImage 0.5s ease-in-out forwards, shrinkImg 1s ease-in-out forwards;
+            animation-delay: 0.5s, 2.0s;
+        }
+
+        .title {
+            opacity: 0;
+            animation: fadeInTitle 0.5s ease-in-out forwards;
+            animation-delay: 1s;
+        }
+    }
+
+    @keyframes fadeInImage {
+        from {
+            transform: translateX(162px);
+        }
+
+        to {
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes fadeInTitle {
+        from {
+            opacity: 0;
+            transform: translateX(-96px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes fadeOutLogo {
+        from {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 64px;
+        }
+
+        to {
+            top: 16px;
+            left: 16px;
+            transform: translate(0, 0);
+            font-size: 24px;
+            gap: 16px;
+        }
+    }
+
+    @keyframes shrinkImg {
+        from {
+            width: 180px;
+        }
+
+        to {
+            width: 70px;
+        }
+    }
+
+   @keyframes fadeOutContainer {
+        from {
+            opacity: 1;
+        } to {
+            opacity: 0;
+            display: none;
+        }
+    }
+}
