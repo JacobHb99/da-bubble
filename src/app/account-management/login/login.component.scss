@@ -28,33 +28,48 @@ h1 {
 form {
     display: flex;
     flex-direction: column;
-    gap: 30px;
     width: 100%;
+    gap: 14px;
 
-    .inputfield-container {
+
+    .input-control{
         display: flex;
-        background-color: #eceefe;
-        padding: 18px 32px;
-        border-radius: 100px;
-        border: #eceefe solid 1px;
-        transition: ease-in-out 130ms;
+        flex-direction: column;
+        width: 100%;
+        position: relative;
 
-        &:hover {
-            border: #535af1 solid 1px;
+        .hint{
+            margin-left: 32px;
+            height: 16px;
+            color: red;
         }
 
-        img {
-            margin-right: 26px;
-        }
 
-        input {
-            width: 100%;
-            font-family: inherit;
-            font-size: inherit;
-            font-weight: 500;
+        .inputfield-container {
+            display: flex;
             background-color: #eceefe;
-            border: none;
-            outline: none;
+            padding: 18px 32px;
+            border-radius: 100px;
+            border: #eceefe solid 1px;
+            transition: ease-in 100ms;
+    
+            &:hover {
+                border: #535af1 solid 1px;
+            }
+    
+            img {
+                margin-right: 26px;
+            }
+    
+            input {
+                width: 100%;
+                font-family: inherit;
+                font-size: inherit;
+                font-weight: 500;
+                background-color: #eceefe;
+                border: none;
+                outline: none;
+            }
         }
     }
 }

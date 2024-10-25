@@ -3,7 +3,7 @@ import { HeaderSignComponent } from '../header-sign/header-sign.component';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 
 @Component({
@@ -20,7 +20,8 @@ import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators 
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
-  authService = inject(AuthService)
+  authService = inject(AuthService);
+  fb = inject(NonNullableFormBuilder)
   router = inject(Router)
   regFormData = {
     email: '',
@@ -28,10 +29,20 @@ export class RegisterComponent {
     password: ''
   }
 
+  userForm = this.fb.group({
+    username: this.fb.control('', {validators: [Validators.required, Validators.minLength(4)]}),
+    email: this.fb.control('', {validators: [Validators.required, Validators.email, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/)]}),
+    password: this.fb.control('', {validators: [Validators.required, Validators.minLength(6)]})
+  });
 
 
+  constructor() {
+  }
+
+  
   onSubmit(): void {
-    this.authService.saveRegistrationData(this.regFormData.email, this.regFormData.username, this.regFormData.password);
+    let user = this.userForm.getRawValue()
+    this.authService.saveRegistrationData(user.email, user.username, user.password);
     this.router.navigate(['/avatar']);
   }
 }
