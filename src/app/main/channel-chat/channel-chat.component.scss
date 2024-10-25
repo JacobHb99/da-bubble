@@ -1,26 +1,5 @@
 @import './../../../styles.scss';
 
-.all{
-    @include dFlex($gap: 20px, $ai: null, $jc: null);
-    height: 100vh;
-    width: 100vw;
-    background-color: $bgHover;
-}
-
-.side-nav{
-    background-color: red;
-    width: 25%;
-    height: 100vh;
-    border-radius: 30px;
-}
-
-.thread{
-    background-color: red;
-    width: 25%;
-    height: 100vh;
-    border-radius: 30px;
-}
-
 .main {
     background-color: white;
     height: 100vh;
@@ -33,6 +12,8 @@ header{
     color: black;
     padding: 25px 45px;
     box-shadow: 0 .125rem .625rem #00000014;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
 }
 
 .channel{
