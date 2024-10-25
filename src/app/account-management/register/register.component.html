@@ -9,20 +9,19 @@
         <form>
             <div class="inputfield-container">
                 <img src="/img/icons/login/user_icon.svg">
-                <input id="name" type="text" formControlName="name" required placeholder="Name und Nachname">
+                <input id="name" type="text" [(ngModel)]="regFormData.username" name="username" required placeholder="Name und Nachname">
             </div>
             <div class="inputfield-container">
                 <img src="/img/icons/login/mail_icon.svg">
-                <input id="email" type="email" formControlName="email" required placeholder="beispielname@email.com">
+                <input id="email" type="email" [(ngModel)]="regFormData.email" name="email" required placeholder="beispielname@email.com">
             </div>
             <div class="inputfield-container">
                 <img src="/img/icons/login/password_icon.svg">
-                <input id="password" type="password" formControlName="password" placeholder="Passwort">
+                <input id="password" type="password" [(ngModel)]="regFormData.password" name="password" placeholder="Passwort">
             </div>
         </form>
-        <div class="submit-btns">
-            <button class="btn-blue">Anmelden</button>
-            <button class="btn-white">Gäste-Login</button>
+        <div class="btn-box width-100">
+            <button class="btn-blue" (click)="onSubmit()">Weiter</button>
         </div>
     </div>
 </section>

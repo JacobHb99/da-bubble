@@ -12,18 +12,17 @@ h1 {
 .overlay {
     height: 100vh;
     width: 100%;
-    @include displayFlex(flex-start, center, column);
+    @include dFlex(flex-start, center, column);
+    font-family: 'Nunito';
 }
 
 .card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 16px;
+    @include dFlex(flex-start, center, column, 16px);
     background-color: white;
     border-radius: 30px;
     padding: 32px;
+    max-width: 500px;
+
 }
 
 form {
@@ -38,7 +37,7 @@ form {
         padding: 18px 32px;
         border-radius: 100px;
         border: #eceefe solid 1px;
-        transition: ease-in 100ms;
+        transition: ease-in-out 130ms;
 
         &:hover {
             border: #535af1 solid 1px;
@@ -97,15 +96,12 @@ form {
     font-family: inherit;
     font-size: inherit;
     color: #444DF2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include dFlex(center, center, row, 10px);
     padding: 11px 32px;
     background-color: #ECEEFE;
     border-radius: 100px;
     border: #ECEEFE solid 1px;
     transition: ease-out 100ms;
-    gap: 10px;
     width: 100%;
     cursor: pointer;
 
@@ -115,60 +111,3 @@ form {
     }
 }
 
-.submit-btns {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-}
-
-.link-btn {
-    font-family: "Figtree", sans-serif;
-    font-weight: 400;
-    color: #797ef3;
-    padding: 10px 15px;
-    text-decoration: none;
-    border: transparent 1px solid;
-
-    &:hover {
-        font-weight: 500;
-        border: #adb0d9 1px solid;
-        border-radius: 30px;
-    }
-}
-
-.btn-blue,
-.btn-white {
-    font-family: "Nunito", sans-serif;
-    box-sizing: border-box;
-    font-weight: 700;
-    font-size: 18px;
-    transition: ease-out 100ms;
-    cursor: pointer;
-    border: #444df2 solid 1px;
-    border-radius: 25px;
-    padding: 12px 25px;
-}
-
-.btn-blue {
-    color: white;
-    background-color: #444df2;
-
-    &:hover {
-        opacity: 0.8;
-    }
-}
-
-.btn-white {
-    color: #444df2;
-    background-color: white;
-
-    &:hover {
-        color: white;
-        background-color: #444df2;
-    }
-}
-
-.btn-inactive {
-    opacity: 0.5;
-    cursor: not-allowed;
-}

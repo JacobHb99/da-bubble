@@ -13,15 +13,12 @@ h1 {
 .overlay {
     height: 100vh;
     width: 100%;
-    @include displayFlex(flex-start, center, column);
+    @include dFlex(flex-start, center, column);
+    font-family: 'Nunito';
 }
 
 .card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 16px;
+    @include dFlex(flex-start, center, column, 16px);
     background-color: white;
     border-radius: 30px;
     padding: 32px;

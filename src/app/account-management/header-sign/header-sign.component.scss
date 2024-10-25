@@ -2,12 +2,12 @@
 
 
 .header{
-    @include displayFlex(space-between, center);
+    @include dFlex(space-between, center);
     padding-inline: 32px;
-    padding-top: 32px;
+    padding-block: 32px;
 
     .logo-box{
-        @include displayFlex();
+        @include dFlex();
         gap: 16px;
         font-size: 24px;
         cursor: pointer;
@@ -20,11 +20,15 @@
     }
 
     .new-member-box{
-        @include displayFlex(center, center, column);
+        @include dFlex(center, center, column);
         padding: 16px;
+
+        @media(max-width: 500px) {
+            display: none !important;
+        }
     }
 }
 
 .align-start{
-    @include displayFlex(flex-start, center);
+    @include dFlex(flex-start, center);
 }
