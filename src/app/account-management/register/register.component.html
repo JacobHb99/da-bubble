@@ -1,1 +1,28 @@
-<p>register works!</p>
+<section class="overlay">
+    <app-header-sign></app-header-sign>
+
+    <div class="card">
+        <img routerLink="/" class="arrow-back" src="/img/icons/login/arrow_back.svg">
+
+        <h1>Konto erstellen</h1>
+        <p>Mit deinem Namen und deiner E-Mail-Adresse hast du dein neues DABubble-Konto.</p>
+        <form>
+            <div class="inputfield-container">
+                <img src="/img/icons/login/user_icon.svg">
+                <input id="name" type="text" formControlName="name" required placeholder="Name und Nachname">
+            </div>
+            <div class="inputfield-container">
+                <img src="/img/icons/login/mail_icon.svg">
+                <input id="email" type="email" formControlName="email" required placeholder="beispielname@email.com">
+            </div>
+            <div class="inputfield-container">
+                <img src="/img/icons/login/password_icon.svg">
+                <input id="password" type="password" formControlName="password" placeholder="Passwort">
+            </div>
+        </form>
+        <div class="submit-btns">
+            <button class="btn-blue">Anmelden</button>
+            <button class="btn-white">Gäste-Login</button>
+        </div>
+    </div>
+</section>

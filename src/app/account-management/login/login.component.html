@@ -1,1 +1,34 @@
-<p>login works!</p>
+<section class="overlay">
+    <app-header-sign></app-header-sign>
+
+    <div class="card">
+        <h1>Anmelden</h1>
+        <p>Wir empfelen dir, die E-mailaddresse zu nehmen, die du auf der Arbeit benutzt.</p>
+
+        <form>
+            <div class="inputfield-container">
+                <img src="/img/icons/login/mail_icon.svg">
+                <input id="email" type="email" formControlName="email" required placeholder="beispielname@email.com">
+            </div>
+            <div class="inputfield-container">
+                <img src="/img/icons/login/password_icon.svg">
+                <input id="password" type="password" formControlName="password" placeholder="Passwort">
+            </div>
+        </form>
+
+        <div class="forgot-password-btn">
+            <a routerLink="reset-password">Passwort vergessen?</a>
+        </div>
+        <div class="login-divider">
+            <span>ODER</span>
+        </div>
+        <button class="google-btn">
+            <img src="/img/icons/login/google.png">
+            <span>Anmelden mit Google</span>
+        </button>
+        <div class="submit-btns">
+            <button class="btn-blue">Anmelden</button>
+            <button class="btn-white">Gäste-Login</button>
+        </div>
+    </div>
+</section>
