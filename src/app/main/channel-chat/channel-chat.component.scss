@@ -1,12 +1,14 @@
 @import './../../../styles.scss';
 
 .main {
+    position: relative;
     background-color: white;
     height: 100vh;
     border-radius: 30px;
+    font-family: 'Nunito';
 }
 
-header{
+header {
     @include dFlex($jc: space-between);
     color: black;
     padding: 25px 45px;
@@ -15,7 +17,7 @@ header{
     border-top-right-radius: 30px;
 }
 
-.channel{
+.channel {
     @include dFlex($gap: 10px);
     height: 45px;
     font-size: 24px;
@@ -23,34 +25,47 @@ header{
     padding: 6px 10px;
     cursor: pointer;
 
-    &:hover{
+    &:hover {
         background-color: $bgHover;
-        color: $contHover;        
+        color: $contHover;
         border-radius: 100px;
 
-        svg{
-            path{
+        svg {
+            path {
                 fill: $contHover;
-            }            
+            }
         }
     }
 }
 
-.users{
-    @include dFlex($gap: 10px);
+.users {
+    @include dFlex($gap: 10px, $ai:center);
     font-size: 20px;
     font-weight: 700;
 }
 
-.addToChannel{
+.involvedUsers{
     cursor: pointer;
+    padding:3px 10px;
+    &:hover{
+        background-color: $bgHover;
+        color: $contHover;
+        border-radius: 30px;
+        
+    }
+}
+
+.addToChannel {
+    cursor: pointer;
+    height: 40px;
+
     &:hover {
-        svg{
-            path{
+        svg {
+            path {
                 fill: $contHover;
                 scale: 1.05;
                 transition: ease-in 0.15s;
-            } 
+            }
+        }
     }
-}
 }

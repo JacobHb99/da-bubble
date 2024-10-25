@@ -1,4 +1,3 @@
-
 $bgHover: #ECEEFE;
 $contHover: #535AF1;
 
@@ -93,6 +92,14 @@ $contHover: #535AF1;
 
 .btn-box{
     @include dFlex(flex-end)
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    } to {
+        opacity: 1;
+    }
 }
 
 
