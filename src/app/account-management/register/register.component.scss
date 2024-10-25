@@ -9,6 +9,9 @@ h1 {
     color: #535af1;
 }
 
+p{
+    text-align: center;
+}
 
 .overlay {
     height: 100vh;
@@ -24,6 +27,7 @@ h1 {
     padding: 32px;
     position: relative;
     max-width: 500px;
+    animation: fadeIn 1s ease-in-out forwards;
 
     .arrow-back {
         position: absolute;

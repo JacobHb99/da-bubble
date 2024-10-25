@@ -33,11 +33,7 @@ export class SelectAvatarComponent {
 
 
   setAvatar(avatar: string) {
-    if(avatar !== this.chosenAvatar) {
       this.chosenAvatar = avatar;
-    } else{
-      this.chosenAvatar = "/img/avatars/avatar_default.png";
-    }
   }
 
 

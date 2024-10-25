@@ -1,67 +1,73 @@
 @if (this.authService.showAnimation) {
     <app-intro-animation ></app-intro-animation>
+  } @else {
+    <section class="overlay">
+        <app-header-sign></app-header-sign>
+    
+        <div class="card">
+            <h1>Anmelden</h1>
+            <p>Wir empfelen dir, die E-mailaddresse zu nehmen, die du auf der Arbeit benutzt.</p>
+    
+            <form [formGroup]="userForm">
+                <div class="input-control">
+                    <div class="inputfield-container">
+                        <img src="/img/icons/login/mail_icon.svg">
+                        <input id="email" type="email" formControlName="email" required
+                            placeholder="beispielname@email.com">
+                    </div>
+                    <div class="hint">
+                        @if (userForm.controls.email.invalid && (userForm.controls.email.touched ||
+                        userForm.controls.email.dirty)) {
+                            @if (userForm.controls.email.errors?.['required']) {
+                            <small>*Email is requiered</small>
+                            }
+                            @if (userForm.controls.email.errors?.['pattern']) {
+                            <small>*Ungültige Email</small>
+                            }
+                        }
+                    </div>
+                </div>
+    
+                <div class="input-control">
+                    <div class="inputfield-container">
+                        <img src="/img/icons/login/password_icon.svg">
+                        <input id="password" type="password" formControlName="password" placeholder="Passwort">
+                    </div>
+    
+                    <div class="hint">
+                        @if (userForm.controls.password.invalid && (userForm.controls.password.touched ||
+                        userForm.controls.password.dirty)) {
+                        @if (userForm.controls.password.errors?.['required']) {
+                        <small>*Password is requiered</small>
+                        }
+                        @if (userForm.controls.password.errors?.['minlength']) {
+                        <small>*Passwort muss aus min. 6 Zeichen bestehen</small>
+                        }
+                        }
+                    </div>
+                </div>
+            </form>
+    
+            <div class="forgot-password-btn">
+                <a routerLink="reset-password">Passwort vergessen?</a>
+            </div>
+            <div class="login-divider">
+                <span>ODER</span>
+            </div>
+            <button class="google-btn">
+                <img src="/img/icons/login/google.png">
+                <span>Anmelden mit Google</span>
+            </button>
+            <div class="submit-btns">
+                <button class="btn-blue" [disabled]="!userForm.valid" [class.btn-inactive]="!userForm.valid" (click)="login()">Anmelden</button>
+                <button class="btn-white">Gäste-Login</button>
+            </div>
+        </div>
+    
+        <div class="new-member-box" *ngIf="router.url === '/'">
+            <span>Neu bei DABubble?</span>
+            <a class="link-btn" routerLink="/register">Konto erstellen</a>
+        </div>
+    </section>
   }
 
-<section class="overlay">
-    <app-header-sign></app-header-sign>
-
-    <div class="card">
-        <h1>Anmelden</h1>
-        <p>Wir empfelen dir, die E-mailaddresse zu nehmen, die du auf der Arbeit benutzt.</p>
-
-        <form [formGroup]="userForm">
-            <div class="input-control">
-                <div class="inputfield-container">
-                    <img src="/img/icons/login/mail_icon.svg">
-                    <input id="email" type="email" formControlName="email" required
-                        placeholder="beispielname@email.com">
-                </div>
-                <div class="hint">
-                    @if (userForm.controls.email.invalid && (userForm.controls.email.touched ||
-                    userForm.controls.email.dirty)) {
-                        @if (userForm.controls.email.errors?.['required']) {
-                        <small>*Email is requiered</small>
-                        }
-                        @if (userForm.controls.email.errors?.['pattern']) {
-                        <small>*Ungültige Email</small>
-                        }
-                    }
-                </div>
-            </div>
-
-            <div class="input-control">
-                <div class="inputfield-container">
-                    <img src="/img/icons/login/password_icon.svg">
-                    <input id="password" type="password" formControlName="password" placeholder="Passwort">
-                </div>
-
-                <div class="hint">
-                    @if (userForm.controls.password.invalid && (userForm.controls.password.touched ||
-                    userForm.controls.password.dirty)) {
-                    @if (userForm.controls.password.errors?.['required']) {
-                    <small>*Password is requiered</small>
-                    }
-                    @if (userForm.controls.password.errors?.['minlength']) {
-                    <small>*Passwort muss aus min. 6 Zeichen bestehen</small>
-                    }
-                    }
-                </div>
-            </div>
-        </form>
-
-        <div class="forgot-password-btn">
-            <a routerLink="reset-password">Passwort vergessen?</a>
-        </div>
-        <div class="login-divider">
-            <span>ODER</span>
-        </div>
-        <button class="google-btn">
-            <img src="/img/icons/login/google.png">
-            <span>Anmelden mit Google</span>
-        </button>
-        <div class="submit-btns">
-            <button class="btn-blue" [disabled]="!userForm.valid" [class.btn-inactive]="!userForm.valid" (click)="login()">Anmelden</button>
-            <button class="btn-white">Gäste-Login</button>
-        </div>
-    </div>
-</section>

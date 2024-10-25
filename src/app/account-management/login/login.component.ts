@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { catchError, of } from 'rxjs';
 import { IntroAnimationComponent } from '../intro-animation/intro-animation.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,7 @@ import { IntroAnimationComponent } from '../intro-animation/intro-animation.comp
     FormsModule,
     IntroAnimationComponent,
     ReactiveFormsModule,
+    CommonModule
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
