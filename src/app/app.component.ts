@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ChannelChatComponent } from "./main/channel-chat/channel-chat.component";
 import { HeaderComponent } from './header/header.component';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -12,4 +13,10 @@ import { HeaderComponent } from './header/header.component';
 })
 export class AppComponent {
   title = 'dabubble';
+  authService = inject(AuthService);
+
+
+  ngOnInit(): void {
+    this.authService.initialize();
+  }
 }

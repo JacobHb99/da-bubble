@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile, UserCredential,  } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, updateProfile, UserCredential, UserInfo,  } from '@angular/fire/auth';
 import { from, Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { FirebaseService } from './firebase.service';
@@ -19,9 +19,8 @@ export class AuthService {
   constructor() { }
 
 
-  saveRegistrationData(email: any, username: string, password: string) {
+  saveRegistrationData(email: string, username: string, password: string) {
     this.currentRegData = { email, username, password };
-    console.log(this.currentRegData);
   }
 
 
@@ -42,7 +41,6 @@ export class AuthService {
       displayName: username,
       photoURL: avatar
     });
-    console.log(response.user);
     this.saveNewUserInFirestore(email, username, response.user.uid, avatar);
   }
 
@@ -62,10 +60,9 @@ export class AuthService {
       .then((userCredential) => {
         // Signed in 
         this.currentCredentials = userCredential;
-        console.log('loginUser', this.currentCredentials.user);
-        this.setCurrentUserData();
-        
+        this.setCurrentUserData(this.currentCredentials.user);
         this.fireService.setUserStatus(this.currentCredentials, 'online');
+        console.log('loginUser', this.currentCredentials.user);
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -74,13 +71,31 @@ export class AuthService {
     return from(promise);
   }
 
-  setCurrentUserData() {
+  setCurrentUserData(user: UserInfo) {
     this.currentUserSig.set({
       email: this.currentCredentials.user.email!,
       username: this.currentCredentials.user.displayName!,
       uid: this.currentCredentials.user.uid!,
-      avatar: this.currentCredentials.user.photoURL!,
-      status: 'online',
+      avatar: this.currentCredentials.user.photoURL!
+    });
+  }
+
+
+  initialize() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/auth.user
+        const uid = user.uid;
+        this.setCurrentUserData(user);
+        console.log(user);
+        // ...
+      } else {
+        // User is signed out
+        // ...
+        console.log('no user');
+      }
     });
   }
 }
