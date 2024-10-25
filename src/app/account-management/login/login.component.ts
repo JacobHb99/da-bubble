@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { HeaderSignComponent } from '../header-sign/header-sign.component';
 import { AuthService } from '../../services/auth.service';
 import { FirebaseService } from '../../services/firebase.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { catchError, of } from 'rxjs';
 import { IntroAnimationComponent } from '../intro-animation/intro-animation.component';
@@ -16,7 +16,8 @@ import { CommonModule } from '@angular/common';
     FormsModule,
     IntroAnimationComponent,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    RouterLink
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
