@@ -12,14 +12,24 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './intro-animation.component.scss'
 })
 export class IntroAnimationComponent implements OnInit{
-  containerVisible = true;
+  containerVisible: boolean | undefined | null;
 
-  constructor(public authService: AuthService) {}
+
+  constructor(public authService: AuthService) {
+    console.log(this.containerVisible);
+  }
 
   ngOnInit() {
+    if (this.containerVisible === undefined) {
+      this.containerVisible = true;
+      this.authService.showAnimation = true;
+    }else {
+      this.containerVisible = false;
+      this.authService.showAnimation = false;
+    }
     setTimeout(() => {
       this.containerVisible = false;
       this.authService.showAnimation = false;
-    }, 4500);
+    }, 3500);
   }
 }

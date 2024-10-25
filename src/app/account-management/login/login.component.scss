@@ -9,6 +9,10 @@ h1 {
     color: #535af1;
 }
 
+p{
+    text-align: center;
+}
+
 .overlay {
     height: 100vh;
     width: 100%;
@@ -22,8 +26,11 @@ h1 {
     border-radius: 30px;
     padding: 32px;
     max-width: 500px;
+    animation: fadeIn 1s ease-in-out forwards;
 
 }
+
+
 
 form {
     display: flex;
@@ -125,4 +132,15 @@ form {
         font-weight: 700;
     }
 }
+
+.new-member-box{
+    @include dFlex(center, center, column);
+    padding: 16px;
+
+    @media(min-width: 600px) {
+        display: none !important;
+    }
+}
+
+
 

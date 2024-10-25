@@ -95,6 +95,14 @@ $contHover: #535AF1;
     @include dFlex(flex-end)
 }
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    } to {
+        opacity: 1;
+    }
+}
+
 
 
 

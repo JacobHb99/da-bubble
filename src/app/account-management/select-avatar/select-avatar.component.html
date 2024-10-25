@@ -27,7 +27,7 @@
 
         </div>
         <div class="btn-box width-100">
-            <button class="btn-blue" (click)="submitRegistration()">Weiter</button>
+            <button class="btn-blue" [disabled]="!chosenAvatar" [class.btn-inactive]="!chosenAvatar" (click)="submitRegistration()">Weiter</button>
         </div>
     </div>
 </section>
