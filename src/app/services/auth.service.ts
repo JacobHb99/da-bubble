@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, updateProfile, UserCredential, UserInfo,  } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, updateProfile, UserCredential, UserInfo, } from '@angular/fire/auth';
 import { from, Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { FirebaseService } from './firebase.service';
@@ -88,7 +88,7 @@ export class AuthService {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log(user);
-        
+
         // User is signed in, see docs for a list of available properties
         // https://firebase.google.com/docs/reference/js/auth.user
         const uid = user.uid;
@@ -102,4 +102,26 @@ export class AuthService {
       }
     });
   }
+
+/**
+ * Sendet eine Passwort-Zurücksetzungs-E-Mail an die angegebene E-Mail-Adresse.
+ * @param email Die E-Mail-Adresse, an die die Zurücksetzungs-E-Mail gesendet werden soll.
+ * @returns Eine Promise, die entweder erfolgreich ist oder einen Fehler zurückgibt.
+ */
+async sendPasswordReset(email: string): Promise<void> {
+  const auth = getAuth();
+  try {
+    await sendPasswordResetEmail(auth, email);
+    console.log(`Passwort-Zurücksetzungs-E-Mail wurde an ${email} gesendet.`);
+  } catch (error) {
+    console.error("Fehler beim Senden der Passwort-Zurücksetzungs-E-Mail:", error);
+    throw error;
+  }
+}
+
+
+
+
+
+
 }
