@@ -1,0 +1,34 @@
+@import './../../../styles.scss';
+
+.header{
+    @include dFlex($jc:space-between, $ai: unset, $fd: row, $gap: 0);
+    margin:45px 40px;
+}
+
+.avatar{
+    width: 420px;
+    margin:0px 40px;
+    border-radius: 200px;
+}
+
+.profil-name{
+    margin:45px 40px;
+    @include dFlex($jc:space-between, $ai: unset, $fd: row, $gap: 0);
+}
+
+.online-status{
+    display: flex;
+    gap:15px;
+    margin:45px 40px;
+}
+
+.email{
+    margin:45px 40px;
+  @include dFlex($jc: unset, $ai: flex-start, $fd: row, $gap: 20px);
+  div{
+    @include dFlex($jc: none, $ai: none, $fd: column, $gap: 0);
+    p{
+        margin:0;
+    }
+  }
+}
