@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component,Input } from '@angular/core';
 
 @Component({
   selector: 'app-send-message',
@@ -8,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './send-message.component.scss'
 })
 export class SendMessageComponent {
-
+  @Input() placeholder: string = '';
 }

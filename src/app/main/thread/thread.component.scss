@@ -1,0 +1,55 @@
+@import './../../../styles.scss';
+
+.main {
+    position: relative;
+    background-color: white;
+    height: 100vh;
+    border-radius: 30px;
+    font-family: 'Nunito';
+}
+
+header {
+    @include dFlex($jc: space-between);
+    color: black;
+    padding: 35px 40px;
+    box-shadow: 0 .125rem .625rem #00000014;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+}
+
+.channelThread{
+    @include dFlex($gap: 5px);
+
+    p{
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    span{
+        font-size: 14px;
+        color: #797EF3;
+    }
+}
+
+.closeThread {
+    background-image: url("/icons/close.png");
+    height: 40px;
+    width: 40px;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+
+    &:hover {
+        background-image: url("/icons/close-blue.png");
+        background-color: $bgHover;
+        border-radius: 50%;
+    }
+}
+
+app-send-message{    
+    position: absolute;
+    bottom: 40px;
+    right: 20px;
+    left: 20px;
+}
