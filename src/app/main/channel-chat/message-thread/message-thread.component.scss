@@ -1,13 +1,19 @@
 @import './../../../../styles.scss';
 
 section{
-    position: relative;
-    
+    position: relative;   
+    height: calc(100% - 300px); 
+}
+
+.thread{
+    overflow-y: scroll;
 }
 
 .startChat{
     @include dFlex($jc: flex-start, $ai: flex-start, $fd: column, $gap: 25px);
     padding-left: 45px;
+    position: absolute;
+    bottom: 0;
 
     div:first-child{
         display: flex;
@@ -23,8 +29,6 @@ section{
             font-weight: 700;
         }
     }
-
-
 }
 
 .clickName{

@@ -1,18 +1,18 @@
 @import './../../styles.scss';
 
-.main{
-    @include dFlex($gap:20px);
+.main {
+    @include dFlex($gap: 20px);
     padding: 0 20px 25px 20px;
 }
 
-app-side-nav{
-    width: 20%;
+app-side-nav {
+    width: 366px; //erstmal von Figma übernommen
 }
 
-app-channel-chat{
-    width: 60%;
+app-channel-chat {
+    width: 989px; //erstmal von Figma übernommen
 }
 
-app-thread{
-    width: 20%;
+app-thread {
+    width: 485px; //erstmal von Figma übernommen
 }
