@@ -7,7 +7,7 @@
             <input type="text" placeholder="Devspace durchsuchen">
             <img src="./icons/search-thin-grey.png" alt="">
         </div>
-        <div class="user-container">
+        <div (click)="openDialog()" class="user-container">
             <p>{{ authService.currentUserSig()?.username }}</p>
             <div class="avatar-with-status">
                 <img class="user-img" src="{{authService.currentUserSig()?.avatar}}" alt="">
