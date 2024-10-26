@@ -4,17 +4,21 @@ import { from, Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { FirebaseService } from './firebase.service';
 import { UserInterface } from '../interfaces/user';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   auth = inject(Auth);
+  router = inject(Router);
   fireService = inject(FirebaseService);
   currentRegData!: { email: any; username: string; password: string, response?: UserCredential };
   currentUserSig = signal<UserInterface | null | undefined>(undefined);
   currentCredentials!: UserCredential;
   showAnimation: boolean = true;
+  errorMessage!: string;
+  errorCode!: string
 
 
 
@@ -65,10 +69,11 @@ export class AuthService {
         this.setCurrentUserData(this.currentCredentials.user);
         this.fireService.setUserStatus(this.currentCredentials, 'online');
         console.log('loginUser', this.currentCredentials.user);
+        this.router.navigate(['/main']);
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
+        this.errorCode = error.code;
+        this.errorMessage = error.message;
       });
     return from(promise);
   }
@@ -83,8 +88,9 @@ export class AuthService {
   }
 
 
-  initialize() {
+  initialize() {    
     const auth = getAuth();
+    
     onAuthStateChanged(auth, (user) => {
       if (user) {
         console.log(user);

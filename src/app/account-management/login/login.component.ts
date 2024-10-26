@@ -48,9 +48,8 @@ export class LoginComponent {
         })
       )
       .subscribe(() => {
-        if (!this.loginFailed) {
-          this.router.navigate(['/main']);
-        }
-      });
+
+      })
+      
   }
 }
