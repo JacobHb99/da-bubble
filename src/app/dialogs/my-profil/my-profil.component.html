@@ -1,0 +1,24 @@
+<div>
+
+    <div class="header">
+        <p>Profil</p>
+        <img mat-dialog-close src="/img/icons/close.svg" alt="">
+    </div>
+
+    <img class="avatar" src="{{authService.currentUserSig()?.avatar}}" alt="">
+    <div class="profil-name">
+        <p>{{authService.currentUserSig()?.username}}</p>
+        <p [mat-dialog-close]="'edit'">Bearbeiten</p>
+    </div>
+
+    <div class="online-status"><img src="/img/online.svg" alt=""> <span>Aktiv</span></div>
+
+    <div class="email">
+        <img src="/img/icons/mail_icon.svg" alt="">
+        <div>
+            <p>E-mail-Adresse</p>
+            <p> {{authService.currentUserSig()?.email}}</p>
+        </div>
+    </div>
+
+</div>

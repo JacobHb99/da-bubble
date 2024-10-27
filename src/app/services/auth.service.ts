@@ -1,21 +1,24 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, updateProfile, UserCredential, UserInfo,  } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updateProfile, UserCredential, UserInfo, } from '@angular/fire/auth';
 import { from, Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { FirebaseService } from './firebase.service';
 import { UserInterface } from '../interfaces/user';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   auth = inject(Auth);
+  router = inject(Router);
   fireService = inject(FirebaseService);
   currentRegData!: { email: any; username: string; password: string, response?: UserCredential };
   currentUserSig = signal<UserInterface | null | undefined>(undefined);
   currentCredentials!: UserCredential;
   showAnimation: boolean = true;
-
+  errorMessage: string = '';
+  errorCode!: string
 
 
   constructor() { }
@@ -65,13 +68,32 @@ export class AuthService {
         this.setCurrentUserData(this.currentCredentials.user);
         this.fireService.setUserStatus(this.currentCredentials, 'online');
         console.log('loginUser', this.currentCredentials.user);
+        // this.router.navigate(['/main']);
       })
       .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
+        this.errorCode = error.code;
+        this.errorMessage = error.message;
       });
     return from(promise);
   }
+
+
+  signOut() {
+    const auth = getAuth();
+    signOut(this.auth).then(() => {
+      this.router.navigateByUrl('');
+      this.fireService.setUserStatus(this.currentCredentials, 'offline');
+      // console.log('logout erfolgreich', this.currentCredentials);
+      console.log('currCredentials', this.currentUserSig());      
+      
+      // Sign-out successful.
+    }).catch((error) => {
+      // An error happened.
+      console.log('logout fehlgeschlagen', this.currentCredentials);
+      console.log('currCredentials', this.currentUserSig());
+    });
+  }
+
 
   setCurrentUserData(user: any) {
     this.currentUserSig.set({
@@ -83,23 +105,42 @@ export class AuthService {
   }
 
 
-  initialize() {
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
+  initialize() {    
+    const auth = getAuth();   
+    onAuthStateChanged(this.auth, (user) => {
       if (user) {
-        console.log(user);
-        
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/auth.user
+        // User is signed in
         const uid = user.uid;
         this.setCurrentUserData(user);
         console.log(user);
-        // ...
       } else {
         // User is signed out
-        // ...
+        this.currentUserSig.set(null)
         console.log('no user');
       }
     });
   }
+
+
+/**
+ * Sendet eine Passwort-Zurücksetzungs-E-Mail an die angegebene E-Mail-Adresse.
+ * @param email Die E-Mail-Adresse, an die die Zurücksetzungs-E-Mail gesendet werden soll.
+ * @returns Eine Promise, die entweder erfolgreich ist oder einen Fehler zurückgibt.
+ */
+async sendPasswordReset(email: string): Promise<void> {
+  const auth = getAuth();
+  try {
+    await sendPasswordResetEmail(auth, email);
+    console.log(`Passwort-Zurücksetzungs-E-Mail wurde an ${email} gesendet.`);
+  } catch (error) {
+    console.error("Fehler beim Senden der Passwort-Zurücksetzungs-E-Mail:", error);
+    throw error;
+  }
+}
+
+
+
+
+
+
 }

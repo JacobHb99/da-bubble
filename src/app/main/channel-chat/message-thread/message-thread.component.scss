@@ -1,0 +1,41 @@
+@import './../../../../styles.scss';
+
+section{
+    position: relative;   
+    height: calc(100% - 300px); 
+}
+
+.thread{
+    overflow-y: scroll;
+}
+
+.startChat{
+    @include dFlex($jc: flex-start, $ai: flex-start, $fd: column, $gap: 25px);
+    padding-left: 45px;
+    position: absolute;
+    bottom: 0;
+
+    div:first-child{
+        display: flex;
+        align-items: flex-end;
+        gap: 25px;
+
+        img{
+            width: 100px;
+        }
+
+        span{
+            font-size: 24px;
+            font-weight: 700;
+        }
+    }
+}
+
+.clickName{
+    cursor: pointer;
+    color: #535af1;
+
+    &:hover{
+        font-weight: 700;
+    }
+}

@@ -48,15 +48,15 @@ export class SelectAvatarComponent {
       },
 
       error: (err) => {
-        console.log(err.code);
-        
+        console.log(err.code);  
         if (err.code === 'auth/email-already-in-use') {
           this.registrationFailed = true;
-          this.errorMassage = 'Email existiert bereits!';
+          this.authService.errorMessage = 'Email existiert bereits!';
         } else {
           this.registrationFailed = true;
-          this.errorMassage = 'Irgendetwas ist schief gelaufen!';
+          this.authService.errorMessage = 'Irgendetwas ist schief gelaufen!';
         }
+          this.router.navigateByUrl('/register');
       }
     })
   }
