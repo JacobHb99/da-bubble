@@ -21,7 +21,6 @@ export class AuthService {
   errorCode!: string
 
 
-
   constructor() { }
 
 
@@ -69,7 +68,7 @@ export class AuthService {
         this.setCurrentUserData(this.currentCredentials.user);
         this.fireService.setUserStatus(this.currentCredentials, 'online');
         console.log('loginUser', this.currentCredentials.user);
-        this.router.navigate(['/main']);
+        // this.router.navigate(['/main']);
       })
       .catch((error) => {
         this.errorCode = error.code;
@@ -81,15 +80,17 @@ export class AuthService {
 
   signOut() {
     const auth = getAuth();
-    signOut(auth).then(() => {
+    signOut(this.auth).then(() => {
       this.router.navigateByUrl('');
       this.fireService.setUserStatus(this.currentCredentials, 'offline');
-      console.log('logout erfolgreich', this.currentCredentials);
+      // console.log('logout erfolgreich', this.currentCredentials);
+      console.log('currCredentials', this.currentUserSig());      
       
       // Sign-out successful.
     }).catch((error) => {
       // An error happened.
       console.log('logout fehlgeschlagen', this.currentCredentials);
+      console.log('currCredentials', this.currentUserSig());
     });
   }
 
@@ -105,21 +106,16 @@ export class AuthService {
 
 
   initialize() {    
-    const auth = getAuth();
-    
-    onAuthStateChanged(auth, (user) => {
+    const auth = getAuth();   
+    onAuthStateChanged(this.auth, (user) => {
       if (user) {
-        console.log(user);
-
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/auth.user
+        // User is signed in
         const uid = user.uid;
         this.setCurrentUserData(user);
         console.log(user);
-        // ...
       } else {
         // User is signed out
-        // ...
+        this.currentUserSig.set(null)
         console.log('no user');
       }
     });
