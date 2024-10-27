@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, updateProfile, UserCredential, UserInfo, } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updateProfile, UserCredential, UserInfo, } from '@angular/fire/auth';
 import { from, Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { FirebaseService } from './firebase.service';
@@ -78,6 +78,22 @@ export class AuthService {
     return from(promise);
   }
 
+
+  signOut() {
+    const auth = getAuth();
+    signOut(auth).then(() => {
+      this.router.navigateByUrl('');
+      this.fireService.setUserStatus(this.currentCredentials, 'offline');
+      console.log('logout erfolgreich', this.currentCredentials);
+      
+      // Sign-out successful.
+    }).catch((error) => {
+      // An error happened.
+      console.log('logout fehlgeschlagen', this.currentCredentials);
+    });
+  }
+
+
   setCurrentUserData(user: any) {
     this.currentUserSig.set({
       email: user.email!,
@@ -108,6 +124,7 @@ export class AuthService {
       }
     });
   }
+
 
 /**
  * Sendet eine Passwort-Zurücksetzungs-E-Mail an die angegebene E-Mail-Adresse.
