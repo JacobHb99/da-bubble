@@ -22,6 +22,8 @@ import { CommonModule } from '@angular/common';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
+
+
 export class LoginComponent {
   authService = inject(AuthService);
   fireService = inject(FirebaseService);
@@ -35,9 +37,11 @@ export class LoginComponent {
     password: this.fb.control('', {validators: [Validators.required, Validators.minLength(6)]})
   });
 
+
   constructor() {
     this.authService.errorMessage = '';
   }
+
 
   login(): void {
     let user = this.userForm.getRawValue()
@@ -50,7 +54,6 @@ export class LoginComponent {
         })
       )
       .subscribe(() => {
-
       })
   }
 }
