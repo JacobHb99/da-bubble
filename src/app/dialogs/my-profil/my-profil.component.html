@@ -2,13 +2,13 @@
 
     <div class="header">
         <p>Profil</p>
-        <img src="/img/icons/close.svg" alt="">
+        <img mat-dialog-close src="/img/icons/close.svg" alt="">
     </div>
 
     <img class="avatar" src="{{authService.currentUserSig()?.avatar}}" alt="">
     <div class="profil-name">
         <p>{{authService.currentUserSig()?.username}}</p>
-        <p>Bearbeiten</p>
+        <p [mat-dialog-close]="'edit'">Bearbeiten</p>
     </div>
 
     <div class="online-status"><img src="/img/online.svg" alt=""> <span>Aktiv</span></div>

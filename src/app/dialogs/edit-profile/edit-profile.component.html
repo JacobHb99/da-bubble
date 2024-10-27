@@ -1,0 +1,38 @@
+<div>
+
+    <div class="header">
+        <p>Dieses Profil bearbeiten</p>
+        <img mat-dialog-close src="/img/icons/close.svg" alt="">
+    </div>
+
+    <img class="avatar" src="{{authService.currentUserSig()?.avatar}}" alt="">
+    <form action="">
+        <div class="form-group">
+
+            <div class="profil-name">
+                <div class="input">
+                    <img src="/icons/account_circle.png" alt="">
+                    <label for="name">Vollständiger Name</label>
+                </div>
+                <div class="inputfield-container">
+                    <input id="name" type="text">
+                </div>
+            </div>
+
+            <div class="email">
+                <div>
+                    <img src="/img/icons/mail_icon.svg" alt="">
+                    <label for="email">E-mail-Adresse</label>
+                </div>
+                <div class="inputfield-container">
+                    <input id="email" type="text">
+                </div>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button class="btn-white">Abrechen</button>
+            <button class="btn-blue">Speichern</button>
+        </div>
+    </form>
+</div>

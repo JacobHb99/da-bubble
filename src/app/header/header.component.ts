@@ -9,6 +9,7 @@ import { AuthService } from './../services/auth.service';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { ProfilLogoutButtonsComponent } from '../dialogs/profil-logout-buttons/profil-logout-buttons.component';
 import { MyProfilComponent } from '../dialogs/my-profil/my-profil.component';
+import { EditProfileComponent } from '../dialogs/edit-profile/edit-profile.component';
 
 
 @Component({
@@ -30,13 +31,25 @@ export class HeaderComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result='profil') {
-        const dialogRef = this.dialog.open(MyProfilComponent,{
-        });
+      if (result=='profil') {
+        this.openOwnProfilDialog();
       }
     });
-
-    
   }
+
+  openOwnProfilDialog(){
+    const dialogRef = this.dialog.open(MyProfilComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result=='edit') {
+        this.openEditProfilDialog();
+      }
+    });
+  }
+
+  openEditProfilDialog(){
+    const dialogRef = this.dialog.open(EditProfileComponent);
+  }
+  
 
 }
