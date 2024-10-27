@@ -17,7 +17,7 @@ export class AuthService {
   currentUserSig = signal<UserInterface | null | undefined>(undefined);
   currentCredentials!: UserCredential;
   showAnimation: boolean = true;
-  errorMessage!: string;
+  errorMessage: string = '';
   errorCode!: string
 
 

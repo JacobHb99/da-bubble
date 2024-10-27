@@ -43,6 +43,7 @@ export class RegisterComponent {
   onSubmit(): void {
     let user = this.userForm.getRawValue()
     this.authService.saveRegistrationData(user.email, user.username, user.password);
+    this.authService.errorMessage = '';
     this.router.navigate(['/avatar']);
   }
 }

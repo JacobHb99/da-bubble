@@ -35,7 +35,9 @@ export class LoginComponent {
     password: this.fb.control('', {validators: [Validators.required, Validators.minLength(6)]})
   });
 
-
+  constructor() {
+    this.authService.errorMessage = '';
+  }
 
   login(): void {
     let user = this.userForm.getRawValue()

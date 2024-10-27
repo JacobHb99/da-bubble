@@ -5,7 +5,12 @@
         <img routerLink="/" class="arrow-back" src="/img/icons/login/arrow_back.svg">
 
         <h1>Konto erstellen</h1>
+
+        @if (authService.errorMessage) {
+        <p class="errMsg">{{ authService.errorMessage }}</p>
+        }
         <p>Mit deinem Namen und deiner E-Mail-Adresse hast du dein neues DABubble-Konto.</p>
+
         <form [formGroup]="userForm">
             <div class="input-control">
                 <div class="inputfield-container">
@@ -14,13 +19,14 @@
                         placeholder="Name und Nachname">
                 </div>
                 <div class="hint">
-                    @if (userForm.controls.username.invalid && (userForm.controls.username.touched || userForm.controls.username.dirty)) {
-                        @if (userForm.controls.username.errors?.['required']) {
-                            <small>*Username is requiered</small>
-                        }
-                        @if (userForm.controls.username.errors?.['minlength']) {
-                            <small>*Der Name muss mindestens 4 Zeichen beinhalten</small>
-                        }
+                    @if (userForm.controls.username.invalid && (userForm.controls.username.touched ||
+                    userForm.controls.username.dirty)) {
+                    @if (userForm.controls.username.errors?.['required']) {
+                    <small>*Username is requiered</small>
+                    }
+                    @if (userForm.controls.username.errors?.['minlength']) {
+                    <small>*Der Name muss mindestens 4 Zeichen beinhalten</small>
+                    }
                     }
                 </div>
             </div>
@@ -32,13 +38,14 @@
                         placeholder="beispielname@email.com">
                 </div>
                 <div class="hint">
-                    @if (userForm.controls.email.invalid && (userForm.controls.email.touched || userForm.controls.email.dirty)) {
-                        @if (userForm.controls.email.errors?.['required']) {
-                            <small>*Email is requiered</small>
-                        }
-                        @if (userForm.controls.email.errors?.['pattern']) {
-                            <small>*Ungültige Email</small>
-                        }
+                    @if (userForm.controls.email.invalid && (userForm.controls.email.touched ||
+                    userForm.controls.email.dirty)) {
+                    @if (userForm.controls.email.errors?.['required']) {
+                    <small>*Email is requiered</small>
+                    }
+                    @if (userForm.controls.email.errors?.['pattern']) {
+                    <small>*Ungültige Email</small>
+                    }
                     }
                 </div>
             </div>
@@ -50,19 +57,22 @@
                         placeholder="Passwort">
                 </div>
                 <div class="hint">
-                    @if (userForm.controls.password.invalid && (userForm.controls.password.touched || userForm.controls.password.dirty)) {
-                        @if (userForm.controls.password.errors?.['required']) {
-                            <small>*Password is requiered</small>
-                        }
-                        @if (userForm.controls.password.errors?.['minlength']) {
-                            <small>*Passwort muss aus min. 6 Zeichen bestehen</small>
-                        }
+                    @if (userForm.controls.password.invalid && (userForm.controls.password.touched ||
+                    userForm.controls.password.dirty)) {
+                    @if (userForm.controls.password.errors?.['required']) {
+                    <small>*Password is requiered</small>
+                    }
+                    @if (userForm.controls.password.errors?.['minlength']) {
+                    <small>*Passwort muss aus min. 6 Zeichen bestehen</small>
+                    }
                     }
                 </div>
             </div>
         </form>
+
         <div class="btn-box width-100">
-            <button class="btn-blue" [disabled]="!userForm.valid" [class.btn-inactive]="!userForm.valid" (click)="onSubmit()">Weiter</button>
+            <button class="btn-blue" [disabled]="!userForm.valid" [class.btn-inactive]="!userForm.valid"
+                (click)="onSubmit()">Weiter</button>
         </div>
     </div>
 </section>
