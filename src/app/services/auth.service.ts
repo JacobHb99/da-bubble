@@ -68,7 +68,7 @@ export class AuthService {
         this.setCurrentUserData(this.currentCredentials.user);
         this.fireService.setUserStatus(this.currentCredentials, 'online');
         console.log('loginUser', this.currentCredentials.user);
-        // this.router.navigate(['/main']);
+         this.router.navigate(['/main']);
       })
       .catch((error) => {
         this.errorCode = error.code;

@@ -1,12 +1,15 @@
 import { inject, Injectable } from '@angular/core';
-import { doc, setDoc, Firestore, updateDoc } from '@angular/fire/firestore';
+import { doc, setDoc, Firestore, updateDoc, collection, onSnapshot, query } from '@angular/fire/firestore';
 import { User } from '../models/user.model';
 import { UserCredential } from '@angular/fire/auth';
+import { where, } from "firebase/firestore";
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseService {
+  allUsers: any = []; // User[]
+
   firestore = inject(Firestore);
 
   constructor() { }
@@ -26,4 +29,17 @@ export class FirebaseService {
       status: status
     });
   }
+
+  async getAllUsers() {
+    const q = query(collection(this.firestore, "users"));
+const unsubscribedUsers = onSnapshot(q, (querySnapshot) => {
+ this.allUsers = [];
+  querySnapshot.forEach((doc) => {
+    console.log(doc.data());
+    
+      this.allUsers.push(doc.data());
+  });
+  console.log("Current cities in CA: ", this.allUsers);
+});
+}
 }

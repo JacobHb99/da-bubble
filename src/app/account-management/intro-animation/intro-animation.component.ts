@@ -20,6 +20,8 @@ export class IntroAnimationComponent implements OnInit{
   }
 
   ngOnInit() {
+    console.log(this.containerVisible);
+    
     if (this.containerVisible === undefined) {
       this.containerVisible = true;
       this.authService.showAnimation = true;
