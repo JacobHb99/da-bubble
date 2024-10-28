@@ -47,13 +47,45 @@ export class LoginComponent {
     let user = this.userForm.getRawValue()
     this.loginFailed = false;
     this.authService.login(user.email, user.password)
-      .pipe(
-        catchError((error) => {
+    .subscribe({
+      next: () => {
+
+        // setTimeout(() => {
+        //   this.router.navigateByUrl('/');
+        // }, 1000);
+      },
+
+      error: (err) => {
+        console.log(err.code);  
+        if (err.code === "auth/invalid-credential") {
           this.loginFailed = true;
-          return of(null);  
-        })
-      )
-      .subscribe(() => {
-      })
+          this.errorMessage = 'Diese Anmeldedaten sind ungültig!';
+          console.log('loginFailed', this.loginFailed);
+          console.log('MESSAGE', this.errorMessage);
+        } else {
+          this.loginFailed = true;
+          this.errorMessage = 'Irgendetwas ist schief gelaufen!';
+          console.log('loginFailed', this.loginFailed);
+          console.log('MESSAGE', this.errorMessage);
+        }
+        this.userForm.reset();
+      }
+    })
+
+
+
+
+
+
+      // .pipe(
+      //   catchError((error) => {
+      //     this.loginFailed = true;
+      //     console.log('loginFailed', this.loginFailed);
+          
+      //     return of(null);  
+      //   })
+      // )
+      // .subscribe(() => {
+      // })
   }
 }

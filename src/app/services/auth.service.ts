@@ -70,10 +70,7 @@ export class AuthService {
         this.fireService.setUserStatus(this.currentCredentials, 'online');
         this.router.navigate(['/main']);
       })
-      .catch((error) => {
-        this.errorCode = error.code;
-        this.errorMessage = error.message;
-      });
+ 
     return from(promise);
   }
 
