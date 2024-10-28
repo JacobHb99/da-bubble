@@ -7,12 +7,14 @@ import { FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } 
 import { catchError, of } from 'rxjs';
 import { IntroAnimationComponent } from '../intro-animation/intro-animation.component';
 import { CommonModule } from '@angular/common';
+import { ImpressComponent } from '../impress/impress.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
     HeaderSignComponent,
+    ImpressComponent,
     FormsModule,
     IntroAnimationComponent,
     ReactiveFormsModule,
