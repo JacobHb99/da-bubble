@@ -60,7 +60,7 @@
             </button>
             <div class="submit-btns">
                 <button class="btn-blue" [disabled]="!userForm.valid" [class.btn-inactive]="!userForm.valid" (click)="login()">Anmelden</button>
-                <button class="btn-white">Gäste-Login</button>
+                <button class="btn-white" (click)="authService.signOut()">Gäste-Login</button>
             </div>
         </div>
     
