@@ -8,7 +8,7 @@
     <img class="avatar" src="{{authService.currentUserSig()?.avatar}}" alt="">
     <div class="profil-name">
         <p>{{authService.currentUserSig()?.username}}</p>
-        <p [mat-dialog-close]="'edit'">Bearbeiten</p>
+        <p class="edit" [mat-dialog-close]="'edit'">Bearbeiten</p>
     </div>
 
     <div class="online-status"><img src="/img/online.svg" alt=""> <span>Aktiv</span></div>
@@ -17,7 +17,7 @@
         <img src="/img/icons/mail_icon.svg" alt="">
         <div>
             <p>E-mail-Adresse</p>
-            <p> {{authService.currentUserSig()?.email}}</p>
+            <p class="my-email-adress"> {{authService.currentUserSig()?.email}}</p>
         </div>
     </div>
 

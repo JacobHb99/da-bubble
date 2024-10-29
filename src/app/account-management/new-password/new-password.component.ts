@@ -31,7 +31,7 @@ export class NewPasswordComponent {
     this.resetPassword();
     setTimeout(() => {
       this.router.navigate(['/']);
-    }, 3000);
+    }, 1000);
   }
 
 

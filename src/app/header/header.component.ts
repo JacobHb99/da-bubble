@@ -22,7 +22,7 @@ import { EditProfileComponent } from '../dialogs/edit-profile/edit-profile.compo
 export class HeaderComponent {
   authService = inject(AuthService);
   readonly dialog = inject(MatDialog);
-  
+   
 
   openDialog() {
     const dialogRef = this.dialog.open(ProfilLogoutButtonsComponent,{
@@ -33,6 +33,8 @@ export class HeaderComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result=='profil') {
         this.openOwnProfilDialog();
+      }else if (result=='logout'){
+         this.authService.signOut();
       }
     });
   }

@@ -1,12 +1,26 @@
-div{
-   width: 100%;
-   position: relative;  
-   top:0;
-   left:0;
+@import "./../../../styles.scss";
+
+div {
+  @include dFlex($jc: unset, $ai: center, $fd: column, $gap: 15px);
+  margin: 12px;
+  background-color: white;
 }
-button{
-    width: 100%;
-    padding: 10px 45px;
-    margin: 10px;
-    box-sizing:border-box;
+
+button {
+  font-family: "Nunito", sans-serif;
+  box-sizing: border-box;
+  font-weight: 600;
+  font-size: 24px;
+  cursor: pointer;
+  border: none !important;
+  width: 100%;
+  padding: 12px 25px;
+  background-color: white;
+  border-radius: 100px;
+  &:hover {
+    background-color: #eceefe;
+    font-weight: 700;
+    color: #535af1;
+  }
 }
+ 

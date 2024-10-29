@@ -65,26 +65,26 @@ export class AuthService {
       .then((userCredential) => {
         // Signed in 
         this.currentCredentials = userCredential;
+        console.log('BEFORE', this.currentCredentials);
         this.setCurrentUserData(this.currentCredentials.user);
         this.fireService.setUserStatus(this.currentCredentials, 'online');
         console.log('loginUser', this.currentCredentials.user);
          this.router.navigate(['/main']);
+        
       })
-      .catch((error) => {
-        this.errorCode = error.code;
-        this.errorMessage = error.message;
-      });
+ 
     return from(promise);
   }
 
 
   signOut() {
     const auth = getAuth();
+    console.log('BEFORE', this.currentCredentials);
+    this.fireService.setUserStatus(this.currentCredentials, 'offline');
+
     signOut(this.auth).then(() => {
       this.router.navigateByUrl('');
-      this.fireService.setUserStatus(this.currentCredentials, 'offline');
-      // console.log('logout erfolgreich', this.currentCredentials);
-      console.log('currCredentials', this.currentUserSig());      
+      console.log(this.currentCredentials);
       
       // Sign-out successful.
     }).catch((error) => {
@@ -113,9 +113,13 @@ export class AuthService {
         const uid = user.uid;
         this.setCurrentUserData(user);
         console.log(user);
+        
       } else {
         // User is signed out
         this.currentUserSig.set(null)
+        console.log('user', user);
+        console.log('logout erfolgreich', this.currentCredentials);
+        console.log('currCredentials', this.currentUserSig()); 
         console.log('no user');
       }
     });

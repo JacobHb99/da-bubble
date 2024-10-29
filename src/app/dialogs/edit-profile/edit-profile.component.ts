@@ -11,4 +11,10 @@ import {MatDialogModule} from '@angular/material/dialog';
 })
 export class EditProfileComponent {
   authService = inject(AuthService);
+  user:any;
+  
+  constructor( ) {
+     
+  }
+   
 }

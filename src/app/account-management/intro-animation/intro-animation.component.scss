@@ -16,22 +16,41 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        font-size: 64px;
         font-weight: 700;
         color: white;
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 32px;
-        animation: fadeOutLogo 1s ease-in-out forwards;
-        animation-delay: 2s;
+        gap: 16px;
+
+
+        @media(max-width: 600px) {
+            font-size: 24px;
+            animation: fadeOutLogo-mobile 1s ease-in-out forwards;
+            animation-delay: 2s;
+        }
+        @media(min-width: 600px) {
+            font-size: 64px;
+            animation: fadeOutLogo-desktop 1s ease-in-out forwards;
+            animation-delay: 2s;
+        }
+
 
 
         img {
             width: 180px;
             transform: translateX(162px);
-            animation: fadeInImage 0.5s ease-in-out forwards, shrinkImg 1s ease-in-out forwards;
-            animation-delay: 0.5s, 2.0s;
+
+            @media(max-width: 600px) {
+                width: 80px;
+                animation: fadeInImage-mobile 0.5s ease-in-out forwards, shrinkImg-mobile 1s ease-in-out forwards;
+                animation-delay: 0.5s, 2.0s;
+
+            }
+            @media(min-width: 600px) {
+                animation: fadeInImage-desktop 0.5s ease-in-out forwards, shrinkImg-desktop 1s ease-in-out forwards;
+                animation-delay: 0.5s, 2.0s;
+            }
         }
 
         .title {
@@ -41,13 +60,23 @@
         }
     }
 
-    @keyframes fadeInImage {
+    @keyframes fadeInImage-desktop {
         from {
             transform: translateX(162px);
         }
 
         to {
             transform: translateX(0);
+        }
+    }
+
+    @keyframes fadeInImage-mobile {
+        from {
+            transform: translateX(162px);
+        }
+
+        to {
+            transform: translateX(0px);
         }
     }
 
@@ -63,7 +92,7 @@
             }
         }
 
-        @keyframes fadeOutLogo {
+        @keyframes fadeOutLogo-desktop {
             from {
                 top: 50%;
                 left: 50%;
@@ -81,10 +110,42 @@
             }
         }
 
-        @keyframes shrinkImg {
+        @keyframes fadeOutLogo-mobile {
+            from {
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-size: 24px;
+            }
+
+            to {
+                top: 65px;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                font-size: 24px;
+                font-weight: 700;
+                gap: 16px;
+            }
+        }
+
+        @keyframes shrinkImg-desktop {
             from {
                 height: 160px;
                 width: 160px;
+                object-fit: cover;;
+            }
+
+            to {
+                height: 70px;
+                width: 70px;
+                object-fit: cover;;
+            }
+        }
+
+        @keyframes shrinkImg-mobile {
+            from {
+                height: 80px;
+                width: 80px;
                 object-fit: cover;;
             }
 
