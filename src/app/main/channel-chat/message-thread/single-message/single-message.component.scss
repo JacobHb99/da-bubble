@@ -1,0 +1,125 @@
+@import './../../../../../styles.scss';
+
+section {
+    position: relative;
+}
+
+.divider {
+    @include dFlex();
+    padding: 20px 35px;
+
+    .date {
+        border: solid 1px #ADB0D9;
+        border-radius: 30px;
+        padding: 5px 15px;
+        font-size: 18px;
+    }
+
+    .lineDiv {
+        @include dFlex();
+        flex-grow: 2;
+
+        hr {
+            border: unset;
+            height: 1px;
+            width: 100%;
+            background-color: #ADB0D9;
+        }
+    }
+}
+
+.messageBox {
+    @include dFlex($ai: flex-start, $gap: 30px);
+    padding: 8px 45px;
+    position: relative;
+
+    .floatingReactionBox {
+        display: none;
+    }
+
+    &:hover {
+        background-color: $bgHover;
+
+        .floatingReactionBox {
+            @include dFlex($gap: 5px);
+            border: 1px solid #ADB0D9;
+            border-radius: 20px 20px 0 20px;
+            padding: 3px 15px 3px 20px;
+            position: absolute;
+            top: 0;
+            left: 45px;
+        
+            img{
+                height: 24px;
+                width: 24px;
+            }
+        }
+    }
+}
+
+.messageDetails {
+    @include dFlex($fd: column, $ai: flex-end, $gap: 9px);
+
+    .messageInfo {
+        @include dFlex($gap: 20px);
+
+        :nth-child(1) {
+            color: #686868;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        :nth-child(2) {
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+        }
+    }
+}
+
+.messageText {
+    border: 1px solid #797EF3;
+    border-radius: 30px 0 30px 30px;
+    background-color: #797EF3;
+    color: white;
+    font-size: 18px;
+    padding: 15px;
+}
+
+.reactionBox {
+    @include dFlex($gap: 10px);
+
+    .emojiBox {
+        @include dFlex($gap: 10px);
+        border: 1px solid #ADB0D9;
+        border-radius: 20px;
+        padding: 5px 10px;
+        background-color: white;
+
+        p {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        &:hover {
+            cursor: pointer;
+            border-color: #444DF2;
+        }
+    }
+}
+
+.addReaction {
+    background-image: url("/icons/add_reaction.png");
+    height: 34px;
+    width: 34px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: white;
+    border-radius: 20px;
+
+    &:hover {
+        background-image: url("/icons/add_reaction-blue.png");
+        background-color: $bgHover;
+    }
+}
+
