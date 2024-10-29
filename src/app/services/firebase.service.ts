@@ -32,11 +32,9 @@ export class FirebaseService {
 
   async getAllUsers() {
     const q = query(collection(this.firestore, "users"));
-const unsubscribedUsers = onSnapshot(q, (querySnapshot) => {
- this.allUsers = [];
-  querySnapshot.forEach((doc) => {
-    console.log(doc.data());
-    
+    const unsubscribedUsers = onSnapshot(q, (querySnapshot) => {
+    this.allUsers = [];
+     querySnapshot.forEach((doc) => {
       this.allUsers.push(doc.data());
   });
   console.log("Current cities in CA: ", this.allUsers);

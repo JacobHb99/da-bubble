@@ -4,12 +4,44 @@ section {
     border-radius: 30px;
     width: 306px;
     font-family: 'Nunito';
+    height: 800px;
+    transform: translateX(0px);
+    transition: transform ease-in-out 130ms;
+}
+.slide-in {
+    transform: translateX(-1000px);
 }
 .workspace-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
     
+}
+.edit-square {
+   width: 40px;
+   height: 40px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   &:hover {
+    background: #ECEEFE;
+    border-radius: 100%;
+    cursor: pointer;
+   } 
+}
+.add-black {
+    width: 40px;
+   height: 40px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+  
+   &:hover {
+    background: #ECEEFE;
+    border-radius: 100%;
+    cursor: pointer;
+   } 
+
 }
 .workspace-text {
     display: flex;
@@ -18,10 +50,9 @@ section {
     >p {
         font-weight: 700;
         font-size: 24px;
-
     }
-
 }
+
 .channel-container {
     display: flex;
     align-items: center;
@@ -34,8 +65,13 @@ section {
     >p {
         font-weight: 700;
         font-size: 20px;
+    }
+    &:hover {
+        color: #535AF1;
+        cursor: pointer;
 
     }
+   
 }
 .channel-row {
     display: flex;
@@ -43,12 +79,31 @@ section {
 
 }
 .developer {
-    margin-left: 43px;
+    margin-left: 24px;
     display: flex;
     align-items: center;
     gap: 10px;
+   
     >p {
         font-size: 18px;
+    }
+    
+}
+.dev-hover {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 20px;
+    >p {
+        font-size: 18px;
+        margin: 0;
+    }
+    &:hover {
+        background: #ECEEFE;
+       border-radius: 20px;
+       cursor: pointer;
+       
+     
 
     }
 }
@@ -59,6 +114,77 @@ section {
     gap: 10px;
     >p {
         font-size: 18px;
-
+    }
+    &:hover {
+        color: #535AF1;
+        cursor: pointer;
     }
 }
+.users {
+    margin-left: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 13px; 
+  }
+  
+  .single-user {
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+    
+   
+  }
+  .single-user-hover {
+    padding: 4px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+
+    &:hover {
+        cursor: pointer;
+        background: #ECEEFE;
+        border-radius: 30px;
+        color: #535AF1;
+        
+    }
+
+  }
+  
+  .avatar img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+  
+  .username p {
+    font-size: 18px;
+    margin: 0;
+  }
+  .workspace-show-hide {
+    display: flex;
+    align-items: center;
+    padding: 17px 14px;
+    position: absolute;
+    left: -137px;
+    bottom: 40px;
+    background-color: white;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    transform: rotate(-90deg);
+    box-shadow: 4px 4px 7px 0px #00000033;
+    gap: 10px;
+    &:hover {
+        cursor: pointer;
+        color: #535AF1;
+    }
+    >p {
+        font-size: 20px;
+        font-weight: 500;
+        font-family: 'Nunito';
+        margin: 0;
+    }
+    >img {
+        transform: rotate(90deg);
+    }
+
+  }
