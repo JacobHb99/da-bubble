@@ -28,20 +28,45 @@ section {
     }
 }
 
-.messageBox {
+.myMessageBox {
     @include dFlex($ai: flex-start, $gap: 30px);
     padding: 8px 45px;
     position: relative;
 
     &:hover {
-        background-color: $bgHover;
-
         .floatingReactionBox {
             visibility: visible;
             transform: translateX(0);
             transition: all 75ms ease-in-out;
         }
     }
+}
+
+.replyMessageBox {
+    @include dFlex($fd: row-reverse, $ai: flex-start, $gap: 30px);
+    padding: 8px 45px;
+    position: relative;
+
+    &:hover {
+        background-color: $bgHover;        
+        
+        .replyMessageText {
+            border: white;
+            background-color: white;
+        }
+
+        .replyfloatingReactionBox{
+            visibility: visible;
+            transform: translateX(0%);
+        }
+    }
+}
+
+.replyfloatingReactionBox{
+    visibility: hidden;
+    transform: translateX(0%);
+    left: 100px;
+    right: 45px;
 }
 
 
@@ -61,8 +86,17 @@ section {
     &:hover :nth-child(5) {
         cursor: pointer;
     }
-
+    
+    .svg-hover {
+        &:hover {
+            path {
+                fill: #535AF1;
+            }
+        }
+    }
 }
+
+
 
 .iconBox {
     @include dFlex();
@@ -73,19 +107,13 @@ section {
     &:hover {
         background-color: $bgHover;
         scale: 1.07;
-    } 
-}
-
-.svg-hover {
-    &:hover {
-        path {
-            fill: #535AF1;
-        }
     }
 }
 
+
+
 .messageDetails {
-    @include dFlex($fd: column, $ai: flex-end, $gap: 9px);
+    @include dFlex($ai: flex-end, $fd: column, $gap: 9px);
 
     .messageInfo {
         @include dFlex($gap: 20px);
@@ -104,6 +132,14 @@ section {
     }
 }
 
+.replyMessageDetails {
+    align-items: flex-start;
+
+    .messageInfo {
+        @include dFlex($fd: row-reverse, $gap: 20px);
+    }
+}
+
 .messageText {
     border: 1px solid #797EF3;
     border-radius: 30px 0 30px 30px;
@@ -111,6 +147,13 @@ section {
     color: white;
     font-size: 18px;
     padding: 15px;
+}
+
+.replyMessageText {
+    border: $bgHover;
+    border-radius: 0 30px 30px 30px;
+    background-color: $bgHover;
+    color: black;
 }
 
 .reactionBox {
@@ -135,17 +178,17 @@ section {
     }
 }
 
-.addReaction {
-    background-image: url("/icons/add_reaction.png");
-    height: 34px;
-    width: 34px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: white;
-    border-radius: 20px;
+// .addReaction {
+//     background-image: url("/icons/add_reaction.png");
+//     height: 34px;
+//     width: 34px;
+//     background-repeat: no-repeat;
+//     background-position: center;
+//     background-color: white;
+//     border-radius: 20px;
 
-    &:hover {
-        background-image: url("/icons/add_reaction-blue.png");
-        background-color: $bgHover;
-    }
-}
+//     &:hover {
+//         background-image: url("/icons/add_reaction-blue.png");
+//         background-color: $bgHover;
+//     }
+// }
