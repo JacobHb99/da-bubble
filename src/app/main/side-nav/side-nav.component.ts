@@ -16,6 +16,11 @@ showFiller = false;
 menuVisible = false;
 isHoveredEdit = false;
 isHoveredAdd = false;
+isHoveredMenu = false;
+isHoveredUser = false;
+isHoveredChannel = false;
+hideUser = false;
+hideChannel = false;
 arrowImg: string = 'icons/arrow_drop_down.png'
 workspaceImg: string = 'icons/workspaces.png'
 tagImg: string = "/icons/tag.png"
@@ -72,4 +77,14 @@ resetImgMenu() {
    this.menuImg = "icons/Hide-navigation.png"
   
 }
+
+toggleUser() {
+  this.hideUser = !this.hideUser;
+}
+
+toggleChannel() {
+  this.hideChannel = !this.hideChannel;
+}
+
+
 }

@@ -1,0 +1,21 @@
+<div class="add-people-container">
+    <div (mouseenter)="isHoveredClose = true" (mouseleave)="isHoveredClose = false" class="close-container">
+        <img  [src]="isHoveredClose ? '/icons/close-blue.png' : '/icons/close.png'" alt="">
+    </div>
+
+    <h1>Leute hinzufügen</h1>
+    <div class="checkbox-container">
+        <div class="first-row">
+            <input type="radio" name="selection" id="">
+            <p>Alle Mitglieder von OfficeTeam hinzufügen</p>
+        </div>
+        <div class="second-row">
+            <input type="radio" name="selection" id="">
+            <p>Bestimmte Leute hinzufügen</p>
+        </div>
+    </div>
+    <div class="button">
+        <button>Erstellen</button>
+    </div>
+
+</div>

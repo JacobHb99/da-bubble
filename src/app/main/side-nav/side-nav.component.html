@@ -10,8 +10,12 @@
     </div>
     <div class="channel-row">
         <div class="channel-container">
-            <div (mouseenter)="changeImg()" (mouseleave)="resetImg()" class="channel-header">
-                <img class="arrow-drop" [src]="arrowImg" alt="">
+            <div (click)="toggleChannel()" (mouseenter)="isHoveredChannel = true"
+                (mouseleave)="isHoveredChannel = false" (mouseenter)="changeImg()" (mouseleave)="resetImg()"
+                class="channel-header">
+                <img class="arrow-drop"
+                    [src]="hideChannel ? (isHoveredChannel ? '/icons/arrow_drop_down-right-blue.png' : '/icons/arrow_drop_down-right.png') : (isHoveredChannel ? '/icons/arrow_drop_down-blue.png' : '/icons/arrow_drop_down.png')"
+                    alt="">
                 <img class="workspaces-img" [src]="workspaceImg" alt="">
                 <p>Channels</p>
             </div>
@@ -19,24 +23,28 @@
                 <img [src]="isHoveredAdd ? 'icons/add-blue.png' : 'icons/add-black.png'" alt="">
             </div>
         </div>
-        <div class="developer">
-            <div (mouseenter)="changeImgDev()" (mouseleave)="resetImgDev()" class="dev-hover">
-                <img [src]="tagImg" alt="">
-                <p>Entwicklerteam</p>
+        <div class="channels" [ngClass]="{'hide' : hideChannel}">
+            <div class="developer">
+                <div (mouseenter)="changeImgDev()" (mouseleave)="resetImgDev()" class="dev-hover">
+                    <img [src]="tagImg" alt="">
+                    <p>Entwicklerteam</p>
+                </div>
+            </div>
+            <div (mouseenter)="changeImgChannel()" (mouseleave)="resetImgChannel()" class="add-channel">
+                <img [src]="addImg" alt="">
+                <p>Channel hinzufügen</p>
             </div>
         </div>
-        <div (mouseenter)="changeImgChannel()" (mouseleave)="resetImgChannel()" class="add-channel">
-            <img [src]="addImg" alt="">
-            <p>Channel hinzufügen</p>
-        </div>
 
-        <div (mouseenter)="changeImgMessage()" (mouseleave)="resetImgMessage()" class="channel-header">
-            <img [src]="arrowImg" alt="">
+        <div (mouseenter)="isHoveredUser = true" (mouseleave)="isHoveredUser = false" (click)="toggleUser()"
+            (mouseenter)="changeImgMessage()" (mouseleave)="resetImgMessage()" class="channel-header">
+            <img [src]="hideUser ? (isHoveredUser ? '/icons/arrow_drop_down-right-blue.png' : '/icons/arrow_drop_down-right.png'): (isHoveredUser ? '/icons/arrow_drop_down-blue.png' : '/icons/arrow_drop_down.png')"
+                alt="">
             <img [src]="accountImg" alt="">
             <p>Direktnachrichten</p>
         </div>
 
-        <div class="users">
+        <div [ngClass]="{'hide': hideUser}" class="users">
             <div *ngFor="let user of firebaseService.allUsers; trackBy: firebaseService.allUsers.username"
                 class="single-user">
                 <div class="single-user-hover">
@@ -53,8 +61,10 @@
 
 
 </section>
-<div (mouseenter)="changeImgMenu()" (mouseleave)="resetImgMenu()" (click)="toggleMenu()" class="workspace-show-hide">
-    <p>Workspace-Menü schließen</p>
-    <img [src]="menuImg" alt="">
+<div (mouseenter)="isHoveredMenu = true" (mouseleave)="isHoveredMenu = false" (mouseenter)="changeImgMenu()"
+    (mouseleave)="resetImgMenu()" (click)="toggleMenu()" class="workspace-show-hide">
+    <p>{{ menuVisible ? "Workspace-Menü öffnen": "Workspace-Menü schließen" }}</p>
+    <img [src]="menuVisible ? (isHoveredMenu ? '/icons/open-navigation-blue.png' : '/icons/open-navigation.png'): (isHoveredMenu ? '/icons/hide-navigation-blue.png' : '/icons/Hide-navigation.png')"
+        alt="">
 
 </div>

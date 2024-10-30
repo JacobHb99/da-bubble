@@ -1,0 +1,28 @@
+<div [ngClass]="!firebaseService.isClosed ? 'hide' : ''" class="channel-container">
+    <div (mouseenter)="isHoveredClose = true" (mouseleave)="isHoveredClose = false" class="close-container">
+        <img (click)="firebaseService.toggleChannel()" [src]="isHoveredClose ? '/icons/close-blue.png' : '/icons/close.png'" alt="">
+    </div>
+    
+    <h1>Channel erstellen</h1>
+    <p>Channels dienen deinem Team zur Kommunikation. Am besten sollten sie themenbezogen sein #marketing zum Beispiel.
+    </p>
+    <div class="channel-name">
+        <h2>Channel-Name</h2>
+        <div class="input-container">
+            <img src="/icons/tag-grey.png" alt="">
+            <input placeholder="z.B. Kooperationsprojekte" type="text">
+        </div>
+    </div>
+
+    <div class="description-name">
+        <h2>Beschreibung</h2>
+        <p>(optional)</p>
+    </div>
+    <div class="input-description">
+        <input placeholder="Dein Text hier" type="text">
+    </div>
+    <div class="button">
+        <button>Erstellen</button>
+    </div>
+
+</div>

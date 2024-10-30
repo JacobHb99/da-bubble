@@ -125,6 +125,16 @@ section {
     display: flex;
     flex-direction: column;
     gap: 13px; 
+    visibility: visible;
+    transition: opacity 130ms ease, visibility 130ms ease;
+    
+  }
+  .channels {
+    max-height: 92px;
+    display: flex;
+    flex-direction: column;
+    visibility: visible;
+    transition: opacity 130ms ease, visibility 130ms ease;
   }
   
   .single-user {
@@ -155,6 +165,14 @@ section {
     height: 50px;
     border-radius: 50%;
   }
+  .hide {
+    opacity: 0;
+    visibility: hidden;
+    max-height: 0;
+    
+    
+    
+  }
   
   .username p {
     font-size: 18px;
@@ -173,9 +191,15 @@ section {
     transform: rotate(-90deg);
     box-shadow: 4px 4px 7px 0px #00000033;
     gap: 10px;
+    width: 302px;
+    justify-content: center;
     &:hover {
         cursor: pointer;
         color: #535AF1;
+        font-weight: 700;
+        >p {
+            font-weight: 700;
+        }
     }
     >p {
         font-size: 20px;

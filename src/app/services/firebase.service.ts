@@ -9,6 +9,7 @@ import { where, } from "firebase/firestore";
 })
 export class FirebaseService {
   allUsers: any = []; // User[]
+  isClosed = false;
 
   firestore = inject(Firestore);
 
@@ -39,5 +40,12 @@ export class FirebaseService {
   });
   console.log("Current cities in CA: ", this.allUsers);
 });
+}
+
+toggleChannel() {
+  this.isClosed = !this.isClosed;
+  console.log(this.isClosed);
+  
+
 }
 }
