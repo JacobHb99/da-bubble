@@ -25,9 +25,10 @@ export class HeaderComponent {
    
 
   openDialog() {
+    const rightPosition = window.innerWidth>1920 ? (window.innerWidth - 1920) /2 : 0;
     const dialogRef = this.dialog.open(ProfilLogoutButtonsComponent,{
       width: '70px',
-      position: { top: '136px', right: '0' },
+      position: { top: '110px', right: `${rightPosition}px` },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -38,9 +39,12 @@ export class HeaderComponent {
       }
     });
   }
-
+ 
   openOwnProfilDialog(){
-    const dialogRef = this.dialog.open(MyProfilComponent);
+    const rightPosition = window.innerWidth>1920 ? (window.innerWidth - 1920) /2 : 0;
+    const dialogRef = this.dialog.open(MyProfilComponent,{
+      position: { top: '110px', right: `${rightPosition}px` },
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result=='edit') {
