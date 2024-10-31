@@ -113,3 +113,85 @@ input[type="radio"] {
 
     }
 }
+
+.input-container {
+    max-height: 0px;
+    display: none;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    >input {
+       
+        border-radius: 30px;
+        padding: 15px 20px;
+        border: 1px solid #ADB0D9;
+        width: 100%;
+        font-size: 18px;
+        outline: none;
+
+        &:hover {
+            border: 1px solid #797EF3
+        }
+
+        &:focus {
+            border: 1px solid #535AF1
+        }
+    }
+}
+.show {
+    display: flex;
+    max-height: 53px;
+}
+.single-user {
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+    
+   
+  }
+  .single-user-hover {
+    padding: 4px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+
+    &:hover {
+        cursor: pointer;
+        background: #ECEEFE;
+        border-radius: 30px;
+        color: #535AF1;
+        
+    }
+
+  }
+
+  .avatar img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+
+  .username p {
+    font-size: 18px;
+    margin: 0;
+  }
+  .user-dialog {
+    display: none;
+    width: 335px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    padding: 20px 21px;
+    border: 1px solid #ADB0D9;
+    background-color: white;
+    box-shadow: 0px 2px 10px 0px #00000014;
+    position: absolute;
+    left: 57px;
+    top: 220px;
+    box-sizing: border-box;
+  }
+  .showUserDialog {
+    display: flex;
+  }
+  .hideUserDialog {
+    display: none;
+  }

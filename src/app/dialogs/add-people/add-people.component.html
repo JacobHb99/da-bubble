@@ -1,21 +1,41 @@
 <div class="add-people-container">
     <div (mouseenter)="isHoveredClose = true" (mouseleave)="isHoveredClose = false" class="close-container">
-        <img  [src]="isHoveredClose ? '/icons/close-blue.png' : '/icons/close.png'" alt="">
+        <img [src]="isHoveredClose ? '/icons/close-blue.png' : '/icons/close.png'" alt="">
     </div>
 
     <h1>Leute hinzufügen</h1>
     <div class="checkbox-container">
         <div class="first-row">
-            <input type="radio" name="selection" id="">
+            <input (click)="hideInput()" checked type="radio" name="selection" id="">
             <p>Alle Mitglieder von OfficeTeam hinzufügen</p>
         </div>
         <div class="second-row">
-            <input type="radio" name="selection" id="">
+            <input (click)="showInput()" type="radio" name="selection" id="">
             <p>Bestimmte Leute hinzufügen</p>
         </div>
     </div>
-    <div class="button">
-        <button>Erstellen</button>
+
+
+
+    <div [ngClass]="{'show': isSelected}" class="input-container">
+        <input  placeholder="Name eingeben" [(ngModel)]="searchName" type="search">
     </div>
 
+    
+    <div [ngClass]="{'showUserDialog': this.searchName.length >= 3, 'hideUserDialog': filteredUsers.length < 1}" class="user-dialog">
+        <div *ngFor="let user of filteredUsers" class="single-user">
+            <div class="single-user-hover">
+                <div class="avatar">
+                    <img [src]="user.avatar" alt="">
+                </div>
+                <div class="username">
+                    <p>{{ user.username }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="button">
+    <button>Erstellen</button>
 </div>

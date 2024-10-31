@@ -9,6 +9,7 @@ import { where, } from "firebase/firestore";
 })
 export class FirebaseService {
   allUsers: any = []; // User[]
+  selectedUsers: any = []
   isClosed = false;
 
   firestore = inject(Firestore);
