@@ -4,7 +4,8 @@ section {
     border-radius: 30px;
     width: 306px;
     font-family: 'Nunito';
-    height: 800px;
+    height: 100vh;
+    box-sizing: border-box;
     transform: translateX(0px);
     transition: transform ease-in-out 130ms;
 }
@@ -160,7 +161,7 @@ section {
 
   }
   
-  .avatar img {
+  .avatar-img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -212,3 +213,15 @@ section {
     }
 
   }
+  .status {
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    bottom: 5px;
+    right: 0px;
+   
+}
+.avatar {
+    position: relative;
+    
+}

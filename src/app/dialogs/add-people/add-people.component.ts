@@ -42,5 +42,9 @@ export class AddPeopleComponent {
     } 
       this.searchName = "";
     }
+
+    removeUser(user: any) {
+      this.firebaseService.selectedUsers = this.firebaseService.selectedUsers.filter((u: any) => u.username !== user.username);
+    }
   }
 

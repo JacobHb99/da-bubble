@@ -23,6 +23,7 @@ isHoveredUser = false;
 isHoveredChannel = false;
 hideUser = false;
 hideChannel = false;
+isOnline = false;
 currentUser?: User;
 arrowImg: string = 'icons/arrow_drop_down.png'
 workspaceImg: string = 'icons/workspaces.png'
@@ -94,4 +95,6 @@ startChat(user: any) {
   this.userDataService.setUser(user);
 
 }
+
+
 }
