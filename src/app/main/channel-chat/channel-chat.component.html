@@ -1,5 +1,5 @@
 <section class="main">
-    <header>
+    <header class="channelHeader">
         <div class="channel">
             <p># Entwicklerteam</p>
             <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -33,5 +33,5 @@
         </div>
     </header>
     <app-message-thread></app-message-thread>
-    <app-send-message placeholder="Nachricht an #Entwicklerteam"></app-send-message>   
+    <app-send-message placeholder="Nachricht an #{{ user.username }}"></app-send-message>   
 </section>

@@ -3,13 +3,14 @@
         <app-single-message></app-single-message>
     </div>
 
-    <div class="startChat">
+    <div class="startChat"> 
+        <!-- nur anzeigen wenn es keinen chatverlauf gibt -->
         <div>
             <img src="/img/avatars/avatar_5.png" alt="img avatar">
-            <span>Lucas Sommer</span>
+            <span>{{ user.username }}</span>
         </div>
         <div>
-            <span>Diese Unterhaltung findet nur zwischen <span class="clickName">&#64;Lucas Sommer</span>
+            <span>Diese Unterhaltung findet nur zwischen <span class="clickName">&#64;{{ user.username }}</span>
                 und dir statt.</span>
         </div>
     </div>
