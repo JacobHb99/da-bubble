@@ -20,6 +20,11 @@
                 consequuntur nesciunt quasi sequi quibusdam? Suscipit in modi
                 incidunt iure quo debitis eius cupiditate.
             </div>
+            <div class="bottomBox">
+            <div class="answerBox">
+                <span>2 Antworten</span>
+                <p>Letzt Antwort 14:52</p>
+            </div>
             <div class="reactionBox">
                 <div class="emojiBox">
                     <img src="/icons/emoji-rocket.png" alt="rocket">
@@ -32,13 +37,12 @@
                 <!-- <div class="addReaction"></div>                 -->
             </div>
         </div>
+        </div>
         <img src="/img/avatars/avatar_5.png" alt="img avatar">
         <div class="floatingReactionBox" 
             [ngClass]="{'replyfloatingReactionBox': !messageIsMine }"
->
-         <!-- <div [ngStyle]="{'right': !messageIsMine ? '45px' : '0',
-         'transform': !messageIsMine ? 'translateX(-100%)' : 'translateX(100%)'}">
-         </div> -->
+            [ngStyle]="{'left': !messageIsMine ? 'auto' : '45px',
+                        'right': !messageIsMine ? '45px' : 'auto'}">
             <div class="iconBox">
                 <img src="/icons/emoji-check.png" alt="emoji">
             </div>
@@ -71,7 +75,7 @@
                     </g>
                 </svg>
             </div>
-            <div class="iconBox svg-hover" [ngStyle]="{'visibility' : messageIsMine ? 'visible' : 'hidden'}">
+            <div class="iconBox svg-hover">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <mask id="mask0_1823_21565" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
                         width="24" height="24">

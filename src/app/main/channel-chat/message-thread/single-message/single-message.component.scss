@@ -65,8 +65,10 @@ section {
 .replyfloatingReactionBox{
     visibility: hidden;
     transform: translateX(0%);
-    left: 100px;
-    right: 45px;
+
+    :nth-child(5) {
+        display: none;
+    }
 }
 
 
@@ -79,8 +81,7 @@ section {
     padding: 3px 15px 3px 20px;
     position: absolute;
     top: -20px;
-    left: 45px;
-    transform: translateX(100%);
+    transform: translateX(-100%);
     transition: all 75ms ease-in-out;
 
     &:hover :nth-child(5) {
@@ -95,8 +96,6 @@ section {
         }
     }
 }
-
-
 
 .iconBox {
     @include dFlex();
@@ -113,7 +112,7 @@ section {
 
 
 .messageDetails {
-    @include dFlex($ai: flex-end, $fd: column, $gap: 9px);
+    @include dFlex($ai: flex-end, $fd: column, $gap: 8px);
 
     .messageInfo {
         @include dFlex($gap: 20px);
@@ -156,8 +155,34 @@ section {
     color: black;
 }
 
+.bottomBox{
+    @include dFlex($fd: column,$ai: flex-ends, $gap: 8px);    
+
+    .answerBox{
+        @include dFlex($gap: 20px);
+
+        span{
+            font-size: 18px;
+            color: #535AF1;
+            cursor: pointer;
+
+            &:hover{
+                font-size: 18px;
+                font-weight: 700;
+                color: #444DF2;
+            }
+        }
+
+        p{
+            margin: 0;
+            font-size: 14px;
+            color: #686868;
+        }
+    }
+}
+
 .reactionBox {
-    @include dFlex($gap: 10px);
+    @include dFlex($jc:flex-end,$gap: 10px);
 
     .emojiBox {
         @include dFlex($gap: 10px);
