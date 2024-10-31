@@ -3,7 +3,7 @@
         <div class="lineDiv">
             <hr>
         </div>
-        <div class="date">Dienstag, 29. Oktober</div>
+        <div class="date">{{ currentDate }}</div>
         <div class="lineDiv">
             <hr>
         </div>
@@ -12,7 +12,7 @@
         <div [ngClass]="{'replyMessageDetails': !messageIsMine }" class="messageDetails">
             <div class="messageInfo">
                 <p>20:23 Uhr</p>
-                <p>Lucas Sommer</p>
+                <p>{{ user.username }}</p>
             </div>
             <div class="messageText" [ngClass]="{'replyMessageText': !messageIsMine }">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.
@@ -21,27 +21,27 @@
                 incidunt iure quo debitis eius cupiditate.
             </div>
             <div class="bottomBox">
-            <div class="answerBox">
-                <span>2 Antworten</span>
-                <p>Letzt Antwort 14:52</p>
-            </div>
-            <div class="reactionBox">
-                <div class="emojiBox">
-                    <img src="/icons/emoji-rocket.png" alt="rocket">
-                    <p>1</p>
+                <div class="answerBox">
+                    <span>2 Antworten</span>
+                    <p>Letzt Antwort 14:52</p>
                 </div>
-                <div class="emojiBox">
-                    <img src="/icons/emoji-check.png" alt="emoji">
-                    <p>1</p>
+                <div class="reactionBox">
+                    <div class="emojiBox">
+                        <img src="/icons/emoji-rocket.png" alt="rocket">
+                        <p>1</p>
+                    </div>
+                    <div class="emojiBox">
+                        <img src="/icons/emoji-check.png" alt="emoji">
+                        <p>1</p>
+                    </div>
+                    <!-- <div class="addReaction"></div>                 -->
                 </div>
-                <!-- <div class="addReaction"></div>                 -->
             </div>
         </div>
-        </div>
-        <img src="/img/avatars/avatar_5.png" alt="img avatar">
-        <div class="floatingReactionBox" 
-            [ngClass]="{'replyfloatingReactionBox': !messageIsMine }"
-            [ngStyle]="{'left': !messageIsMine ? 'auto' : '45px',
+        <img [ngStyle]="{'width': '70px',
+                        'heigt': '70px',
+                        'border-radius': '50%'}" [src]="user.avatar">
+        <div class="floatingReactionBox" [ngClass]="{'replyfloatingReactionBox': !messageIsMine }" [ngStyle]="{'left': !messageIsMine ? 'auto' : '45px',
                         'right': !messageIsMine ? '45px' : 'auto'}">
             <div class="iconBox">
                 <img src="/icons/emoji-check.png" alt="emoji">
