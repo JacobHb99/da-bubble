@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FirebaseService } from '../../services/firebase.service';
+import { User } from '../../models/user.model';
+import { UserDataService } from '../../services/user.service';
 
 
 
@@ -21,13 +23,14 @@ isHoveredUser = false;
 isHoveredChannel = false;
 hideUser = false;
 hideChannel = false;
+currentUser?: User;
 arrowImg: string = 'icons/arrow_drop_down.png'
 workspaceImg: string = 'icons/workspaces.png'
 tagImg: string = "/icons/tag.png"
 addImg: string = "/icons/add_circle.png"
 accountImg: string = "/icons/account_circle.png"
 menuImg: string = "/icons/Hide-navigation.png"
-constructor(public firebaseService: FirebaseService){}
+constructor(public firebaseService: FirebaseService, private userDataService: UserDataService){}
 
 
 toggleMenu() {
@@ -87,4 +90,8 @@ toggleChannel() {
 }
 
 
+startChat(user: any) {
+  this.userDataService.setUser(user);
+
+}
 }

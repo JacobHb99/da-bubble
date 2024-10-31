@@ -47,7 +47,7 @@
         <div [ngClass]="{'hide': hideUser}" class="users">
             <div *ngFor="let user of firebaseService.allUsers; trackBy: firebaseService.allUsers.username"
                 class="single-user">
-                <div class="single-user-hover">
+                <div (click)="startChat(user)"  class="single-user-hover">
                     <div class="avatar">
                         <img [src]="user.avatar" alt="">
                     </div>

@@ -18,10 +18,10 @@
 
 
     <div [ngClass]="{'show': isSelected}" class="input-container">
-        <input  placeholder="Name eingeben" [(ngModel)]="searchName" type="search">
+        <input  placeholder="Name eingeben" [(ngModel)]="searchName" type="text">
     </div>
 
-    
+
     <div [ngClass]="{'showUserDialog': this.searchName.length >= 3, 'hideUserDialog': filteredUsers.length < 1}" class="user-dialog">
         <div *ngFor="let user of filteredUsers" class="single-user">
             <div class="single-user-hover">
