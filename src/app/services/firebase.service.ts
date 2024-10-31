@@ -26,6 +26,8 @@ export class FirebaseService {
 
 
   async setUserStatus(currentUser: UserCredential, status: string) {
+    console.log('logoutUser:', currentUser);
+    
     const userRef = doc(this.firestore, "users", currentUser.user.uid);
     await updateDoc(userRef, {
       status: status

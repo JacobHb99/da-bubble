@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updateProfile, UserCredential, UserInfo, } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, sendPasswordResetEmail, signInAnonymously, signInWithEmailAndPassword, signOut, updateProfile, UserCredential, UserInfo, } from '@angular/fire/auth';
 import { from, Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { FirebaseService } from './firebase.service';
@@ -65,7 +65,6 @@ export class AuthService {
       .then((userCredential) => {
         // Signed in 
         this.currentCredentials = userCredential;
-        console.log('BEFORE', this.currentCredentials);
         this.setCurrentUserData(this.currentCredentials.user);
         this.fireService.setUserStatus(this.currentCredentials, 'online');
         console.log('loginUser', this.currentCredentials.user);
@@ -74,6 +73,23 @@ export class AuthService {
       })
  
     return from(promise);
+  }
+
+
+  signInAnonymously() {
+    signInAnonymously(this.auth)
+  .then(() => {
+    // Signed in..
+    this.setGuestData();
+    this.router.navigate(['/main']);
+    console.log('Gast ist eingeloggt');
+    
+  })
+  .catch((error) => {
+    this.errorCode = error.code;
+    this.errorMessage = error.message;
+    // ...
+  });
   }
 
 
@@ -101,6 +117,16 @@ export class AuthService {
       username: user.displayName!,
       uid: user.uid!,
       avatar: user.photoURL!
+    });
+  }
+
+
+  setGuestData() {
+    this.currentUserSig.set({
+      email: 'Keine email',
+      username: 'Gast',
+      uid: '',
+      avatar: 'img/avatars/avatar_default.png'
     });
   }
 
