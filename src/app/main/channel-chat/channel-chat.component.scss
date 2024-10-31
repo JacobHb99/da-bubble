@@ -17,18 +17,9 @@ header {
     border-top-right-radius: 30px;
 }
 
-.channel {
-    @include dFlex($gap: 10px);
-    height: 45px;
-    font-size: 24px;
-    font-weight: 700;
-    padding: 6px 10px;
-    cursor: pointer;
-
+.hoverEffect{
     &:hover {
-        background-color: $bgHover;
         color: $contHover;
-        border-radius: 100px;
 
         svg {
             path {
@@ -38,20 +29,71 @@ header {
     }
 }
 
+.channelName {
+    @include dFlex($gap: 10px);
+    height: 45px;
+    font-size: 24px;
+    font-weight: 700;
+    padding: 6px 10px;
+    cursor: pointer;
+
+    p{
+        margin: 0;
+    }
+
+    &:hover {
+        background-color: $bgHover;
+        border-radius: 100px;
+    }
+}
+
+
+.avatar {
+    display: flex;
+    align-items: center;
+    position: relative;    
+
+    .avatar-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+      }
+
+      .status {
+        width: 14px;
+        height: 14px;
+        position: absolute;
+        bottom: 5px;
+        right: 0px;       
+    }
+}
+
 .users {
-    @include dFlex($gap: 10px, $ai:center);
+    @include dFlex($jc: flex-start, $gap: 10px);
     font-size: 20px;
     font-weight: 700;
 }
 
 .involvedUsers{
+    @include dFlex($fd:row,$jc: flex-start);
     cursor: pointer;
-    padding:3px 10px;
+    padding:3px 10px 3px 30px;
+    border-radius: 30px;
+
+    img {
+        width: 40px;
+        border-radius: 50%;
+        background-color: white;
+        margin-left: -20px;
+    }
+
+    p{
+        margin:0 0 0 10px;
+    }
+
     &:hover{
         background-color: $bgHover;
         color: $contHover;
-        border-radius: 30px;
-        
     }
 }
 
