@@ -100,6 +100,7 @@ header {
 .newMsg{
     @include dFlex($fd: column,$ai: flex-start, $gap: 15px);
     width: 100%;
+
     span{
         font-size: 24px;
         font-weight: 700;
@@ -108,19 +109,22 @@ header {
     div{
         width:100%;
 
-        input{
+        input{            
+            box-sizing: border-box;
             width:100%;
             border: 1px solid #ADB0D9;
             border-radius: 30px;
             font-size: 18px;
             font-weight: 400;
             padding: 15px 20px;
+            color: #686868;
 
             &:hover {
                 border-color: #797EF3;
             }
         
             &:focus{
+                outline: none;
                 border-color: #444DF2;
             }
         }
@@ -148,6 +152,3 @@ app-send-message{
     right: 35px;
     left: 35px;
 }
-
-
-/////////////////singleChat/////////////

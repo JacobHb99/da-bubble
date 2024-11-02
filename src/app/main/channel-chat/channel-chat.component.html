@@ -1,5 +1,6 @@
 <section class="main">
     <header>
+        @if (this.uiService.content !== 'newMessage') {
         <div class="channelName hoverEffect"
             [ngStyle]="{'display': this.uiService.content === 'channelChat' ? 'flex' : 'none'}">
             <p># Entwicklerteam</p>
@@ -45,16 +46,17 @@
             </div>
             <p>{{ user.username }}</p>
         </div>
-        @if (this.uiService.content === 'newMessage' || null){
+        }
+        @if (this.uiService.content === 'newMessage'){
         <div class="newMsg">
             <span>Neue Nachricht</span>
             <div>
-                <input placeholder="An: #channel oder @jemand" type="text">
+                <input placeholder="An: #channel, @jemand oder E-mail Adresse" type="text">
             </div>
         </div>
         }
-
     </header>
+
     @if (this.uiService.content !== 'newMessage') {
     <app-message-thread>
     </app-message-thread>

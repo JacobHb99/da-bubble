@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component,inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserDataService } from '../../../../services/user.service';
+import { InterfaceService } from '../../../../services/interface.service';
 
 @Component({
   selector: 'app-single-message',
@@ -13,6 +14,7 @@ export class SingleMessageComponent {
   messageIsMine: boolean = false;
   user: any;
   currentDate: string;
+  uiService = inject(InterfaceService);
 
 
   constructor(private userDataService: UserDataService) {
@@ -34,4 +36,6 @@ export class SingleMessageComponent {
     const monthName = months[today.getMonth()];
     return `${dayName}, ${day}. ${monthName}`;
   }
+
+
 }

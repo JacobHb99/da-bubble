@@ -17,4 +17,8 @@ closeThread() {
   this.showThread = false;
 }
 
+openThread(){
+  this.showThread = true;
+}
+
 }

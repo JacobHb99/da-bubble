@@ -22,7 +22,7 @@ export class ChannelChatComponent{
       this.uiService.changeContent('newMessage');
     });    
     //console.log('active User', this.user.username)
-    console.log('active Channel default: ', this.uiService.content)
+    
   }
 
 }

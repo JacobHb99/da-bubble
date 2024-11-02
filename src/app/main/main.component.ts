@@ -22,5 +22,6 @@ export class MainComponent {
 
   ngOnInit() {
     this.fireService.getAllUsers();
+    console.log('active Channel default: ', this.uiService.content)
   }
 }
