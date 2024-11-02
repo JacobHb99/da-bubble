@@ -97,6 +97,36 @@ header {
     }
 }
 
+.newMsg{
+    @include dFlex($fd: column,$ai: flex-start, $gap: 15px);
+    width: 100%;
+    span{
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    div{
+        width:100%;
+
+        input{
+            width:100%;
+            border: 1px solid #ADB0D9;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 400;
+            padding: 15px 20px;
+
+            &:hover {
+                border-color: #797EF3;
+            }
+        
+            &:focus{
+                border-color: #444DF2;
+            }
+        }
+    }
+}
+
 .addToChannel {
     cursor: pointer;
     height: 40px;

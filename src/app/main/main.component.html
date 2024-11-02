@@ -2,7 +2,8 @@
 <div class="main">
     <app-side-nav></app-side-nav>
     <app-channel-chat></app-channel-chat>
-
-    <app-thread></app-thread>
+    <app-thread
+    [ngStyle]="{'display': this.uiService.showThread === true ? 'flex' : 'none'}">
+    </app-thread >
 </div>
 <app-add-people></app-add-people>
