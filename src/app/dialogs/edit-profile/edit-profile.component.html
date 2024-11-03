@@ -7,7 +7,7 @@
     </div>
 
     <img class="avatar" src="{{authService.currentUserSig()?.avatar}}" alt="">
-    <form action="">
+    <div> <!--form-->
         <div class="form-group">
 
             <div class="profil-name">
@@ -16,7 +16,7 @@
                     <label for="name">Vollständiger Name</label>
                 </div>
                 <div class="inputfield-container">
-                    <input id="name" type="text">
+                    <input [(ngModel)]="inputName" id="name" type="text">
                 </div>
             </div>
 
@@ -26,14 +26,14 @@
                     <label for="email">E-mail-Adresse</label>
                 </div>
                 <div class="inputfield-container">
-                    <input id="email" type="text">
+                    <input [(ngModel)]="inputEmail" id="email" type="text">
                 </div>
             </div>
         </div>
 
         <div class="buttons">
             <button class="btn-white">Abrechen</button>
-            <button class="btn-blue">Speichern</button>
+            <button (click)="changeProfil()" class="btn-blue">Speichern</button>
         </div>
-    </form>
+    </div>
 </div>
