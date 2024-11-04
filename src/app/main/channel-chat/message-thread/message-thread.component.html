@@ -1,14 +1,16 @@
 <section>
-    <div class="thread">
+    <div class="thread"> 
+        <!-- for schleife für array anfertigen und dann überprüfen ob 
+         leer oder nicht ->"startChat" ausblenden -->
         <app-single-message></app-single-message>
         <app-single-message></app-single-message>
         <app-single-message></app-single-message>
     </div>
 
-    <div class="startChat"> 
+    <div class="startChat" [ngStyle]="{'display': this.threadIsEmpty === true ? 'none' : 'flex'}"> 
         <!-- nur anzeigen wenn es keinen chatverlauf gibt -->
         <div>
-            <img src="{{ user.avatar }}" alt="img avatar">
+            <img src="{{ user.avatar }}" referrerPolicy="no-referrer" alt="img avatar">
             <span>{{ user.username }}</span>
         </div>
         <div>

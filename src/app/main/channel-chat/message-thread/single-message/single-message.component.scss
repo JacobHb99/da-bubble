@@ -183,6 +183,7 @@ section {
 
 .reactionBox {
     @include dFlex($jc:flex-end,$gap: 10px);
+    
 
     .emojiBox {
         @include dFlex($gap: 10px);
@@ -190,6 +191,7 @@ section {
         border-radius: 20px;
         padding: 5px 10px;
         background-color: white;
+        position: relative;
 
         p {
             margin: 0;
@@ -199,7 +201,33 @@ section {
         &:hover {
             cursor: pointer;
             border-color: #444DF2;
-        }
+
+            .whoReactInfo{
+                display: flex;
+            }
+        }        
+    }
+}
+
+.whoReactInfo{
+    @include dFlex($fd:column,$gap: 5px);
+    display: none;
+    background-color: #444DF2;
+    color: white;
+    padding: 15px 10px;
+    border-radius: 30px 30px 30px 0;
+    position: absolute;
+    bottom: 40px;
+    left:32px;
+    min-width: 140px;
+
+    :nth-child(2){
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    :nth-child(3){
+        font-size: 16px;
     }
 }
 

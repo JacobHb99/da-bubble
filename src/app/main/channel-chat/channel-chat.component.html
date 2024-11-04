@@ -41,7 +41,7 @@
         </div>
         <div class="channelName" [ngStyle]="{'display': this.uiService.content === 'directMessage' ? 'flex' : 'none'}">
             <div class="avatar">
-                <img class="avatar-img" [src]="user.avatar" alt="">
+                <img class="avatar-img" [src]="user.avatar" referrerPolicy="no-referrer" alt="">
                 <img class="status" [src]="user.status == 'online' ? '/icons/Online.png' : '/icons/Offline.png'" alt="">
             </div>
             <p>{{ user.username }}</p>

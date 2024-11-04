@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component,inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { SingleMessageComponent } from './single-message/single-message.component';
 import { SideNavComponent } from '../../side-nav/side-nav.component';
 import { UserDataService } from '../../../services/user.service';
@@ -15,12 +15,13 @@ import { InterfaceService } from '../../../services/interface.service';
 export class MessageThreadComponent {
   user: any;
   uiService = inject(InterfaceService);
+  threadIsEmpty = true;
 
   constructor(private userDataService: UserDataService) {
     this.userDataService.selectedUser.subscribe((user) => {
       this.user = user;
     });
 
-    
+
   }
 }

@@ -26,13 +26,23 @@
                     <p>Letzt Antwort 14:52</p>
                 </div>
                 <div class="reactionBox">
-                    <div class="emojiBox">
+                    <div class="emojiBox" (mouseleave)="onMouseLeave()" (mouseover)="onMouseOver()">
                         <img src="/icons/emoji-rocket.png" alt="rocket">
                         <p>1</p>
+                        <div class="whoReactInfo">
+                            <img src="/icons/emoji-rocket.png" alt="rocket">
+                            <span>Laura Müller</span>
+                            <span>hat reagiert</span>
+                        </div>
                     </div>
                     <div class="emojiBox">
                         <img src="/icons/emoji-check.png" alt="emoji">
                         <p>1</p>
+                        <div class="whoReactInfo">
+                            <img src="/icons/emoji-check.png" alt="rocket">
+                            <span>Laura Müller</span>
+                            <span>hat reagiert</span>
+                        </div>
                     </div>
                     <!-- <div class="addReaction"></div>                 -->
                 </div>
@@ -40,7 +50,7 @@
         </div>
         <img [ngStyle]="{'width': '70px',
                         'heigt': '70px',
-                        'border-radius': '50%'}" [src]="user.avatar">
+                        'border-radius': '50%'}" [src]="user.avatar" referrerPolicy="no-referrer">
         <div class="floatingReactionBox" [ngClass]="{'replyfloatingReactionBox': !messageIsMine }" [ngStyle]="{'left': !messageIsMine ? 'auto' : '45px',
                         'right': !messageIsMine ? '45px' : 'auto'}">
             <div class="iconBox">

@@ -1,7 +1,8 @@
-import { Component,inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserDataService } from '../../../../services/user.service';
 import { InterfaceService } from '../../../../services/interface.service';
+import { Message} from '../../../../models/message.class';
 
 @Component({
   selector: 'app-single-message',
@@ -11,10 +12,15 @@ import { InterfaceService } from '../../../../services/interface.service';
   styleUrl: './single-message.component.scss'
 })
 export class SingleMessageComponent {
-  messageIsMine: boolean = false;
+  uiService = inject(InterfaceService);
+
+  messageIsMine: boolean = true;
+  showReactionPopups: boolean = false;
   user: any;
   currentDate: string;
-  uiService = inject(InterfaceService);
+
+  currentMessage: Message = new Message();
+
 
 
   constructor(private userDataService: UserDataService) {
@@ -37,5 +43,16 @@ export class SingleMessageComponent {
     return `${dayName}, ${day}. ${monthName}`;
   }
 
+  onMouseOver() {
+    this.showReactionPopups= true;
+  }
+
+  onMouseLeave() {
+    this.showReactionPopups = false;
+  }
+
+  ngOnInit(): void {
+    this.currentMessage = new Message(this.currentMessage);
+  }
 
 }
