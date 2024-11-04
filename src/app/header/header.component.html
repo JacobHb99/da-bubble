@@ -10,7 +10,7 @@
         <div (click)="openDialog()" class="user-container">
             <p>{{ authService.currentUserSig()?.username }}</p>
             <div class="avatar-with-status">
-                <img class="user-img" src="{{authService.currentUserSig()?.avatar}}" alt="">
+                <img class="user-img" src="{{authService.currentUserSig()?.avatar}}" referrerPolicy="no-referrer" alt="">
                 <img class="status" src="./icons/Online.png" alt="">
             </div>
             <img src="./icons/down.png" alt="">
