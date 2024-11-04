@@ -112,8 +112,8 @@ export class AuthService {
         // ...
       }).catch((error) => {
         // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
+        this.errorCode = error.code;
+        this.errorMessage = error.message;
         // The email of the user's account used.
         const email = error.customData.email;
         // The AuthCredential type that was used.
@@ -125,12 +125,10 @@ export class AuthService {
 
   signOut() {
     const auth = getAuth();
-    console.log('BEFORE', this.currentCredentials);
     this.fireService.setUserStatus(this.currentCredentials, 'offline');
 
     signOut(this.auth).then(() => {
       this.router.navigateByUrl('');
-      console.log(this.currentCredentials);
 
       // Sign-out successful.
     }).catch((error) => {
