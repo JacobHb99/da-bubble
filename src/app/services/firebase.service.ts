@@ -11,6 +11,7 @@ export class FirebaseService {
   allUsers: any = []; // User[]
   selectedUsers: any = []
   isClosed = false;
+  user:any;
 
   firestore = inject(Firestore);
 
@@ -26,6 +27,8 @@ export class FirebaseService {
 
 
   async setUserStatus(currentUser: UserCredential, status: string) {
+    console.log('logoutUser:', currentUser);
+    
     const userRef = doc(this.firestore, "users", currentUser.user.uid);
     await updateDoc(userRef, {
       status: status
@@ -43,10 +46,35 @@ export class FirebaseService {
 });
 }
 
+async subscribeUserById(id:string) {
+  const unsubscribedUser = onSnapshot(this.getUserDocRef(id), (user) => {
+    console.log(user.data());
+    this.user =  this.setUserJson(user.data(),user.id);
+
+});
+}
+
 toggleChannel() {
   this.isClosed = !this.isClosed;
   console.log(this.isClosed);
   
 
 }
+
+getUserDocRef(docId: string) {
+  return doc(collection(this.firestore, 'users'),  docId);
 }
+
+setUserJson(object: any, id: string): any  {
+  return {
+    id: id,
+    name: object.username,
+    email: object.email,
+    status:object.status,
+    avatar:object.avatar
+  }
+}
+
+}
+
+

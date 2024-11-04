@@ -16,14 +16,26 @@ export class AddPeopleComponent {
   isHoveredClose = false;
   isSelected = false;
   searchName: string = "";
+  isInputEmpty = false;
   constructor(public firebaseService: FirebaseService){}
+
+  ngOnInit() {
+    this.firebaseService.selectedUsers.subscribe((users: any) => {
+      this.emptyInput()
+    });
+  }
 
 
   showInput() {
     this.isSelected = true;
+    this.emptyInput()
   }
   hideInput() {
     this.isSelected = false;
+    
+  }
+  emptyInput() {
+    this.isInputEmpty = this.firebaseService.selectedUsers.length === 0;
   }
 
   get filteredUsers() {

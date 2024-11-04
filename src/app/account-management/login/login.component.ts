@@ -45,6 +45,11 @@ export class LoginComponent {
   }
 
 
+  guestLogin() {
+    this.authService.signInAnonymously();
+  }
+
+
   login(): void {
     let user = this.userForm.getRawValue()
     this.loginFailed = false;

@@ -73,7 +73,7 @@ input[type="radio"] {
     }
   }
 
-  .button {
+  .button-container {
     display: flex;
     justify-content: flex-end;
 
@@ -92,6 +92,10 @@ input[type="radio"] {
             cursor: pointer;
 
         }
+        &:disabled {
+          background: #A0A0A0; // Beispiel: andere Farbe für deaktivierten Zustand
+          cursor: default;
+      }
 
     }
 }
@@ -192,6 +196,7 @@ input[type="radio"] {
   }
   .showUserDialog {
     display: flex;
+    flex-direction: column;
   }
   .hideUserDialog {
     display: none;

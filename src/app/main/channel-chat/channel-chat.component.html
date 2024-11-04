@@ -1,6 +1,8 @@
 <section class="main">
-    <header class="channelHeader">
-        <div class="channel">
+    <header>
+        @if (this.uiService.content !== 'newMessage') {
+        <div class="channelName hoverEffect"
+            [ngStyle]="{'display': this.uiService.content === 'channelChat' ? 'flex' : 'none'}">
             <p># Entwicklerteam</p>
             <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <mask id="mask0_235_460" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="30"
@@ -14,8 +16,14 @@
                 </g>
             </svg>
         </div>
-        <div class="users">
-            <div class="involvedUsers">user anzahl 3</div>
+        <div class="users" [ngStyle]="{'display': this.uiService.content === 'channelChat' ? 'flex' : 'none'}">
+            <div class="involvedUsers">
+                <!-- <img class="avatar-img" [src]="user.avatar" alt=""> -->
+                <img src="/img/avatars/avatar_0.png" alt="">
+                <img src="/img/avatars/avatar_1.png" alt="">
+                <img src="/img/avatars/avatar_2.png" alt="">
+                <p>3</p>
+            </div>
             <div class="addToChannel">
                 <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect width="40" height="40" rx="20" fill="#ECEEFE" />
@@ -31,7 +39,28 @@
                 </svg>
             </div>
         </div>
+        <div class="channelName" [ngStyle]="{'display': this.uiService.content === 'directMessage' ? 'flex' : 'none'}">
+            <div class="avatar">
+                <img class="avatar-img" [src]="user.avatar" alt="">
+                <img class="status" [src]="user.status == 'online' ? '/icons/Online.png' : '/icons/Offline.png'" alt="">
+            </div>
+            <p>{{ user.username }}</p>
+        </div>
+        }
+        @if (this.uiService.content === 'newMessage'){
+        <div class="newMsg">
+            <span>Neue Nachricht</span>
+            <div>
+                <input placeholder="An: #channel, @jemand oder E-mail Adresse" type="text">
+            </div>
+        </div>
+        }
     </header>
-    <app-message-thread></app-message-thread>
-    <app-send-message placeholder="Nachricht an #{{ user.username }}"></app-send-message>   
+
+    @if (this.uiService.content !== 'newMessage') {
+    <app-message-thread>
+    </app-message-thread>
+    <app-send-message placeholder="Nachricht an #{{ user.username }}">
+    </app-send-message>
+    }
 </section>

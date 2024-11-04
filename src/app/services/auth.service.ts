@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updateProfile, UserCredential, UserInfo, } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStateChanged, sendPasswordResetEmail, signInAnonymously, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile, UserCredential, UserInfo, } from '@angular/fire/auth';
 import { from, Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { FirebaseService } from './firebase.service';
@@ -65,15 +65,61 @@ export class AuthService {
       .then((userCredential) => {
         // Signed in 
         this.currentCredentials = userCredential;
-        console.log('BEFORE', this.currentCredentials);
         this.setCurrentUserData(this.currentCredentials.user);
         this.fireService.setUserStatus(this.currentCredentials, 'online');
         console.log('loginUser', this.currentCredentials.user);
-         this.router.navigate(['/main']);
-        
+        this.router.navigate(['/main']);
+
       })
- 
+
     return from(promise);
+  }
+
+
+  signInAnonymously() {
+    signInAnonymously(this.auth)
+      .then(() => {
+        // Signed in..
+        this.setGuestData();
+        this.router.navigate(['/main']);
+        console.log('Gast ist eingeloggt');
+      })
+      .catch((error) => {
+        this.errorCode = error.code;
+        this.errorMessage = error.message;
+        // ...
+      });
+  }
+
+
+  signInWithGoogle() {
+    const provider = new GoogleAuthProvider();
+
+    signInWithPopup(this.auth, provider)
+      .then((result) => {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        const token = credential?.accessToken;
+        // The signed-in user info.
+        if (result.user.email && result.user.displayName && result.user.photoURL) {
+          this.saveNewUserInFirestore(result.user.email, result.user.displayName, result.user.uid, result.user.photoURL);
+          this.setCurrentUserData(result.user);
+          this.fireService.setUserStatus(result, 'online');
+          this.router.navigate(['/main']);
+        }
+        const user = result.user;
+        // IdP data available using getAdditionalUserInfo(result)
+        // ...
+      }).catch((error) => {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.customData.email;
+        // The AuthCredential type that was used.
+        const credential = GoogleAuthProvider.credentialFromError(error);
+        // ...
+      });
   }
 
 
@@ -85,7 +131,7 @@ export class AuthService {
     signOut(this.auth).then(() => {
       this.router.navigateByUrl('');
       console.log(this.currentCredentials);
-      
+
       // Sign-out successful.
     }).catch((error) => {
       // An error happened.
@@ -105,42 +151,50 @@ export class AuthService {
   }
 
 
-  initialize() {    
-    const auth = getAuth();   
+  setGuestData() {
+    this.currentUserSig.set({
+      email: 'Keine email',
+      username: 'Gast',
+      uid: '',
+      avatar: 'img/avatars/avatar_default.png'
+    });
+  }
+
+
+  initialize() {
+    const auth = getAuth();
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
         // User is signed in
         const uid = user.uid;
         this.setCurrentUserData(user);
         console.log(user);
-        
+
       } else {
         // User is signed out
         this.currentUserSig.set(null)
         console.log('user', user);
-        console.log('logout erfolgreich', this.currentCredentials);
-        console.log('currCredentials', this.currentUserSig()); 
         console.log('no user');
       }
     });
   }
 
 
-/**
- * Sendet eine Passwort-Zurücksetzungs-E-Mail an die angegebene E-Mail-Adresse.
- * @param email Die E-Mail-Adresse, an die die Zurücksetzungs-E-Mail gesendet werden soll.
- * @returns Eine Promise, die entweder erfolgreich ist oder einen Fehler zurückgibt.
- */
-async sendPasswordReset(email: string): Promise<void> {
-  const auth = getAuth();
-  try {
-    await sendPasswordResetEmail(auth, email);
-    console.log(`Passwort-Zurücksetzungs-E-Mail wurde an ${email} gesendet.`);
-  } catch (error) {
-    console.error("Fehler beim Senden der Passwort-Zurücksetzungs-E-Mail:", error);
-    throw error;
+  /**
+   * Sendet eine Passwort-Zurücksetzungs-E-Mail an die angegebene E-Mail-Adresse.
+   * @param email Die E-Mail-Adresse, an die die Zurücksetzungs-E-Mail gesendet werden soll.
+   * @returns Eine Promise, die entweder erfolgreich ist oder einen Fehler zurückgibt.
+   */
+  async sendPasswordReset(email: string): Promise<void> {
+    const auth = getAuth();
+    try {
+      await sendPasswordResetEmail(auth, email);
+      console.log(`Passwort-Zurücksetzungs-E-Mail wurde an ${email} gesendet.`);
+    } catch (error) {
+      console.error("Fehler beim Senden der Passwort-Zurücksetzungs-E-Mail:", error);
+      throw error;
+    }
   }
-}
 
 
 

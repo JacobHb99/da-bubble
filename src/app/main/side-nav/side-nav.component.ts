@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FirebaseService } from '../../services/firebase.service';
 import { User } from '../../models/user.model';
 import { UserDataService } from '../../services/user.service';
+import { InterfaceService } from '../../services/interface.service';
 
 
 
@@ -31,6 +32,9 @@ tagImg: string = "/icons/tag.png"
 addImg: string = "/icons/add_circle.png"
 accountImg: string = "/icons/account_circle.png"
 menuImg: string = "/icons/Hide-navigation.png"
+
+uiService = inject(InterfaceService);
+
 constructor(public firebaseService: FirebaseService, private userDataService: UserDataService){}
 
 
@@ -91,9 +95,13 @@ toggleChannel() {
 }
 
 
-startChat(user: any) {
+showUserChat(user: any) {
   this.userDataService.setUser(user);
+  this.uiService.changeContent('directMessage');
+}
 
+showChannelChat() {
+  this.uiService.changeContent('channelChat');
 }
 
 

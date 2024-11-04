@@ -57,14 +57,14 @@
         <div class="login-divider">
             <span>ODER</span>
         </div>
-        <button class="google-btn">
+        <button class="google-btn" (click)="authService.signInWithGoogle()">
             <img src="/img/icons/login/google.png">
             <span>Anmelden mit Google</span>
         </button>
         <div class="submit-btns">
             <button class="btn-blue" [disabled]="!userForm.valid" [class.btn-inactive]="!userForm.valid"
                 (click)="login()">Anmelden</button>
-            <button class="btn-white" (click)="authService.signOut()">Gäste-Login</button>
+            <button class="btn-white" (click)="guestLogin()">Gäste-Login</button>
         </div>
     </div>
 

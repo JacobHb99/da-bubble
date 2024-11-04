@@ -5,22 +5,24 @@ import { ThreadComponent } from './thread/thread.component';
 import { HeaderComponent } from '../header/header.component';
 import { FirebaseService } from '../services/firebase.service';
 import { AddPeopleComponent } from '../dialogs/add-people/add-people.component';
-import { AddChannelComponent } from "../dialogs/add-channel/add-channel.component";
+import { CommonModule } from '@angular/common';
+import { InterfaceService } from '../services/interface.service';
+import { AddChannelComponent } from '../dialogs/add-channel/add-channel.component';
 
 
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [HeaderComponent, ChannelChatComponent, SideNavComponent, ThreadComponent, AddPeopleComponent, AddChannelComponent],
+  imports: [HeaderComponent,ChannelChatComponent, SideNavComponent, ThreadComponent, AddPeopleComponent, CommonModule, AddChannelComponent],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
 })
 export class MainComponent {
   fireService = inject(FirebaseService);
-
-
+  uiService = inject(InterfaceService);
 
   ngOnInit() {
     this.fireService.getAllUsers();
+    console.log('active Channel default: ', this.uiService.content)
   }
 }
