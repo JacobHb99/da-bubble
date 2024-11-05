@@ -94,6 +94,26 @@ form {
             }
         }
     }
+
+    .confirm-box{
+        @include dFlex(flex-start);
+        gap: 16px;
+        padding-left: 32px;
+
+        input{
+            height: 16px;
+            width: 16px;
+        }
+    }
+}
+
+a{
+    text-decoration: none;
+    color: #535AF1;
+
+    &:hover{
+        text-decoration: underline;
+    }
 }
 
 .forgot-password-btn {
