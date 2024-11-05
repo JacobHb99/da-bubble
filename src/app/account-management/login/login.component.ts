@@ -45,9 +45,9 @@ export class LoginComponent {
   }
 
 
-  guestLogin() {
-    this.authService.signInAnonymously();
-  }
+  // guestLogin() {
+  //   this.authService.signInAnonymously();
+  // }
 
 
   login(): void {
@@ -78,12 +78,6 @@ export class LoginComponent {
         this.userForm.reset();
       }
     })
-
-
-
-
-
-
       // .pipe(
       //   catchError((error) => {
       //     this.loginFailed = true;
@@ -94,5 +88,15 @@ export class LoginComponent {
       // )
       // .subscribe(() => {
       // })
+  }
+
+
+  async guestLogin() {
+    try {
+      await this.authService.guestLogin();
+      this.router.navigate(['/main']);
+    } catch (error) {
+      this.loginFailed = true;
+    }
   }
 }

@@ -18,7 +18,8 @@ export class AuthService {
   currentCredentials!: UserCredential;
   showAnimation: boolean = true;
   errorMessage: string = '';
-  errorCode!: string
+  errorCode!: string;
+  guestLoggedIn: boolean = false;
 
 
   constructor() { }
@@ -42,6 +43,9 @@ export class AuthService {
 
 
   handleUserData(response: UserCredential, email: string, username: string, password: string, avatar: string) {
+    // if(username === 'Gast') {
+    //   avatar = '/img/avatars/avatar_default.png'
+    // }
     updateProfile(response.user, {
       displayName: username,
       photoURL: avatar
@@ -76,20 +80,28 @@ export class AuthService {
   }
 
 
-  signInAnonymously() {
-    signInAnonymously(this.auth)
-      .then(() => {
-        // Signed in..
-        this.setGuestData();
-        this.router.navigate(['/main']);
-        console.log('Gast ist eingeloggt');
-      })
-      .catch((error) => {
-        this.errorCode = error.code;
-        this.errorMessage = error.message;
-        // ...
-      });
+  guestLogin() {
+    const guestEmail = 'gast@mail.com';
+    const guestPassword = 'gast123';
+    this.guestLoggedIn = true;
+    this.login(guestEmail, guestPassword);
+    console.log('Gast ist eingeloggt');
   }
+
+
+  // signInAnonymously() {
+  //   signInAnonymously(this.auth)
+  //     .then(() => {
+  //       // Signed in..
+  //       this.setGuestData();
+  //       this.router.navigate(['/main']);
+  //     })
+  //     .catch((error) => {
+  //       this.errorCode = error.code;
+  //       this.errorMessage = error.message;
+  //       // ...
+  //     });
+  // }
 
 
   signInWithGoogle() {

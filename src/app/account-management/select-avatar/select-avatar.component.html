@@ -23,7 +23,10 @@
 
         <div class="upload-box">
             <p>oder ein eigenes Bild verwenden</p>
-            <a class="link-btn">Datei hochladen</a>
+            <a class="link-btn" (click)="triggerFileInput()">Datei hochladen</a>
+            <input type="file" #fileInput hidden (change)="onFileSelected($event)" />
+            <p *ngIf="downloadURL">Datei-URL: <a [href]="downloadURL" target="_blank">{{ downloadURL }}</a></p>
+          
         </div>
 
         <div class="btn-box width-100">

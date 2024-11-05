@@ -2,13 +2,16 @@ import { Component, inject } from '@angular/core';
 import { HeaderSignComponent } from '../header-sign/header-sign.component';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { StorageService } from '../../services/storage.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-select-avatar',
   standalone: true,
   imports: [
     HeaderSignComponent,
-    RouterLink
+    RouterLink,
+    CommonModule
   ],
   templateUrl: './select-avatar.component.html',
   styleUrl: './select-avatar.component.scss'
@@ -28,37 +31,69 @@ export class SelectAvatarComponent {
   chosenAvatar!: string;
   registrationFailed: boolean = false;
   errorMassage: String = '';
+  selectedFile?: File;
+  downloadURL?: string;
+  storageService = inject(StorageService);
 
-  constructor() {}
+  constructor() { }
+
+  // Funktion zum Triggern des versteckten Datei-Inputs
+  triggerFileInput(): void {
+    const fileInput = document.querySelector('input[type="file"]') as HTMLElement;
+    fileInput.click();
+  }
+
+
+  // Speichert die Datei, wenn der Benutzer sie auswählt, und startet den Upload
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+      this.uploadFile();
+    }
+  }
+
+
+  // Funktion zum Hochladen der Datei
+  uploadFile(): void {
+    if (this.selectedFile) {
+      const filePath = `uploads/${this.selectedFile.name}`; // Speicherort in Firebase Storage
+      this.storageService.uploadFile(filePath, this.selectedFile)
+        .subscribe(
+          (url) => this.downloadURL = url,
+          (error) => console.error('Upload error:', error)
+        );
+    }
+  }
 
 
   setAvatar(avatar: string) {
-      this.chosenAvatar = avatar;
+    this.chosenAvatar = avatar;
   }
 
 
   submitRegistration(): void {
     this.authService.register(this.currentData.email, this.currentData.username, this.currentData.password, this.chosenAvatar)
-    .subscribe({
-      next: () => {
+      .subscribe({
+        next: () => {
 
-        setTimeout(() => {
-          this.router.navigateByUrl('/');
-        }, 1000);
-      },
+          setTimeout(() => {
+            this.router.navigateByUrl('/');
+          }, 1000);
+        },
 
-      error: (err) => {
-        console.log(err.code);  
-        if (err.code === 'auth/email-already-in-use') {
-          this.registrationFailed = true;
-          this.authService.errorMessage = 'Email existiert bereits!';
-        } else {
-          this.registrationFailed = true;
-          this.authService.errorMessage = 'Irgendetwas ist schief gelaufen!';
-        }
+        error: (err) => {
+          console.log(err.code);
+          if (err.code === 'auth/email-already-in-use') {
+            this.registrationFailed = true;
+            this.authService.errorMessage = 'Email existiert bereits!';
+          } else {
+            this.registrationFailed = true;
+            this.authService.errorMessage = 'Irgendetwas ist schief gelaufen!';
+          }
           this.router.navigateByUrl('/register');
-      }
-    })
+        }
+      })
   }
 
 
