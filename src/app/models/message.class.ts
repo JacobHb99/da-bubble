@@ -1,17 +1,19 @@
 import { Thread } from "./thread.class";
 
 export class Message {
-    mid: string;
+    msgId: string;
     timeStamp: number;
-    sender: string;
+    senderId: string;
+    recipientId:string;
     text: string;
     thread?: Thread;
     //reactions: [];
 
     constructor(obj?: Partial<Message>) {
-        this.mid = obj?.mid ?? '';
+        this.msgId = obj?.msgId ?? '';
         this.timeStamp = obj?.timeStamp ?? 0;
-        this.sender = obj?.sender ?? '';
+        this.senderId = obj?.senderId ?? '';
+        this.recipientId = obj?.recipientId ?? '';
         this.text = obj?.text ?? '';
         this.thread = obj?.thread;
         //this.reactions = obj?.reactions: [];
@@ -19,9 +21,10 @@ export class Message {
 
     public getJSON() {
         return {
-            mid: this.mid,
+            msgId: this.msgId,
             timeStamp: this.timeStamp,
-            sender: this.sender,
+            senderId: this.senderId,
+            recipientId: this.recipientId,
             text: this.text,
             thread: this.thread,
             //reactions: this.reactions          
