@@ -3,6 +3,9 @@ import { Component } from '@angular/core';
 import {  FormsModule } from '@angular/forms';
 import { FirebaseService } from '../../services/firebase.service';
 import { User } from '../../models/user.model';
+import { MatDialogRef } from '@angular/material/dialog';
+import { ChannelService } from '../../services/channel.service';
+
 
 
 @Component({
@@ -17,13 +20,8 @@ export class AddPeopleComponent {
   isSelected = false;
   searchName: string = "";
   isInputEmpty = false;
-  constructor(public firebaseService: FirebaseService){}
+  constructor(public firebaseService: FirebaseService, public dialogRef: MatDialogRef<AddPeopleComponent>, private channelService: ChannelService){}
 
-  ngOnInit() {
-    this.firebaseService.selectedUsers.subscribe((users: any) => {
-      this.emptyInput()
-    });
-  }
 
 
   showInput() {
@@ -32,6 +30,7 @@ export class AddPeopleComponent {
   }
   hideInput() {
     this.isSelected = false;
+    this.isInputEmpty = false;
     
   }
   emptyInput() {
@@ -51,12 +50,18 @@ export class AddPeopleComponent {
   addUser(user: any) {
     if (!this.firebaseService.selectedUsers.some((u: any ) => u.username === user.username)) {
       this.firebaseService.selectedUsers.push(user);
+     this.emptyInput()
     } 
       this.searchName = "";
+     this.emptyInput()
     }
 
     removeUser(user: any) {
       this.firebaseService.selectedUsers = this.firebaseService.selectedUsers.filter((u: any) => u.username !== user.username);
+      this.emptyInput()
+    }
+    closeDialogAddPeople(): void {
+      this.dialogRef.close(); 
     }
   }
 

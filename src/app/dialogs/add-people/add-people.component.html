@@ -1,5 +1,5 @@
 <div class="add-people-container">
-    <div (mouseenter)="isHoveredClose = true" (mouseleave)="isHoveredClose = false" class="close-container">
+    <div (click)="closeDialogAddPeople()" (mouseenter)="isHoveredClose = true" (mouseleave)="isHoveredClose = false" class="close-container">
         <img [src]="isHoveredClose ? '/icons/close-blue.png' : '/icons/close.png'" alt="">
     </div>
 
@@ -48,6 +48,6 @@
 
     </div>
     <div class="button-container">
-        <button class="button" [disabled]="isInputEmpty">Erstellen</button>
+        <button  class="button" [disabled]="isInputEmpty">Erstellen</button>
     </div>
 </div>

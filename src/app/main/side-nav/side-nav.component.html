@@ -19,18 +19,18 @@
                 <img class="workspaces-img" [src]="workspaceImg" alt="">
                 <p>Channels</p>
             </div>
-            <div (mouseenter)="isHoveredAdd = true" (mouseleave)="isHoveredAdd = false" class="add-black">
+            <div (click)="openDialogChannel()" (mouseenter)="isHoveredAdd = true" (mouseleave)="isHoveredAdd = false" class="add-black">
                 <img [src]="isHoveredAdd ? 'icons/add-blue.png' : 'icons/add-black.png'" alt="">
             </div>
         </div>
         <div class="channels" [ngClass]="{'hide' : hideChannel}">
-            <div (click)="showChannelChat()" class="developer">
-                <div (mouseenter)="changeImgDev()" (mouseleave)="resetImgDev()" class="dev-hover">
+            <div *ngFor="let name of channelNameArray" (click)="showChannelChat()" class="developer">
+                <div  class="dev-hover">
                     <img [src]="tagImg" alt="">
-                    <p>Entwicklerteam</p>
+                    <p>{{ name }}</p>
                 </div>
             </div>
-            <div (mouseenter)="changeImgChannel()" (mouseleave)="resetImgChannel()" class="add-channel">
+            <div (click)="openDialogChannel()" (mouseenter)="changeImgChannel()" (mouseleave)="resetImgChannel()" class="add-channel">
                 <img [src]="addImg" alt="">
                 <p>Channel hinzufügen</p>
             </div>

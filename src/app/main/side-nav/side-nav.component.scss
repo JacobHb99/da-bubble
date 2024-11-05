@@ -9,45 +9,52 @@ section {
     transform: translateX(0px);
     transition: transform ease-in-out 130ms;
 }
+
 .slide-in {
     transform: translateX(-1000px);
 }
+
 .workspace-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    
-}
-.edit-square {
-   width: 40px;
-   height: 40px;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   &:hover {
-    background: #ECEEFE;
-    border-radius: 100%;
-    cursor: pointer;
-   } 
-}
-.add-black {
-    width: 40px;
-   height: 40px;
-   display: flex;
-   justify-content: center;
-   align-items: center;
-  
-   &:hover {
-    background: #ECEEFE;
-    border-radius: 100%;
-    cursor: pointer;
-   } 
 
 }
+
+.edit-square {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+        background: #ECEEFE;
+        border-radius: 100%;
+        cursor: pointer;
+    }
+}
+
+.add-black {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+        background: #ECEEFE;
+        border-radius: 100%;
+        cursor: pointer;
+    }
+
+}
+
 .workspace-text {
     display: flex;
     align-items: center;
     gap: 15px;
+
     >p {
         font-weight: 700;
         font-size: 24px;
@@ -59,127 +66,146 @@ section {
     align-items: center;
     justify-content: space-between;
 }
+
 .channel-header {
     display: flex;
     align-items: center;
     gap: 15px;
+
     >p {
         font-weight: 700;
         font-size: 20px;
     }
+
     &:hover {
         color: #535AF1;
         cursor: pointer;
 
     }
-   
+
 }
+
 .channel-row {
     display: flex;
     flex-direction: column;
 
 }
+
 .developer {
     margin-left: 24px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 10px;
-   
+    flex-direction: column;
+
+
     >p {
         font-size: 18px;
     }
-    
+
 }
+
 .dev-hover {
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 4px 20px;
+
     >p {
         font-size: 18px;
         margin: 0;
     }
+
     &:hover {
         background: #ECEEFE;
-       border-radius: 20px;
-       cursor: pointer;
-       
-     
+        border-radius: 20px;
+        cursor: pointer;
+
+
 
     }
 }
+
 .add-channel {
     margin-left: 43px;
     display: flex;
     align-items: center;
     gap: 10px;
+
     >p {
         font-size: 18px;
     }
+
     &:hover {
         color: #535AF1;
         cursor: pointer;
     }
 }
+
 .users {
     margin-left: 24px;
     display: flex;
     flex-direction: column;
-    gap: 13px; 
+    gap: 12px;
+    max-height: 400px;
     visibility: visible;
     transition: opacity 130ms ease, visibility 130ms ease;
-    
-  }
-  .channels {
-    max-height: 92px;
+
+}
+
+.channels {
+    gap: 8px;
     display: flex;
     flex-direction: column;
     visibility: visible;
     transition: opacity 130ms ease, visibility 130ms ease;
-  }
-  
-  .single-user {
+}
+
+.single-user {
     display: flex;
     align-items: center;
-    gap: 10px; 
-    
-   
-  }
-  .single-user-hover {
+    gap: 10px;
+
+
+}
+
+.single-user-hover {
     padding: 4px 20px;
     display: flex;
     align-items: center;
-    gap: 10px; 
+    gap: 10px;
 
     &:hover {
         cursor: pointer;
         background: #ECEEFE;
         border-radius: 30px;
         color: #535AF1;
-        
+
     }
 
-  }
-  
-  .avatar-img {
+}
+
+.avatar-img {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-  }
-  .hide {
+}
+
+.hide {
     opacity: 0;
     visibility: hidden;
     max-height: 0;
-    
-    
-    
-  }
-  
-  .username p {
+
+
+
+}
+
+.username p {
     font-size: 18px;
     margin: 0;
-  }
-  .workspace-show-hide {
+}
+
+.workspace-show-hide {
     display: flex;
     align-items: center;
     padding: 17px 14px;
@@ -194,34 +220,40 @@ section {
     gap: 10px;
     width: 302px;
     justify-content: center;
+
     &:hover {
         cursor: pointer;
         color: #535AF1;
         font-weight: 700;
+
         >p {
             font-weight: 700;
         }
     }
+
     >p {
         font-size: 20px;
         font-weight: 500;
         font-family: 'Nunito';
         margin: 0;
     }
+
     >img {
         transform: rotate(90deg);
     }
 
-  }
-  .status {
+}
+
+.status {
     width: 14px;
     height: 14px;
     position: absolute;
     bottom: 5px;
     right: 0px;
-   
+
 }
+
 .avatar {
     position: relative;
-    
+
 }

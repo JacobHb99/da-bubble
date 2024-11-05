@@ -4,17 +4,22 @@ import { FirebaseService } from '../../services/firebase.service';
 import { User } from '../../models/user.model';
 import { UserDataService } from '../../services/user.service';
 import { InterfaceService } from '../../services/interface.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AddChannelComponent } from '../../dialogs/add-channel/add-channel.component';
+import { FormsModule } from '@angular/forms';
+import { ChannelService } from '../../services/channel.service';
 
 
 
 @Component({
   selector: 'app-side-nav',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './side-nav.component.html',
   styleUrl: './side-nav.component.scss'
 })
 export class SideNavComponent {
+channelNameArray: string[] = [];
 showFiller = false;
 menuVisible = false;
 isHoveredEdit = false;
@@ -25,6 +30,7 @@ isHoveredChannel = false;
 hideUser = false;
 hideChannel = false;
 isOnline = false;
+channelName = "";
 currentUser?: User;
 arrowImg: string = 'icons/arrow_drop_down.png'
 workspaceImg: string = 'icons/workspaces.png'
@@ -35,7 +41,17 @@ menuImg: string = "/icons/Hide-navigation.png"
 
 uiService = inject(InterfaceService);
 
-constructor(public firebaseService: FirebaseService, private userDataService: UserDataService){}
+constructor(public firebaseService: FirebaseService, private userDataService: UserDataService, public dialog: MatDialog, private channelService: ChannelService ){}
+
+
+
+ngOnInit() {
+  this.channelService.currentChannelName.subscribe(name => {
+    if (name) {
+      this.channelNameArray.push(name);
+    }
+  });
+}
 
 
 toggleMenu() {
@@ -52,13 +68,6 @@ resetImg() {
   this.workspaceImg = 'icons/workspaces.png'
 }
 
-changeImgDev() {
-  this.tagImg = 'icons/tag-blue.png'
-  
-}
-resetImgDev() {
-  this.tagImg = 'icons/tag.png'
-}
 
 changeImgChannel() {
   this.addImg= "icons/add_circle-blue.png"
@@ -104,5 +113,14 @@ showChannelChat() {
   this.uiService.changeContent('channelChat');
 }
 
+  openDialogChannel(): void {
+    const dialogRef = this.dialog.open(AddChannelComponent, {
+      minWidth: '873px'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+ 
 
 }

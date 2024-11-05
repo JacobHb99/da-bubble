@@ -1,6 +1,6 @@
 <div [ngClass]="!firebaseService.isClosed ? 'hide' : ''" class="channel-container">
     <div (mouseenter)="isHoveredClose = true" (mouseleave)="isHoveredClose = false" class="close-container">
-        <img (click)="firebaseService.toggleChannel()" [src]="isHoveredClose ? '/icons/close-blue.png' : '/icons/close.png'" alt="">
+        <img (click)="closeDialogChannel()" (click)="firebaseService.toggleChannel()" [src]="isHoveredClose ? '/icons/close-blue.png' : '/icons/close.png'" alt="">
     </div>
     
     <h1>Channel erstellen</h1>
@@ -10,7 +10,7 @@
         <h2>Channel-Name</h2>
         <div class="input-container">
             <img src="/icons/tag-grey.png" alt="">
-            <input placeholder="z.B. Kooperationsprojekte" type="text">
+            <input [(ngModel)]="channelName" placeholder="z.B. Kooperationsprojekte" type="text">
         </div>
     </div>
 
@@ -22,7 +22,7 @@
         <input placeholder="Dein Text hier" type="text">
     </div>
     <div class="button">
-        <button>Erstellen</button>
+        <button (click)="createChannel()" (click)="openDialogAddPeople()">Erstellen</button>
     </div>
 
 </div>
