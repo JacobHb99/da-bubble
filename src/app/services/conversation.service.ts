@@ -24,10 +24,6 @@ export class ConversationService {
         //this.createNewConversation(creatorId, partnerId)
     }
 
-    // getCurrentUser(){
-    //     let currentUser = this.authService.currentUserSig.uid;
-    // }
-
     // async createNewConversation(creatorId: string, partnerId: string) {
     //     this.currentConversation = new Conversation();
     //     this.currentConversation.creatorId = creatorId;
