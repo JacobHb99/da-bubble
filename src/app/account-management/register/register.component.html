@@ -68,10 +68,18 @@
                     }
                 </div>
             </div>
+
+            <div class="confirm-box">
+                <mat-checkbox class="example-margin" formControlName="checkbox">
+                    Ich stimme der <a routerLink="">Datenschutzerklärung</a> zu.
+                </mat-checkbox>
+            </div>
         </form>
 
         <div class="btn-box width-100">
-            <button class="btn-blue" [disabled]="!userForm.valid" [class.btn-inactive]="!userForm.valid"
+            <button class="btn-blue" 
+            [disabled]="!userForm.valid || !userForm.controls.checkbox.value" 
+            [class.btn-inactive]="!userForm.valid || !userForm.controls.checkbox.value"
                 (click)="onSubmit()">Weiter</button>
         </div>
     </div>

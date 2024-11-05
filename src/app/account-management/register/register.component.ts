@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 @Component({
@@ -14,7 +15,8 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, NonNullableFormBuilde
     HeaderSignComponent,
     RouterLink,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    MatCheckboxModule
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
@@ -22,28 +24,32 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, NonNullableFormBuilde
 export class RegisterComponent {
   authService = inject(AuthService);
   fb = inject(NonNullableFormBuilder)
-  router = inject(Router)
-  regFormData = {
-    email: '',
-    username: '',
-    password: ''
-  }
+  router = inject(Router);
+  form = {
+    checked: false
+  };
 
   userForm = this.fb.group({
     username: this.fb.control('', {validators: [Validators.required, Validators.minLength(4)]}),
     email: this.fb.control('', {validators: [Validators.required, Validators.email, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/)]}),
-    password: this.fb.control('', {validators: [Validators.required, Validators.minLength(6)]})
+    password: this.fb.control('', {validators: [Validators.required, Validators.minLength(6)]}),
+    checkbox: this.fb.control('', {validators: [Validators.required]}),
   });
 
 
   constructor() {
   }
 
+
+  test() {
+    console.log(this.form.checked);
+  }
+
   
   onSubmit(): void {
-    let user = this.userForm.getRawValue()
+    let user = this.userForm.getRawValue()    
     this.authService.saveRegistrationData(user.email, user.username, user.password);
-    this.authService.errorMessage = '';
     this.router.navigate(['/avatar']);
+    this.authService.errorMessage = '';
   }
 }
