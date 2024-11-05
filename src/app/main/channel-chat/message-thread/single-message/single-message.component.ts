@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserDataService } from '../../../../services/user.service';
 import { InterfaceService } from '../../../../services/interface.service';
-import { Message} from '../../../../models/message.class';
+import { Message} from '../../../../models/message.model';
 
 @Component({
   selector: 'app-single-message',

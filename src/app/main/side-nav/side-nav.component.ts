@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddChannelComponent } from '../../dialogs/add-channel/add-channel.component';
 import { FormsModule } from '@angular/forms';
 import { ChannelService } from '../../services/channel.service';
+import { ConversationService } from '../../services/conversation.service';
 
 
 
@@ -40,6 +41,7 @@ accountImg: string = "/icons/account_circle.png"
 menuImg: string = "/icons/Hide-navigation.png"
 
 uiService = inject(InterfaceService);
+conService = inject(ConversationService);
 
 constructor(public firebaseService: FirebaseService, private userDataService: UserDataService, public dialog: MatDialog, private channelService: ChannelService ){}
 

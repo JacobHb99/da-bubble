@@ -1,5 +1,5 @@
 import { Component,Input } from '@angular/core';
-import { Message} from '../../../models/message.class';
+import { Message} from '../../../models/message.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 

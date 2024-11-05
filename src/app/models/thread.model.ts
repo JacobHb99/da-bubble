@@ -1,4 +1,4 @@
-import { Message } from "./message.class";
+import { Message } from "./message.model";
 
 export class Thread {
     id: string;
