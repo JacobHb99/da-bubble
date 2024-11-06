@@ -1,5 +1,5 @@
-import { Component,Input } from '@angular/core';
-import { Message} from '../../../models/message.model';
+import { Component, Input } from '@angular/core';
+import { Message } from '../../../models/message.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -13,15 +13,18 @@ import { FormsModule } from '@angular/forms';
 export class SendMessageComponent {
   @Input() placeholder: string = '';
 
+  text: string = '';
 
 
-  // sendMessage(): Message {
-  //   return new Message({
-  //    // timeStamp: ,
-  //     //sender: ,
-  //     text: text,
-  //     //thread: new Thread,
-  //     //reactions: []
-  //   });
-  // }
+  sendMessage(){
+    new Message({
+      // timeStamp: ,
+      //sender: ,
+      text: this.text,
+      //thread: new Thread,
+      //reactions: []
+    });
+    console.log('msg',this.text)
+  }
+
 }

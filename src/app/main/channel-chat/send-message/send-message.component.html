@@ -1,6 +1,6 @@
 <section>
     <div class="main">
-        <textarea name="" id="" [placeholder]="placeholder"></textarea>
+        <textarea type="text"  [(ngModel)]="text" [placeholder]="placeholder"></textarea>
         <div class="interactDiv">
             <div class="addDiv">
                 <div class="addFile"></div>
@@ -10,7 +10,7 @@
                 <div class="addReaction"></div>
                 <div class="tagUser"></div>
             </div>
-            <div class="sendIcon">
+            <div class="sendIcon" (click)="sendMessage()">
                 <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <mask id="mask0_516_6772" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5" y="5" width="30"
                         height="30">
