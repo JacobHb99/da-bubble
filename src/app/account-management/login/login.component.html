@@ -22,10 +22,10 @@
                     @if (userForm.controls.email.invalid && (userForm.controls.email.touched ||
                     userForm.controls.email.dirty)) {
                     @if (userForm.controls.email.errors?.['required']) {
-                    <small>*Email is requiered</small>
+                    <small>*Eine Email ist erforderlich!</small>
                     }
                     @if (userForm.controls.email.errors?.['pattern']) {
-                    <small>*Ungültige Email</small>
+                    <small>*Bitte gebe eine gültige Email an!</small>
                     }
                     }
                 </div>
@@ -41,7 +41,7 @@
                     @if (userForm.controls.password.invalid && (userForm.controls.password.touched ||
                     userForm.controls.password.dirty)) {
                     @if (userForm.controls.password.errors?.['required']) {
-                    <small>*Password is requiered</small>
+                    <small>*Bitte gebe dein Passwort ein!</small>
                     }
                     @if (userForm.controls.password.errors?.['minlength']) {
                     <small>*Passwort muss aus min. 6 Zeichen bestehen</small>

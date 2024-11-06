@@ -60,6 +60,7 @@ export class AuthService {
     newUser.email = email;
     newUser.username = username;
     newUser.uid = uid;
+    newUser.channels = [];
     await this.fireService.addUser(newUser);
   }
 
@@ -73,7 +74,6 @@ export class AuthService {
         this.fireService.setUserStatus(this.currentCredentials, 'online');
         console.log('loginUser', this.currentCredentials.user);
         this.router.navigate(['/main']);
-
       })
 
     return from(promise);

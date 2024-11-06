@@ -35,6 +35,7 @@ export class FirebaseService {
     });
   }
 
+
   async getAllUsers() {
     const q = query(collection(this.firestore, "users"));
     const unsubscribedUsers = onSnapshot(q, (querySnapshot) => {
