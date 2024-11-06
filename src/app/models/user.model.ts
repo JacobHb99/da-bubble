@@ -1,3 +1,4 @@
+import { ChannelData } from "./channel.model";
 import { Conversation } from "./conversation.model";
 
 export class User {
@@ -6,7 +7,8 @@ export class User {
     username: string;
     avatar: string;
     status: 'online' | 'offline';
-    channels: Conversation[];
+    channels: ChannelData[];
+    role: 'user' | 'guest';
 
     constructor(obj?: Partial<User>){
         this.uid = obj?.uid ?? '';
@@ -15,6 +17,7 @@ export class User {
         this.avatar = obj?.avatar ?? '';
         this.status = obj?.status ?? 'offline';
         this.channels = obj?.channels ?? [];
+        this.role = obj?.role ?? 'user'
     }
 
     getJSON() {
@@ -24,7 +27,8 @@ export class User {
           username: this.username,
           avatar: this.avatar,
           status: this.status,
-          channels: this.channels
+          channels: this.channels,
+          role: this.role
         };
       }
 }

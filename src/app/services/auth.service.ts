@@ -61,6 +61,7 @@ export class AuthService {
     newUser.username = username;
     newUser.uid = uid;
     newUser.channels = [];
+    newUser.role = 'user'
     await this.fireService.addUser(newUser);
   }
 
