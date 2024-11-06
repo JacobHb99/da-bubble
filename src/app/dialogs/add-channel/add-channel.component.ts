@@ -27,7 +27,7 @@ export class AddChannelComponent {
   createChannel() {
     if (this.channelName) {
       this.channelService.updateChannelName(this.channelName);
-      this.channelName = ''; // Leere das Eingabefeld
+      this.channelName = ''; 
     }
   }
 

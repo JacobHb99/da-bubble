@@ -1,0 +1,156 @@
+.channel-container {
+    background-color: white;
+    box-shadow: 0px 6px 10px 0px #00000033;
+    border-radius: 30px;
+    padding: 40px;
+    font-family: 'Nunito';
+    height: 616px;
+    width: 872px;
+    box-sizing: border-box;
+    position: relative;
+    border-radius: 0px 30px 30px 30px;
+
+    >p {
+        font-size: 18px;
+    }
+
+
+}
+
+.close-container {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    right: 40px;
+    top: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+        cursor: pointer;
+        background: #ECEEFE;
+        border-radius: 100%;
+
+    }
+}
+
+.channel-header {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 20px;
+
+    >h1 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    >img {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+.channel-name-container {
+    padding: 20px;
+    gap: 20px;
+    border-radius: 20px;
+    border: 1px solid #ADB0D9;
+    margin-bottom: 20px;
+
+
+}
+
+.channel-name {
+
+    gap: 10px;
+    display: flex;
+    align-items: center;
+
+    >p {
+        font-size: 18px;
+    }
+}
+
+.edit-name {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    >h2 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    >p {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+        color: #535AF1;
+
+        &:hover {
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+    }
+}
+
+.channel-description-container {
+    padding: 20px;
+    gap: 20px;
+    border-radius: 20px;
+    border: 1px solid #ADB0D9;
+
+}
+
+.line {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    width: 739px;
+    border: 1px solid #ADB0D9;
+
+}
+
+.created-from {
+    >h2 {
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    >p {
+        font-size: 24px;
+        color: #535AF1;
+
+
+    }
+}
+
+.btn-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+
+    >button {
+        border: none;
+        padding: 12px 25px 12px 25px;
+        gap: 10px;
+        border-radius: 25px;
+        background: #444DF2;
+        color: white;
+        font-size: 18px;
+        font-weight: 500;
+        &:hover {
+            background: #797EF3;
+            cursor: pointer;
+
+
+        }
+
+
+
+    }
+}

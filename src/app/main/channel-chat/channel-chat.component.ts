@@ -4,6 +4,8 @@ import { MessageThreadComponent } from './message-thread/message-thread.componen
 import { UserDataService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { InterfaceService } from '../../services/interface.service';
+import { EditChannelComponent } from '../../dialogs/edit-channel/edit-channel.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-channel-chat',
@@ -16,7 +18,7 @@ export class ChannelChatComponent{
   user: any;
   uiService = inject(InterfaceService);
 
-  constructor(private userDataService: UserDataService) {
+  constructor(private userDataService: UserDataService,  public dialog: MatDialog) {
     this.userDataService.selectedUser.subscribe((user) => {
       this.user = user;      
       this.uiService.changeContent('newMessage');
@@ -24,5 +26,17 @@ export class ChannelChatComponent{
     //console.log('active User', this.user.username)
     
   }
+
+ 
+    openEditChannel(): void {
+      const dialogRef = this.dialog.open(EditChannelComponent, {
+        minWidth: '873px'
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+      });
+    }
+   
+  
 
 }
