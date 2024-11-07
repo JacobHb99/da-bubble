@@ -13,6 +13,7 @@ export class FirebaseService {
   isClosed = false;
   user:any;
 
+
   firestore = inject(Firestore);
 
   constructor() { }
@@ -35,6 +36,13 @@ export class FirebaseService {
     });
   }
 
+  async addUsersToChannel(ChannelId: string) {
+    const userRef = doc(this.firestore, "channels", ChannelId );
+    await updateDoc(userRef, {
+      users: this.selectedUsers
+    });
+  }
+
 
   async getAllUsers() {
     const q = query(collection(this.firestore, "users"));
@@ -43,7 +51,6 @@ export class FirebaseService {
      querySnapshot.forEach((doc) => {
       this.allUsers.push(doc.data());
   });
-  console.log("Current cities in CA: ", this.allUsers);
 });
 }
 

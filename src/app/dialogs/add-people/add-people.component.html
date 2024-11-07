@@ -1,5 +1,6 @@
 <div class="add-people-container">
-    <div (click)="closeDialogAddPeople()" (mouseenter)="isHoveredClose = true" (mouseleave)="isHoveredClose = false" class="close-container">
+    <div (click)="closeDialogAddPeople()" (mouseenter)="isHoveredClose = true" (mouseleave)="isHoveredClose = false"
+        class="close-container">
         <img [src]="isHoveredClose ? '/icons/close-blue.png' : '/icons/close.png'" alt="">
     </div>
 
@@ -27,10 +28,11 @@
 
 
         <div [ngClass]="{'show': isSelected}" class="input-container">
-            <input placeholder="Name eingeben" [(ngModel)]="searchName" type="text">
+            <input placeholder="Name eingeben" [(ngModel)]="searchName"
+                type="text">
 
 
-
+                
             <div [ngClass]="{'showUserDialog': this.searchName.length >= 3, 'hideUserDialog': filteredUsers.length < 1}"
                 class="user-dialog">
                 <div (click)="addUser(user)" *ngFor="let user of filteredUsers" class="single-user">
@@ -48,6 +50,7 @@
 
     </div>
     <div class="button-container">
-        <button  class="button" [disabled]="isInputEmpty">Erstellen</button>
+        <button (click)=" closeDialogAddPeople()" (click)="channelService.createChannel()" class="button"
+            [disabled]="isInputEmpty">Erstellen</button>
     </div>
 </div>

@@ -3,7 +3,7 @@
         @if (this.uiService.content !== 'newMessage') {
         <div (click)="openEditChannel()" class="channelName hoverEffect"
             [ngStyle]="{'display': this.uiService.content === 'channelChat' ? 'flex' : 'none'}">
-            <p># Entwicklerteam</p>
+            <p># </p>
             <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <mask id="mask0_235_460" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="30"
                     height="30">
@@ -41,7 +41,7 @@
         </div>
         <div class="channelName" [ngStyle]="{'display': this.uiService.content === 'directMessage' ? 'flex' : 'none'}">
             <div class="avatar">
-                <img class="avatar-img" [src]="user.avatar" referrerPolicy="no-referrer" alt="">
+                <img class="avatar-img" [src]="user.avatar" referrerPolicy="no-referrer" alt=""> 
                 <img class="status" [src]="user.status == 'online' ? '/icons/Online.png' : '/icons/Offline.png'" alt="">
             </div>
             <p>{{ user.username }}</p>
@@ -60,7 +60,7 @@
     @if (this.uiService.content !== 'newMessage') {
     <app-message-thread>
     </app-message-thread>
-    <app-send-message placeholder="Nachricht an #{{ user.username }}">
+    <app-send-message placeholder="Nachricht an #X{{ user.username }}">
     </app-send-message>
     }
 </section>

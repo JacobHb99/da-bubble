@@ -24,10 +24,10 @@
             </div>
         </div>
         <div class="channels" [ngClass]="{'hide' : hideChannel}">
-            <div *ngFor="let name of channelNameArray" (click)="showChannelChat()" class="developer">
+            <div  *ngFor="let channel of channelService.allChannels" (click)="channelService.showChannelChat(channel)" class="developer">
                 <div  class="dev-hover">
                     <img [src]="tagImg" alt="">
-                    <p>{{ name }}</p>
+                    <p>{{ channel.title}}</p>
                 </div>
             </div>
             <div (click)="openDialogChannel()" (mouseenter)="changeImgChannel()" (mouseleave)="resetImgChannel()" class="add-channel">

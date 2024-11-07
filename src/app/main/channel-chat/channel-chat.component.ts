@@ -6,6 +6,9 @@ import { CommonModule } from '@angular/common';
 import { InterfaceService } from '../../services/interface.service';
 import { EditChannelComponent } from '../../dialogs/edit-channel/edit-channel.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ChannelService } from '../../services/channel.service';
+import { ChannelData } from '../../models/channel.model';
+
 
 @Component({
   selector: 'app-channel-chat',
@@ -16,15 +19,25 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class ChannelChatComponent{
   user: any;
+  channel!: ChannelData;
   uiService = inject(InterfaceService);
+  channelService = inject(ChannelService)
 
   constructor(private userDataService: UserDataService,  public dialog: MatDialog) {
     this.userDataService.selectedUser.subscribe((user) => {
       this.user = user;      
+      console.log(user);
+      
       this.uiService.changeContent('newMessage');
-    });    
+    }); 
+    this.channelService.selectedChannel.subscribe((channel) => {
+      this.channel = channel; 
+      console.log(channel);
+           
+      this.uiService.changeContent('newMessage');
+    }); 
     //console.log('active User', this.user.username)
-    
+
   }
 
  

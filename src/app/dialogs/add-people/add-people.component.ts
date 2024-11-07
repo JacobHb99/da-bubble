@@ -20,7 +20,7 @@ export class AddPeopleComponent {
   isSelected = false;
   searchName: string = "";
   isInputEmpty = false;
-  constructor(public firebaseService: FirebaseService, public dialogRef: MatDialogRef<AddPeopleComponent>, private channelService: ChannelService){}
+  constructor(public firebaseService: FirebaseService, public dialogRef: MatDialogRef<AddPeopleComponent>, public channelService: ChannelService){}
 
 
 
@@ -63,5 +63,8 @@ export class AddPeopleComponent {
     closeDialogAddPeople(): void {
       this.dialogRef.close(); 
     }
+
+
+    
   }
 
