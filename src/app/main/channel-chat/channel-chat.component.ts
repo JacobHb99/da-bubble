@@ -6,16 +6,18 @@ import { CommonModule } from '@angular/common';
 import { InterfaceService } from '../../services/interface.service';
 import { EditChannelComponent } from '../../dialogs/edit-channel/edit-channel.component';
 import { MatDialog } from '@angular/material/dialog';
+import { SingleMessageComponent } from './message-thread/single-message/single-message.component';
 
 @Component({
   selector: 'app-channel-chat',
   standalone: true,
-  imports: [SendMessageComponent, MessageThreadComponent, CommonModule],
+  imports: [SingleMessageComponent,SendMessageComponent, MessageThreadComponent, CommonModule],
   templateUrl: './channel-chat.component.html',
   styleUrl: './channel-chat.component.scss'
 })
 export class ChannelChatComponent{
   user: any;
+  threadIsEmpty = true;
   uiService = inject(InterfaceService);
 
   constructor(private userDataService: UserDataService,  public dialog: MatDialog) {

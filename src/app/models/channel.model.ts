@@ -1,6 +1,6 @@
 import { Message } from "./message.model";
 
-export class ChannelData {   
+export class Channel {   
     chaId:string;
     title: string;
     creatorId:string;
