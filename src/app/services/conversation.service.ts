@@ -6,11 +6,13 @@ import { UserCredential } from '@angular/fire/auth';
 import { where, } from "firebase/firestore";
 import { AuthService } from './../services/auth.service';
 import { InterfaceService } from './../services/interface.service';
+import { FirebaseService } from './firebase.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ConversationService {
+    FiBaService = inject(FirebaseService);
     firestore = inject(Firestore);
     authService = inject(AuthService);
     uiService = inject(InterfaceService);
@@ -63,6 +65,28 @@ export class ConversationService {
     //         }
     //     }
     // }
+
+    // async getAllConversations() {
+    //     const q = query(collection(this.firestore, "conversations"));
+    //     const unsubscribedConv = onSnapshot(q, (querySnapshot) => {
+    //       this.FiBaService.allConversations=[];
+    //       querySnapshot.forEach((doc) => {
+    //         const conversation= this.getCleanConversationJson(doc)
+    //         this.FiBaService.allConversations.push(conversation.data());
+    //       });
+    //       //console.log("Current cities in CA: ", this.allUsers);
+    //     });
+    //   }
+
+    //   getCleanConversationJson(conversation: Conversation) {
+    //     return {
+    //         conId: conversation.conId,
+    //         creatorId: conversation.creatorId,
+    //         partnerId: conversation.partnerId,
+    //         messages: conversation.messages,
+    //         active: conversation.active,
+    //     };
+    //   }
 
 
 

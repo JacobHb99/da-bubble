@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { addDoc, collection, Firestore, onSnapshot, query, setDoc } from '@angular/fire/firestore';
 import { BehaviorSubject } from 'rxjs';
-import { ChannelData } from '../models/channel.model';
+import { Channel } from '../models/channel.model';
 import { DocumentData } from 'firebase/firestore';
 import { FirebaseService } from './firebase.service';
 import { SideNavComponent } from '../main/side-nav/side-nav.component';
@@ -12,14 +12,12 @@ import { InterfaceService } from './interface.service';
   providedIn: 'root',
 })
 export class ChannelService {
-  currentChannel = new ChannelData();
+  currentChannel = new Channel();
   firestore = inject(Firestore);
   firebaseService = inject(FirebaseService)
   uiService = inject(InterfaceService);
   conService = inject(ConversationService);
-
-
-  allChannels!: ChannelData[];
+  allChannels!: Channel[];
  
   private allChannelsSubject = new BehaviorSubject<any>(null);
   selectedChannel = this.allChannelsSubject.asObservable();
@@ -65,7 +63,7 @@ async getAllChannels() {
 
 
   convertData(data: any, id: string ) {
-     let newChannel = new ChannelData();
+     let newChannel = new Channel();
     newChannel.title = data['title'];
     newChannel.description = data['description'];
     newChannel.chaId = id;
