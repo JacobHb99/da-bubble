@@ -1,5 +1,4 @@
-import { ChannelData } from "./channel.model";
-import { Conversation } from "./conversation.model";
+import { Channel } from "./channel.model";
 
 export class User {
     uid: string | unknown;
@@ -7,7 +6,7 @@ export class User {
     username: string;
     avatar: string;
     status: 'online' | 'offline';
-    channels: ChannelData[];
+    channels: Channel[];
     role: 'user' | 'guest';
 
     constructor(obj?: Partial<User>){
