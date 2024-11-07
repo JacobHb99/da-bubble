@@ -15,13 +15,5 @@ export class Conversation {
         this.active = obj?.active ?? false;
     }
 
-    getJSON() {
-        return {
-            conId: this.conId,
-            creatorId: this.creatorId,
-            partnerId: this.partnerId,
-            messages: this.messages,
-            active: this.active,
-        };
-    }
+
 }

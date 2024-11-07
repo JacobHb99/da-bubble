@@ -38,11 +38,12 @@ export class ConversationService {
     }
 
     async addConversation(conversation: any) {
-        const conData = conversation.getJSON();
+        const conData = this.getCleanJSON(conversation);
         const conversationRef = await addDoc(collection(this.firestore, "conversations"), conData)
         conData.conId = conversationRef.id,
             await setDoc(conversationRef, conData);
         console.log('NewconData', conData)
+        this.getAllConversations()
     }
 
     // async startConversation(partnerId: string) {
@@ -50,43 +51,55 @@ export class ConversationService {
     //     let existCon = this.searchConversation(creatorId, partnerId)
     //     if (existCon) {
     //         this.currentConversation = new Conversation();
+    //         console.log("existConv",this.currentConversation )
     //     } else {
     //         await this.createNewConversation(creatorId, partnerId)
     //     }
     // }
 
-    // searchConversation(creatorId: any, partnerId: string): Conversation | any {
-    //     for (let i = 0; i < this.allConv.length; i++) {
-    //         const conversation = this.allConv[i];
-    //         const searchedCreatorId = conversation.creatorId;
-    //         const searchedPartnerId = conversation.partnerId;
-    //         if (creatorId === searchedCreatorId && partnerId === searchedPartnerId) {
-    //             return new Conversation(conversation);
-    //         }
-    //     }
-    // }
+    searchConversation(creatorId: any, partnerId: string): Conversation | any {
+        for (let i = 0; i < this.allConv.length; i++) {
+            const conversation = this.allConv[i];
+            const searchedCreatorId = conversation.creatorId;
+            const searchedPartnerId = conversation.partnerId;
+            if (creatorId === searchedCreatorId && partnerId === searchedPartnerId) {
+                return new Conversation(conversation);
+                
+            }
+        }
+    }
 
-    // async getAllConversations() {
-    //     const q = query(collection(this.firestore, "conversations"));
-    //     const unsubscribedConv = onSnapshot(q, (querySnapshot) => {
-    //       this.FiBaService.allConversations=[];
-    //       querySnapshot.forEach((doc) => {
-    //         const conversation= this.getCleanConversationJson(doc)
-    //         this.FiBaService.allConversations.push(conversation.data());
-    //       });
-    //       //console.log("Current cities in CA: ", this.allUsers);
-    //     });
-    //   }
+    async getAllConversations() {
+        const q = query(collection(this.firestore, "conversations"));
+        const unsubscribedConv = onSnapshot(q, (querySnapshot) => {
+          this.FiBaService.allConversations=[];
+          querySnapshot.forEach((doc) => {
+            const conv = this.setConversationObject(doc.data());
+            this.FiBaService.allConversations.push(conv);
+          });
+          console.log("allConv", this.FiBaService.allConversations);
+        });
+      }
 
-    //   getCleanConversationJson(conversation: Conversation) {
-    //     return {
-    //         conId: conversation.conId,
-    //         creatorId: conversation.creatorId,
-    //         partnerId: conversation.partnerId,
-    //         messages: conversation.messages,
-    //         active: conversation.active,
-    //     };
-    //   }
+      setConversationObject(conversation: any):Conversation {
+        return {
+            conId: conversation.conId ||'',
+            creatorId: conversation.creatorId || '',
+            partnerId: conversation.partnerId || '',
+            messages: conversation.messages || [],
+            active: conversation.active || false,
+        };
+      }
+
+      getCleanJSON(conversation: Conversation) {
+        return {
+            conId: conversation.conId,
+            creatorId: conversation.creatorId,
+            partnerId: conversation.partnerId,
+            messages: conversation.messages,
+            active: conversation.active,
+        };
+    }
 
 
 
