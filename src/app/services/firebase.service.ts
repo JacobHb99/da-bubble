@@ -40,6 +40,13 @@ export class FirebaseService {
     });
   }
 
+  async addUsersToChannel(ChannelId: string) {
+    const userRef = doc(this.firestore, "channels", ChannelId );
+    await updateDoc(userRef, {
+      users: this.selectedUsers
+    });
+  }
+
 
   async getAllUsers() {
     const q = query(collection(this.firestore, "users"));

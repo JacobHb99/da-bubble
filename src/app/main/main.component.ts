@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { InterfaceService } from '../services/interface.service';
 import { AddChannelComponent } from '../dialogs/add-channel/add-channel.component';
 import { EditChannelComponent } from '../dialogs/edit-channel/edit-channel.component';
+import { ChannelService } from '../services/channel.service';
 
 
 
@@ -22,9 +23,11 @@ import { EditChannelComponent } from '../dialogs/edit-channel/edit-channel.compo
 export class MainComponent {
   fireService = inject(FirebaseService);
   uiService = inject(InterfaceService);
+  channelService = inject(ChannelService);
 
   ngOnInit() {
     this.fireService.getAllUsers();
+    this.channelService.getAllChannels()
     console.log('active Channel default: ', this.uiService.content)
   }
 }

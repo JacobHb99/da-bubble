@@ -9,6 +9,7 @@ import { AddChannelComponent } from '../../dialogs/add-channel/add-channel.compo
 import { FormsModule } from '@angular/forms';
 import { ChannelService } from '../../services/channel.service';
 import { ConversationService } from '../../services/conversation.service';
+import { user } from '@angular/fire/auth';
 
 
 
@@ -39,21 +40,12 @@ tagImg: string = "/icons/tag.png"
 addImg: string = "/icons/add_circle.png"
 accountImg: string = "/icons/account_circle.png"
 menuImg: string = "/icons/Hide-navigation.png"
-
 uiService = inject(InterfaceService);
 conService = inject(ConversationService);
+channelService = inject(ChannelService)
 
-constructor(public firebaseService: FirebaseService, private userDataService: UserDataService, public dialog: MatDialog, private channelService: ChannelService ){}
+constructor(public firebaseService: FirebaseService, private userDataService: UserDataService, public dialog: MatDialog){}
 
-
-
-ngOnInit() {
-  this.channelService.currentChannelName.subscribe(name => {
-    if (name) {
-      this.channelNameArray.push(name);
-    }
-  });
-}
 
 
 toggleMenu() {
@@ -111,9 +103,7 @@ showUserChat(user: any) {
   this.uiService.changeContent('directMessage');
 }
 
-showChannelChat() {
-  this.uiService.changeContent('channelChat');
-}
+
 
   openDialogChannel(): void {
     const dialogRef = this.dialog.open(AddChannelComponent, {

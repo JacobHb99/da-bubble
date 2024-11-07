@@ -10,7 +10,7 @@
         <h2>Channel-Name</h2>
         <div class="input-container">
             <img src="/icons/tag-grey.png" alt="">
-            <input [(ngModel)]="channelName" placeholder="z.B. Kooperationsprojekte" type="text">
+            <input [(ngModel)]="channelService.currentChannel.title" placeholder="z.B. Kooperationsprojekte" type="text">
         </div>
     </div>
 
@@ -19,10 +19,10 @@
         <p>(optional)</p>
     </div>
     <div class="input-description">
-        <input placeholder="Dein Text hier" type="text">
+        <input [(ngModel)]="channelService.currentChannel.description" placeholder="Dein Text hier" type="text">
     </div>
-    <div class="button">
-        <button (click)="createChannel()" (click)="openDialogAddPeople()">Erstellen</button>
+    <div  class="button">
+        <button (click)="openDialogAddPeople()">Erstellen</button>
     </div>
 
 </div>

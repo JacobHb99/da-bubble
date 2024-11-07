@@ -21,4 +21,17 @@ export class Channel {
         this.reactions = obj?.reactions ?? [];
     }
 
+    public getJSON() {
+        return {
+            chaId: this.chaId,
+            title: this.title,
+            creatorId: this.creatorId,
+            description: this.description,
+            users: this.users,
+            messages: this.messages,
+            comments: this.comments,
+            reactions: this.reactions     
+        };
+    }
+
 }

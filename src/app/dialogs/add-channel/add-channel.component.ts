@@ -5,6 +5,7 @@ import { MatDialog, MatDialogModule, MatDialogRef} from '@angular/material/dialo
 import { AddPeopleComponent } from '../add-people/add-people.component';
 import { FormsModule } from '@angular/forms';
 import { ChannelService } from '../../services/channel.service';
+import { ConversationService } from '../../services/conversation.service';
 
 @Component({
   selector: 'app-add-channel',
@@ -16,20 +17,16 @@ import { ChannelService } from '../../services/channel.service';
 export class AddChannelComponent {
   isHoveredClose = false;
   channelName = "";
+  
 
-  constructor(public firebaseService: FirebaseService, public dialogRef: MatDialogRef<AddChannelComponent>, public dialog: MatDialog, private channelService: ChannelService){}
+  constructor(public firebaseService: FirebaseService, public dialogRef: MatDialogRef<AddChannelComponent>, public dialog: MatDialog, public channelService: ChannelService){}
 
 
   closeDialogChannel(): void {
     this.dialogRef.close(); 
   }
 
-  createChannel() {
-    if (this.channelName) {
-      this.channelService.updateChannelName(this.channelName);
-      this.channelName = ''; 
-    }
-  }
+  
 
   
     openDialogAddPeople(): void {
