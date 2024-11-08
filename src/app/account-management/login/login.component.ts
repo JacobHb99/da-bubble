@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { HeaderSignComponent } from '../header-sign/header-sign.component';
 import { AuthService } from '../../services/auth.service';
 import { FirebaseService } from '../../services/firebase.service';
@@ -26,7 +26,7 @@ import { ImpressComponent } from '../impress/impress.component';
 })
 
 
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   authService = inject(AuthService);
   fireService = inject(FirebaseService);
   router = inject(Router);
@@ -43,6 +43,15 @@ export class LoginComponent {
   constructor() {
     this.authService.errorMessage = '';
   }
+
+
+  ngOnInit() {
+    console.log(this.authService.currentUserSig());
+    
+    if(this.authService.currentUserSig()) {
+      this.router.navigate(['/main']);
+  }
+}
 
 
   // guestLogin() {

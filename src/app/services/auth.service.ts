@@ -63,6 +63,7 @@ export class AuthService {
     newUser.channels = [];
     newUser.role = 'user'
     await this.fireService.addUser(newUser);
+  
   }
 
 
@@ -197,10 +198,12 @@ export class AuthService {
    * @returns Eine Promise, die entweder erfolgreich ist oder einen Fehler zurückgibt.
    */
   async sendPasswordReset(email: string): Promise<void> {
-    const auth = getAuth();
     try {
-      await sendPasswordResetEmail(auth, email);
+      await sendPasswordResetEmail(this.auth, email);
       console.log(`Passwort-Zurücksetzungs-E-Mail wurde an ${email} gesendet.`);
+      setTimeout(() => {
+        this.router.navigate(['/']);
+      }, 4000);
     } catch (error) {
       console.error("Fehler beim Senden der Passwort-Zurücksetzungs-E-Mail:", error);
       throw error;

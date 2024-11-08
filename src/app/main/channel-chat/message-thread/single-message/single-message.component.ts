@@ -18,7 +18,6 @@ export class SingleMessageComponent {
   showReactionPopups: boolean = false;
   user: any;
   currentDate: string;
-
   currentMessage: Message = new Message();
 
 
