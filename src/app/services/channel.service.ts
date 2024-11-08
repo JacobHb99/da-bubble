@@ -17,6 +17,7 @@ export class ChannelService {
   firebaseService = inject(FirebaseService)
   uiService = inject(InterfaceService);
   conService = inject(ConversationService);
+
   allChannels!: Channel[];
  
   private allChannelsSubject = new BehaviorSubject<any>(null);
@@ -29,7 +30,7 @@ export class ChannelService {
 
   showChannelChat(channel: any) {
     console.log(channel);
-   // this.channelService.setChannel(channel)
+    this.setChannel(channel)
     this.uiService.changeContent('channelChat');
   }
  
