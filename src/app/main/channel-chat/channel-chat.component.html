@@ -1,9 +1,9 @@
 <section class="main">
     <header>
-        @if (this.uiService.content !== 'newMessage') {
+        @if (this.uiService.content !== 'newMessage' && channel) {
         <div (click)="openEditChannel()" class="channelName hoverEffect"
             [ngStyle]="{'display': this.uiService.content === 'channelChat' ? 'flex' : 'none'}">
-            <p># </p>
+            <p># {{ channel.title }} </p>
             <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <mask id="mask0_235_460" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="30"
                     height="30">

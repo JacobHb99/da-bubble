@@ -7,7 +7,7 @@
     <h1>Leute hinzufügen</h1>
     <div class="checkbox-container">
         <div class="first-row">
-            <input (click)="hideInput()" checked type="radio" name="selection" id="">
+            <input (change)="onCheckboxChange($event)" (click)="hideInput()" checked type="radio" name="selection" id="">
             <p>Alle Mitglieder von OfficeTeam hinzufügen</p>
         </div>
         <div class="second-row">

@@ -2,11 +2,12 @@ import { inject, Injectable } from '@angular/core';
 import { addDoc, collection, Firestore, onSnapshot, query, setDoc } from '@angular/fire/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { Channel } from '../models/channel.model';
-import { DocumentData } from 'firebase/firestore';
+import { doc, DocumentData } from 'firebase/firestore';
 import { FirebaseService } from './firebase.service';
 import { SideNavComponent } from '../main/side-nav/side-nav.component';
 import { ConversationService } from './conversation.service';
 import { InterfaceService } from './interface.service';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +23,6 @@ export class ChannelService {
  
   private allChannelsSubject = new BehaviorSubject<any>(null);
   selectedChannel = this.allChannelsSubject.asObservable();
-
 
   constructor(){
     this.getAllChannels();
@@ -41,8 +41,6 @@ async createChannel() {
   const channelRef = await addDoc(collection(this.firestore, "channels"), channelData)
   this.firebaseService.addUsersToChannel(this.currentChannel.chaId)
     this.showChannelChat(this.currentChannel)
-  
-
 }
 
 async getAllChannels() {
@@ -56,8 +54,6 @@ async getAllChannels() {
 });
 
 }
-
-
   setChannel(user: any) {
     this.allChannelsSubject.next(user);
   }
@@ -74,12 +70,7 @@ async getAllChannels() {
     newChannel.comments = data['comments'];
     newChannel.reactions = data['reactions'];
 
-    
-    
-
     this.allChannels.push(newChannel)
-  
-    
   }
 }
 

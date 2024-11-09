@@ -5,6 +5,7 @@ import { FirebaseService } from '../../services/firebase.service';
 import { User } from '../../models/user.model';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ChannelService } from '../../services/channel.service';
+import { every } from 'rxjs';
 
 
 
@@ -18,10 +19,12 @@ import { ChannelService } from '../../services/channel.service';
 export class AddPeopleComponent {
   isHoveredClose = false;
   isSelected = false;
+  isChecked = false;
   searchName: string = "";
   isInputEmpty = false;
-  constructor(public firebaseService: FirebaseService, public dialogRef: MatDialogRef<AddPeopleComponent>, public channelService: ChannelService){}
-
+  constructor(public firebaseService: FirebaseService, public dialogRef: MatDialogRef<AddPeopleComponent>, public channelService: ChannelService){
+    
+  }
 
 
   showInput() {
@@ -32,6 +35,20 @@ export class AddPeopleComponent {
     this.isSelected = false;
     this.isInputEmpty = false;
     
+  }
+
+
+  onCheckboxChange(event: any) {
+    if (event.target.checked) {
+      console.log('checked');
+      this.addAllUserToChannel()
+    } else {
+      console.log('not checked');
+    }
+  }
+
+  addAllUserToChannel() {
+
   }
   emptyInput() {
     this.isInputEmpty = this.firebaseService.selectedUsers.length === 0;
@@ -65,6 +82,6 @@ export class AddPeopleComponent {
     }
 
 
-    
+
   }
 

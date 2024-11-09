@@ -26,14 +26,12 @@ export class FirebaseService {
   async addUser(user: any) {
     const userId = user.uid;
     const userData = user.getJSON();
-    console.log(user)
+    
     await setDoc(doc(this.firestore, "users", userId), userData);
   }
 
 
   async setUserStatus(currentUser: UserCredential, status: string) {
-    console.log('logoutUser:', currentUser);
-
     const userRef = doc(this.firestore, "users", currentUser.user.uid);
     await updateDoc(userRef, {
       status: status
@@ -48,6 +46,7 @@ export class FirebaseService {
   }
 
 
+
   async getAllUsers() {
     const q = query(collection(this.firestore, "users"));
     const unsubscribedUsers = onSnapshot(q, (querySnapshot) => {
@@ -55,13 +54,13 @@ export class FirebaseService {
       querySnapshot.forEach((doc) => {
         this.allUsers.push(doc.data());
       });
-      console.log("Current cities in CA: ", this.allUsers);
+      
     });
   }
 
   async subscribeUserById(id: string) {
     const unsubscribedUser = onSnapshot(this.getUserDocRef(id), (user) => {
-      console.log(user.data());
+      
       this.user = this.setUserJson(user.data(), user.id);
 
     });
@@ -69,7 +68,7 @@ export class FirebaseService {
 
   toggleChannel() {
     this.isClosed = !this.isClosed;
-    console.log(this.isClosed);
+   
 
 
   }
