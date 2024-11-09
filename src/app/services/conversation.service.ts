@@ -7,6 +7,7 @@ import { where, } from "firebase/firestore";
 import { AuthService } from './../services/auth.service';
 import { InterfaceService } from './../services/interface.service';
 import { FirebaseService } from './firebase.service';
+import { UserDataService } from './user.service';
 
 @Injectable({
     providedIn: 'root'
@@ -16,11 +17,8 @@ export class ConversationService {
     firestore = inject(Firestore);
     authService = inject(AuthService);
     uiService = inject(InterfaceService);
-    allConv: any = [];
-    conversation: any;
-    currentConversation = new Conversation();
 
-    constructor() { }
+    constructor(private userDataService: UserDataService) { }
 
     async startConversation(user: any) {
         this.getAllConversations();
@@ -29,19 +27,21 @@ export class ConversationService {
         let creatorId = this.authService.currentUserSig()?.uid;
         let existCon: Conversation = this.searchConversation(creatorId, partnerId)
         if (existCon) {
-            this.currentConversation = new Conversation(existCon);
-            console.log("existConv", this.currentConversation)
+            this.FiBaService.currentConversation = new Conversation(existCon);
+            this.showUserChat(user);
+            console.log("existConv", this.FiBaService.currentConversation)
         } else {
             await this.createNewConversation(creatorId, partnerId)
-            console.log("newConv", this.currentConversation)
+            this.showUserChat(user);
+            console.log("newConv", this.FiBaService.currentConversation)
         }
     }
 
     async createNewConversation(creatorId: any, partnerId: any) {
-        this.currentConversation = new Conversation();
-        this.currentConversation.creatorId = creatorId;
-        this.currentConversation.partnerId = partnerId;
-        await this.addConversation(this.currentConversation);
+        this.FiBaService.currentConversation = new Conversation();
+        this.FiBaService.currentConversation.creatorId = creatorId;
+        this.FiBaService.currentConversation.partnerId = partnerId;
+        await this.addConversation(this.FiBaService.currentConversation);
     }
 
     async addConversation(conversation: any) {
@@ -51,7 +51,7 @@ export class ConversationService {
             await setDoc(conversationRef, conData).catch((err) => {
                 console.log('Error adding Conversation to firebase', err);
             });
-        this.getAllConversations()
+        this.getAllConversations();       
     }
 
     searchConversation(creatorId: unknown, partnerId: string): Conversation | any {
@@ -100,6 +100,11 @@ export class ConversationService {
             active: conversation.active,
         };
     }
+
+    showUserChat(user: any) {
+        this.userDataService.setUser(user);
+        this.uiService.changeContent('directMessage');
+      }
 
 
 

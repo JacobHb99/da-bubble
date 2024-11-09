@@ -8,6 +8,7 @@
             <hr>
         </div>
     </div>
+    @if (this.uiService.content === 'directMessage') {
     <div [ngClass]="messageIsMine ? 'myMessageBox': 'replyMessageBox'">
         <div [ngClass]="{'replyMessageDetails': !messageIsMine }" class="messageDetails">
             <div class="messageInfo">
@@ -100,4 +101,5 @@
             </div>
         </div>
     </div>
+}
 </section>

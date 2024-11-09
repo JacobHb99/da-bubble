@@ -47,7 +47,7 @@
         <div [ngClass]="{'hide': hideUser}" class="users">
             <div *ngFor="let user of firebaseService.allUsers; trackBy: firebaseService.allUsers.username"
                 class="single-user">
-                <div (click)="conService.startConversation(user); showUserChat(user)"  class="single-user-hover">
+                <div (click)="conService.startConversation(user)"  class="single-user-hover">
                     <div class="avatar">
                         <img class="avatar-img" [src]="user.avatar" alt="">
                         <img class="status" [src]="user.status == 'online' ? '/icons/Online.png' : '/icons/Offline.png'" alt="">

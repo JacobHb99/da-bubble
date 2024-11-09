@@ -17,7 +17,7 @@ export class FirebaseService {
   selectedUsers: any = []
   isClosed = false;
   user: any;
-
+  currentConversation: Conversation = new Conversation();
   firestore = inject(Firestore);
 
   constructor() { }

@@ -98,12 +98,10 @@ toggleChannel() {
 }
 
 
-showUserChat(user: any) {
-  this.userDataService.setUser(user);
-  this.uiService.changeContent('directMessage');
-}
-
-
+// showUserChat(user: any) {
+//   this.userDataService.setUser(user);
+//   this.uiService.changeContent('directMessage');
+// }
 
   openDialogChannel(): void {
     const dialogRef = this.dialog.open(AddChannelComponent, {
