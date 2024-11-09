@@ -6,6 +6,9 @@ import { FormsModule } from '@angular/forms';
 import { SingleMessageComponent } from '../message-thread/single-message/single-message.component';
 import { FirebaseService } from '../../../services/firebase.service';
 import { AuthService } from '../../../services/auth.service';
+import { Conversation } from '../../../models/conversation.model';
+import { arrayUnion, updateDoc, addDoc, doc, collection, Firestore, onSnapshot, query, setDoc } from '@angular/fire/firestore';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-send-message',
@@ -19,42 +22,57 @@ export class SendMessageComponent {
 
   fiBaService = inject(FirebaseService);
   authService = inject(AuthService)
+  firestore = inject(Firestore);
 
+  currentRecipient: Conversation = new Conversation;
   text: string = '';
-  message = new Message()
+  currentMsg = new Message()
 
 
-  sendMessage() {
-    this.message=
-    new Message({
-      timeStamp: Date.now(),
-      senderId: this.authService.currentUserSig()?.uid,
-      text: this.text,
-      thread: new Thread(),
-      reactions: []
-    });
-    console.log('msg', this.message)
-    console.log('msg', this.fiBaService.currentConversation)
+  async createNewMsg() {
+    console.log('loggeduser', this.authService.currentUserSig());
+    this.currentMsg = new Message();
+    this.currentMsg.timeStamp = Date.now();
+    this.currentMsg.senderId = this.authService.currentUserSig()?.uid;
+    this.currentMsg.text = this.text,
+      this.currentMsg.thread = new Thread(), //wird erstmal nicht erstellt (wegen array)
+      this.currentMsg.reactions = [], //wird erstmal nicht erstellt (wegen array)
+      //console.log('msg', this.currentMsg)
+      await this.addMessage(this.currentMsg);
   }
 
   async addMessage(message: any) {
-    const msgData = this.message.getJSON(message);
-    // const msgnRef = await addDoc(collection(this.firestore, "conversations"), msgData)
-    // msgData.msgId = msgRef.id,
-    //     await setDoc(msgRef, msgData).catch((err) => {
-    //         console.log('Error adding Conversation to firebase', err);
-    //     });
-    //this.getAllConversations();       
-}
+    const convId = this.fiBaService.currentConversation.conId;
+    const msgData = this.getCleanJSON(message);
+    msgData.msgId = uuidv4();
+    //console.log('msgdata', msgData)
+    const conversationRef = doc(this.firestore, `conversations/${convId}`);
+    try {
+      await updateDoc(conversationRef, {
+        messages: arrayUnion(msgData)
+      });
+      console.log('Nachricht erfolgreich hinzugefügt');
+    } catch (error) {
+      console.error('Fehler beim Hinzufügen der Nachricht:', error);
+    }
+    this.updateThread()
+  }
 
-// getCleanJSON(message: Message) {
-//   return {
-//       conId: conversation.conId,
-//       creatorId: conversation.creatorId,
-//       partnerId: conversation.partnerId,
-//       messages: conversation.messages,
-//       active: conversation.active,
-//   };
-// }
+  updateThread() {
+    let loggeduser = this.authService.currentUserSig();
+  }
+
+
+getCleanJSON(message: Message) {
+  return {
+    msgId: message.msgId,
+    timeStamp: message.timeStamp,
+    senderId: message.senderId,
+    //recipientId: message.recipientId,
+    text: message.text,
+    //thread: message.thread,
+    //reactions: message.reactions
+  };
+}
 
 }

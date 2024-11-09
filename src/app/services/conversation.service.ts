@@ -2,12 +2,12 @@ import { inject, Injectable } from '@angular/core';
 import { doc, addDoc, setDoc, Firestore, updateDoc, collection, onSnapshot, query } from '@angular/fire/firestore';
 import { User } from '../models/user.model';
 import { Conversation } from '../models/conversation.model';
-import { UserCredential } from '@angular/fire/auth';
 import { where, } from "firebase/firestore";
 import { AuthService } from './../services/auth.service';
 import { InterfaceService } from './../services/interface.service';
 import { FirebaseService } from './firebase.service';
 import { UserDataService } from './user.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -17,6 +17,9 @@ export class ConversationService {
     firestore = inject(Firestore);
     authService = inject(AuthService);
     uiService = inject(InterfaceService);
+
+    private allConvSubject = new BehaviorSubject<any>(null);
+    selectedConv = this.allConvSubject.asObservable();
 
     constructor(private userDataService: UserDataService) { }
 
@@ -78,7 +81,7 @@ export class ConversationService {
             });
 
         });
-        console.log("allVonv", this.FiBaService.allConversations)
+        console.log("allConv", this.FiBaService.allConversations)
     }
 
     setConversationObject(conversation: any): Conversation {

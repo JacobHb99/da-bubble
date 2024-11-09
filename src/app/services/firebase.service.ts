@@ -5,6 +5,7 @@ import { UserCredential } from '@angular/fire/auth';
 import { where, } from "firebase/firestore";
 import { Conversation } from '../models/conversation.model';
 import { Channel } from '../models/channel.model';
+import { signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class FirebaseService {
   isClosed = false;
   user: any;
   currentConversation: Conversation = new Conversation();
+  //currentConversation = signal<Conversation | null>(null)
   firestore = inject(Firestore);
 
   constructor() { }
@@ -108,6 +110,8 @@ export class FirebaseService {
     
     return `${year}-${month}-${day}`;
   }
+
+
 }
 
 

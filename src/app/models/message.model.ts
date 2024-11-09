@@ -4,7 +4,7 @@ export class Message {
     msgId: string;
     timeStamp: number;
     senderId: string | unknown;
-    recipientId: string;
+    //recipientId: string; //Benötigt??
     text: string;
     thread?: Thread;
     reactions: Reaction[];
@@ -13,22 +13,10 @@ export class Message {
         this.msgId = obj?.msgId ?? '';
         this.timeStamp = obj?.timeStamp ?? 0;
         this.senderId = obj?.senderId ?? '';
-        this.recipientId = obj?.recipientId ?? '';
+        //this.recipientId = obj?.recipientId ?? '';
         this.text = obj?.text ?? '';
         this.thread = obj?.thread;
         this.reactions = obj?.reactions ?? [];
-    }
-
-    public getJSON(message:Message) {
-        return {
-            msgId: this.msgId,
-            timeStamp: this.timeStamp,
-            senderId: this.senderId,
-            recipientId: this.recipientId,
-            text: this.text,
-            thread: this.thread,
-            reactions: this.reactions
-        };
     }
 }
 
