@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { UserDataService } from '../../../../services/user.service';
 import { InterfaceService } from '../../../../services/interface.service';
 import { Message} from '../../../../models/message.model';
+import { FirebaseService } from '../../../../services/firebase.service';
 
 @Component({
   selector: 'app-single-message',
@@ -13,6 +14,7 @@ import { Message} from '../../../../models/message.model';
 })
 export class SingleMessageComponent {
   uiService = inject(InterfaceService);
+  fiBaService = inject(FirebaseService);
 
   messageIsMine: boolean = true;
   showReactionPopups: boolean = false;
@@ -27,19 +29,7 @@ export class SingleMessageComponent {
       this.user = user;
     });
 
-    this.currentDate = this.getCurrentDate();
-  }
-
-  getCurrentDate() {
-    const days = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
-    const months = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli",
-      "August", "September", "Oktober", "November", "Dezember"];
-
-    const today = new Date();
-    const dayName = days[today.getDay()];
-    const day = today.getDate();
-    const monthName = months[today.getMonth()];
-    return `${dayName}, ${day}. ${monthName}`;
+    this.currentDate = this.fiBaService.getCurrentDate();
   }
 
   onMouseOver() {

@@ -15,7 +15,7 @@ import { InterfaceService } from '../../../services/interface.service';
 export class MessageThreadComponent {
   user: any;
   uiService = inject(InterfaceService);
-  threadIsEmpty = true;
+  threadIsEmpty = false;
 
   constructor(private userDataService: UserDataService) {
     this.userDataService.selectedUser.subscribe((user) => {

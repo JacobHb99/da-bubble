@@ -3,11 +3,11 @@ import { Thread } from "./thread.model";
 export class Message {
     msgId: string;
     timeStamp: number;
-    senderId: string;
-    recipientId:string;
+    senderId: string | unknown;
+    recipientId: string;
     text: string;
     thread?: Thread;
-    //reactions: [];
+    reactions: Reaction[];
 
     constructor(obj?: Partial<Message>) {
         this.msgId = obj?.msgId ?? '';
@@ -16,10 +16,10 @@ export class Message {
         this.recipientId = obj?.recipientId ?? '';
         this.text = obj?.text ?? '';
         this.thread = obj?.thread;
-        //this.reactions = obj?.reactions: [];
+        this.reactions = obj?.reactions ?? [];
     }
 
-    public getJSON() {
+    public getJSON(message:Message) {
         return {
             msgId: this.msgId,
             timeStamp: this.timeStamp,
@@ -27,7 +27,19 @@ export class Message {
             recipientId: this.recipientId,
             text: this.text,
             thread: this.thread,
-            //reactions: this.reactions          
+            reactions: this.reactions
         };
+    }
+}
+
+export class Reaction {
+    counter: number;
+    id: string;
+    fromUser: string[];
+
+    constructor(obj?: Partial<Reaction>) {
+        this.counter = obj?.counter ?? 0;
+        this.id = obj?.id ?? '';
+        this.fromUser = obj?.fromUser ?? [];
     }
 }

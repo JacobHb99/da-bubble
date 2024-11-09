@@ -23,7 +23,7 @@ export class ConversationService {
     async startConversation(user: any) {
         this.getAllConversations();
         let partnerId = user.uid
-        console.log("partnerId", partnerId)
+        //console.log("partnerId", partnerId)
         let creatorId = this.authService.currentUserSig()?.uid;
         let existCon: Conversation = this.searchConversation(creatorId, partnerId)
         if (existCon) {
