@@ -1,6 +1,6 @@
 <section class="main">
     <header>
-        @if (this.uiService.content !== 'newMessage') {
+        @if (this.uiService.content !== 'newMessage' && channel) {
         <div (click)="openEditChannel()" class="channelName hoverEffect"
             [ngStyle]="{'display': this.uiService.content === 'channelChat' ? 'flex' : 'none'}">
             <p># {{ channel.title }} </p>
