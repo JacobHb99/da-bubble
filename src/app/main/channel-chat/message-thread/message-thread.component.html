@@ -8,8 +8,8 @@
     </div>
 
  
-
-    <div class="startChat" [ngStyle]="{'display': this.threadIsEmpty === true ? 'none' : 'flex'}"> 
+    @if (this.threadIsEmpty === true && this.uiService.content === 'directMessage') {
+    <div class="startChat"> 
         <!-- nur anzeigen wenn es keinen chatverlauf gibt -->
         <div>
             <img src="{{ user.avatar }}" referrerPolicy="no-referrer" alt="img avatar">
@@ -20,4 +20,5 @@
                 und dir statt.</span>
         </div>
     </div>
+}
 </section>
