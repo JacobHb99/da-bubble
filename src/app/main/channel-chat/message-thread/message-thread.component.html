@@ -1,10 +1,11 @@
 <section>
     <div class="thread"> 
+        @for (message of this.fiBaService.currentConversation.messages; track $index) {
+        
         <!-- for schleife für array anfertigen und dann überprüfen ob 
          leer oder nicht ->"startChat" ausblenden -->
-        <app-single-message></app-single-message>
-        <!-- <app-single-message></app-single-message> -->
-        <!-- <app-single-message></app-single-message> -->
+        <app-single-message [currentMessage]="message"></app-single-message>
+        }
     </div>
 
  

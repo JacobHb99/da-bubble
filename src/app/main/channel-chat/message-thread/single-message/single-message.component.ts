@@ -1,9 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserDataService } from '../../../../services/user.service';
 import { InterfaceService } from '../../../../services/interface.service';
-import { Message} from '../../../../models/message.model';
+import { Message } from '../../../../models/message.model';
 import { FirebaseService } from '../../../../services/firebase.service';
+import { User } from '../../../../models/user.model';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-single-message',
@@ -15,12 +17,14 @@ import { FirebaseService } from '../../../../services/firebase.service';
 export class SingleMessageComponent {
   uiService = inject(InterfaceService);
   fiBaService = inject(FirebaseService);
+  authService= inject(AuthService);
 
   messageIsMine: boolean = true;
   showReactionPopups: boolean = false;
   user: any;
-  currentDate: string;
-  currentMessage: Message = new Message();
+  //currentMessage: Message = new Message();
+  @Input() currentMessage: Message = new Message();
+  loggedInUser:any;
 
 
 
@@ -28,12 +32,10 @@ export class SingleMessageComponent {
     this.userDataService.selectedUser.subscribe((user) => {
       this.user = user;
     });
-
-    this.currentDate = this.fiBaService.getCurrentDate();
   }
 
   onMouseOver() {
-    this.showReactionPopups= true;
+    this.showReactionPopups = true;
   }
 
   onMouseLeave() {
@@ -42,6 +44,29 @@ export class SingleMessageComponent {
 
   ngOnInit(): void {
     this.currentMessage = new Message(this.currentMessage);
+    this.loggedInUser = this.authService.currentUserSig();
+    console.log(this.loggedInUser)
+  }
+
+
+  getFormattedDate(timestamp: number): string {
+    const date = new Date(timestamp);
+
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long', // Wochentag ausgeschrieben (z.B. "Dienstag")
+      day: 'numeric',  // Tag als Zahl (z.B. "14")
+      month: 'long'    // Monat ausgeschrieben (z.B. "Januar")
+    };
+    return date.toLocaleDateString('de-DE', options);
+  }
+
+  getFormattedTime(timestamp: number): string {
+    const time = new Date(timestamp);
+
+    return time.toLocaleTimeString('de-DE', {
+      hour: '2-digit',
+      minute: '2-digit'
+    }) + ' Uhr';
   }
 
 }

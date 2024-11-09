@@ -1,6 +1,6 @@
 <section class="main">
     <header>
-        @if (this.uiService.content !== 'newMessage' && channel) {
+        @if (this.uiService.content === 'channelChat' && channel) {
         <div (click)="openEditChannel()" class="channelName hoverEffect"
             [ngStyle]="{'display': this.uiService.content === 'channelChat' ? 'flex' : 'none'}">
             <p># {{ channel.title }} </p>
@@ -39,6 +39,7 @@
                 </svg>
             </div>
         </div>
+    }
         @if (this.uiService.content === 'directMessage'){
         <div class="channelName">
             <div class="avatar">
@@ -48,7 +49,7 @@
             <p>{{ user.username }}</p>
         </div>
     }
-        }
+        
         @if (this.uiService.content === 'newMessage'){
         <div class="newMsg">
             <span>Neue Nachricht</span>

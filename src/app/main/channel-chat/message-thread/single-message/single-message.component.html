@@ -3,7 +3,7 @@
         <div class="lineDiv">
             <hr>
         </div>
-        <div class="date">{{ currentDate }}</div>
+        <div class="date">{{ getFormattedDate(currentMessage.timeStamp) }}</div>
         <div class="lineDiv">
             <hr>
         </div>
@@ -12,14 +12,11 @@
     <div [ngClass]="messageIsMine ? 'myMessageBox': 'replyMessageBox'">
         <div [ngClass]="{'replyMessageDetails': !messageIsMine }" class="messageDetails">
             <div class="messageInfo">
-                <p>20:23 Uhr</p>
-                <p>{{ user.username }}</p>
+                <p>{{ getFormattedTime(currentMessage.timeStamp) }}</p>
+                <p>{{ loggedInUser.username }}</p>
             </div>
             <div class="messageText" [ngClass]="{'replyMessageText': !messageIsMine }">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Ipsa, eveniet! Soluta quo quidem impedit inventore tempora
-                consequuntur nesciunt quasi sequi quibusdam? Suscipit in modi
-                incidunt iure quo debitis eius cupiditate.
+                {{ currentMessage.text }}
             </div>
             <div class="bottomBox">
                 <div class="answerBox">
@@ -51,7 +48,7 @@
         </div>
         <img [ngStyle]="{'width': '70px',
                         'heigt': '70px',
-                        'border-radius': '50%'}" [src]="user.avatar" referrerPolicy="no-referrer">
+                        'border-radius': '50%'}" [src]="loggedInUser.avatar" referrerPolicy="no-referrer">
         <div class="floatingReactionBox" [ngClass]="{'replyfloatingReactionBox': !messageIsMine }" [ngStyle]="{'left': !messageIsMine ? 'auto' : '45px',
                         'right': !messageIsMine ? '45px' : 'auto'}">
             <div class="iconBox">
@@ -101,5 +98,5 @@
             </div>
         </div>
     </div>
-}
+    }
 </section>

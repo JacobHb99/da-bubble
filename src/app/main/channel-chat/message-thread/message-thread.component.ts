@@ -4,6 +4,7 @@ import { SingleMessageComponent } from './single-message/single-message.componen
 import { SideNavComponent } from '../../side-nav/side-nav.component';
 import { UserDataService } from '../../../services/user.service';
 import { InterfaceService } from '../../../services/interface.service';
+import { FirebaseService } from '../../../services/firebase.service';
 
 @Component({
   selector: 'app-message-thread',
@@ -15,6 +16,7 @@ import { InterfaceService } from '../../../services/interface.service';
 export class MessageThreadComponent {
   user: any;
   uiService = inject(InterfaceService);
+  fiBaService = inject(FirebaseService)
   threadIsEmpty = false;
 
   constructor(private userDataService: UserDataService) {

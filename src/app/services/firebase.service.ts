@@ -89,27 +89,7 @@ export class FirebaseService {
     }
   }
 
-  getCurrentDate() {
-    const days = ["Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"];
-    const months = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli",
-      "August", "September", "Oktober", "November", "Dezember"];
 
-    const today = new Date();
-    const dayName = days[today.getDay()];
-    const day = today.getDate();
-    const monthName = months[today.getMonth()];
-    return `${dayName}, ${day}. ${monthName}`;
-  }
-
-  getFormattedDate(timestamp: number): string {
-    const date = new Date(timestamp);
-    
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    
-    return `${year}-${month}-${day}`;
-  }
 
 
 }

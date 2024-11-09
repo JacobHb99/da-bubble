@@ -9,6 +9,8 @@ import { AuthService } from '../../../services/auth.service';
 import { Conversation } from '../../../models/conversation.model';
 import { arrayUnion, updateDoc, addDoc, doc, collection, Firestore, onSnapshot, query, setDoc } from '@angular/fire/firestore';
 import { v4 as uuidv4 } from 'uuid';
+import { user } from '@angular/fire/auth';
+import { User } from '../../../models/user.model';
 
 @Component({
   selector: 'app-send-message',
@@ -27,6 +29,7 @@ export class SendMessageComponent {
   currentRecipient: Conversation = new Conversation;
   text: string = '';
   currentMsg = new Message()
+  loggedInUser = new User()
 
 
   async createNewMsg() {
@@ -55,11 +58,6 @@ export class SendMessageComponent {
     } catch (error) {
       console.error('Fehler beim Hinzufügen der Nachricht:', error);
     }
-    this.updateThread()
-  }
-
-  updateThread() {
-    let loggeduser = this.authService.currentUserSig();
   }
 
 

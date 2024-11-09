@@ -29,7 +29,7 @@ section {
 }
 
 .myMessageBox {
-    @include dFlex($ai: flex-start, $gap: 30px);
+    @include dFlex($jc: flex-end, $gap: 30px);
     padding: 8px 45px;
     position: relative;
 
