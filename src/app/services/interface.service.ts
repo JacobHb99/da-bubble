@@ -10,7 +10,7 @@ export class InterfaceService {
 
 changeContent(content: 'channelChat' | 'newMessage' | 'directMessage'){
   this.content = content;
-  console.log('active Channel:', this.content)
+  
 }
 
 closeThread() {
