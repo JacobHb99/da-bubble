@@ -1,0 +1,6 @@
+@import './../../../styles.scss';
+
+.header{
+    @include dFlex($jc:space-between, $ai: unset, $fd: row, $gap: 0);
+    margin:45px 40px;
+}

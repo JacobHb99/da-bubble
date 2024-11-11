@@ -16,7 +16,7 @@
                 </g>
             </svg>
         </div>
-        <div class="users" [ngStyle]="{'display': this.uiService.content === 'channelChat' ? 'flex' : 'none'}">
+        <div (click)="openShowMembersDialog()" class="users" [ngStyle]="{'display': this.uiService.content === 'channelChat' ? 'flex' : 'none'}">
             <div class="involvedUsers">
                 <!-- <img class="avatar-img" [src]="user.avatar" alt=""> -->
                 <img src="/img/avatars/avatar_0.png" alt="">

@@ -60,12 +60,19 @@ export class FirebaseService {
     });
   }
 
-  async subscribeUserById(id: string) {
+  async subscribeUserById(id: any) {
     const unsubscribedUser = onSnapshot(this.getUserDocRef(id), (user) => {
-      
       this.user = this.setUserJson(user.data(), user.id);
 
     });
+  }
+
+  async updateUser(user: any) {
+    if (user.uid) {
+      let docRef =this.getUserDocRef( user.uid);
+      await updateDoc( docRef  ,  this.getUserAsCleanJson(user));
+    
+  }
   }
 
   toggleChannel() {
@@ -75,19 +82,34 @@ export class FirebaseService {
 
   }
 
-  getUserDocRef(docId: string) {
+  getUserDocRef(docId:any) {
     return doc(collection(this.firestore, 'users'), docId);
   }
 
   setUserJson(object: any, id: string): any {
     return {
-      id: id,
-      name: object.username,
+      uid: id,
+      username: object.username,
       email: object.email,
       status: object.status,
-      avatar: object.avatar
+      avatar: object.avatar,
+      channels: object.channels,
+      role: object.role
     }
+
   }
+
+  getUserAsCleanJson(object:any):{} {
+    return {
+      uid: object.uid,
+      username: object.username,
+      email: object.email,
+      status: object.status,
+      avatar: object.avatar,
+      channels: object.channels,
+      role: object.role
+    }
+      }
 
 
 

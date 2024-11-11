@@ -8,6 +8,7 @@ import { EditChannelComponent } from '../../dialogs/edit-channel/edit-channel.co
 import { MatDialog } from '@angular/material/dialog';
 import { SingleMessageComponent } from './message-thread/single-message/single-message.component';
 import { ChannelService } from '../../services/channel.service';
+import { ShowMemberInChannelComponent } from '../../dialogs/show-member-in-channel/show-member-in-channel.component';
 
 @Component({
   selector: 'app-channel-chat',
@@ -48,6 +49,13 @@ export class ChannelChatComponent{
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed');
       });
+    }
+
+    openShowMembersDialog(){
+      const dialogRef = this.dialog.open(ShowMemberInChannelComponent, {
+
+      });
+      
     }
    
   
