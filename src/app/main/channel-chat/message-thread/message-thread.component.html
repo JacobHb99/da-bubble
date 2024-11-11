@@ -1,14 +1,12 @@
 <section>
-    <div class="thread"> 
-        
+    <div class="thread">         
         @for (message of this.fiBaService.currentConversation.messages; track $index) {
-
         <app-single-message [currentMessage]="message"></app-single-message>
         }
+        
         @empty {
             @if (this.uiService.content === 'directMessage') {
                 <div class="startChat"> 
-                    <!-- nur anzeigen wenn es keinen chatverlauf gibt -->
                     <div>
                         <img src="{{ user.avatar }}" referrerPolicy="no-referrer" alt="img avatar">
                         <span>{{ user.username }}</span>
