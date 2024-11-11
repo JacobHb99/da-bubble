@@ -43,7 +43,7 @@ section {
 }
 
 .replyMessageBox {
-    @include dFlex($fd: row-reverse, $ai: flex-start, $gap: 30px);
+    @include dFlex($fd: row-reverse, $jc: flex-end, $gap: 30px);
     padding: 8px 45px;
     position: relative;
 
