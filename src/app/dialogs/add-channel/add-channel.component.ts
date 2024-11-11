@@ -19,7 +19,9 @@ export class AddChannelComponent {
   channelName = "";
   
 
-  constructor(public firebaseService: FirebaseService, public dialogRef: MatDialogRef<AddChannelComponent>, public dialog: MatDialog, public channelService: ChannelService){}
+  constructor(public firebaseService: FirebaseService, public dialogRef: MatDialogRef<AddChannelComponent>, public dialog: MatDialog, public channelService: ChannelService){
+    this.firebaseService.selectedUsers = [];
+  }
 
 
   closeDialogChannel(): void {

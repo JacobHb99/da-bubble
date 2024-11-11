@@ -6,6 +6,7 @@ import { where, } from "firebase/firestore";
 import { Conversation } from '../models/conversation.model';
 import { Channel } from '../models/channel.model';
 import { signal } from '@angular/core';
+import { ChannelService } from './channel.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +22,27 @@ export class FirebaseService {
   currentConversation: Conversation = new Conversation();
   //currentConversation = signal<Conversation | null>(null)
   firestore = inject(Firestore);
+  
+  
 
   constructor() { }
+
+  async assignUsersToChannel(chaId: string, currentChannel: any) {
+    try {
+      const channelRef = doc(this.firestore, `channels/${chaId}`);
+      
+      await updateDoc(channelRef, { users: this.allUsers, chaId: currentChannel.chaId } );
+      console.log(this.allUsers);
+    } catch (error) {
+    }
+  }
+
+
+   async addAllUsersToChannel(chaId: string, currentChannel: any) {
+     await this.assignUsersToChannel(chaId, currentChannel)
+
+  }
+
 
 
   async addUser(user: any) {

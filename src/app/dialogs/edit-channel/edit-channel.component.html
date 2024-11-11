@@ -4,7 +4,7 @@
     </div>
     <div class="channel-header">
         <img src="/icons/tag.png" alt="">
-        <h1>Entwicklerteam</h1>
+        <h1>{{ channel?.title }}</h1>
     </div>
     <div class="channel-name-container">
         <div class="edit-name">
@@ -13,7 +13,7 @@
         </div>
         <div class="channel-name">
             <img src="/icons/tag.png" alt="">
-            <p>Entwicklerteam</p>
+            <p>{{ channel?.title }}</p>
         </div>
     </div>
 
@@ -23,13 +23,12 @@
             <p>Bearbeiten</p>
         </div>
         <div class="channel-name">
-            <p>Dieser Channel ist für alles rund um #dfsdf vorgesehen. Hier kannst du zusammen mit deinem Team Meetings
-                abhalten, Dokumente teilen und Entscheidungen treffen.</p>
+            <p>{{ channel?.description }}</p>
         </div>
         <div class="line"></div>
         <div class="created-from">
             <h2>Erstellt von</h2>
-            <p>Noah Braun</p>
+            <p>{{ authService.currentUserSig()?.username }}</p>
         </div>
     </div>
     <div class="btn-container">
