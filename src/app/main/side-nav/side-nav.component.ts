@@ -108,7 +108,6 @@ toggleChannel() {
       minWidth: '873px'
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
     });
   }
  

@@ -16,6 +16,8 @@ import { AuthService } from '../../services/auth.service';
 export class EditChannelComponent implements OnInit {
   channel: Channel | undefined;
   isHoveredClose = false;
+  editName: boolean = false;
+  change: string = "Bearbeiten";
 
 
   constructor(public dialogRef: MatDialogRef<EditChannelComponent>, public dialog: MatDialog, public channelService: ChannelService, private firebaseService: FirebaseService, public authService: AuthService){}
@@ -30,5 +32,16 @@ export class EditChannelComponent implements OnInit {
   
    closeEditChannel(): void {
     this.dialogRef.close()
+   }
+
+   editChannelName() {
+    console.log(this.editName);
+    if (this.editName) {
+      this.change = 'Speichern'
+      
+    } else {
+      this.change = 'Bearbeiten'
+    }
+    
    }
   }
