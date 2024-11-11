@@ -1,12 +1,13 @@
 @import './../../../../styles.scss';
 
-.threadSection{
+Section{
     position: relative;   
     height: calc(100% - 300px); 
+    //height: 50%;
 }
 
 .thread{
-    height: 100%;
+    height: 100%; 
     padding-top: 10px;
     overflow-y: scroll;
 }

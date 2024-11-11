@@ -56,12 +56,17 @@
                 </div>
             </div>
         </div>
+        @if (loggedInUser.uid==currentMessage.senderId) {
         <img [ngStyle]="{'width': '70px',
                         'heigt': '70px',
-                        'border-radius': '50%'}" 
-                        [src]="loggedInUser.avatar" referrerPolicy="no-referrer">
-        <div class="floatingReactionBox" [ngClass]="{'replyfloatingReactionBox': loggedInUser.uid!==currentMessage.senderId }" 
-        [ngStyle]="{'left': loggedInUser.uid!==currentMessage.senderId ? 'auto' : '45px',
+                        'border-radius': '50%'}" [src]="loggedInUser.avatar" referrerPolicy="no-referrer">
+        } @else {
+            <img [ngStyle]="{'width': '70px',
+                        'heigt': '70px',
+                        'border-radius': '50%'}" [src]="findUserWithId(currentMessage.senderId)?.avatar" referrerPolicy="no-referrer">
+        }
+        <div class="floatingReactionBox"
+            [ngClass]="{'replyfloatingReactionBox': loggedInUser.uid!==currentMessage.senderId }" [ngStyle]="{'left': loggedInUser.uid!==currentMessage.senderId ? 'auto' : '45px',
                         'right': loggedInUser.uid!==currentMessage.senderId ? '45px' : 'auto'}">
             <div class="iconBox">
                 <img src="/icons/emoji-check.png" alt="emoji">

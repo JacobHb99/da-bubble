@@ -60,14 +60,13 @@
         }
     </header>
 
-
-    
-    <app-send-message></app-send-message>
-
     @if (this.uiService.content !== 'newMessage') {
     <app-message-thread>
     </app-message-thread>
     <!-- <app-send-message placeholder="Nachricht an #{{ user.username }}">
     </app-send-message> -->
     }
+    
+    <app-send-message></app-send-message>
+    
 </section>

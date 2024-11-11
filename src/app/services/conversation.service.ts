@@ -33,16 +33,12 @@ export class ConversationService {
             this.FiBaService.currentConversation = new Conversation(existCon);
             this.showUserChat(user);
             console.log("existConv", this.FiBaService.currentConversation)
-            this.listenToCurrentConversationChanges(this.FiBaService.currentConversation.conId);
         } else {
             await this.createNewConversation(creatorId, partnerId)
             this.showUserChat(user);
             console.log("newConv", this.FiBaService.currentConversation)
-            this.listenToCurrentConversationChanges(this.FiBaService.currentConversation.conId);
         }
     }
-
- 
 
     async createNewConversation(creatorId: any, partnerId: any) {
         this.FiBaService.currentConversation = new Conversation();
@@ -86,16 +82,6 @@ export class ConversationService {
 
         });
         console.log("allConv", this.FiBaService.allConversations)
-    }
-
-    listenToCurrentConversationChanges(conversationId: any) {
-        const conversationRef = doc(this.firestore, `conversations/${conversationId}`);
-        onSnapshot(conversationRef, (docSnapshot) => {
-            if (docSnapshot.exists()) {
-                const updatedConversation = this.setConversationObject(docSnapshot.data());
-                this.FiBaService.currentConversation = updatedConversation;
-            }
-        });
     }
 
     setConversationObject(conversation: any): Conversation {
