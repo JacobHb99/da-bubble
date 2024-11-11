@@ -41,15 +41,15 @@ export class AddPeopleComponent {
   onCheckboxChange(event: any) {
     if (event.target.checked) {
       console.log('checked');
-      this.addAllUserToChannel()
+      
     } else {
       console.log('not checked');
     }
   }
 
-  addAllUserToChannel() {
+  
 
-  }
+
   emptyInput() {
     this.isInputEmpty = this.firebaseService.selectedUsers.length === 0;
   }

@@ -33,7 +33,7 @@ export class ChannelChatComponent{
     }); 
     this.channelService.selectedChannel.subscribe((channel) => {
       this.channel = channel; 
-      console.log(channel);
+      
            
       this.uiService.changeContent('newMessage');
     }); 
