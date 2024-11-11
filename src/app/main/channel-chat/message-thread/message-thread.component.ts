@@ -17,18 +17,11 @@ export class MessageThreadComponent {
   user: any;
   uiService = inject(InterfaceService);
   fiBaService = inject(FirebaseService);
-  threadIsEmpty = false;
 
   constructor(private userDataService: UserDataService) {
     this.userDataService.selectedUser.subscribe((user) => {
       this.user = user;
     });
   }
-
-  // checkEmptyChat(){
-  //   if (this.fiBaService.currentConversation.messages.length >0) {
-  //     this.threadIsEmpty = false;
-  //   }   
-  // }
 
 }

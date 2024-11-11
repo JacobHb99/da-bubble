@@ -44,6 +44,7 @@ export class SendMessageComponent {
       this.currentMsg.reactions = [], //wird erstmal nicht erstellt (wegen array)
       //console.log('msg', this.currentMsg)
       await this.addMessage(this.currentMsg);
+      this.text = '';
   }
 
   async addMessage(message: any) {
