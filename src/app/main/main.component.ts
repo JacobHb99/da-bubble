@@ -10,13 +10,22 @@ import { InterfaceService } from '../services/interface.service';
 import { AddChannelComponent } from '../dialogs/add-channel/add-channel.component';
 import { EditChannelComponent } from '../dialogs/edit-channel/edit-channel.component';
 import { ChannelService } from '../services/channel.service';
+import { ConversationService } from '../services/conversation.service';
 
 
 
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [HeaderComponent,ChannelChatComponent, SideNavComponent, ThreadComponent, AddPeopleComponent, CommonModule, AddChannelComponent, EditChannelComponent],
+  imports: [
+    HeaderComponent, 
+    ChannelChatComponent, 
+    SideNavComponent, 
+    ThreadComponent, 
+    AddPeopleComponent, 
+    CommonModule, 
+    AddChannelComponent, 
+    EditChannelComponent],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
 })
@@ -24,6 +33,8 @@ export class MainComponent {
   fireService = inject(FirebaseService);
   uiService = inject(InterfaceService);
   channelService = inject(ChannelService);
+  convService = inject(ConversationService);
+
 
   ngOnInit() {
     this.fireService.getAllUsers();
