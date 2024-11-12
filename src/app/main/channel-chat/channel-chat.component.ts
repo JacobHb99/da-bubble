@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SingleMessageComponent } from './message-thread/single-message/single-message.component';
 import { ChannelService } from '../../services/channel.service';
 import { ShowMemberInChannelComponent } from '../../dialogs/show-member-in-channel/show-member-in-channel.component';
+import { Firestore, doc, onSnapshot } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-channel-chat',
@@ -24,7 +25,7 @@ export class ChannelChatComponent{
   uiService = inject(InterfaceService);
   channelService = inject(ChannelService)
 
-  constructor(private userDataService: UserDataService,  public dialog: MatDialog) {
+  constructor(private userDataService: UserDataService,  public dialog: MatDialog, private firestore: Firestore) {
     this.userDataService.selectedUser.subscribe((user) => {
       this.user = user;      
       console.log(user);
@@ -41,7 +42,7 @@ export class ChannelChatComponent{
 
   }
 
- 
+
     openEditChannel(): void {
       const dialogRef = this.dialog.open(EditChannelComponent, {
         minWidth: '873px'
@@ -57,6 +58,11 @@ export class ChannelChatComponent{
       });
       
     }
+
+
+
+
+  
    
   
 
