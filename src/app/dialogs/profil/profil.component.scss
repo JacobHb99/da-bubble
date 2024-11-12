@@ -1,1 +1,62 @@
+@import './../../../styles.scss';
+
+*{
+padding: 0;
+margin:0;
+font-family: 'Nunito';
+font-size: 18px;
+}
+
+h2{
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.username{
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.header{
+    @include dFlex($jc:space-between, $ai: unset, $fd: row, $gap: 0);
+    margin:45px 40px;
+}
+
+.avatar{
+    width: 420px;
+    margin:0px 40px;
+    border-radius: 200px;
+}
+
+.profil-name{
+    margin:45px 40px;
+    @include dFlex($jc:space-between, $ai: unset, $fd: row, $gap: 0);
+}
+
+.online-status{
+    display: flex;
+    gap:15px;
+    margin:45px 40px;
+    color: #92C83E;
+    font-weight: 400;
+    font-size: 20px;
+}
+
+.email{
+    margin:45px 40px;
+  @include dFlex($jc: unset, $ai: flex-start, $fd: row, $gap: 20px);
+  div{
+    @include dFlex($jc: none, $ai: none, $fd: column, $gap: 0);
+    p{
+        margin:0;
+    }
+  }
+}
+
+.my-email-adress{
+    color:#1381FF;
+}
+
+ 
+
  

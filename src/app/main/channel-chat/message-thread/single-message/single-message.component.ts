@@ -17,14 +17,14 @@ import { AuthService } from '../../../../services/auth.service';
 export class SingleMessageComponent {
   uiService = inject(InterfaceService);
   fiBaService = inject(FirebaseService);
-  authService= inject(AuthService);
+  authService = inject(AuthService);
 
   messageIsMine: boolean = true;
   showReactionPopups: boolean = false;
   user: any;
   //currentMessage: Message = new Message();
   @Input() currentMessage: Message = new Message();
-  loggedInUser:any;
+  loggedInUser: any;
 
 
 
@@ -67,6 +67,17 @@ export class SingleMessageComponent {
       hour: '2-digit',
       minute: '2-digit'
     }) + ' Uhr';
+  }
+
+  findUserWithId(Id: unknown) {
+    for (let i = 0; i < this.fiBaService.allUsers.length; i++) {
+      let user: User = this.fiBaService.allUsers[i];
+
+      if (Id === user.uid) {
+        return user;
+      } 
+    }
+    return null;
   }
 
 }

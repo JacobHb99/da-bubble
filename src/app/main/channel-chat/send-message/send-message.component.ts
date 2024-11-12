@@ -11,6 +11,7 @@ import { arrayUnion, updateDoc, addDoc, doc, collection, Firestore, onSnapshot, 
 import { v4 as uuidv4 } from 'uuid';
 import { user } from '@angular/fire/auth';
 import { User } from '../../../models/user.model';
+import { ConversationService } from '../../../services/conversation.service';
 
 @Component({
   selector: 'app-send-message',
@@ -25,6 +26,7 @@ export class SendMessageComponent {
   fiBaService = inject(FirebaseService);
   authService = inject(AuthService)
   firestore = inject(Firestore);
+  conService = inject(ConversationService)
 
   currentRecipient: Conversation = new Conversation;
   text: string = '';
@@ -42,6 +44,7 @@ export class SendMessageComponent {
       this.currentMsg.reactions = [], //wird erstmal nicht erstellt (wegen array)
       //console.log('msg', this.currentMsg)
       await this.addMessage(this.currentMsg);
+      this.text = '';
   }
 
   async addMessage(message: any) {
@@ -55,6 +58,7 @@ export class SendMessageComponent {
         messages: arrayUnion(msgData)
       });
       console.log('Nachricht erfolgreich hinzugefügt');
+      //this.conService.showUserChat()
     } catch (error) {
       console.error('Fehler beim Hinzufügen der Nachricht:', error);
     }

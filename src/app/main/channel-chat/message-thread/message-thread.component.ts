@@ -16,14 +16,12 @@ import { FirebaseService } from '../../../services/firebase.service';
 export class MessageThreadComponent {
   user: any;
   uiService = inject(InterfaceService);
-  fiBaService = inject(FirebaseService)
-  threadIsEmpty = false;
+  fiBaService = inject(FirebaseService);
 
   constructor(private userDataService: UserDataService) {
     this.userDataService.selectedUser.subscribe((user) => {
       this.user = user;
     });
-
-
   }
+
 }

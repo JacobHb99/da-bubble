@@ -9,13 +9,23 @@
         </div>
     </div>
     @if (this.uiService.content === 'directMessage') {
-    <div [ngClass]="messageIsMine ? 'myMessageBox': 'replyMessageBox'">
-        <div [ngClass]="{'replyMessageDetails': !messageIsMine }" class="messageDetails">
+
+    <div [ngClass]="loggedInUser.uid===currentMessage.senderId ? 'myMessageBox': 'replyMessageBox'">
+        <div [ngClass]="{'replyMessageDetails': loggedInUser.uid!==currentMessage.senderId }" class="messageDetails">
             <div class="messageInfo">
                 <p>{{ getFormattedTime(currentMessage.timeStamp) }}</p>
+                @if (loggedInUser.uid===currentMessage.senderId) {
                 <p>{{ loggedInUser.username }}</p>
+                }
+                @else {
+                <p *ngIf="findUserWithId(currentMessage.senderId); else notFound">
+                    {{ findUserWithId(currentMessage.senderId)?.username }}
+                </p>
+                <ng-template #notFound>user not found</ng-template>
+                }
+
             </div>
-            <div class="messageText" [ngClass]="{'replyMessageText': !messageIsMine }">
+            <div class="messageText" [ngClass]="{'replyMessageText': loggedInUser.uid!==currentMessage.senderId }">
                 {{ currentMessage.text }}
             </div>
             <div class="bottomBox">
@@ -46,11 +56,18 @@
                 </div>
             </div>
         </div>
+        <!-- @if (loggedInUser.uid==currentMessage.senderId) {
         <img [ngStyle]="{'width': '70px',
                         'heigt': '70px',
                         'border-radius': '50%'}" [src]="loggedInUser.avatar" referrerPolicy="no-referrer">
-        <div class="floatingReactionBox" [ngClass]="{'replyfloatingReactionBox': !messageIsMine }" [ngStyle]="{'left': !messageIsMine ? 'auto' : '45px',
-                        'right': !messageIsMine ? '45px' : 'auto'}">
+        } @else {
+            <img [ngStyle]="{'width': '70px',
+                        'heigt': '70px',
+                        'border-radius': '50%'}" [src]="findUserWithId(currentMessage.senderId)?.avatar" referrerPolicy="no-referrer">
+        } -->
+        <div class="floatingReactionBox"
+            [ngClass]="{'replyfloatingReactionBox': loggedInUser.uid!==currentMessage.senderId }" [ngStyle]="{'left': loggedInUser.uid!==currentMessage.senderId ? 'auto' : '45px',
+                        'right': loggedInUser.uid!==currentMessage.senderId ? '45px' : 'auto'}">
             <div class="iconBox">
                 <img src="/icons/emoji-check.png" alt="emoji">
             </div>

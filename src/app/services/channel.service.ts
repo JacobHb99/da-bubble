@@ -2,48 +2,78 @@ import { inject, Injectable } from '@angular/core';
 import { addDoc, collection, Firestore, onSnapshot, query, setDoc } from '@angular/fire/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { Channel } from '../models/channel.model';
-import { DocumentData } from 'firebase/firestore';
+import { doc, DocumentData, DocumentReference, updateDoc } from 'firebase/firestore';
 import { FirebaseService } from './firebase.service';
 import { SideNavComponent } from '../main/side-nav/side-nav.component';
 import { ConversationService } from './conversation.service';
 import { InterfaceService } from './interface.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ChannelService {
   currentChannel = new Channel();
-  firestore = inject(Firestore);
   firebaseService = inject(FirebaseService)
   uiService = inject(InterfaceService);
+  authService = inject(AuthService)
   conService = inject(ConversationService);
-
   allChannels!: Channel[];
  
   private allChannelsSubject = new BehaviorSubject<any>(null);
   selectedChannel = this.allChannelsSubject.asObservable();
 
+  private currentChannelSubject = new BehaviorSubject<Channel>(new Channel());
+  currentChannel$ = this.currentChannelSubject.asObservable();
 
-  constructor(){
+
+  setCurrentChannel(channel: Channel) {
+    console.log(channel);
+    
+    this.currentChannelSubject.next(channel)
+  }
+
+  constructor(private firestore: Firestore){
     this.getAllChannels();
   }
 
   showChannelChat(channel: any) {
-    console.log(channel);
     this.setChannel(channel)
+    this.setCurrentChannel(channel)
     this.uiService.changeContent('channelChat');
   }
  
 
-async createChannel() {
-  this.currentChannel.users = this.firebaseService.selectedUsers;
-  const channelData = this.currentChannel.getJSON();
-  const channelRef = await addDoc(collection(this.firestore, "channels"), channelData)
-  this.firebaseService.addUsersToChannel(this.currentChannel.chaId)
-    this.showChannelChat(this.currentChannel)
+  async createChannel(isSelected: boolean) {
+    const newChannel = new Channel(); 
+    newChannel.title = this.currentChannel.title; 
+    newChannel.creatorId = this.authService.currentUserSig()?.username ?? ""; 
+    newChannel.users = isSelected ? this.firebaseService.selectedUsers : this.firebaseService.allUsers;
+    newChannel.description = this.currentChannel.description;
   
+  
+    const channelData = newChannel.getJSON();
+    const channelRef = await addDoc(collection(this.firestore, "channels"), channelData);
+    
+    newChannel.chaId = channelRef.id;
+    
+  
+    
+    if (isSelected) {
+      await this.firebaseService.addUsersToChannel(newChannel.chaId);
+    } else {
+      await this.firebaseService.addAllUsersToChannel(newChannel.chaId, newChannel);
+    }
+  
+    
+    this.setCurrentChannel(newChannel); 
+    this.showChannelChat(newChannel);
+  }
 
-}
+
+
+ 
+
 
 async getAllChannels() {
   const q = query(collection(this.firestore, "channels"));
@@ -56,7 +86,6 @@ async getAllChannels() {
 });
 
 }
-
 
   setChannel(user: any) {
     this.allChannelsSubject.next(user);

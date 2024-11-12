@@ -3,7 +3,7 @@
         @if (this.uiService.content === 'channelChat' && channel) {
         <div (click)="openEditChannel()" class="channelName hoverEffect"
             [ngStyle]="{'display': this.uiService.content === 'channelChat' ? 'flex' : 'none'}">
-            <p># {{ channel.title }} </p>
+            <p># {{ channel?.title }} </p>
             <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <mask id="mask0_235_460" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="30"
                     height="30">
@@ -16,7 +16,7 @@
                 </g>
             </svg>
         </div>
-        <div class="users" [ngStyle]="{'display': this.uiService.content === 'channelChat' ? 'flex' : 'none'}">
+        <div (click)="openShowMembersDialog()" class="users" [ngStyle]="{'display': this.uiService.content === 'channelChat' ? 'flex' : 'none'}">
             <div class="involvedUsers">
                 <!-- <img class="avatar-img" [src]="user.avatar" alt=""> -->
                 <img src="/img/avatars/avatar_0.png" alt="">
@@ -60,14 +60,13 @@
         }
     </header>
 
-
-    
-    <app-send-message></app-send-message>
-
     @if (this.uiService.content !== 'newMessage') {
     <app-message-thread>
     </app-message-thread>
     <!-- <app-send-message placeholder="Nachricht an #{{ user.username }}">
     </app-send-message> -->
     }
+    
+    <app-send-message></app-send-message>
+    
 </section>
