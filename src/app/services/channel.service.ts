@@ -1,8 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { addDoc, collection, Firestore, onSnapshot, query, setDoc } from '@angular/fire/firestore';
+import { updateDoc, addDoc, doc, collection, Firestore, onSnapshot, query, setDoc } from '@angular/fire/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { Channel } from '../models/channel.model';
-import { doc, DocumentData, DocumentReference, updateDoc } from 'firebase/firestore';
 import { FirebaseService } from './firebase.service';
 import { SideNavComponent } from '../main/side-nav/side-nav.component';
 import { ConversationService } from './conversation.service';
@@ -14,17 +13,45 @@ import { AuthService } from './auth.service';
 })
 export class ChannelService {
   currentChannel = new Channel();
-  firebaseService = inject(FirebaseService)
   uiService = inject(InterfaceService);
   authService = inject(AuthService)
   conService = inject(ConversationService);
   allChannels!: Channel[];
- 
-  private allChannelsSubject = new BehaviorSubject<any>(null);
-  selectedChannel = this.allChannelsSubject.asObservable();
 
   private currentChannelSubject = new BehaviorSubject<Channel>(new Channel());
   currentChannel$ = this.currentChannelSubject.asObservable();
+
+  constructor(private firestore: Firestore, public firebaseService: FirebaseService){
+    this.getAllChannels();
+  }
+
+
+
+  listenToChannel(chaId: string) {
+    
+    const channelRef = doc(this.firestore, `channels/${chaId}`);
+   
+    onSnapshot(channelRef, (docSnapshot) => {
+      console.log(docSnapshot.data());
+      
+      if (docSnapshot.exists()) {
+        const updatedChannel = docSnapshot.data() as Channel;
+        this.currentChannelSubject.next(updatedChannel); // Aktualisiert das Observable
+      }
+    });
+  }
+
+  
+
+  // Methode zum Aktualisieren des Kanals
+  async updateChannel(channelId: string, title: string, description: string): Promise<void> {
+    const channelRef1= doc(this.firestore, `channels/${channelId}`);
+    await updateDoc(channelRef1, { title, description });
+    console.log("Kanal wurde aktualisiert.");
+  }
+
+  
+  
 
 
   setCurrentChannel(channel: Channel) {
@@ -33,9 +60,11 @@ export class ChannelService {
     this.currentChannelSubject.next(channel)
   }
 
-  constructor(private firestore: Firestore){
-    this.getAllChannels();
+  setChannel(user: any) {
+    this.currentChannelSubject.next(user);
   }
+
+  
 
   showChannelChat(channel: any) {
     this.setChannel(channel)
@@ -50,14 +79,17 @@ export class ChannelService {
     newChannel.creatorId = this.authService.currentUserSig()?.username ?? ""; 
     newChannel.users = isSelected ? this.firebaseService.selectedUsers : this.firebaseService.allUsers;
     newChannel.description = this.currentChannel.description;
+    
+    
   
   
     const channelData = newChannel.getJSON();
     const channelRef = await addDoc(collection(this.firestore, "channels"), channelData);
+   
     
     newChannel.chaId = channelRef.id;
     
-  
+    
     
     if (isSelected) {
       await this.firebaseService.addUsersToChannel(newChannel.chaId);
@@ -69,6 +101,9 @@ export class ChannelService {
     this.setCurrentChannel(newChannel); 
     this.showChannelChat(newChannel);
   }
+
+  
+
 
 
 
@@ -87,9 +122,7 @@ async getAllChannels() {
 
 }
 
-  setChannel(user: any) {
-    this.allChannelsSubject.next(user);
-  }
+  
 
 
   convertData(data: any, id: string ) {
