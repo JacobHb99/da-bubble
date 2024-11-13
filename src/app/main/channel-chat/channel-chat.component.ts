@@ -29,18 +29,19 @@ export class ChannelChatComponent{
     this.userDataService.selectedUser.subscribe((user) => {
       this.user = user;      
       console.log(user);
-      
+    
       this.uiService.changeContent('newMessage');
     }); 
-    this.channelService.selectedChannel.subscribe((channel) => {
+    this.channelService.currentChannel$.subscribe((channel) => {
       this.channel = channel; 
       
            
-      this.uiService.changeContent('newMessage');
+     // this.uiService.changeContent('newMessage');
     }); 
     //console.log('active User', this.user.username)
 
   }
+
 
 
     openEditChannel(): void {

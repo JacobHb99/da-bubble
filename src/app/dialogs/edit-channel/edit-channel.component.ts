@@ -25,59 +25,48 @@ export class EditChannelComponent implements OnInit {
  changeDesc: string = "Bearbeiten";
  descInput: string = "";
  titleInput: string = "";
+ 
 
 
   constructor(public dialogRef: MatDialogRef<EditChannelComponent>, public dialog: MatDialog, public channelService: ChannelService, private firestore: Firestore){}
 
   ngOnInit(): void {
-   
-    // Abonnieren des Observables, um aktuelle Kanal-Daten zu erhalten
-    this.channelService.currentChannel$.subscribe((channel: Channel) => {
-      this.channel = channel;  // Hier werden die Daten gesetzt
-      this.descInput = channel.description;
-      this.titleInput = channel.title
-      if (this.channel && this.channel.chaId) {
-        this.listenToChannelChanges(this.channel.chaId);
-    }
-      
+    // Subscribes to channel data from ChannelService
+    this.channelService.currentChannel$.subscribe((channel) => {
      
+      if (channel) {
+        this.channel = channel;
+        this.descInput = channel.description;
+        this.titleInput = channel.title;
+       
+        
+        
+      }
     });
-  }
 
+    // Start listening for real-time updates from Firestore
+    if (this.channel?.chaId) {
+      this.channelService.listenToChannel(this.channel.chaId);
+    }
+  }
 
   async updateChannel() {
     if (this.channel) {
-        const channelRef = doc(this.firestore, `channels/${this.channel.chaId}`);
-
-            await updateDoc(channelRef, {
-                description: this.descInput,
-                title: this.titleInput
-            });
+      console.log(this.channel.chaId);
+      
+      await this.channelService.updateChannel(this.channel.chaId, this.titleInput, this.descInput);
     }
-}
+  }
 
 
-listenToChannelChanges(chaId: string) {
-    if (this.channel && this.channel.chaId) {
-        const channelRef = doc(this.firestore, `channels/${chaId}`);
 
-        onSnapshot(channelRef, (docSnapshot) => {
-            if (docSnapshot.exists()) {
-                const updatedChannel = docSnapshot.data() as Channel;
-                this.channel = updatedChannel;
-                console.log("Aktualisierter Channel:", this.channel);
-            }
-        });
-    }
-}
-
- 
-
-  
    closeEditChannel(): void {
     this.dialogRef.close()
   
    }
+
+
+
 
    editChannelName() {
     console.log(this.editName);
@@ -101,7 +90,4 @@ listenToChannelChanges(chaId: string) {
     }
     this.updateChannel();
    }
-
-
-  
 }
