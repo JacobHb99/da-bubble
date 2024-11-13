@@ -8,6 +8,7 @@ import { InterfaceService } from './../services/interface.service';
 import { FirebaseService } from './firebase.service';
 import { UserDataService } from './user.service';
 import { BehaviorSubject } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
     providedIn: 'root'
@@ -18,17 +19,18 @@ export class ConversationService {
     authService = inject(AuthService);
     uiService = inject(InterfaceService);
 
-    private allConvSubject = new BehaviorSubject<any>(null);
-    selectedConv = this.allConvSubject.asObservable();
+    // private allConvSubject = new BehaviorSubject<any>(null);
+    // selectedConv = this.allConvSubject.asObservable();
 
-    constructor(private userDataService: UserDataService) { }
+    constructor(private userDataService: UserDataService) { 
+        this.getAllConversations();
+    }
 
     async startConversation(user: any) {
-        this.getAllConversations();
         let partnerId = user.uid
-        //console.log("partnerId", partnerId)
         let creatorId = this.authService.currentUserSig()?.uid;
-        let existCon: Conversation = this.searchConversation(creatorId, partnerId)
+        let existCon = this.searchConversation(creatorId, partnerId)
+        
         if (existCon) {
             this.FiBaService.currentConversation = new Conversation(existCon);
             this.showUserChat(user);
@@ -85,15 +87,16 @@ export class ConversationService {
 
     async getAllConversations() {
         const q = query(collection(this.firestore, "conversations"));
-        const unsubscribedConv = onSnapshot(q, (querySnapshot) => {
+        const unsubscribeConv = onSnapshot(q, (querySnapshot) => {
             this.FiBaService.allConversations = [];
             querySnapshot.forEach((doc) => {
                 const conv = this.setConversationObject(doc.data());
+                //conv.conId = uuidv4();
                 this.FiBaService.allConversations.push(conv);
             });
 
         });
-        console.log("allConv", this.FiBaService.allConversations)
+        //console.log("allConvgetAllConv", this.FiBaService.allConversations)
     }
 
     setConversationObject(conversation: any): Conversation {

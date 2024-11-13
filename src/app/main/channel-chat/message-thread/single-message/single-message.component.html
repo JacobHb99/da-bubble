@@ -37,7 +37,7 @@
                     <div class="emojiBox" (mouseleave)="onMouseLeave()" (mouseover)="onMouseOver()">
                         <img src="/icons/emoji-rocket.png" alt="rocket">
                         <p>1</p>
-                        <div class="whoReactInfo">
+                        <div class="whoReactInfo" [ngClass]="{'whoReactInfoReply': loggedInUser.uid!==currentMessage.senderId }">
                             <img src="/icons/emoji-rocket.png" alt="rocket">
                             <span>Laura Müller</span>
                             <span>hat reagiert</span>
@@ -46,7 +46,7 @@
                     <div class="emojiBox">
                         <img src="/icons/emoji-check.png" alt="emoji">
                         <p>1</p>
-                        <div class="whoReactInfo">
+                        <div class="whoReactInfo" [ngClass]="{'whoReactInfoReply': loggedInUser.uid!==currentMessage.senderId }">
                             <img src="/icons/emoji-check.png" alt="rocket">
                             <span>Laura Müller</span>
                             <span>hat reagiert</span>
@@ -56,7 +56,7 @@
                 </div>
             </div>
         </div>
-        <!-- @if (loggedInUser.uid==currentMessage.senderId) {
+         @if (loggedInUser.uid==currentMessage.senderId) {
         <img [ngStyle]="{'width': '70px',
                         'heigt': '70px',
                         'border-radius': '50%'}" [src]="loggedInUser.avatar" referrerPolicy="no-referrer">
@@ -64,7 +64,7 @@
             <img [ngStyle]="{'width': '70px',
                         'heigt': '70px',
                         'border-radius': '50%'}" [src]="findUserWithId(currentMessage.senderId)?.avatar" referrerPolicy="no-referrer">
-        } -->
+        } 
         <div class="floatingReactionBox"
             [ngClass]="{'replyfloatingReactionBox': loggedInUser.uid!==currentMessage.senderId }" [ngStyle]="{'left': loggedInUser.uid!==currentMessage.senderId ? 'auto' : '45px',
                         'right': loggedInUser.uid!==currentMessage.senderId ? '45px' : 'auto'}">

@@ -12,6 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { user } from '@angular/fire/auth';
 import { User } from '../../../models/user.model';
 import { ConversationService } from '../../../services/conversation.service';
+import { InterfaceService } from '../../../services/interface.service';
 
 @Component({
   selector: 'app-send-message',
@@ -21,12 +22,15 @@ import { ConversationService } from '../../../services/conversation.service';
   styleUrl: './send-message.component.scss'
 })
 export class SendMessageComponent {
-  @Input() placeholder: string = '';
+ 
 
   fiBaService = inject(FirebaseService);
   authService = inject(AuthService)
   firestore = inject(Firestore);
   conService = inject(ConversationService)
+  uiService = inject(InterfaceService)
+
+  @Input() placeholder: string = 'Nachricht an';
 
   currentRecipient: Conversation = new Conversation;
   text: string = '';
@@ -75,6 +79,16 @@ getCleanJSON(message: Message) {
     //thread: message.thread,
     //reactions: message.reactions
   };
+}
+
+getPlaceholderText() {
+  if (this.uiService.content === 'newMessage') {
+    return this.placeholder;
+  } else if (this.fiBaService.user.username instanceof Conversation) {
+    return `Nachricht an ${this.fiBaService.user.username}`;
+  } else {
+    return `Nachricht an # FEHLER`;
+  }
 }
 
 }
