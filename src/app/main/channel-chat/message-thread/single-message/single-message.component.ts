@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, input, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserDataService } from '../../../../services/user.service';
 import { InterfaceService } from '../../../../services/interface.service';
@@ -24,6 +24,7 @@ export class SingleMessageComponent {
   user: any;
   //currentMessage: Message = new Message();
   @Input() currentMessage: Message = new Message();
+  @Input() message:Message= new Message();
   loggedInUser: any;
 
 
@@ -45,7 +46,7 @@ export class SingleMessageComponent {
   ngOnInit(): void {
     this.currentMessage = new Message(this.currentMessage);
     this.loggedInUser = this.authService.currentUserSig();
-    console.log(this.loggedInUser)
+    //console.log(this.loggedInUser)
   }
 
 

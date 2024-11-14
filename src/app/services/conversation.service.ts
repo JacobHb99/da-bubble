@@ -8,7 +8,6 @@ import { InterfaceService } from './../services/interface.service';
 import { FirebaseService } from './firebase.service';
 import { UserDataService } from './user.service';
 import { BehaviorSubject } from 'rxjs';
-import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({
     providedIn: 'root'
@@ -91,7 +90,6 @@ export class ConversationService {
             this.FiBaService.allConversations = [];
             querySnapshot.forEach((doc) => {
                 const conv = this.setConversationObject(doc.data());
-                //conv.conId = uuidv4();
                 this.FiBaService.allConversations.push(conv);
             });
 

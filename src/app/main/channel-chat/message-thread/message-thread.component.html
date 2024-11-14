@@ -1,7 +1,7 @@
 <section>
     <div class="thread">         
         @for (message of this.fiBaService.currentConversation.messages; track $index) {
-        <app-single-message [currentMessage]="message"></app-single-message>
+        <app-single-message [id]="message.msgId" [currentMessage]="message"></app-single-message>
         }
         
         @empty {

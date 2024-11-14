@@ -30,9 +30,9 @@ export class SendMessageComponent {
   conService = inject(ConversationService)
   uiService = inject(InterfaceService)
 
-  @Input() placeholder: string = 'Nachricht an';
+  @Input() placeholder: string = '';
 
-  currentRecipient: Conversation = new Conversation;
+  //currentRecipient: Conversation = new Conversation;
   text: string = '';
   currentMsg = new Message()
   loggedInUser = new User()
@@ -81,14 +81,14 @@ getCleanJSON(message: Message) {
   };
 }
 
-getPlaceholderText() {
-  if (this.uiService.content === 'newMessage') {
-    return this.placeholder;
-  } else if (this.fiBaService.user.username instanceof Conversation) {
-    return `Nachricht an ${this.fiBaService.user.username}`;
-  } else {
-    return `Nachricht an # FEHLER`;
-  }
-}
+// getPlaceholderText() {
+//   if (this.uiService.content === 'newMessage') {
+//     return 'Starten Sie eine neue Nachricht';
+//   } else if (this.fiBaService.user.uid instanceof Conversation) {
+//     return `Nachricht an ${this.fiBaService.user.username}`;
+//   } else {
+//     return `kein placeholder`;
+//   }
+// }
 
 }

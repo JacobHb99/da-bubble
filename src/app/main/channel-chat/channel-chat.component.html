@@ -61,12 +61,10 @@
     </header>
 
     @if (this.uiService.content !== 'newMessage') {
-    <app-message-thread>
-    </app-message-thread>
-    <!-- <app-send-message placeholder="Nachricht an #{{ user.username }}">
-    </app-send-message> -->
+    <app-message-thread></app-message-thread>
+    <app-send-message placeholder="Nachricht an {{ user.username }}"></app-send-message>
+    } @else {
+        <app-send-message placeholder="Beginnen Sie eine neue Nachricht"></app-send-message>
     }
-    
-    <app-send-message></app-send-message>
-    
+
 </section>
