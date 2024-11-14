@@ -1,12 +1,12 @@
 import { inject, Injectable } from '@angular/core';
-import { updateDoc, addDoc, doc, collection, Firestore, onSnapshot, query, setDoc } from '@angular/fire/firestore';
-import { BehaviorSubject } from 'rxjs';
+import { updateDoc, addDoc, doc, collection, Firestore, onSnapshot, query, setDoc, collectionData, } from '@angular/fire/firestore';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Channel } from '../models/channel.model';
-import { FirebaseService } from './firebase.service';
-import { SideNavComponent } from '../main/side-nav/side-nav.component';
 import { ConversationService } from './conversation.service';
 import { InterfaceService } from './interface.service';
-import { AuthService } from './auth.service';
+import { FirebaseService } from './firebase.service';
+import { where } from 'firebase/firestore';
+import { UserDataService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,14 +14,14 @@ import { AuthService } from './auth.service';
 export class ChannelService {
   currentChannel = new Channel();
   uiService = inject(InterfaceService);
-  authService = inject(AuthService)
   conService = inject(ConversationService);
   allChannels!: Channel[];
+ // currentUser = this.authService.currentUserSig()?.uid
 
   private currentChannelSubject = new BehaviorSubject<Channel>(new Channel());
   currentChannel$ = this.currentChannelSubject.asObservable();
 
-  constructor(private firestore: Firestore, public firebaseService: FirebaseService){
+  constructor(private firestore: Firestore, private firebaseService: FirebaseService, private userService: UserDataService){
     this.getAllChannels();
   }
 
@@ -36,27 +36,23 @@ export class ChannelService {
       
       if (docSnapshot.exists()) {
         const updatedChannel = docSnapshot.data() as Channel;
-        this.currentChannelSubject.next(updatedChannel); // Aktualisiert das Observable
+        this.currentChannelSubject.next(updatedChannel); 
       }
     });
   }
 
   
 
-  // Methode zum Aktualisieren des Kanals
+  
   async updateChannel(channelId: string, title: string, description: string): Promise<void> {
     const channelRef1= doc(this.firestore, `channels/${channelId}`);
     await updateDoc(channelRef1, { title, description });
-    console.log("Kanal wurde aktualisiert.");
+    
   }
 
   
-  
-
 
   setCurrentChannel(channel: Channel) {
-    console.log(channel);
-    
     this.currentChannelSubject.next(channel)
   }
 
@@ -65,7 +61,6 @@ export class ChannelService {
   }
 
   
-
   showChannelChat(channel: any) {
     this.setChannel(channel)
     this.setCurrentChannel(channel)
@@ -76,40 +71,30 @@ export class ChannelService {
   async createChannel(isSelected: boolean) {
     const newChannel = new Channel(); 
     newChannel.title = this.currentChannel.title; 
-    newChannel.creatorId = this.authService.currentUserSig()?.username ?? ""; 
+   // newChannel.creatorId = this.authService.currentUserSig()?.username ?? ""; 
     newChannel.users = isSelected ? this.firebaseService.selectedUsers : this.firebaseService.allUsers;
     newChannel.description = this.currentChannel.description;
     
-    
-  
-  
     const channelData = newChannel.getJSON();
     const channelRef = await addDoc(collection(this.firestore, "channels"), channelData);
-   
-    
     newChannel.chaId = channelRef.id;
-    
-    
     
     if (isSelected) {
       await this.firebaseService.addUsersToChannel(newChannel.chaId);
     } else {
       await this.firebaseService.addAllUsersToChannel(newChannel.chaId, newChannel);
     }
-  
+
+    this.userService.addChannelWithMembers(newChannel)
+ 
     
     this.setCurrentChannel(newChannel); 
     this.showChannelChat(newChannel);
   }
 
+
+
   
-
-
-
-
- 
-
-
 async getAllChannels() {
   const q = query(collection(this.firestore, "channels"));
   const unsubscribedChannel = onSnapshot(q, (querySnapshot) => {
@@ -122,9 +107,6 @@ async getAllChannels() {
 
 }
 
-  
-
-
   convertData(data: any, id: string ) {
      let newChannel = new Channel();
     newChannel.title = data['title'];
@@ -135,9 +117,6 @@ async getAllChannels() {
     newChannel.messages = data['messages'];
     newChannel.comments = data['comments'];
     newChannel.reactions = data['reactions'];
-
-    
-    
 
     this.allChannels.push(newChannel)
   

@@ -7,6 +7,8 @@ import { Channel } from '../../models/channel.model';
 import { AuthService } from '../../services/auth.service';
 import { doc, setDoc, Firestore, updateDoc, collection, onSnapshot, query } from '@angular/fire/firestore';
 import { FormsModule } from '@angular/forms';
+import { UserDataService } from '../../services/user.service';
+import { User } from '../../models/user.model';
 
 
 @Component({
@@ -18,6 +20,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class EditChannelComponent implements OnInit {
   channel: Channel | undefined;
+  channels: any[] = []
   isHoveredClose = false;
   editName: boolean = false;
   editDesc: boolean = false;
@@ -25,10 +28,11 @@ export class EditChannelComponent implements OnInit {
  changeDesc: string = "Bearbeiten";
  descInput: string = "";
  titleInput: string = "";
+ currentUser: any;
  
 
 
-  constructor(public dialogRef: MatDialogRef<EditChannelComponent>, public dialog: MatDialog, public channelService: ChannelService, private firestore: Firestore){}
+  constructor(public dialogRef: MatDialogRef<EditChannelComponent>, public dialog: MatDialog, public channelService: ChannelService , private userService: UserDataService, private authService: AuthService, private firebaseService: FirebaseService){}
 
   ngOnInit(): void {
     // Subscribes to channel data from ChannelService
@@ -38,21 +42,30 @@ export class EditChannelComponent implements OnInit {
         this.channel = channel;
         this.descInput = channel.description;
         this.titleInput = channel.title;
-       
-        
-        
       }
     });
 
-    // Start listening for real-time updates from Firestore
     if (this.channel?.chaId) {
       this.channelService.listenToChannel(this.channel.chaId);
     }
+
+    this.userService.selectedUser.subscribe((user) => {
+     
+      if (user) {
+        this.currentUser = this.authService.currentUserSig();
+        console.log(this.currentUser);
+        
+      
+      }
+      
+    })
+    
+    
   }
 
   async updateChannel() {
     if (this.channel) {
-      console.log(this.channel.chaId);
+     
       
       await this.channelService.updateChannel(this.channel.chaId, this.titleInput, this.descInput);
     }
@@ -89,5 +102,15 @@ export class EditChannelComponent implements OnInit {
       this.changeDesc = 'Bearbeiten'
     }
     this.updateChannel();
+   }
+
+
+
+   leaveChannel(currentUser: User) {
+    console.log(currentUser);
+    console.log(this.firebaseService.allUsers);
+    
+    
+
    }
 }

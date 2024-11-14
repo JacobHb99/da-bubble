@@ -1,11 +1,12 @@
 import { Message } from "./message.model";
+import { User } from "./user.model";
 
 export class Channel {   
     chaId:string;
     title: string;
     creatorId:string;
     description: string;
-    users: string[];
+    users: User[];
     messages: Message[];
     comments: string[];
     reactions: string[];

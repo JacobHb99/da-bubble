@@ -1,17 +1,19 @@
-import { inject, Injectable } from '@angular/core';
-import { doc, setDoc, Firestore, updateDoc, collection, onSnapshot, query } from '@angular/fire/firestore';
+import { forwardRef, Inject, inject, Injectable } from '@angular/core';
+import { doc, setDoc, Firestore, updateDoc, collection, onSnapshot, query, arrayUnion, writeBatch, docData, DocumentData, QuerySnapshot } from '@angular/fire/firestore';
 import { User } from '../models/user.model';
 import { UserCredential } from '@angular/fire/auth';
-import { where, } from "firebase/firestore";
 import { Conversation } from '../models/conversation.model';
 import { Channel } from '../models/channel.model';
 import { signal } from '@angular/core';
 import { ChannelService } from './channel.service';
+import { UserDataService } from './user.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirebaseService {
+  userObject!: DocumentData | undefined;
   allUsers: any = [];
   //allUsers: User[] = []; 
   allConversations: Conversation[] = [];
@@ -23,9 +25,8 @@ export class FirebaseService {
   //currentConversation = signal<Conversation | null>(null)
   firestore = inject(Firestore);
   
-  
+  constructor() {}
 
-  constructor() { }
 
   async assignUsersToChannel(chaId: string, currentChannel: any) {
     try {
@@ -74,10 +75,21 @@ export class FirebaseService {
     const unsubscribedUsers = onSnapshot(q, (querySnapshot) => {
       this.allUsers = [];
       querySnapshot.forEach((doc) => {
+        let user = doc.data()
+
         this.allUsers.push(doc.data());
       });
-      
     });
+    
+  }
+
+  getCurrentUser(uid: string) {
+    const unsub = onSnapshot(doc(this.firestore, "users", uid), (doc) => {
+      console.log("Current data: ", doc.data());
+      this.userObject = doc.data();
+      console.log(this.userObject);
+      
+  });
   }
 
   async subscribeUserById(id: any) {

@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { ChannelService } from '../../services/channel.service';
 import { ConversationService } from '../../services/conversation.service';
 import { user } from '@angular/fire/auth';
+import { AuthService } from '../../services/auth.service';
 
 
 
@@ -43,9 +44,9 @@ menuImg: string = "/icons/Hide-navigation.png"
 uiService = inject(InterfaceService);
 conService = inject(ConversationService);
 channelService = inject(ChannelService)
+channels: any[] = []
 
-constructor(public firebaseService: FirebaseService, private userDataService: UserDataService, public dialog: MatDialog){}
-
+constructor(public firebaseService: FirebaseService, public userDataService: UserDataService, public dialog: MatDialog){}
 
 
 toggleMenu() {

@@ -25,15 +25,17 @@ export class ChannelChatComponent{
   uiService = inject(InterfaceService);
   channelService = inject(ChannelService)
 
-  constructor(private userDataService: UserDataService,  public dialog: MatDialog, private firestore: Firestore) {
+  constructor(private userDataService: UserDataService,  public dialog: MatDialog) {
     this.userDataService.selectedUser.subscribe((user) => {
       this.user = user;      
-      console.log(user);
+      
+     
     
       this.uiService.changeContent('newMessage');
     }); 
     this.channelService.currentChannel$.subscribe((channel) => {
       this.channel = channel; 
+   
       
            
      // this.uiService.changeContent('newMessage');

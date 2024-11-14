@@ -11,6 +11,7 @@ import { AddChannelComponent } from '../dialogs/add-channel/add-channel.componen
 import { EditChannelComponent } from '../dialogs/edit-channel/edit-channel.component';
 import { ChannelService } from '../services/channel.service';
 import { ConversationService } from '../services/conversation.service';
+import { AuthService } from '../services/auth.service';
 
 
 
@@ -35,10 +36,13 @@ export class MainComponent {
   channelService = inject(ChannelService);
   convService = inject(ConversationService);
 
+  constructor(private authService: AuthService) {}
+
 
   ngOnInit() {
     this.fireService.getAllUsers();
     this.channelService.getAllChannels();
+    
     console.log('active Channel default: ', this.uiService.content)
   }
 }

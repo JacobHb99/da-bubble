@@ -24,12 +24,15 @@
             </div>
         </div>
         <div class="channels" [ngClass]="{'hide' : hideChannel}">
-            <div  *ngFor="let channel of channelService.allChannels" (click)="channelService.showChannelChat(channel)" class="developer">
-                <div  class="dev-hover">
-                    <img [src]="tagImg" alt="">
-                    <p>{{ channel.title}}</p>
+            @if (firebaseService.userObject) {
+                <div  *ngFor="let channel of firebaseService.userObject['channels']" (click)="channelService.showChannelChat(channel)" class="developer">
+                    <div  class="dev-hover">
+                        <img [src]="tagImg" alt="">
+                        <p>{{ channel.title}}</p>
+                    </div>
                 </div>
-            </div>
+            }
+           
             <div (click)="openDialogChannel()" (mouseenter)="changeImgChannel()" (mouseleave)="resetImgChannel()" class="add-channel">
                 <img [src]="addImg" alt="">
                 <p>Channel hinzufügen</p>
