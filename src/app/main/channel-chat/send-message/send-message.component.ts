@@ -55,7 +55,6 @@ export class SendMessageComponent {
     const convId = this.fiBaService.currentConversation.conId;
     const msgData = this.getCleanJSON(message);
     msgData.msgId = uuidv4();
-    //console.log('msgdata', msgData)
     const conversationRef = doc(this.firestore, `conversations/${convId}`);
     try {
       await updateDoc(conversationRef, {

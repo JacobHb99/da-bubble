@@ -21,7 +21,7 @@ export class ConversationService {
     // private allConvSubject = new BehaviorSubject<any>(null);
     // selectedConv = this.allConvSubject.asObservable();
 
-    constructor(private userDataService: UserDataService) { 
+    constructor(private userDataService: UserDataService) {
         this.getAllConversations();
     }
 
@@ -29,7 +29,7 @@ export class ConversationService {
         let partnerId = user.uid
         let creatorId = this.authService.currentUserSig()?.uid;
         let existCon = this.searchConversation(creatorId, partnerId)
-        
+
         if (existCon) {
             this.FiBaService.currentConversation = new Conversation(existCon);
             this.showUserChat(user);
@@ -64,10 +64,11 @@ export class ConversationService {
         const conData = this.getCleanJSON(conversation);
         const conversationRef = await addDoc(collection(this.firestore, "conversations"), conData)
         conData.conId = conversationRef.id,
-            await setDoc(conversationRef, conData).catch((err) => {
-                console.log('Error adding Conversation to firebase', err);
-            });
-        this.getAllConversations();       
+            this.FiBaService.currentConversation.conId = conData.conId
+        await setDoc(conversationRef, conData).catch((err) => {
+            console.log('Error adding Conversation to firebase', err);
+        });
+        this.getAllConversations();
     }
 
     searchConversation(creatorId: unknown, partnerId: string): Conversation | any {
@@ -120,7 +121,7 @@ export class ConversationService {
     showUserChat(user: any) {
         this.userDataService.setUser(user);
         this.uiService.changeContent('directMessage');
-      }
+    }
 
 
 
