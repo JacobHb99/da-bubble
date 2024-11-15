@@ -1,5 +1,5 @@
 import { forwardRef, Inject, inject, Injectable } from '@angular/core';
-import { doc, setDoc, Firestore, updateDoc, collection, onSnapshot, query, arrayUnion, writeBatch, docData, DocumentData, QuerySnapshot } from '@angular/fire/firestore';
+import { doc, setDoc, Firestore, updateDoc, collection, onSnapshot, query, arrayUnion, writeBatch, docData, DocumentData, QuerySnapshot, where } from '@angular/fire/firestore';
 import { User } from '../models/user.model';
 import { UserCredential } from '@angular/fire/auth';
 import { Conversation } from '../models/conversation.model';
@@ -15,6 +15,7 @@ import { AuthService } from './auth.service';
 export class FirebaseService {
   userObject!: DocumentData | undefined;
   allUsers: any = [];
+  allUsersIds: any = [];
   //allUsers: User[] = []; 
   allConversations: Conversation[] = [];
   allChannels: Channel[] = []; //besteht aus einem array von objekten des types channel + startet mit leerem array
@@ -28,16 +29,47 @@ export class FirebaseService {
   constructor() {}
 
 
+
+  loadUserChannels(userUid: string) {
+    if (!userUid) {
+      console.error("Aktueller Benutzer nicht angemeldet");
+      return;
+    }
+  
+    const channelsRef = collection(this.firestore, 'channels');
+    const userChannelsQuery = query(channelsRef, where("users", "array-contains", userUid));
+   
+    
+  
+    onSnapshot(userChannelsQuery, (snapshot) => {
+      this.allChannels = snapshot.docs.map(doc => {
+        const channelData = doc.data();
+        return new Channel({
+          ...channelData,
+          chaId: doc.id // Füge die Dokument-ID als chaId hinzu
+        });
+      });
+  
+      console.log("Gefilterte Channels für den aktuellen Benutzer:", this.allChannels);
+    }, error => {
+      console.error("Fehler beim Laden der Channels:", error);
+    });
+  }
+
   async assignUsersToChannel(chaId: string, currentChannel: any) {
     try {
       const channelRef = doc(this.firestore, `channels/${chaId}`);
+     
       
-      await updateDoc(channelRef, { users: this.allUsers, chaId: currentChannel.chaId } );
-      console.log(this.allUsers);
+      
+      await updateDoc(channelRef, { users: this.allUsersIds, chaId: currentChannel.chaId } );
+    
     } catch (error) {
     }
   }
 
+
+ 
 
    async addAllUsersToChannel(chaId: string, currentChannel: any) {
      await this.assignUsersToChannel(chaId, currentChannel)
@@ -74,11 +106,15 @@ export class FirebaseService {
     const q = query(collection(this.firestore, "users"));
     const unsubscribedUsers = onSnapshot(q, (querySnapshot) => {
       this.allUsers = [];
+      this.allUsersIds = [];
       querySnapshot.forEach((doc) => {
         let user = doc.data()
 
         this.allUsers.push(doc.data());
+        this.allUsersIds.push(doc.id);
       });
+      
+
     });
     
   }

@@ -6,7 +6,7 @@ import { FirebaseService } from './firebase.service';
 import { UserInterface } from '../interfaces/user';
 import { Router } from '@angular/router';
 import { ChannelService } from './channel.service';
-import { collection, DocumentData, Firestore, onSnapshot, QuerySnapshot } from '@angular/fire/firestore';
+import { collection, DocumentData, Firestore, onSnapshot, query, QuerySnapshot, where } from '@angular/fire/firestore';
 import { Channel } from '../models/channel.model';
 
 @Injectable({
@@ -29,44 +29,7 @@ export class AuthService {
 
 
 
-  loadUserChannels() {
-    const userUid = this.currentUserSig()?.uid;
-    console.log(userUid);
-    
-
-    if (!userUid) {
-      console.error("Aktueller Benutzer ist nicht angemeldet.");
-      return;
-    }
-
-    const channelsRef = collection(this.firestore, 'channels');
-
-    // Echtzeit-Listener mit onSnapshot, um alle Channels zu laden
-    onSnapshot(channelsRef, (snapshot: QuerySnapshot<DocumentData>) => {
-      const userChannels: Channel[] = [];
-
-      snapshot.forEach(doc => {
-        const channelData = doc.data() as Channel;
-
-        // Überprüfen, ob das aktuelle User-Objekt im users-Array vorhanden ist
-        const isUserInChannel = channelData.users.some((user: any) => user.uid === userUid);
-
-        if (isUserInChannel) {
-          userChannels.push(channelData);
-        }
-      });
-
-      // Aktualisiere die Variable allChannels nur mit den Channels des aktuellen Benutzers
-      this.fireService.allChannels = userChannels;
-      console.log("Gefilterte Channels für den aktuellen Benutzer:", this.fireService.allChannels);
-      console.log(userChannels);
-      
-    }, error => {
-      console.error("Fehler beim Laden der Channels:", error);
-    });
-  }
-
-
+ 
   saveRegistrationData(email: string, username: string, password: string) {
     this.currentRegData = { email, username, password };
   }
@@ -121,8 +84,8 @@ export class AuthService {
         this.setCurrentUserData(this.currentCredentials.user);
         this.fireService.setUserStatus(this.currentCredentials, 'online');
         console.log('loginUser', this.currentCredentials.user);
-        this.getCurrentUserData()
-        this.loadUserChannels();
+        this.getCurrentUserData();
+        this.fireService.loadUserChannels(this.currentCredentials.user.uid)
         this.router.navigate(['/main']);
       })
 

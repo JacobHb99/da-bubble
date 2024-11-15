@@ -49,16 +49,6 @@ export class EditChannelComponent implements OnInit {
       this.channelService.listenToChannel(this.channel.chaId);
     }
 
-    this.userService.selectedUser.subscribe((user) => {
-     
-      if (user) {
-        this.currentUser = this.authService.currentUserSig();
-        console.log(this.currentUser);
-        
-      
-      }
-      
-    })
     
     
   }

@@ -28,7 +28,6 @@ export class ChannelService {
 
 
   listenToChannel(chaId: string) {
-    
     const channelRef = doc(this.firestore, `channels/${chaId}`);
    
     onSnapshot(channelRef, (docSnapshot) => {
@@ -41,9 +40,6 @@ export class ChannelService {
     });
   }
 
-  
-
-  
   async updateChannel(channelId: string, title: string, description: string): Promise<void> {
     const channelRef1= doc(this.firestore, `channels/${channelId}`);
     await updateDoc(channelRef1, { title, description });
@@ -69,25 +65,29 @@ export class ChannelService {
  
 
   async createChannel(isSelected: boolean) {
+    
     const newChannel = new Channel(); 
     newChannel.title = this.currentChannel.title; 
+   
    // newChannel.creatorId = this.authService.currentUserSig()?.username ?? ""; 
-    newChannel.users = isSelected ? this.firebaseService.selectedUsers : this.firebaseService.allUsers;
+    newChannel.users = isSelected ? this.firebaseService.selectedUsers : this.firebaseService.allUsersIds;
     newChannel.description = this.currentChannel.description;
     
     const channelData = newChannel.getJSON();
+    console.log(channelData);
     const channelRef = await addDoc(collection(this.firestore, "channels"), channelData);
+    
+    
     newChannel.chaId = channelRef.id;
+   
+    
+    
     
     if (isSelected) {
       await this.firebaseService.addUsersToChannel(newChannel.chaId);
     } else {
       await this.firebaseService.addAllUsersToChannel(newChannel.chaId, newChannel);
     }
-
-    this.userService.addChannelWithMembers(newChannel)
- 
-    
     this.setCurrentChannel(newChannel); 
     this.showChannelChat(newChannel);
   }
