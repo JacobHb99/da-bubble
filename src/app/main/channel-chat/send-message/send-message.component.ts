@@ -13,11 +13,13 @@ import { user } from '@angular/fire/auth';
 import { User } from '../../../models/user.model';
 import { ConversationService } from '../../../services/conversation.service';
 import { InterfaceService } from '../../../services/interface.service';
+import { EmojiComponent} from '@ctrl/ngx-emoji-mart/ngx-emoji';
+import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 
 @Component({
   selector: 'app-send-message',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, EmojiComponent, PickerComponent],
   templateUrl: './send-message.component.html',
   styleUrl: './send-message.component.scss'
 })
@@ -34,11 +36,15 @@ export class SendMessageComponent {
 
   //currentRecipient: Conversation = new Conversation;
   text: string = '';
+  isDisabled: boolean = true;
   currentMsg = new Message()
   loggedInUser = new User()
 
 
   async createNewMsg() {
+    if (this.text.trim()) {
+      
+    
     console.log('loggeduser', this.authService.currentUserSig());
     this.currentMsg = new Message();
     this.currentMsg.timeStamp = Date.now();
@@ -49,6 +55,8 @@ export class SendMessageComponent {
       //console.log('msg', this.currentMsg)
       await this.addMessage(this.currentMsg);
       this.text = '';
+      this.checkemptyInput();
+    }
   }
 
   async addMessage(message: any) {
@@ -80,14 +88,8 @@ getCleanJSON(message: Message) {
   };
 }
 
-// getPlaceholderText() {
-//   if (this.uiService.content === 'newMessage') {
-//     return 'Starten Sie eine neue Nachricht';
-//   } else if (this.fiBaService.user.uid instanceof Conversation) {
-//     return `Nachricht an ${this.fiBaService.user.username}`;
-//   } else {
-//     return `kein placeholder`;
-//   }
-// }
+checkemptyInput() {
+  this.isDisabled = this.text.trim() === '';
+}
 
 }
