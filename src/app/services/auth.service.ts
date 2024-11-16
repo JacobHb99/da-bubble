@@ -85,7 +85,6 @@ export class AuthService {
         this.fireService.setUserStatus(this.currentCredentials, 'online');
         console.log('loginUser', this.currentCredentials.user);
         this.getCurrentUserData();
-        this.fireService.loadUserChannels(this.currentCredentials.user.uid)
         this.router.navigate(['/main']);
       })
 
@@ -192,7 +191,7 @@ export class AuthService {
         // User is signed in
         const uid = user.uid;
         this.setCurrentUserData(user);
-       
+        this.fireService.loadUserChannels(uid);
 
       } else {
         // User is signed out
