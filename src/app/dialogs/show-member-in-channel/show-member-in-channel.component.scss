@@ -1,6 +1,48 @@
-@import './../../../styles.scss';
+@import "./../../../styles.scss";
 
-.header{
-    @include dFlex($jc:space-between, $ai: unset, $fd: row, $gap: 0);
-    margin:45px 40px;
+* {
+  font-size: 18px;
+  font-weight: 400;
+  font-family: "Nunito";
+}
+.container {
+  margin: 45px 40px;
+}
+
+.header {
+  @include dFlex($jc: space-between, $ai: center, $fd: row, $gap: 0);
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.content {
+  margin-left: 8px;
+}
+
+app-single-member {
+  margin-bottom: 8px;
+}
+
+.add-member {
+    @include dFlex($jc: unset, $ai: center, $fd: row, $gap: 0);
+    padding: 4px 20px;
+  &:hover {
+    background-color: $bgHover;
+     color:#535AF1 ;
+     border-radius: 30px;
+    .add-member-icon {
+      background-image: url("/icons/user-add-blue.png");
+    }
+  }
+}
+.add-member-icon {
+  background-image: url("/icons/user-add.png");
+  height: 40px;
+  width: 40px;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
 }
