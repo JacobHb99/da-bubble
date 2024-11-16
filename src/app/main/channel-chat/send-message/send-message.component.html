@@ -7,10 +7,14 @@
                 <svg width="2" height="40" viewBox="0 0 2 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1 0V40" stroke="#ADB0D9" />
                 </svg>
-                <div class="addReaction"></div>
-                <!-- <emoji-mart [emojiTooltip]="true" [showPreview]="false" [darkMode]="false" color="#444DF2" 
-                    title="Pick your emoji…" emoji="point_up" [showSingleCategory]="true" [totalFrequentLines]="1">
-                </emoji-mart> -->
+                <div class="addReaction" (click)="toggleEmojiPicker()"></div>
+                @if (showEmojiPicker) {
+                <div class="emojiPicker" #emojiPicker>
+                    <emoji-mart (emojiSelect)="addEmoji($event)" [showPreview]="false" [darkMode]="false" color="#444DF2" title="Pick your emoji…"
+                        [showSingleCategory]="true">
+                    </emoji-mart>
+                </div>
+                }
                 <div class="tagUser"></div>
             </div>
             <div class="sendIcon " [class.disabled]="isDisabled" (click)="createNewMsg()">

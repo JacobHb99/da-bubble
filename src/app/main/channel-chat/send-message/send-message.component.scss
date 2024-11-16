@@ -63,6 +63,7 @@ section {
     background-repeat: no-repeat;
     background-position: center;
     cursor: pointer;
+    position: relative;
 
     &:hover {
         background-image: url("/icons/sentiment_satisfied-blue.png");
@@ -74,6 +75,13 @@ section {
         background-image: url("/icons/sentiment_satisfied-black.png");
     }
 }
+
+.emojiPicker{
+    position: absolute;
+    left: 0px;
+    bottom: 140px;
+}
+
 
 .tagUser {
     background-image: url("/icons/alternate_email-grey.png");
@@ -110,3 +118,4 @@ section {
     pointer-events: none;
     opacity: 0.5;
   }
+

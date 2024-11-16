@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, Input, inject, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { Message } from '../../../models/message.model';
 import { Thread } from '../../../models/thread.model';
 import { CommonModule } from '@angular/common';
@@ -13,7 +13,7 @@ import { user } from '@angular/fire/auth';
 import { User } from '../../../models/user.model';
 import { ConversationService } from '../../../services/conversation.service';
 import { InterfaceService } from '../../../services/interface.service';
-import { EmojiComponent} from '@ctrl/ngx-emoji-mart/ngx-emoji';
+import { EmojiComponent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 
 @Component({
@@ -24,7 +24,7 @@ import { PickerComponent } from '@ctrl/ngx-emoji-mart';
   styleUrl: './send-message.component.scss'
 })
 export class SendMessageComponent {
- 
+
 
   fiBaService = inject(FirebaseService);
   authService = inject(AuthService)
@@ -33,27 +33,27 @@ export class SendMessageComponent {
   uiService = inject(InterfaceService)
 
   @Input() placeholder: string = '';
+  @ViewChild('emojiPicker', { static: false }) emojiPicker!: ElementRef;
 
   //currentRecipient: Conversation = new Conversation;
   text: string = '';
   isDisabled: boolean = true;
+  showEmojiPicker = false;
   currentMsg = new Message()
   loggedInUser = new User()
 
 
   async createNewMsg() {
     if (this.text.trim()) {
-      
-    
-    console.log('loggeduser', this.authService.currentUserSig());
-    this.currentMsg = new Message();
-    this.currentMsg.timeStamp = Date.now();
-    this.currentMsg.senderId = this.authService.currentUserSig()?.uid;
-    this.currentMsg.text = this.text,
-      this.currentMsg.thread = new Thread(), //wird erstmal nicht erstellt (wegen array)
-      this.currentMsg.reactions = [], //wird erstmal nicht erstellt (wegen array)
-      //console.log('msg', this.currentMsg)
-      await this.addMessage(this.currentMsg);
+      console.log('loggeduser', this.authService.currentUserSig());
+      this.currentMsg = new Message();
+      this.currentMsg.timeStamp = Date.now();
+      this.currentMsg.senderId = this.authService.currentUserSig()?.uid;
+      this.currentMsg.text = this.text,
+        this.currentMsg.thread = new Thread(), //wird erstmal nicht erstellt (wegen array)
+        this.currentMsg.reactions = [], //wird erstmal nicht erstellt (wegen array)
+        //console.log('msg', this.currentMsg)
+        await this.addMessage(this.currentMsg);
       this.text = '';
       this.checkemptyInput();
     }
@@ -67,6 +67,7 @@ export class SendMessageComponent {
     try {
       await updateDoc(conversationRef, {
         messages: arrayUnion(msgData)
+        
       });
       console.log('Nachricht erfolgreich hinzugefügt');
       //this.conService.showUserChat()
@@ -76,20 +77,38 @@ export class SendMessageComponent {
   }
 
 
-getCleanJSON(message: Message) {
-  return {
-    msgId: message.msgId,
-    timeStamp: message.timeStamp,
-    senderId: message.senderId,
-    //recipientId: message.recipientId,
-    text: message.text,
-    //thread: message.thread,
-    //reactions: message.reactions
-  };
-}
+  getCleanJSON(message: Message) {
+    return {
+      msgId: message.msgId,
+      timeStamp: message.timeStamp,
+      senderId: message.senderId,
+      //recipientId: message.recipientId,
+      text: message.text,
+      //thread: message.thread,
+      //reactions: message.reactions
+    };
+  }
 
-checkemptyInput() {
-  this.isDisabled = this.text.trim() === '';
-}
+  checkemptyInput() {
+    this.isDisabled = this.text.trim() === '';
+  }
 
+  toggleEmojiPicker() {
+    this.showEmojiPicker = !this.showEmojiPicker;
+  }
+
+  @HostListener('document:click', ['$event'])
+  handleOutsideClick(event: Event) {
+    // Prüfen, ob das Emoji-Picker-Element existiert und der Klick außerhalb davon war
+    if (this.emojiPicker && !this.emojiPicker.nativeElement.contains(event.target)) {
+      this.showEmojiPicker = false;
+    }
+  }
+
+  addEmoji(event: any) {
+    console.log(event);
+    const emoji = event.emoji.native; 
+    this.text += emoji;  
+    //this.toggleEmojiPicker(); //sinnvoll??
+  }
 }

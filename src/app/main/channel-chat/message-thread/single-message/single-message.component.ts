@@ -6,11 +6,13 @@ import { Message } from '../../../../models/message.model';
 import { FirebaseService } from '../../../../services/firebase.service';
 import { User } from '../../../../models/user.model';
 import { AuthService } from '../../../../services/auth.service';
+import { PickerComponent } from '@ctrl/ngx-emoji-mart';
+import { EmojiComponent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 
 @Component({
   selector: 'app-single-message',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PickerComponent, EmojiComponent],
   templateUrl: './single-message.component.html',
   styleUrl: './single-message.component.scss'
 })
@@ -20,11 +22,14 @@ export class SingleMessageComponent {
   authService = inject(AuthService);
 
   messageIsMine: boolean = true;
-  showReactionPopups: boolean = false;
+  showReactionPopups: boolean = false; //nachsehen welche 
+  showEmojiPicker = false;
+
   user: any;
   //currentMessage: Message = new Message();
   @Input() currentMessage: Message = new Message();
   @Input() message:Message= new Message();
+  
   loggedInUser: any;
 
 
@@ -81,4 +86,14 @@ export class SingleMessageComponent {
     return null;
   }
 
+  toggleEmojiPicker() {
+    this.showEmojiPicker = !this.showEmojiPicker;
+  }
+
+  addEmoji(event: any) {
+    console.log(event);
+    const emoji = event.emoji.native; 
+    //this.text += emoji;  
+    this.toggleEmojiPicker();
+  }
 }

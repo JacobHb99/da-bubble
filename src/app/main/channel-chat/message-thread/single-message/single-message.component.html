@@ -51,8 +51,7 @@
                             <span>Laura Müller</span>
                             <span>hat reagiert</span>
                         </div>
-                    </div>
-                    <!-- <div class="addReaction"></div>                 -->
+                    </div>                   
                 </div>
             </div>
         </div>
@@ -69,12 +68,12 @@
             [ngClass]="{'replyfloatingReactionBox': loggedInUser.uid!==currentMessage.senderId }" [ngStyle]="{'left': loggedInUser.uid!==currentMessage.senderId ? 'auto' : '45px',
                         'right': loggedInUser.uid!==currentMessage.senderId ? '45px' : 'auto'}">
             <div class="iconBox">
-                <img src="/icons/emoji-check.png" alt="emoji">
+                <ngx-emoji class="singleEmoji" [size]="25" emoji="white_check_mark"></ngx-emoji>  
             </div>
             <div class="iconBox">
-                <img src="/icons/emoji-raising-hands.png" alt="emoji">
+                <ngx-emoji class="singleEmoji" [size]="25" emoji="raised_hands"></ngx-emoji>  
             </div>
-            <div class="iconBox svg-hover">
+            <div class="iconBox svg-hover" (click)="toggleEmojiPicker()">
                  <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg"> 
                     <mask id="mask0_76631_17710" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
                         width="25" height="24">
@@ -87,6 +86,13 @@
                     </g>
                 </svg>
             </div>
+            @if (showEmojiPicker) {
+                <div [ngClass]="loggedInUser.uid===currentMessage.senderId ? 'myEmojiPicker': 'replyEmojiPicker'" #emojiPicker>
+                    <emoji-mart (emojiSelect)="addEmoji($event)" [showPreview]="false" [darkMode]="false" color="#444DF2" title="Pick your emoji…"
+                        [showSingleCategory]="true">
+                    </emoji-mart>
+                </div>
+                }
             <div class="iconBox svg-hover" (click)="this.uiService.openThread()">
                 <svg [id]="message.msgId" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <mask id="mask0_1823_21598" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
