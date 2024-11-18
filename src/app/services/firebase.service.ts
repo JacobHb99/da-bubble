@@ -1,7 +1,7 @@
 import { forwardRef, Inject, inject, Injectable } from '@angular/core';
 import { doc, setDoc, Firestore, updateDoc, collection, onSnapshot, query, arrayUnion, writeBatch, docData, DocumentData, QuerySnapshot, where } from '@angular/fire/firestore';
 import { User } from '../models/user.model';
-import { UserCredential } from '@angular/fire/auth';
+import { Unsubscribe, UserCredential } from '@angular/fire/auth';
 import { Conversation } from '../models/conversation.model';
 import { Channel } from '../models/channel.model';
 import { signal } from '@angular/core';
@@ -18,8 +18,10 @@ export class FirebaseService {
   allUsersIds: any = [];
   //allUsers: User[] = []; 
   allConversations: Conversation[] = [];
-  allChannels: Channel[] = []; //besteht aus einem array von objekten des types channel + startet mit leerem array
+  allChannels: string[] = []; //besteht aus einem array von objekten des types channel + startet mit leerem array
   selectedUsers: any = []
+  public unsubscribeListeners: (() => void)[] = []; // Liste der Unsubscribe-Funktionen
+  isUserChannelsListenerActive: boolean = false;
   isClosed = false;
   user: any;
   currentConversation: Conversation = new Conversation();
@@ -28,32 +30,79 @@ export class FirebaseService {
   
   constructor() {}
 
+  unsubscribeAll() {
+    console.log("Starte Unsubscribe aller Listener...");
+    console.log(`Anzahl der registrierten Listener: ${this.unsubscribeListeners.length}`);
+
+
+    this.unsubscribeListeners.forEach((unsub, index) => {
+      try {
+        unsub(); // Listener entfernen 
+        console.log(`Listener ${index + 1} erfolgreich entfernt.`);
+      } catch (error) {
+        console.warn(`Fehler beim Entfernen von Listener ${index + 1}:, error`);
+      }
+    });
+  
+    this.unsubscribeListeners = []; // Liste leeren
+    this.isUserChannelsListenerActive = false; // Flag zurücksetzen
+    console.log("Alle Listener wurden erfolgreich entfernt.");
+  }
 
 
   loadUserChannels(userUid: string) {
     if (!userUid) {
-      console.error("Aktueller Benutzer nicht angemeldet");
+      console.error("Kein Benutzer angemeldet. Channels werden nicht geladen.");
+      return;
+    }
+  
+    if (this.isUserChannelsListenerActive) {
+      console.warn("Listener für User Channels ist bereits aktiv. Abbruch.");
       return;
     }
   
     const channelsRef = collection(this.firestore, 'channels');
     const userChannelsQuery = query(channelsRef, where("users", "array-contains", userUid));
-   
+    this.allChannels = [];
     
-  
-    onSnapshot(userChannelsQuery, (snapshot) => {
-      this.allChannels = snapshot.docs.map(doc => {
-        const channelData = doc.data();
-        return new Channel({
-          ...channelData,
-          chaId: doc.id // Füge die Dokument-ID als chaId hinzu
-        });
-      });
-  
-    }, error => {
+    const unsubscribe = onSnapshot(userChannelsQuery, (snapshot) => {
+     snapshot.forEach((doc) => {
+      this.allChannels.push(doc.id)
+      console.log(this.allChannels);
+      
+      
+
+     })
+      console.log("Aktualisierte Channels:", this.allChannels);
+    }, (error) => {
       console.error("Fehler beim Laden der Channels:", error);
     });
+  
+    this.registerListener(unsubscribe); // Listener registrieren
+    this.isUserChannelsListenerActive = true; // Flag setzen
   }
+
+  public registerListener(unsubscribeFn: () => void): void {
+    this.unsubscribeListeners.push(unsubscribeFn);}
+
+
+  async getAllUsers() {
+    const q = query(collection(this.firestore, "users"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      this.allUsers = [];
+      this.allUsersIds = [];
+      querySnapshot.forEach((doc) => {
+        let user = doc.data()
+
+        this.allUsers.push(doc.data());
+        this.allUsersIds.push(doc.id);
+      });
+    });
+    this.registerListener(unsubscribe);
+  }
+
+
+
 
   async assignUsersToChannel(chaId: string, currentChannel: any) {
     try {
@@ -95,32 +144,22 @@ export class FirebaseService {
 
 
 
-  async getAllUsers() {
-    const q = query(collection(this.firestore, "users"));
-    const unsubscribedUsers = onSnapshot(q, (querySnapshot) => {
-      this.allUsers = [];
-      this.allUsersIds = [];
-      querySnapshot.forEach((doc) => {
-        let user = doc.data()
-
-        this.allUsers.push(doc.data());
-        this.allUsersIds.push(doc.id);
-      });
-    });
-  }
+ 
 
   getCurrentUser(uid: string) {
-    const unsub = onSnapshot(doc(this.firestore, "users", uid), (doc) => {
+    const unsubscribe = onSnapshot(doc(this.firestore, "users", uid), (doc) => {
       this.userObject = doc.data();
       
   });
+  this.registerListener(unsubscribe);
   }
 
   async subscribeUserById(id: any) {
-    const unsubscribedUser = onSnapshot(this.getUserDocRef(id), (user) => {
+    const unsubscribe = onSnapshot(this.getUserDocRef(id), (user) => {
       this.user = this.setUserJson(user.data(), user.id);
 
     });
+    this.registerListener(unsubscribe);
   }
 
   async updateUser(user: any) {

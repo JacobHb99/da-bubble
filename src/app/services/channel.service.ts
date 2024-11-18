@@ -31,7 +31,7 @@ export class ChannelService {
   listenToChannel(chaId: string) { 
     const channelRef = doc(this.firestore, `channels/${chaId}`);
     
-    onSnapshot(channelRef, (docSnapshot) => {
+    const unsubscribe = onSnapshot(channelRef, (docSnapshot) => {
       
       
       if (docSnapshot.exists()) {
@@ -41,6 +41,7 @@ export class ChannelService {
         
       }
     });
+   // this.firebaseService.registerListener(unsubscribe);
   }
 
   async updateChannel(channelId: string, title: string, description: string): Promise<void> {

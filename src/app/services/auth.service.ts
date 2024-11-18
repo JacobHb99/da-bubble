@@ -151,6 +151,7 @@ export class AuthService {
   signOut() {
     const auth = getAuth();
     this.fireService.setUserStatus(this.currentCredentials, 'offline');
+    this.fireService.unsubscribeAll() 
 
     signOut(this.auth).then(() => {
       this.router.navigateByUrl('');
