@@ -205,10 +205,6 @@ export class FirebaseService {
       role: object.role
     }
       }
-
-
-
-
 }
 
 

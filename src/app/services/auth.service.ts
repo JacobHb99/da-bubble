@@ -151,8 +151,6 @@ export class AuthService {
   signOut() {
     const auth = getAuth();
     this.fireService.setUserStatus(this.currentCredentials, 'offline');
-    this.fireService.unsubscribeAll() 
-
     signOut(this.auth).then(() => {
       this.router.navigateByUrl('');
 
@@ -187,18 +185,25 @@ export class AuthService {
 
   initialize() {
     const auth = getAuth();
+  
     onAuthStateChanged(this.auth, (user) => {
+      console.log("Auth-Status geändert:", user ? "Angemeldet" : "Abgemeldet");
+  
+      // Entferne alle Listener, sobald der Auth-Status sich ändert
+      this.fireService.unsubscribeAll();
+  
       if (user) {
-        // User is signed in
-        const uid = user.uid;
+        console.log(`Benutzer eingeloggt: ${user.uid}`);
         this.setCurrentUserData(user);
-        this.fireService.loadUserChannels(uid);
-
+  
+        // Starte Firestore-Operationen nach einer kleinen Verzögerung
+        setTimeout(() => {
+          this.fireService.loadUserChannels(user.uid);
+          this.fireService.getAllUsers();
+        }, 200); // 200 ms Verzögerung, um Auth-Status zu stabilisieren
       } else {
-        // User is signed out
-        this.currentUserSig.set(null)
-        console.log('user', user);
-        console.log('no user');
+        console.log("Benutzer ist ausgeloggt.");
+        this.currentUserSig.set(null);
       }
     });
   }
