@@ -45,9 +45,7 @@ export class LoginComponent implements OnInit {
   }
 
 
-  ngOnInit() {
-    console.log(this.authService.currentUserSig());
-    
+  ngOnInit() {    
     if(this.authService.currentUserSig()) {
       this.router.navigate(['/main']);
   }
@@ -66,9 +64,6 @@ export class LoginComponent implements OnInit {
     .subscribe({
       next: () => {
 
-        // setTimeout(() => {
-        //   this.router.navigateByUrl('/');
-        // }, 1000);
       },
 
       error: (err) => {

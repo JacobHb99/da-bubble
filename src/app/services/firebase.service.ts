@@ -128,11 +128,19 @@ export class FirebaseService {
   }
 
 
-  async setUserStatus(currentUser: UserCredential, status: string) {
+  async setUserStatus(currentUser: UserCredential | null, status: string) {
+    if (!currentUser || !currentUser.user) {
+      console.warn("setUserStatus: currentUser oder user ist undefined.");
+      return;
+    }
+  
     const userRef = doc(this.firestore, "users", currentUser.user.uid);
-    await updateDoc(userRef, {
-      status: status
-    });
+    try {
+      await updateDoc(userRef, { status: status });
+      console.log(`Status erfolgreich auf '${status}' gesetzt für Benutzer ${currentUser.user.uid}`);
+    } catch (error) {
+      console.error("Fehler beim Aktualisieren des Status:", error);
+    }
   }
 
   async addUsersToChannel(ChannelId: string) {
