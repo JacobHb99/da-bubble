@@ -7,6 +7,7 @@ import { InterfaceService } from './interface.service';
 import { FirebaseService } from './firebase.service';
 import { where } from 'firebase/firestore';
 import { UserDataService } from './user.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,30 +22,43 @@ export class ChannelService {
   private currentChannelSubject = new BehaviorSubject<Channel>(new Channel());
   currentChannel$ = this.currentChannelSubject.asObservable();
 
-  constructor(private firestore: Firestore, private firebaseService: FirebaseService, private userService: UserDataService){
+  constructor(private firestore: Firestore, private firebaseService: FirebaseService, private userService: UserDataService, private authService: AuthService){
     this.getAllChannels();
   }
 
 
 
-  listenToChannel(chaId: string) {
+  listenToChannel(chaId: string) { 
     const channelRef = doc(this.firestore, `channels/${chaId}`);
-   
+    
     onSnapshot(channelRef, (docSnapshot) => {
-      console.log(docSnapshot.data());
+      
       
       if (docSnapshot.exists()) {
         const updatedChannel = docSnapshot.data() as Channel;
         this.currentChannelSubject.next(updatedChannel); 
+        
+        
       }
     });
   }
 
   async updateChannel(channelId: string, title: string, description: string): Promise<void> {
-    const channelRef1= doc(this.firestore, `channels/${channelId}`);
-    await updateDoc(channelRef1, { title, description });
+    if (!channelId) {
+        console.error("Fehler: Keine gültige Channel-ID angegeben.");
+        return;
+    }
+
+    const channelRef = doc(this.firestore, `channels/${channelId}`);
     
-  }
+    try {
+        await updateDoc(channelRef, { title, description });
+        console.log("Channel erfolgreich aktualisiert:", channelId);
+    } catch (error) {
+        console.error("Fehler beim Aktualisieren des Channels:", error);
+    }
+}
+
 
   
 
@@ -64,27 +78,32 @@ export class ChannelService {
   }
  
 
-  async createChannel(isSelected: boolean) {
+  async createChannel(isSelected: boolean, currentUser: any) {
     
     const newChannel = new Channel(); 
     newChannel.title = this.currentChannel.title; 
    
-   // newChannel.creatorId = this.authService.currentUserSig()?.username ?? ""; 
+    newChannel.creatorId = this.authService.currentUserSig()?.username ?? ""; 
     newChannel.users = isSelected ? this.firebaseService.selectedUsers : this.firebaseService.allUsersIds;
     newChannel.description = this.currentChannel.description;
     
+    
+    
     const channelData = newChannel.getJSON();
-    console.log(channelData);
     const channelRef = await addDoc(collection(this.firestore, "channels"), channelData);
-    
-    
     newChannel.chaId = channelRef.id;
+    console.log(newChannel);
+    
    
     
-    
-    
+  
     if (isSelected) {
+      this.firebaseService.selectedUsers.push(currentUser)
+      console.log(currentUser);
       await this.firebaseService.addUsersToChannel(newChannel.chaId);
+      
+      
+      
     } else {
       await this.firebaseService.addAllUsersToChannel(newChannel.chaId, newChannel);
     }

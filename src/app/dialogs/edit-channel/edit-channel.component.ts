@@ -28,7 +28,9 @@ export class EditChannelComponent implements OnInit {
  changeDesc: string = "Bearbeiten";
  descInput: string = "";
  titleInput: string = "";
+ channelId: string = "";
  currentUser: any;
+ isEditing: boolean = false;
  
 
 
@@ -38,34 +40,38 @@ export class EditChannelComponent implements OnInit {
     // Subscribes to channel data from ChannelService
     this.channelService.currentChannel$.subscribe((channel) => {
      
-      if (channel) {
+      if (!this.isEditing && channel) {
         this.channel = channel;
         this.descInput = channel.description;
         this.titleInput = channel.title;
+        this.channelId = channel.chaId;
       }
     });
-
-    if (this.channel?.chaId) {
-      this.channelService.listenToChannel(this.channel.chaId);
-    }
-
-    
-    
+    this.channelService.listenToChannel(this.channelId);
   }
-
-  async updateChannel() {
-    if (this.channel) {
-     
-      
+    
+   
+async updateChannel() {
+  if (this.channel) {
+    this.isEditing = true; // Bearbeitung wird gestartet
+    try {
       await this.channelService.updateChannel(this.channel.chaId, this.titleInput, this.descInput);
+     
+
+      this.channel.title = this.titleInput;
+      this.channel.description = this.descInput;
+    } catch (error) {
+     
+    } finally {
+      this.isEditing = false; // Bearbeitung abgeschlossen
     }
   }
+}
 
-
+  
 
    closeEditChannel(): void {
     this.dialogRef.close()
-  
    }
 
 
@@ -80,7 +86,6 @@ export class EditChannelComponent implements OnInit {
       this.changeName = 'Bearbeiten'
     }
     this.updateChannel();
-    
    }
 
    editChannelDesc() {
@@ -99,8 +104,5 @@ export class EditChannelComponent implements OnInit {
    leaveChannel(currentUser: User) {
     console.log(currentUser);
     console.log(this.firebaseService.allUsers);
-    
-    
-
    }
 }

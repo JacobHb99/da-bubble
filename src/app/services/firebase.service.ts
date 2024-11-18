@@ -50,7 +50,6 @@ export class FirebaseService {
         });
       });
   
-      console.log("Gefilterte Channels für den aktuellen Benutzer:", this.allChannels);
     }, error => {
       console.error("Fehler beim Laden der Channels:", error);
     });
@@ -59,9 +58,6 @@ export class FirebaseService {
   async assignUsersToChannel(chaId: string, currentChannel: any) {
     try {
       const channelRef = doc(this.firestore, `channels/${chaId}`);
-     
-      
-      
       await updateDoc(channelRef, { users: this.allUsersIds, chaId: currentChannel.chaId } );
     
     } catch (error) {
@@ -69,13 +65,10 @@ export class FirebaseService {
   }
 
 
- 
-
    async addAllUsersToChannel(chaId: string, currentChannel: any) {
      await this.assignUsersToChannel(chaId, currentChannel)
 
   }
-
 
 
   async addUser(user: any) {
@@ -113,17 +106,12 @@ export class FirebaseService {
         this.allUsers.push(doc.data());
         this.allUsersIds.push(doc.id);
       });
-      
-
     });
-    
   }
 
   getCurrentUser(uid: string) {
     const unsub = onSnapshot(doc(this.firestore, "users", uid), (doc) => {
-      console.log("Current data: ", doc.data());
       this.userObject = doc.data();
-      console.log(this.userObject);
       
   });
   }

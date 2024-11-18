@@ -6,6 +6,7 @@ import { User } from '../../models/user.model';
 import { MatDialogRef } from '@angular/material/dialog';
 import { ChannelService } from '../../services/channel.service';
 import { every } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
 
 
 
@@ -21,9 +22,10 @@ export class AddPeopleComponent {
   isSelected = false;
   isChecked = false;
   searchName: string = "";
+  currentUser: any = ""
   isInputEmpty = false;
-  constructor(public firebaseService: FirebaseService, public dialogRef: MatDialogRef<AddPeopleComponent>, public channelService: ChannelService){
-    
+  constructor(public firebaseService: FirebaseService, public dialogRef: MatDialogRef<AddPeopleComponent>, public channelService: ChannelService, private authService: AuthService){
+      this.currentUser = this.authService.currentUserSig()?.uid;
   }
 
 
@@ -66,10 +68,9 @@ export class AddPeopleComponent {
 
   addUser(user: any) {
     
+    
     if (!this.firebaseService.selectedUsers.some((u: any ) => u.username === user.username)) {
       this.firebaseService.selectedUsers.push(user.uid);
-     
-      
      this.emptyInput()
     } 
       this.searchName = "";
