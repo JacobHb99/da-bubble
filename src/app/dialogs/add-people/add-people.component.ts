@@ -67,10 +67,8 @@ export class AddPeopleComponent {
   }
 
   addUser(user: any) {
-    
-    
     if (!this.firebaseService.selectedUsers.some((u: any ) => u.username === user.username)) {
-      this.firebaseService.selectedUsers.push(user.uid);
+      this.firebaseService.selectedUsers.push(user);
      this.emptyInput()
     } 
       this.searchName = "";

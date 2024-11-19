@@ -32,6 +32,8 @@ export class AddChannelComponent {
 
   
     openDialogAddPeople(): void {
+      this.channelService.currentChannel.title = '';
+      this.channelService.currentChannel.description = '';
       const dialogRef = this.dialog.open(AddPeopleComponent, {
         minWidth: '720px'
         

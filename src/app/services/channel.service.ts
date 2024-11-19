@@ -14,6 +14,7 @@ import { AuthService } from './auth.service';
 })
 export class ChannelService {
   currentChannel = new Channel();
+  newChannel: Channel = new Channel(); // Für Erstellen
   uiService = inject(InterfaceService);
   conService = inject(ConversationService);
   allChannels!: Channel[];
@@ -110,6 +111,9 @@ export class ChannelService {
     }
     this.setCurrentChannel(newChannel); 
     this.showChannelChat(newChannel);
+
+
+    
   }
 
 

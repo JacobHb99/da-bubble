@@ -63,9 +63,10 @@ export class FirebaseService {
   
     const channelsRef = collection(this.firestore, 'channels');
     const userChannelsQuery = query(channelsRef, where("users", "array-contains", userUid));
-    this.allChannels = [];
+    
     
     const unsubscribe = onSnapshot(userChannelsQuery, (snapshot) => {
+      this.allChannels = [];
      snapshot.forEach((doc) => {
       this.allChannels.push(doc.data() as Channel)
       console.log(this.allChannels);
@@ -81,6 +82,9 @@ export class FirebaseService {
     this.registerListener(unsubscribe); // Listener registrieren
     this.isUserChannelsListenerActive = true; // Flag setzen
   }
+
+
+
 
   public registerListener(unsubscribeFn: () => void): void {
     this.unsubscribeListeners.push(unsubscribeFn);}
