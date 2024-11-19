@@ -8,6 +8,7 @@ import { signal } from '@angular/core';
 import { ChannelService } from './channel.service';
 import { UserDataService } from './user.service';
 import { AuthService } from './auth.service';
+import { ConversationService } from './conversation.service';
 
 @Injectable({
   providedIn: 'root'
@@ -102,6 +103,30 @@ export class FirebaseService {
   }
 
 
+  async getAllConversations() {
+    const q = query(collection(this.firestore, "conversations"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        this.allConversations = [];
+        querySnapshot.forEach((doc) => {
+            const conv = this.setConversationObject(doc.data());
+            this.allConversations.push(conv);
+        });
+
+    });
+    this.registerListener(unsubscribe);
+    console.log("allConvgetAllConv", this.allConversations)
+}
+
+
+setConversationObject(conversation: any): Conversation {
+  return {
+      conId: conversation.conId || '',
+      creatorId: conversation.creatorId || '',
+      partnerId: conversation.partnerId || '',
+      messages: conversation.messages || [],
+      active: conversation.active || false,
+  };
+}
 
 
   async assignUsersToChannel(chaId: string, currentChannel: any) {
