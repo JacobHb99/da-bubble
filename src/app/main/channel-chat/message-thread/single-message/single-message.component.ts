@@ -2,7 +2,7 @@ import { Component, inject, input, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserDataService } from '../../../../services/user.service';
 import { InterfaceService } from '../../../../services/interface.service';
-import { Message } from '../../../../models/message.model';
+import { Message, Reaction } from '../../../../models/message.model';
 import { FirebaseService } from '../../../../services/firebase.service';
 import { User } from '../../../../models/user.model';
 import { AuthService } from '../../../../services/auth.service';
@@ -24,6 +24,8 @@ export class SingleMessageComponent {
   messageIsMine: boolean = true;
   showReactionPopups: boolean = false; //nachsehen welche 
   showEmojiPicker = false;
+  currentReaction = new Reaction();
+  allReactions: Reaction[] = [];
 
   user: any;
   //currentMessage: Message = new Message();
@@ -90,10 +92,25 @@ export class SingleMessageComponent {
     this.showEmojiPicker = !this.showEmojiPicker;
   }
 
-  addEmoji(event: any) {
-    console.log(event);
-    const emoji = event.emoji.native; 
+  manageEmoji(event: any) {
+    console.log('emoji', event);
+    const emoji = event.emoji;
+    this.currentReaction = new Reaction();
+    this.currentReaction.id = emoji.id;
+    this.currentReaction.counter = +1;
+    let user = this.authService.currentUserSig()?.username as string;
+    this.currentReaction.reactedUser = new Array(user);
+
+    console.log('currentReaction', this.currentReaction);
+    
+    
+    // counter: number;
+    // id: string;
+    // fromUser: string[];
+
     //this.text += emoji;  
     this.toggleEmojiPicker();
+    //this.toggleEmojiPicker();
   }
+
 }

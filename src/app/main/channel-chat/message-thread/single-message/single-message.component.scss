@@ -65,11 +65,8 @@ section {
 }
 
 .replyfloatingReactionBox {
-    transform: translateX(150%);
-    
-    :nth-child(5) {
-        display: none;
-    }
+    transform: translateX(150%);   
+
 }
 
 

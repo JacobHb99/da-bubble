@@ -85,7 +85,7 @@ export class SendMessageComponent {
       //recipientId: message.recipientId,
       text: message.text,
       //thread: message.thread,
-      //reactions: message.reactions
+      reactions: message.reactions
     };
   }
 
