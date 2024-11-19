@@ -41,7 +41,7 @@ export class ChannelService {
         
       }
     });
-   // this.firebaseService.registerListener(unsubscribe);
+   this.firebaseService.registerListener(unsubscribe);
   }
 
   async updateChannel(channelId: string, title: string, description: string): Promise<void> {
@@ -117,14 +117,13 @@ export class ChannelService {
   
 async getAllChannels() {
   const q = query(collection(this.firestore, "channels"));
-  const unsubscribedChannel = onSnapshot(q, (querySnapshot) => {
+  const unsubscribe = onSnapshot(q, (querySnapshot) => {
   this.allChannels = [];
    querySnapshot.forEach((doc) => {
     this.convertData(doc.data(), doc.id)
-   
 });
 });
-
+this.firebaseService.registerListener(unsubscribe);
 }
 
   convertData(data: any, id: string ) {

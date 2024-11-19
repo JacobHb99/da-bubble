@@ -47,7 +47,7 @@ export class EditChannelComponent implements OnInit {
         this.channelId = channel.chaId;
       }
     });
-    this.channelService.listenToChannel(this.channelId);
+    // this.channelService.listenToChannel(this.channelId);
   }
     
    

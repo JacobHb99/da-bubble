@@ -52,12 +52,13 @@ export class ConversationService {
 
     listenToCurrentConversationChanges(conversationId: any) {
         const conversationRef = doc(this.firestore, `conversations/${conversationId}`);
-        onSnapshot(conversationRef, (docSnapshot) => {
+        const unsubscribe = onSnapshot(conversationRef, (docSnapshot) => {
             if (docSnapshot.exists()) {
                 const updatedConversation = this.setConversationObject(docSnapshot.data());
                 this.FiBaService.currentConversation = updatedConversation;
             }
         });
+        this.FiBaService.registerListener(unsubscribe);
     }
 
     async addConversation(conversation: any) {
@@ -87,7 +88,7 @@ export class ConversationService {
 
     async getAllConversations() {
         const q = query(collection(this.firestore, "conversations"));
-        const unsubscribeConv = onSnapshot(q, (querySnapshot) => {
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
             this.FiBaService.allConversations = [];
             querySnapshot.forEach((doc) => {
                 const conv = this.setConversationObject(doc.data());
@@ -95,6 +96,7 @@ export class ConversationService {
             });
 
         });
+        this.FiBaService.registerListener(unsubscribe);
         //console.log("allConvgetAllConv", this.FiBaService.allConversations)
     }
 
