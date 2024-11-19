@@ -57,7 +57,7 @@ export class AddPeopleComponent {
   }
 
   get filteredUsers() {
-    if (this.searchName.length < 3) {
+    if (this.searchName.length < 1) {
       return [];
     }
 

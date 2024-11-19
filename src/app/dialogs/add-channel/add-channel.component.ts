@@ -17,6 +17,8 @@ import { ConversationService } from '../../services/conversation.service';
 export class AddChannelComponent {
   isHoveredClose = false;
   channelName = "";
+  inputTitle: string = "";
+  inputDesc: string = "";
   
 
   constructor(public firebaseService: FirebaseService, public dialogRef: MatDialogRef<AddChannelComponent>, public dialog: MatDialog, public channelService: ChannelService){
@@ -32,8 +34,9 @@ export class AddChannelComponent {
 
   
     openDialogAddPeople(): void {
-      this.channelService.currentChannel.title = '';
-      this.channelService.currentChannel.description = '';
+      this.channelService.currentChannel.title = this.inputTitle;
+      this.channelService.currentChannel.description = this.inputDesc;
+     
       const dialogRef = this.dialog.open(AddPeopleComponent, {
         minWidth: '720px'
         

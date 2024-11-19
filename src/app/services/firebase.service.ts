@@ -15,7 +15,7 @@ import { ConversationService } from './conversation.service';
 })
 export class FirebaseService {
   userObject!: DocumentData | undefined;
-  allUsers: any = [];
+  allUsers: User[] = [];
   allUsersIds: any = [];
   //allUsers: User[] = []; 
   allConversations: Conversation[] = [];
@@ -70,7 +70,7 @@ export class FirebaseService {
       this.allChannels = [];
      snapshot.forEach((doc) => {
       this.allChannels.push(doc.data() as Channel)
-      console.log(this.allChannels);
+      
       
       
 
@@ -97,10 +97,12 @@ export class FirebaseService {
       this.allUsers = [];
       this.allUsersIds = [];
       querySnapshot.forEach((doc) => {
-        let user = doc.data()
+        let user = doc.data() as User
 
-        this.allUsers.push(doc.data());
+        this.allUsers.push(user);
         this.allUsersIds.push(doc.id);
+        console.log(this.allUsers);
+        
       });
     });
     this.registerListener(unsubscribe);

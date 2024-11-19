@@ -10,6 +10,8 @@ import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { ProfilLogoutButtonsComponent } from '../dialogs/profil-logout-buttons/profil-logout-buttons.component';
 import { MyProfilComponent } from '../dialogs/my-profil/my-profil.component';
 import { EditProfileComponent } from '../dialogs/edit-profile/edit-profile.component';
+import { SearchbarService } from '../services/searchbar.service';
+import { timeout } from 'rxjs';
 
 
 @Component({
@@ -22,6 +24,13 @@ import { EditProfileComponent } from '../dialogs/edit-profile/edit-profile.compo
 export class HeaderComponent {
   authService = inject(AuthService);
   readonly dialog = inject(MatDialog);
+
+  constructor(public searchbarService: SearchbarService) {
+    setTimeout(() => {
+      this.searchbarService.combineArraysWithTypes();
+    }, 3000);
+    
+  }
    
 
   openDialog() {
