@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { ChannelService } from './channel.service';
 import { collection, DocumentData, Firestore, onSnapshot, query, QuerySnapshot, where } from '@angular/fire/firestore';
 import { Channel } from '../models/channel.model';
+import { ConversationService } from './conversation.service';
 
 @Injectable({
   providedIn: 'root'
@@ -200,6 +201,7 @@ export class AuthService {
         setTimeout(() => {
           this.fireService.loadUserChannels(user.uid);
           this.fireService.getAllUsers();
+          this.fireService.getAllConversations();
         }, 200); // 200 ms Verzögerung, um Auth-Status zu stabilisieren
       } else {
         console.log("Benutzer ist ausgeloggt.");

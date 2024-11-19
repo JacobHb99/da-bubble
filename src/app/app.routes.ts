@@ -7,6 +7,7 @@ import { MainComponent } from './main/main.component';
 import { ResetPasswordComponent } from './account-management/reset-password/reset-password.component';
 import { NewPasswordComponent } from './account-management/new-password/new-password.component';
 import { ImprintComponent } from './account-management/policy/imprint/imprint.component';
+import { PrivacyPolicyComponent } from './account-management/policy/privacy-policy/privacy-policy.component';
 
 export const routes: Routes = [
     { path: '', component: LoginComponent },
@@ -16,6 +17,8 @@ export const routes: Routes = [
     { path: 'new-password', component: NewPasswordComponent },
     { path: 'main', component:  MainComponent},
     { path: 'imprint', component:  ImprintComponent},
+    { path: 'privacy-policy', component:  PrivacyPolicyComponent},
 
+    
 
 ];

@@ -22,7 +22,6 @@ export class ConversationService {
     // selectedConv = this.allConvSubject.asObservable();
 
     constructor(private userDataService: UserDataService) {
-        this.getAllConversations();
     }
 
     async startConversation(user: any) {
@@ -54,7 +53,7 @@ export class ConversationService {
         const conversationRef = doc(this.firestore, `conversations/${conversationId}`);
         const unsubscribe = onSnapshot(conversationRef, (docSnapshot) => {
             if (docSnapshot.exists()) {
-                const updatedConversation = this.setConversationObject(docSnapshot.data());
+                const updatedConversation = this.FiBaService.setConversationObject(docSnapshot.data());
                 this.FiBaService.currentConversation = updatedConversation;
             }
         });
@@ -69,7 +68,7 @@ export class ConversationService {
         await setDoc(conversationRef, conData).catch((err) => {
             console.log('Error adding Conversation to firebase', err);
         });
-        this.getAllConversations();
+        this.FiBaService.getAllConversations();
     }
 
     searchConversation(creatorId: unknown, partnerId: string): Conversation | any {
@@ -86,29 +85,29 @@ export class ConversationService {
         }
     }
 
-    async getAllConversations() {
-        const q = query(collection(this.firestore, "conversations"));
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-            this.FiBaService.allConversations = [];
-            querySnapshot.forEach((doc) => {
-                const conv = this.setConversationObject(doc.data());
-                this.FiBaService.allConversations.push(conv);
-            });
+    // async getAllConversations() {
+    //     const q = query(collection(this.firestore, "conversations"));
+    //     const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    //         this.FiBaService.allConversations = [];
+    //         querySnapshot.forEach((doc) => {
+    //             const conv = this.setConversationObject(doc.data());
+    //             this.FiBaService.allConversations.push(conv);
+    //         });
 
-        });
-        this.FiBaService.registerListener(unsubscribe);
-        //console.log("allConvgetAllConv", this.FiBaService.allConversations)
-    }
+    //     });
+    //     this.FiBaService.registerListener(unsubscribe);
+    //     console.log("allConvgetAllConv", this.FiBaService.allConversations)
+    // }
 
-    setConversationObject(conversation: any): Conversation {
-        return {
-            conId: conversation.conId || '',
-            creatorId: conversation.creatorId || '',
-            partnerId: conversation.partnerId || '',
-            messages: conversation.messages || [],
-            active: conversation.active || false,
-        };
-    }
+    // setConversationObject(conversation: any): Conversation {
+    //     return {
+    //         conId: conversation.conId || '',
+    //         creatorId: conversation.creatorId || '',
+    //         partnerId: conversation.partnerId || '',
+    //         messages: conversation.messages || [],
+    //         active: conversation.active || false,
+    //     };
+    // }
 
     getCleanJSON(conversation: Conversation) {
         return {
