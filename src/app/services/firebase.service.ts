@@ -18,7 +18,7 @@ export class FirebaseService {
   allUsersIds: any = [];
   //allUsers: User[] = []; 
   allConversations: Conversation[] = [];
-  allChannels: string[] = []; //besteht aus einem array von objekten des types channel + startet mit leerem array
+  allChannels: Channel[] = []; //besteht aus einem array von objekten des types channel + startet mit leerem array
   selectedUsers: any = []
   public unsubscribeListeners: (() => void)[] = []; // Liste der Unsubscribe-Funktionen
   isUserChannelsListenerActive: boolean = false;
@@ -67,7 +67,7 @@ export class FirebaseService {
     
     const unsubscribe = onSnapshot(userChannelsQuery, (snapshot) => {
      snapshot.forEach((doc) => {
-      this.allChannels.push(doc.id)
+      this.allChannels.push(doc.data() as Channel)
       console.log(this.allChannels);
       
       
