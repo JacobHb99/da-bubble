@@ -100,9 +100,7 @@ export class FirebaseService {
         let user = doc.data() as User
 
         this.allUsers.push(user);
-        this.allUsersIds.push(doc.id);
-       
-        
+        this.allUsersIds.push(doc.id);        
       });
     });
     this.registerListener(unsubscribe);

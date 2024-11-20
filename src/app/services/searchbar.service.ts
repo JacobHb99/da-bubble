@@ -36,7 +36,6 @@ export class SearchbarService {
       this.allObjects.push({ name: "conversation", data: conversation });
     });
     console.log(this.allObjects);
-    
   }
 
 
@@ -44,29 +43,35 @@ export class SearchbarService {
     this.isInputEmpty = this.firebaseService.selectedUsers.length === 0;
   }
 
-   get filteredUsers() {
-    
-    if (this.searchName.length < 1) {
+  get filteredUsers() {
+    if (this.searchName.trim().length < 1) {
+      console.log("No search term provided, returning empty array.");
       return [];
     }
-
-    return this.allObjects.filter((obj: any) =>
-    {
-      if (obj.name == "user") {
-      obj.data.username.toLowerCase().includes(this.searchName.toLowerCase())
-
-       
+  
+    const searchTerm = this.searchName.toLowerCase();
+    const results = this.allObjects.filter((obj: CurrentObject) => {
+      if (obj.name === "user") {
+        return obj.data.username.toLowerCase().includes(searchTerm);
       }
-      
-      if (obj.name == "channel") {
-        obj.data.title.toLowerCase().includes(this.searchName.toLowerCase()) | 
-        obj.data.description.toLowerCase().includes(this.searchName.toLowerCase())
+  
+      if (obj.name === "channel") {
+        return (
+          obj.data.title.toLowerCase().includes(searchTerm) ||
+          obj.data.description.toLowerCase().includes(searchTerm)
+        );
       }
-      // if (obj.name == "conversation") {
-      //   obj.data.messages.toLowerCase().includes(this.searchName.toLowerCase())
-      // }
-    }
-     
-    );
+  
+      if (obj.name === "conversation") {
+        return obj.data.messages.some((message: any) =>
+          message.content.toLowerCase().includes(searchTerm)
+        );
+      }
+  
+      return false;
+    });
+  
+    console.log("Filtered Results:", results);
+    return results;
   }
 }
