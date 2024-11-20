@@ -62,8 +62,12 @@ export class AddPeopleComponent {
     }
 
     return this.firebaseService.allUsers.filter((user: any) =>
+      
       user.username.toLowerCase().includes(this.searchName.toLowerCase())
+    
     );
+   
+    
   }
 
   addUser(user: any) {

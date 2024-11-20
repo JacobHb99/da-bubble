@@ -101,7 +101,7 @@ export class FirebaseService {
 
         this.allUsers.push(user);
         this.allUsersIds.push(doc.id);
-        console.log(this.allUsers);
+       
         
       });
     });

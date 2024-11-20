@@ -6,7 +6,8 @@
     font-family: 'Nunito';
     box-sizing: border-box;
     position: relative;
-    width: 720px;
+    height: 500px;
+    
     
     >h1 {
         margin: 0;
@@ -22,6 +23,12 @@
         right: 40px;
         top: 40px;
     }
+}
+
+
+
+.mdc-dialog--open .mat-mdc-dialog-surface {
+  overflow-y: hidden;
 }
 .checkbox-container {
     display: flex;
@@ -197,6 +204,9 @@ input[type="radio"] {
   .showUserDialog {
     display: flex;
     flex-direction: column;
+    height: 200px;
+    overflow-y: scroll;
+    
   }
   .hideUserDialog {
     display: none;
@@ -205,6 +215,7 @@ input[type="radio"] {
   .input-container1 {
     display: flex;
     flex-direction: column;
+    
     gap: 10px;
   }
   
