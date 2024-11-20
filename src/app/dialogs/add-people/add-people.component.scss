@@ -186,6 +186,12 @@ input[type="radio"] {
     font-size: 18px;
     margin: 0;
   }
+
+  .showUserDialog {
+    display: flex !important;
+    flex-direction: column;
+    
+  }
   .user-dialog {
     display: none;
     width: 335px;
@@ -201,13 +207,7 @@ input[type="radio"] {
     top: 45px;
     box-sizing: border-box;
   }
-  .showUserDialog {
-    display: flex;
-    flex-direction: column;
-    height: 200px;
-    overflow-y: scroll;
-    
-  }
+  
   .hideUserDialog {
     display: none;
   }

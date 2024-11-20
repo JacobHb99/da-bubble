@@ -3,14 +3,48 @@
         <div class="logo">
             <img src="./img/logo-text.png" alt="">
         </div>
-        <div class="input-container">
-            <input (click)="this.searchbarService.filteredUsers" (input)="this.searchbarService.combineArraysWithTypes()" [(ngModel)]="this.searchbarService.searchName"  type="text" placeholder="Devspace durchsuchen">
-            <img src="./icons/search-thin-grey.png" alt="">
+        <div class="search-container">
+            <div class="input-container">
+                <input (click)="this.searchbarService.combineArraysWithTypes()"
+                    (input)="this.searchbarService.filteredUsers" [(ngModel)]="this.searchbarService.searchName"
+                    type="text" placeholder="Devspace durchsuchen">
+                <img src="./icons/search-thin-grey.png" alt="">
+            </div>
+            <div [ngClass]="{'hideUserDialog' : this.searchbarService.searchName.length <= 0}"
+                class="user-dialog showUserDialog">
+                <div *ngFor="let obj of searchbarService.filteredUsers" class="single-user">
+                    <div class="single-user-hover">
+                        @if (obj.name == "user") {
+                        <div (click)="conService.startConversation(obj.data)" class="single-search">
+                            <img class="avatar" src="{{ obj.data.avatar}}" alt="">
+                            <p class="username">{{ obj.data.username }}</p>
+                        </div>
+                        }
+                        @if (obj.name == "channel") {
+                        <div (click)="channelService.showChannelChat(obj.data)" class="single-search">
+                            <img  src="./icons/users-alt.png" alt="">
+                            <p class="username">{{ obj.data.title }}</p>
+                        </div>
+                        }
+                        <div *ngIf="obj.name === 'conversation'" >
+                            <div *ngFor="let message of obj.data.messages">
+                                <div *ngIf="message.text.toLowerCase().includes(this.searchbarService.searchName.toLowerCase())" class="single-search">
+                                    <img src="./icons/messages.png" alt="">
+                                    <p class="username">
+                                        {{ message.text }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div (click)="openDialog()" class="user-container">
             <p>{{ authService.currentUserSig()?.username }}</p>
             <div class="avatar-with-status">
-                <img class="user-img" src="{{authService.currentUserSig()?.avatar}}" referrerPolicy="no-referrer" alt="">
+                <img class="user-img" src="{{authService.currentUserSig()?.avatar}}" referrerPolicy="no-referrer"
+                    alt="">
                 <img class="status" src="./icons/Online.png" alt="">
             </div>
             <img src="./icons/down.png" alt="">

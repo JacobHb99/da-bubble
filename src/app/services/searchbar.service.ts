@@ -4,6 +4,7 @@ import { Channel } from '../models/channel.model';
 import { Conversation } from '../models/conversation.model';
 import { FirebaseService } from './firebase.service';
 import { user } from '@angular/fire/auth';
+import { AuthService } from './auth.service';
 type CurrentObject = 
   | { name: "user"; data: User }
   | { name: "channel"; data: Channel }
@@ -18,7 +19,7 @@ export class SearchbarService {
   isInputEmpty: boolean = false;
  allObjects: CurrentObject[] = [];
   
-  constructor(private firebaseService: FirebaseService) { }
+  constructor(private firebaseService: FirebaseService, private authService: AuthService) { }
 
   combineArraysWithTypes() {
     this.allObjects = [];
@@ -33,7 +34,9 @@ export class SearchbarService {
     });
     
     this.firebaseService.allConversations.forEach(conversation => {
-      this.allObjects.push({ name: "conversation", data: conversation });
+      if (conversation.creatorId == (this.authService.currentUserSig()?.uid) || conversation.partnerId == (this.authService.currentUserSig()?.uid) ) {
+        this.allObjects.push({ name: "conversation", data: conversation });
+      }
     });
     console.log(this.allObjects);
   }
@@ -51,8 +54,11 @@ export class SearchbarService {
   
     const searchTerm = this.searchName.toLowerCase();
     const results = this.allObjects.filter((obj: CurrentObject) => {
+      
+      
       if (obj.name === "user") {
-        return obj.data.username.toLowerCase().includes(searchTerm);
+        return obj.data.username.toLowerCase().includes(searchTerm) ; 
+        
       }
   
       if (obj.name === "channel") {
@@ -63,8 +69,10 @@ export class SearchbarService {
       }
   
       if (obj.name === "conversation") {
+        console.log(obj.data.messages);
+        
         return obj.data.messages.some((message: any) =>
-          message.content.toLowerCase().includes(searchTerm)
+          message.text.toLowerCase().includes(searchTerm)
         );
       }
   

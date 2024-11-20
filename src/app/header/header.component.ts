@@ -12,6 +12,8 @@ import { MyProfilComponent } from '../dialogs/my-profil/my-profil.component';
 import { EditProfileComponent } from '../dialogs/edit-profile/edit-profile.component';
 import { SearchbarService } from '../services/searchbar.service';
 import { timeout } from 'rxjs';
+import { ConversationService } from '../services/conversation.service';
+import { ChannelService } from '../services/channel.service';
 
 
 @Component({
@@ -25,7 +27,7 @@ export class HeaderComponent {
   authService = inject(AuthService);
   readonly dialog = inject(MatDialog);
 
-  constructor(public searchbarService: SearchbarService) {
+  constructor(public searchbarService: SearchbarService, public conService: ConversationService, public channelService: ChannelService) {
     setTimeout(() => {
       this.searchbarService.combineArraysWithTypes();
     }, 3000);
