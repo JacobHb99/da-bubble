@@ -9,29 +9,34 @@ section {
 }
 
 header {
- max-width: 1920px;
  width: 100%;
-  padding: 15px 20px;
+  padding-block: 15px;
+  padding-right: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 20px;
+}
+
+.search-container {
+  flex-grow: 1; /* Lässt die Suchleiste so viel Platz wie möglich einnehmen */
+  display: flex;
 }
 
 .input-container {
   position: relative;
-  width: 100%;
-  max-width: 989px;
-  flex-grow: 1;
-  >input {
+  width: 100%; /* Nimmt die volle Breite des Containers ein */
+  max-width: unset; /* Entfernt eventuell übernommene Einschränkungen */
+  display: flex;
+
+  > input {
     box-sizing: border-box;
     font-size: 24px;
     font-family: 'Nunito';
     border-radius: 42px;
     border: none;
-    width: 100%;
+    width: 100%; /* Nimmt den verfügbaren Platz im flex-Container ein */
     padding: 17.5px 45px;
-    display: flex;
-    align-items: center;
 
     &:focus {
       outline: unset;

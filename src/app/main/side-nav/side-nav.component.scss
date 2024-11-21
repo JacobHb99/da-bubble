@@ -1,14 +1,24 @@
+@import './../../../styles.scss';
+
+
 section {
     background-color: white;
     padding: 32px 30px;
     border-radius: 30px;
     width: 306px;
     font-family: 'Nunito';
-    height: calc(100svh - 199px) ;
-    
+    height: calc(100svh - 169px);
+    overflow-y: scroll;
     box-sizing: border-box;
     transform: translateX(0px);
     transition: transform ease-in-out 130ms;
+    margin-left: 32px;
+}
+
+.logo{
+    height: 137px;
+    @include dFlex(flex-start);
+    margin-left: 32px;
 }
 
 .slide-in {
@@ -144,8 +154,6 @@ section {
 }
 
 .users {
-    height: 300px;
-    overflow-y: scroll;
     margin-left: 24px;
     display: flex;
     flex-direction: column;
@@ -156,8 +164,6 @@ section {
 }
 
 .channels {
-    height: 200px;
-    overflow-y: scroll;
     gap: 8px;
     display: flex;
     flex-direction: column;

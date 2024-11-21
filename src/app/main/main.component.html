@@ -1,9 +1,12 @@
-<app-header></app-header>
 <div class="main">
     <app-side-nav></app-side-nav>
-    <app-channel-chat></app-channel-chat>
-    <app-thread [ngStyle]="{'display': this.uiService.showThread === true ? 'flex' : 'none'}">
-    </app-thread>
+
+    <div class="right-content">
+        <app-header></app-header>
+        <app-channel-chat></app-channel-chat>
+        <app-thread [ngStyle]="{'display': this.uiService.showThread === true ? 'flex' : 'none'}">
+        </app-thread>
+    </div>
 </div>
 
 

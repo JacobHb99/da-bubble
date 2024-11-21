@@ -1,69 +1,74 @@
-<section [ngClass]="{'slide-in': menuVisible}">
-    <div class="workspace-container">
-        <div class="workspace-text">
-            <img src="./icons/Workspace-logo.png" alt="">
-            <p>Devspace</p>
-        </div>
-        <div (mouseenter)="isHoveredEdit = true" (mouseleave)="isHoveredEdit = false" class="edit-square">
-            <img [src]="isHoveredEdit ? 'icons/edit_square-blue.png' : 'icons/edit_square.png'" alt="">
-        </div>
+<div class="left-side">
+    <div class="logo">
+        <img src="./img/logo-text.png" alt="">
     </div>
-    <div class="channel-row">
-        <div class="channel-container">
-            <div (click)="toggleChannel()" (mouseenter)="isHoveredChannel = true"
-                (mouseleave)="isHoveredChannel = false" (mouseenter)="changeImg()" (mouseleave)="resetImg()"
-                class="channel-header">
-                <img class="arrow-drop"
-                    [src]="hideChannel ? (isHoveredChannel ? '/icons/arrow_drop_down-right-blue.png' : '/icons/arrow_drop_down-right.png') : (isHoveredChannel ? '/icons/arrow_drop_down-blue.png' : '/icons/arrow_drop_down.png')"
+    
+    <section [ngClass]="{'slide-in': menuVisible}">
+        <div class="workspace-container">
+            <div class="workspace-text">
+                <img src="./icons/Workspace-logo.png" alt="">
+                <p>Devspace</p>
+            </div>
+            <div (mouseenter)="isHoveredEdit = true" (mouseleave)="isHoveredEdit = false" class="edit-square">
+                <img [src]="isHoveredEdit ? 'icons/edit_square-blue.png' : 'icons/edit_square.png'" alt="">
+            </div>
+        </div>
+        <div class="channel-row">
+            <div class="channel-container">
+                <div (click)="toggleChannel()" (mouseenter)="isHoveredChannel = true"
+                    (mouseleave)="isHoveredChannel = false" (mouseenter)="changeImg()" (mouseleave)="resetImg()"
+                    class="channel-header">
+                    <img class="arrow-drop"
+                        [src]="hideChannel ? (isHoveredChannel ? '/icons/arrow_drop_down-right-blue.png' : '/icons/arrow_drop_down-right.png') : (isHoveredChannel ? '/icons/arrow_drop_down-blue.png' : '/icons/arrow_drop_down.png')"
+                        alt="">
+                    <img class="workspaces-img" [src]="workspaceImg" alt="">
+                    <p>Channels</p>
+                </div>
+                <div (click)="openDialogChannel()" (mouseenter)="isHoveredAdd = true" (mouseleave)="isHoveredAdd = false" class="add-black">
+                    <img [src]="isHoveredAdd ? 'icons/add-blue.png' : 'icons/add-black.png'" alt="">
+                </div>
+            </div>
+            <div class="channels" [ngClass]="{'hide' : hideChannel}">
+                    <div  *ngFor="let channel of firebaseService.allChannels " (click)="channelService.showChannelChat(channel)" class="developer">
+                        <div  class="dev-hover">
+                            <img [src]="tagImg" alt="">
+                            <p>{{ channel.title}}</p>
+                        </div>
+                    </div>
+                
+               
+                <div (click)="openDialogChannel()" (mouseenter)="changeImgChannel()" (mouseleave)="resetImgChannel()" class="add-channel">
+                    <img [src]="addImg" alt="">
+                    <p>Channel hinzufügen</p>
+                </div>
+            </div>
+    
+            <div (mouseenter)="isHoveredUser = true" (mouseleave)="isHoveredUser = false" (click)="toggleUser()"
+                (mouseenter)="changeImgMessage()" (mouseleave)="resetImgMessage()" class="channel-header">
+                <img [src]="hideUser ? (isHoveredUser ? '/icons/arrow_drop_down-right-blue.png' : '/icons/arrow_drop_down-right.png'): (isHoveredUser ? '/icons/arrow_drop_down-blue.png' : '/icons/arrow_drop_down.png')"
                     alt="">
-                <img class="workspaces-img" [src]="workspaceImg" alt="">
-                <p>Channels</p>
+                <img [src]="accountImg" alt="">
+                <p>Direktnachrichten</p>
             </div>
-            <div (click)="openDialogChannel()" (mouseenter)="isHoveredAdd = true" (mouseleave)="isHoveredAdd = false" class="add-black">
-                <img [src]="isHoveredAdd ? 'icons/add-blue.png' : 'icons/add-black.png'" alt="">
-            </div>
-        </div>
-        <div class="channels" [ngClass]="{'hide' : hideChannel}">
-                <div  *ngFor="let channel of firebaseService.allChannels " (click)="channelService.showChannelChat(channel)" class="developer">
-                    <div  class="dev-hover">
-                        <img [src]="tagImg" alt="">
-                        <p>{{ channel.title}}</p>
-                    </div>
-                </div>
-            
-           
-            <div (click)="openDialogChannel()" (mouseenter)="changeImgChannel()" (mouseleave)="resetImgChannel()" class="add-channel">
-                <img [src]="addImg" alt="">
-                <p>Channel hinzufügen</p>
-            </div>
-        </div>
-
-        <div (mouseenter)="isHoveredUser = true" (mouseleave)="isHoveredUser = false" (click)="toggleUser()"
-            (mouseenter)="changeImgMessage()" (mouseleave)="resetImgMessage()" class="channel-header">
-            <img [src]="hideUser ? (isHoveredUser ? '/icons/arrow_drop_down-right-blue.png' : '/icons/arrow_drop_down-right.png'): (isHoveredUser ? '/icons/arrow_drop_down-blue.png' : '/icons/arrow_drop_down.png')"
-                alt="">
-            <img [src]="accountImg" alt="">
-            <p>Direktnachrichten</p>
-        </div>
-
-        <div [ngClass]="{'hide': hideUser}" class="users">
-            <div *ngFor="let user of firebaseService.allUsers"
-                class="single-user">
-                <div (click)="conService.startConversation(user)"  class="single-user-hover">
-                    <div class="avatar">
-                        <img class="avatar-img" [src]="user.avatar" alt="">
-                        <img class="status" [src]="user.status == 'online' ? '/icons/Online.png' : '/icons/Offline.png'" alt="">
-                    </div>
-                    <div class="username">
-                        <p>{{ user.username }}</p>
+    
+            <div [ngClass]="{'hide': hideUser}" class="users">
+                <div *ngFor="let user of firebaseService.allUsers"
+                    class="single-user">
+                    <div (click)="conService.startConversation(user)"  class="single-user-hover">
+                        <div class="avatar">
+                            <img class="avatar-img" [src]="user.avatar" alt="">
+                            <img class="status" [src]="user.status == 'online' ? '/icons/Online.png' : '/icons/Offline.png'" alt="">
+                        </div>
+                        <div class="username">
+                            <p>{{ user.username }}</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+</div>
 
-
-</section>
 <div (mouseenter)="isHoveredMenu = true" (mouseleave)="isHoveredMenu = false" (mouseenter)="changeImgMenu()"
     (mouseleave)="resetImgMenu()" (click)="toggleMenu()" class="workspace-show-hide">
     <p>{{ menuVisible ? "Workspace-Menü öffnen": "Workspace-Menü schließen" }}</p>

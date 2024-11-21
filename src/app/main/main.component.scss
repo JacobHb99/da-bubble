@@ -1,8 +1,13 @@
 @import './../../styles.scss';
 
 .main {
-    @include dFlex($gap: 20px);
-    
+    @include dFlex($gap: 20px);  
+    height: 100svh;
+    width: 100%;  
+}
+
+.right-content{
+    width: calc(100% - 366px);
 }
 
 app-side-nav {
