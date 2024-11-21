@@ -4,7 +4,8 @@ section {
     border-radius: 30px;
     width: 306px;
     font-family: 'Nunito';
-    height: 100vh;
+    height: calc(100svh - 199px) ;
+    
     box-sizing: border-box;
     transform: translateX(0px);
     transition: transform ease-in-out 130ms;
@@ -143,17 +144,20 @@ section {
 }
 
 .users {
+    height: 300px;
+    overflow-y: scroll;
     margin-left: 24px;
     display: flex;
     flex-direction: column;
     gap: 12px;
-    max-height: 400px;
     visibility: visible;
     transition: opacity 130ms ease, visibility 130ms ease;
 
 }
 
 .channels {
+    height: 200px;
+    overflow-y: scroll;
     gap: 8px;
     display: flex;
     flex-direction: column;
@@ -211,7 +215,7 @@ section {
     padding: 17px 14px;
     position: absolute;
     left: -137px;
-    bottom: 40px;
+    bottom: 137px;
     background-color: white;
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;

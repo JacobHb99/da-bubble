@@ -3,7 +3,7 @@
 .main {
     position: relative;
     background-color: white;
-    height: 100vh;
+    height: calc(100svh - 199px);
     border-radius: 30px;
     font-family: 'Nunito';
 }
