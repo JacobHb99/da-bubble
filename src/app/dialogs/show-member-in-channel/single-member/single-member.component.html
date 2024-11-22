@@ -1,11 +1,16 @@
 <div single-user>
     <div class="single-user-hover">
         <div class="avatar">
-            <img class="avatar-img" src="/img/avatars/avatar_1.png" alt="">
-            <img class="status" src="/icons/Online.png" alt="">
+            <img class="avatar-img" src="{{member.avatar}}" alt="">
+            @if(member.status==1){
+                <img class="status" src="/icons/Online.png" alt="">
+            }@else  {
+                <img class="status" src="/icons/Offline.png" alt="">
+            }
+             
         </div>
         <div class="username">
-            <p>test</p>
+            <p>{{member.username}}</p>
         </div>
     </div>
 </div>
