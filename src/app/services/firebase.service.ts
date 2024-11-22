@@ -270,6 +270,6 @@ setConversationObject(conversation: any): Conversation {
       role: object.role
     }
       }
-}
+    }
 
 

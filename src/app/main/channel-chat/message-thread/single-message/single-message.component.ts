@@ -8,6 +8,7 @@ import { User } from '../../../../models/user.model';
 import { AuthService } from '../../../../services/auth.service';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { EmojiComponent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
+import { ReactionService } from '../../../../services/reaction.service';
 
 @Component({
   selector: 'app-single-message',
@@ -20,6 +21,7 @@ export class SingleMessageComponent {
   uiService = inject(InterfaceService);
   fiBaService = inject(FirebaseService);
   authService = inject(AuthService);
+  reactService = inject(ReactionService);
 
   messageIsMine: boolean = true;
   showReactionPopups: boolean = false; //nachsehen welche 
@@ -92,25 +94,27 @@ export class SingleMessageComponent {
     this.showEmojiPicker = !this.showEmojiPicker;
   }
 
-  manageEmoji(event: any) {
-    console.log('emoji', event);
+  manageEmoji(event: any) {    
+    //console.log('emoji', event);
     const emoji = event.emoji;
-    this.currentReaction = new Reaction();
-    this.currentReaction.id = emoji.id;
-    this.currentReaction.counter = +1;
-    let user = this.authService.currentUserSig()?.username as string;
-    this.currentReaction.reactedUser = new Array(user);
+    console.log('emoji',emoji)
+    const reaction = this.createNewReaction(emoji);
+    console.log('reaction',reaction)
+    let msgId = this.currentMessage.msgId
+    const currentConversation = this.fiBaService.currentConversation;
 
-    console.log('currentReaction', this.currentReaction);
+    //let user = this.authService.currentUserSig()?.username as string;
+    this.reactService.updateMessageWithReaction(reaction, msgId, currentConversation)
     
-    
-    // counter: number;
-    // id: string;
-    // fromUser: string[];
-
-    //this.text += emoji;  
-    this.toggleEmojiPicker();
     //this.toggleEmojiPicker();
+  }
+
+  createNewReaction(emoji: any) {
+    return new Reaction({
+      counter: 1,
+      id: emoji.id,
+      reactedUser: new Array(this.authService.currentUserSig()?.username as string),
+    });
   }
 
 }
