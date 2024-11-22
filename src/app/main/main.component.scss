@@ -7,10 +7,13 @@
 }
 
 .right-content{
+    height: 100svh;
     width: calc(100% - 366px);
+    box-sizing: border-box;
 }
 
 app-side-nav {
+    height: 100svh;
     width: 366px; //erstmal von Figma übernommen
 }
 
