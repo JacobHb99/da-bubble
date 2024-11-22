@@ -48,7 +48,7 @@ export class SearchbarService {
 
   get filteredUsers() {
     if (this.searchName.trim().length < 1) {
-      console.log("No search term provided, returning empty array.");
+      
       return [];
     }
   

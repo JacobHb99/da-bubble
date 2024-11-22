@@ -3,10 +3,9 @@
         <h2>Mitglieder</h2>
         <div mat-dialog-close class="close"></div>
     </div>
-    <div class="content">
-        @for (item of [1,2,3]; track $index) {
-        <app-single-member></app-single-member>
-        }
+    <div  class="content">
+        <p *ngFor="let user of allUsersFromAChannelId">{{ user.username}}</p>
+       
        <div class="add-member"> <div class="add-member-icon">  </div>     <span>Mitglieder hinzufügen</span></div>
     </div>
 </div>

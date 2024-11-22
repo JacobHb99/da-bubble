@@ -205,13 +205,19 @@ setConversationObject(conversation: any): Conversation {
 
  
 
-  getCurrentUser(uid: string) {
-    const unsubscribe = onSnapshot(doc(this.firestore, "users", uid), (doc) => {
-      this.userObject = doc.data();
-      
-  });
-  this.registerListener(unsubscribe);
+  getCurrentUser(uid: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const unsubscribe = onSnapshot(doc(this.firestore, "users", uid), (doc) => {
+        if (doc.exists()) {
+          resolve(doc.data()); // Gibt die Benutzerdaten zurück
+        } else {
+          reject("Benutzer nicht gefunden");
+        }
+        unsubscribe(); // Beendet den Listener, um Speicherlecks zu vermeiden
+      });
+    });
   }
+  
 
   async subscribeUserById(id: any) {
     const unsubscribe = onSnapshot(this.getUserDocRef(id), (user) => {
