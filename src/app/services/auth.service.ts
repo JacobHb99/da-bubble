@@ -9,6 +9,7 @@ import { ChannelService } from './channel.service';
 import { collection, DocumentData, Firestore, onSnapshot, query, QuerySnapshot, where } from '@angular/fire/firestore';
 import { Channel } from '../models/channel.model';
 import { ConversationService } from './conversation.service';
+import { UserDataService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -197,12 +198,8 @@ export class AuthService {
         console.log(`Benutzer eingeloggt: ${user.uid}`);
         this.setCurrentUserData(user);
   
-        // Starte Firestore-Operationen nach einer kleinen Verzögerung
-        setTimeout(() => {
-          this.fireService.loadUserChannels(user.uid);
-          this.fireService.getAllUsers();
-          this.fireService.getAllConversations();
-        }, 200); // 200 ms Verzögerung, um Auth-Status zu stabilisieren
+      // Lade alle relevanten Daten
+      this.fireService.initializeData(user.uid);
       } else {
         console.log("Benutzer ist ausgeloggt.");
         this.currentUserSig.set(null);

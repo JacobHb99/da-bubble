@@ -28,8 +28,30 @@ export class FirebaseService {
   currentConversation: Conversation = new Conversation();
   //currentConversation = signal<Conversation | null>(null)
   firestore = inject(Firestore);
+  isLoading = true; // Zeigt das Overlay an
+
+
   
   constructor() {}
+
+  async initializeData(currentUid: string) {
+    this.isLoading = true; // Ladeanzeige aktivieren
+    
+    try {
+      // Daten parallel laden
+      await Promise.all([
+        this.getAllUsers(),
+        this.getAllConversations(),
+        this.loadUserChannels(currentUid || ''),
+      ]);
+      console.log("Alle Daten erfolgreich geladen.");
+    } catch (error) {
+      console.error("Fehler beim Laden der Daten:", error);
+    } finally {
+      this.isLoading = false; // Ladeanzeige deaktivieren
+    }
+  }
+  
 
   unsubscribeAll() {
     console.log("Starte Unsubscribe aller Listener...");

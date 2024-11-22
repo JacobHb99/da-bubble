@@ -36,7 +36,7 @@ export class MainComponent {
   channelService = inject(ChannelService);
   convService = inject(ConversationService);
 
-  constructor(private authService: AuthService) {}
+  constructor(public authService: AuthService) {}
 
 
   ngOnInit() {
