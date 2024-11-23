@@ -2,12 +2,11 @@
 
 .main {
     @include dFlex($gap: 20px);  
-    height: 100svh;
+    height: calc(100svh - 137px);
     width: 100%;  
 }
 
 .right-content {
-  height: 100svh;
   width: calc(100% - 366px); /* Standardbreite mit Sidebar */
   box-sizing: border-box;
 }
@@ -17,7 +16,6 @@
 }
 
 app-side-nav {
-    height: 100svh;
 }
 
 app-channel-chat {
