@@ -1,9 +1,5 @@
-<div class="left-side">
-    <div class="logo">
-        <img src="./img/logo-text.png" alt="">
-    </div>
     
-    <section [ngClass]="{'slide-in': menuVisible}">
+    <section [ngClass]="{'slide-in': menuVisible}" [ngStyle]="{'display': uiService.showSidenav() ? 'block' : 'none'}">
         <div class="scroll-container">
             <div class="workspace-container">
                 <div class="workspace-text">
@@ -69,7 +65,6 @@
             </div>
         </div>
     </section>
-</div>
 
 <div (mouseenter)="isHoveredMenu = true" (mouseleave)="isHoveredMenu = false" (mouseenter)="changeImgMenu()"
     (mouseleave)="resetImgMenu()" (click)="toggleMenu()" class="workspace-show-hide">

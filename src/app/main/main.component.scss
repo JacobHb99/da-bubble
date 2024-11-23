@@ -6,19 +6,22 @@
     width: 100%;  
 }
 
-.right-content{
-    height: 100svh;
-    width: calc(100% - 366px);
-    box-sizing: border-box;
+.right-content {
+  height: 100svh;
+  width: calc(100% - 366px); /* Standardbreite mit Sidebar */
+  box-sizing: border-box;
+}
+
+.full-width {
+  width: 100% !important; /* Volle Breite, wenn Sidebar ausgeblendet */
 }
 
 app-side-nav {
     height: 100svh;
-    width: 366px; //erstmal von Figma übernommen
 }
 
 app-channel-chat {
-    width: 989px; //erstmal von Figma übernommen
+    width: 100%; //erstmal von Figma übernommen
 }
 
 app-thread {

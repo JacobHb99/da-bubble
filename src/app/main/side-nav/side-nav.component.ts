@@ -51,6 +51,9 @@ constructor(public firebaseService: FirebaseService, public userDataService: Use
 
 toggleMenu() {
   this.menuVisible = !this.menuVisible
+  this.uiService.toggleSidenav();
+  console.log(this.uiService.showSidenav);
+  
 }
 
 changeImg() {

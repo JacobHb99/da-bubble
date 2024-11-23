@@ -17,6 +17,13 @@ header {
   gap: 20px;
 }
 
+.logo{
+  @include dFlex(flex-start);
+  flex-shrink: 0; /* Verhindert, dass das Logo schrumpft */
+  margin: 20px;
+  width: 346px;
+}
+
 .search-container {
   flex-grow: 1; /* Lässt die Suchleiste so viel Platz wie möglich einnehmen */
   display: flex;

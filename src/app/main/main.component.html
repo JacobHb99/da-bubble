@@ -2,11 +2,12 @@
     <div class="loader"></div>
   </div>
 
+  <app-header></app-header>
+
 <div class="main">
     <app-side-nav></app-side-nav>
 
-    <div class="right-content">
-        <app-header></app-header>
+    <div class="right-content" [ngClass]="{'full-width': !uiService.showSidenav()}">
         <app-channel-chat></app-channel-chat>
         <app-thread [ngStyle]="{'display': this.uiService.showThread === true ? 'flex' : 'none'}">
         </app-thread>

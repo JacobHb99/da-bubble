@@ -234,6 +234,7 @@ section {
     gap: 10px;
     width: 302px;
     justify-content: center;
+    z-index: 9999;
 
     &:hover {
         cursor: pointer;
