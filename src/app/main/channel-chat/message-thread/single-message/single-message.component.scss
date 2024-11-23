@@ -210,6 +210,10 @@ section {
         background-color: white;
         position: relative;
 
+        ngx-emoji{
+            @include dFlex();
+        }
+
         p {
             margin: 0;
             font-size: 16px;

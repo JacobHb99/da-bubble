@@ -32,8 +32,8 @@ export class SingleMessageComponent {
   user: any;
   //currentMessage: Message = new Message();
   @Input() currentMessage: Message = new Message();
-  @Input() message:Message= new Message();
-  
+  @Input() message: Message = new Message();
+
   loggedInUser: any;
 
 
@@ -55,7 +55,7 @@ export class SingleMessageComponent {
   ngOnInit(): void {
     this.currentMessage = new Message(this.currentMessage);
     this.loggedInUser = this.authService.currentUserSig();
-    //console.log(this.loggedInUser)
+    console.log(this.loggedInUser)
   }
 
 
@@ -85,7 +85,7 @@ export class SingleMessageComponent {
 
       if (Id === user.uid) {
         return user;
-      } 
+      }
     }
     return null;
   }
@@ -94,18 +94,26 @@ export class SingleMessageComponent {
     this.showEmojiPicker = !this.showEmojiPicker;
   }
 
-  manageEmoji(event: any) {    
+  // getReactedUserNames(reactedUser: object) {
+  //   return Object.keys(reactedUser);   //wandelt object in ein array um
+  // }
+
+  checkPlural(counter: number) {
+    return counter > 1 ? 'haben reagiert' : 'hat reagiert';
+  }
+
+  manageEmoji(event: any) {
     //console.log('emoji', event);
     const emoji = event.emoji;
-    console.log('emoji',emoji)
+    console.log('emoji', emoji)
     const reaction = this.createNewReaction(emoji);
-    console.log('reaction',reaction)
+    console.log('reaction', reaction)
     let msgId = this.currentMessage.msgId
     const currentConversation = this.fiBaService.currentConversation;
 
     //let user = this.authService.currentUserSig()?.username as string;
     this.reactService.updateMessageWithReaction(reaction, msgId, currentConversation)
-    
+
     //this.toggleEmojiPicker();
   }
 
@@ -116,5 +124,17 @@ export class SingleMessageComponent {
       reactedUser: new Array(this.authService.currentUserSig()?.username as string),
     });
   }
+
+  // createNewReaction(emoji: any) {
+  //   const username = this.authService.currentUserSig()?.username as string;
+
+  //   return new Reaction({
+  //     counter: 1,
+  //     id: emoji.id,
+  //     reactedUser: {
+  //       [`${username}`]: true
+  //     }
+  //   });
+  // }
 
 }

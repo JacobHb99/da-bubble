@@ -34,47 +34,48 @@
                     <p>Letzt Antwort 14:52</p>
                 </div>
                 <div class="reactionBox">
+                    @for (reaction of currentMessage.reactions; track $index; let index = $index) {
                     <div class="emojiBox" (mouseleave)="onMouseLeave()" (mouseover)="onMouseOver()">
-                        <img src="/icons/emoji-rocket.png" alt="rocket">
-                        <p>1</p>
-                        <div class="whoReactInfo" [ngClass]="{'whoReactInfoReply': loggedInUser.uid!==currentMessage.senderId }">
-                            <img src="/icons/emoji-rocket.png" alt="rocket">
-                            <span>Laura Müller</span>
-                            <span>hat reagiert</span>
+                        <ngx-emoji [emoji]="reaction.id"></ngx-emoji>
+                        <p>{{ reaction.counter }}</p>
+                        <div class="whoReactInfo"
+                            [ngClass]="{'whoReactInfoReply': loggedInUser.uid!==currentMessage.senderId }">
+                            <ngx-emoji [emoji]="reaction.id"></ngx-emoji>
+
+                            @for (username of reaction.reactedUser; track $index) {
+                            <span *ngIf="loggedInUser.username === username">Du</span>
+                            <span *ngIf="loggedInUser.username !== username">{{ username }}</span>
+                            }
+
+                            <!-- <span>{{ reaction.reactedUser}}</span> -->
+                            <span>{{ checkPlural(reaction.counter) }}</span>
                         </div>
                     </div>
-                    <div class="emojiBox">
-                        <img src="/icons/emoji-check.png" alt="emoji">
-                        <p>1</p>
-                        <div class="whoReactInfo" [ngClass]="{'whoReactInfoReply': loggedInUser.uid!==currentMessage.senderId }">
-                            <img src="/icons/emoji-check.png" alt="rocket">
-                            <span>Laura Müller</span>
-                            <span>hat reagiert</span>
-                        </div>
-                    </div>                   
+                    }
                 </div>
             </div>
         </div>
-         @if (loggedInUser.uid==currentMessage.senderId) {
+        @if (loggedInUser.uid==currentMessage.senderId) {
         <img [ngStyle]="{'width': '70px',
                         'heigt': '70px',
                         'border-radius': '50%'}" [src]="loggedInUser.avatar" referrerPolicy="no-referrer">
         } @else {
-            <img [ngStyle]="{'width': '70px',
+        <img [ngStyle]="{'width': '70px',
                         'heigt': '70px',
-                        'border-radius': '50%'}" [src]="findUserWithId(currentMessage.senderId)?.avatar" referrerPolicy="no-referrer">
-        } 
+                        'border-radius': '50%'}" [src]="findUserWithId(currentMessage.senderId)?.avatar"
+            referrerPolicy="no-referrer">
+        }
         <div class="floatingReactionBox"
             [ngClass]="{'replyfloatingReactionBox': loggedInUser.uid!==currentMessage.senderId }" [ngStyle]="{'left': loggedInUser.uid!==currentMessage.senderId ? 'auto' : '45px',
                         'right': loggedInUser.uid!==currentMessage.senderId ? '45px' : 'auto'}">
             <div class="iconBox">
-                <ngx-emoji class="singleEmoji" [size]="25" emoji="white_check_mark"></ngx-emoji>  
+                <ngx-emoji class="singleEmoji" [size]="25" emoji="white_check_mark"></ngx-emoji>
             </div>
             <div class="iconBox">
-                <ngx-emoji class="singleEmoji" [size]="25" emoji="raised_hands"></ngx-emoji>  
+                <ngx-emoji class="singleEmoji" [size]="25" emoji="raised_hands"></ngx-emoji>
             </div>
             <div class="iconBox svg-hover" (click)="toggleEmojiPicker()">
-                 <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg"> 
+                <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <mask id="mask0_76631_17710" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
                         width="25" height="24">
                         <rect x="0.936523" width="24" height="24" fill="#D9D9D9" />
@@ -87,14 +88,16 @@
                 </svg>
             </div>
             @if (showEmojiPicker) {
-                <div [ngClass]="loggedInUser.uid===currentMessage.senderId ? 'myEmojiPicker': 'replyEmojiPicker'" #emojiPicker>
-                    <emoji-mart (emojiSelect)="manageEmoji($event)" [showPreview]="false" [darkMode]="false" color="#444DF2" title="Pick your emoji…"
-                        [showSingleCategory]="true">
-                    </emoji-mart>
-                </div>
-                }
+            <div [ngClass]="loggedInUser.uid===currentMessage.senderId ? 'myEmojiPicker': 'replyEmojiPicker'"
+                #emojiPicker>
+                <emoji-mart (emojiSelect)="manageEmoji($event)" [showPreview]="false" [darkMode]="false" color="#444DF2"
+                    title="Pick your emoji…" [showSingleCategory]="true">
+                </emoji-mart>
+            </div>
+            }
             <div class="iconBox svg-hover" (click)="this.uiService.openThread()">
-                <svg [id]="message.msgId" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg [id]="message.msgId" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
                     <mask id="mask0_1823_21598" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
                         width="24" height="24">
                         <rect width="24" height="24" fill="#D9D9D9" />
@@ -120,7 +123,7 @@
                     </g>
                 </svg>
             </div>
-        }
+            }
         </div>
     </div>
     }
