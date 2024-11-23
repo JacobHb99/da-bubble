@@ -11,6 +11,7 @@ import { ChannelService } from '../../services/channel.service';
 import { ShowMemberInChannelComponent } from '../../dialogs/show-member-in-channel/show-member-in-channel.component';
 import { Firestore, doc, onSnapshot } from '@angular/fire/firestore';
 import { AddToChoosenChannelComponent } from '../../dialogs/add-to-choosen-channel/add-to-choosen-channel.component';
+import { ProfilComponent } from '../../dialogs/profil/profil.component';
 
 @Component({
   selector: 'app-channel-chat',
@@ -63,6 +64,12 @@ export class ChannelChatComponent{
 
     addToChoosenChannelDialog(){
       const dialogRef = this.dialog.open(AddToChoosenChannelComponent, {
+      });
+    }
+
+    openUserProfilDialog(){
+      const dialogRef = this.dialog.open(ProfilComponent, {
+        data: this.user 
       });
     }
 

@@ -5,16 +5,22 @@
         <div mat-dialog-close class="close"></div>
     </div>
 
-    <img class="avatar" src="/public/img/avatars/avatar_0.png" alt="">
-    <p class="username">Username</p>
+    <img class="avatar" src="{{data.avatar}}" alt="">
+    <p class="username">{{data.username}}</p>
       
-    <div class="online-status"><img src="/img/online.svg" alt=""> <span>Aktiv</span></div>
+    <div class="online-status">
+        @if (data.status == 'online') {
+        <img src="/icons/Online.png" alt=""> <span class="active-online-status">Aktiv</span>
+        }@else  {
+            <img src="/icons/Offline.png" alt=""> <span class="absent-online-status">Abwesend</span>
+        }
+    </div>
 
     <div class="email">
         <img src="/img/icons/mail_icon.svg" alt="">
         <div>
             <p>E-mail-Adresse</p>
-            <p class="my-email-adress"> email.de</p>
+            <p class="my-email-adress"> {{data.email}}</p>
         </div>
     </div>
 
