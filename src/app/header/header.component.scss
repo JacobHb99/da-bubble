@@ -24,6 +24,10 @@ header {
   width: 346px;
 }
 
+.min-width{
+  width: min-content !important;
+}
+
 .search-container {
   flex-grow: 1; /* Lässt die Suchleiste so viel Platz wie möglich einnehmen */
   display: flex;

@@ -14,6 +14,7 @@ import { SearchbarService } from '../services/searchbar.service';
 import { timeout } from 'rxjs';
 import { ConversationService } from '../services/conversation.service';
 import { ChannelService } from '../services/channel.service';
+import { BreakpointObserverService } from '../services/breakpoint-observer.service';
 
 
 @Component({
@@ -27,7 +28,7 @@ export class HeaderComponent {
   authService = inject(AuthService);
   readonly dialog = inject(MatDialog);
 
-  constructor(public searchbarService: SearchbarService, public conService: ConversationService, public channelService: ChannelService) {
+  constructor(public searchbarService: SearchbarService, public conService: ConversationService, public channelService: ChannelService, public breakpointObserver: BreakpointObserverService) {
     setTimeout(() => {
       this.searchbarService.combineArraysWithTypes();
     }, 3000);

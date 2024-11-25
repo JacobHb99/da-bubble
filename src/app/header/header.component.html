@@ -1,10 +1,10 @@
 <section>
     <header>
-        <div class="logo">
+        <div class="logo" [ngClass]="{'min-width': breakpointObserver.isXSmallOrSmall}">
             <img src="./img/logo-text.png" alt="">
         </div>
 
-        <div class="search-container">
+        <div class="search-container" [ngClass]="{'d-none': breakpointObserver.isXSmallOrSmall}">
             <div class="input-container">
                 <input (click)="this.searchbarService.combineArraysWithTypes()"
                     (input)="this.searchbarService.filteredUsers" [(ngModel)]="this.searchbarService.searchName"
@@ -42,13 +42,13 @@
             </div>
         </div>
         <div (click)="openDialog()" class="user-container">
-            <p>{{ authService.currentUserSig()?.username }}</p>
+            <p [ngClass]="{'d-none': breakpointObserver.isXSmallOrSmall}">{{ authService.currentUserSig()?.username }}</p>
             <div class="avatar-with-status">
                 <img class="user-img" src="{{authService.currentUserSig()?.avatar}}" referrerPolicy="no-referrer"
                     alt="">
                 <img class="status" src="./icons/Online.png" alt="">
             </div>
-            <img src="./icons/down.png" alt="">
+            <img src="./icons/down.png" alt="" [ngClass]="{'d-none': breakpointObserver.isXSmallOrSmall}">
         </div>
     </header>
 </section>
