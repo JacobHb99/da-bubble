@@ -1,6 +1,9 @@
 <section>
     <header>
-        <div class="logo" [ngClass]="{'min-width': breakpointObserver.isXSmallOrSmall}">
+        <div class="logo" [ngClass]="{
+        'min-width': breakpointObserver.isXSmallOrSmall, 
+        'mobile-logo': breakpointObserver.isXSmallOrSmall, 
+        }">
             <img src="./img/logo-text.png" alt="">
         </div>
 
@@ -23,13 +26,14 @@
                         }
                         @if (obj.name == "channel") {
                         <div (click)="channelService.showChannelChat(obj.data)" class="single-search">
-                            <img  src="./icons/users-alt.png" alt="">
+                            <img src="./icons/users-alt.png" alt="">
                             <p class="username">{{ obj.data.title }}</p>
                         </div>
                         }
-                        <div *ngIf="obj.name === 'conversation'" >
+                        <div *ngIf="obj.name === 'conversation'">
                             <div *ngFor="let message of obj.data.messages">
-                                <div *ngIf="message.text.toLowerCase().includes(this.searchbarService.searchName.toLowerCase())" class="single-search">
+                                <div *ngIf="message.text.toLowerCase().includes(this.searchbarService.searchName.toLowerCase())"
+                                    class="single-search">
                                     <img src="./icons/messages.png" alt="">
                                     <p class="username">
                                         {{ message.text }}
@@ -42,11 +46,13 @@
             </div>
         </div>
         <div (click)="openDialog()" class="user-container">
-            <p [ngClass]="{'d-none': breakpointObserver.isXSmallOrSmall}">{{ authService.currentUserSig()?.username }}</p>
+            <p [ngClass]="{'d-none': breakpointObserver.isXSmallOrSmall}">{{ authService.currentUserSig()?.username }}
+            </p>
             <div class="avatar-with-status">
-                <img class="user-img" src="{{authService.currentUserSig()?.avatar}}" referrerPolicy="no-referrer"
-                    alt="">
-                <img class="status" src="./icons/Online.png" alt="">
+                <img class="user-img" [ngClass]="{'mobile-user-img': breakpointObserver.isXSmallOrSmall}"
+                    src="{{authService.currentUserSig()?.avatar}}" referrerPolicy="no-referrer" alt="">
+                <img class="status" [ngClass]="{'mobile-status': breakpointObserver.isXSmallOrSmall}"
+                    src="./icons/Online.png" alt="">
             </div>
             <img src="./icons/down.png" alt="" [ngClass]="{'d-none': breakpointObserver.isXSmallOrSmall}">
         </div>

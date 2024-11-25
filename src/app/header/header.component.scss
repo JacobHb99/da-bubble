@@ -24,6 +24,16 @@ header {
   width: 346px;
 }
 
+.mobile-logo{
+  flex-shrink: 1 !important;
+
+  img{
+    width: 160px;
+    height: 45px;
+    object-fit: contain;
+  }
+}
+
 .min-width{
   width: min-content !important;
 }
@@ -88,6 +98,11 @@ header {
   border-radius: 50%;
 }
 
+.mobile-user-img{
+  height: 50px !important;
+  width: 50px !important;
+}
+
 .avatar-with-status {
   position: relative;
 }
@@ -96,6 +111,11 @@ header {
   position: absolute;
   bottom: 11px;
   right: 9px;
+}
+
+.mobile-status{
+  bottom: 5px;
+  right: 5px;
 }
 
 

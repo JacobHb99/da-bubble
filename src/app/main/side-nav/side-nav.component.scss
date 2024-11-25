@@ -13,10 +13,19 @@ section {
     margin-left: 20px;
 }
 
+.no-margin{
+    margin: 0 !important;
+}
+
+.mobile-height{
+    height: calc(100svh - 85px) !important;
+  }
+
 .scroll-container{
     height: 100%;
     overflow-y: auto;
-    width: 306px;
+    max-width: 306px;
+    width: 100%;
 }
 
 .logo{

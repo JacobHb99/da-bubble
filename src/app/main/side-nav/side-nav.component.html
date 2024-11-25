@@ -1,5 +1,5 @@
     
-    <section [ngClass]="{'slide-in': menuVisible}" [ngStyle]="{'display': uiService.showSidenav() ? 'block' : 'none'}">
+    <section [ngClass]="{'slide-in': menuVisible, 'no-margin': breakpointObserver.isXSmallOrSmall, 'mobile-height': breakpointObserver.isXSmallOrSmall}" [ngStyle]="{'display': uiService.showSidenav() ? 'block' : 'none'}">
         <div class="scroll-container">
             <div class="workspace-container">
                 <div class="workspace-text">

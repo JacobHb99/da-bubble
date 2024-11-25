@@ -11,6 +11,7 @@ import { ChannelService } from '../../services/channel.service';
 import { ConversationService } from '../../services/conversation.service';
 import { user } from '@angular/fire/auth';
 import { AuthService } from '../../services/auth.service';
+import { BreakpointObserverService } from '../../services/breakpoint-observer.service';
 
 
 
@@ -46,7 +47,7 @@ conService = inject(ConversationService);
 channelService = inject(ChannelService)
 channels: any[] = []
 
-constructor(public firebaseService: FirebaseService, public userDataService: UserDataService, public dialog: MatDialog){}
+constructor(public firebaseService: FirebaseService, public userDataService: UserDataService, public dialog: MatDialog, public breakpointObserver: BreakpointObserverService){}
 
 
 toggleMenu() {

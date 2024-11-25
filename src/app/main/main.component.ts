@@ -12,6 +12,7 @@ import { EditChannelComponent } from '../dialogs/edit-channel/edit-channel.compo
 import { ChannelService } from '../services/channel.service';
 import { ConversationService } from '../services/conversation.service';
 import { AuthService } from '../services/auth.service';
+import { BreakpointObserverService } from '../services/breakpoint-observer.service';
 
 
 
@@ -36,7 +37,7 @@ export class MainComponent {
   channelService = inject(ChannelService);
   convService = inject(ConversationService);
 
-  constructor(public authService: AuthService) {}
+  constructor(public authService: AuthService, public breakpointObserver: BreakpointObserverService) {}
 
 
   ngOnInit() {

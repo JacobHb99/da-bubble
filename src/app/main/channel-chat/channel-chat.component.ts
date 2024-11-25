@@ -12,6 +12,7 @@ import { ShowMemberInChannelComponent } from '../../dialogs/show-member-in-chann
 import { Firestore, doc, onSnapshot } from '@angular/fire/firestore';
 import { AddToChoosenChannelComponent } from '../../dialogs/add-to-choosen-channel/add-to-choosen-channel.component';
 import { ProfilComponent } from '../../dialogs/profil/profil.component';
+import { BreakpointObserverService } from '../../services/breakpoint-observer.service';
 
 @Component({
   selector: 'app-channel-chat',
@@ -27,7 +28,7 @@ export class ChannelChatComponent{
   uiService = inject(InterfaceService);
   channelService = inject(ChannelService)
 
-  constructor(private userDataService: UserDataService,  public dialog: MatDialog) {
+  constructor(private userDataService: UserDataService,  public dialog: MatDialog, public breakpointObserver: BreakpointObserverService) {
     this.userDataService.selectedUser.subscribe((user) => {
       this.user = user;      
       

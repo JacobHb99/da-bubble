@@ -16,6 +16,10 @@
   width: 100% !important; /* Volle Breite, wenn Sidebar ausgeblendet */
 }
 
+.mobile-height{
+  height: calc(100svh - 85px) !important;
+}
+
 app-side-nav {
 }
 
