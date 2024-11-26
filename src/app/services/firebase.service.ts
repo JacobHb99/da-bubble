@@ -48,7 +48,9 @@ export class FirebaseService {
     } catch (error) {
       console.error("Fehler beim Laden der Daten:", error);
     } finally {
-      this.isLoading = false; // Ladeanzeige deaktivieren
+      setTimeout(() => {
+        this.isLoading = false; // Ladeanzeige deaktivieren
+      }, 1500);
     }
   }
   

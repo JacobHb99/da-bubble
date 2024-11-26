@@ -6,15 +6,12 @@
     height: calc(100svh - 137px);
     border-radius: 30px;
     font-family: 'Nunito';
-    margin-right: 20px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .mobile-height{
     height: calc(100svh - 85px) !important;
-}
-
-.no-margin{
-    margin: 0 !important;
 }
 
 header {

@@ -102,6 +102,13 @@ toggleChannel() {
   this.hideChannel = !this.hideChannel;
 }
 
+startConversation(obj: User) {
+  this.conService.startConversation(obj);
+  if (this.breakpointObserver.isXSmallOrSmall) {
+    this.toggleMenu();
+  }
+}
+
 
 // showUserChat(user: any) {
 //   this.userDataService.setUser(user);

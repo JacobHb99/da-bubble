@@ -8,12 +8,26 @@
 
 .right-content {
   display: flex; /* Flexbox für die Verteilung */
-  width: calc(100% - 366px); /* Standardbreite mit Sidebar */
+  justify-content: flex-start; /* Kein zusätzlicher Platz zwischen Kindern */
+  align-items: flex-start;
+  width: 100%; /* Standardbreite mit Sidebar */
   box-sizing: border-box;
 }
 
 .full-width {
-  width: 100% !important; /* Volle Breite, wenn Sidebar ausgeblendet */
+  width: 100vw !important; /* Volle Breite, wenn Sidebar ausgeblendet */
+}
+
+.no-gap{
+  gap: 0 !important;
+}
+
+.d-none{
+  display: none !important;
+}
+
+.no-margin{
+  margin: 0 !important;
 }
 
 .mobile-height{
@@ -26,6 +40,8 @@ app-side-nav {
 app-channel-chat {
   flex-grow: 1; /* Nimmt den restlichen Platz ein */
   width: calc(100% - 485px); /* Platz mit sichtbarem Thread */
+  margin-right: 20px;
+  box-sizing: border-box;
 }
 
 .no-thread {

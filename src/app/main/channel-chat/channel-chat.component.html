@@ -1,4 +1,4 @@
-<section class="main" [ngClass]="{'mobile-height': breakpointObserver.isXSmallOrSmall, 'no-margin': breakpointObserver.isXSmallOrSmall}">
+<section class="main" [ngClass]="{'mobile-height': breakpointObserver.isXSmallOrSmall}">
     <header>
         @if (this.uiService.content === 'channelChat' && channel) {
         <div (click)="openEditChannel()" class="channelName hoverEffect"

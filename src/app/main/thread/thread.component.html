@@ -1,4 +1,4 @@
-<section class="main">
+<section class="main" [ngClass]="{'mobile-height': breakpointObserver.isXSmallOrSmall, 'no-gap': breakpointObserver.isXSmallOrSmall}">
     <header>
         <div class="channelThread">
             <p>Thread</p>

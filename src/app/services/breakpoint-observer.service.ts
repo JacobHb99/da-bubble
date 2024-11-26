@@ -36,8 +36,10 @@ export class BreakpointObserverService {
           this.isXSmallOrSmall = true;
         } else if (result.breakpoints[Breakpoints.Medium]) {
           this.screenSizeSubject.next('Medium');
+          this.isXSmallOrSmall = false;
         } else if (result.breakpoints[Breakpoints.Large]) {
           this.screenSizeSubject.next('Large');
+          this.isXSmallOrSmall = false;
         }
       });
   }

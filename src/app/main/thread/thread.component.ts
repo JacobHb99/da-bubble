@@ -4,6 +4,7 @@ import { MessageThreadComponent } from '../channel-chat/message-thread/message-t
 import { InterfaceService } from '../../services/interface.service';
 import { CommonModule } from '@angular/common';
 import { SingleMessageComponent } from '../channel-chat/message-thread/single-message/single-message.component';
+import { BreakpointObserverService } from '../../services/breakpoint-observer.service';
 
 @Component({
   selector: 'app-thread',
@@ -15,7 +16,7 @@ import { SingleMessageComponent } from '../channel-chat/message-thread/single-me
 export class ThreadComponent {
   uiService = inject(InterfaceService);
 
-  constructor() {
+  constructor(public breakpointObserver: BreakpointObserverService) {
     this.uiService.showThread = false;
   }
 

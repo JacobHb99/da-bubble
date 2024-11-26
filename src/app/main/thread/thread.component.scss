@@ -5,6 +5,9 @@
     background-color: white;
     border-radius: 30px;
     font-family: 'Nunito';
+    height: calc(100svh - 137px);
+    width: 100vw;
+    max-width: 485px;
 }
 
 header {
@@ -52,3 +55,7 @@ app-send-message{
     right: 20px;
     left: 20px;
 }
+
+.mobile-height{
+    height: calc(100svh - 85px) !important;
+  }
