@@ -11,11 +11,18 @@
 
   <app-header></app-header>
 
-<div class="main" [ngClass]="{'mobile-height': breakpointObserver.isXSmallOrSmall, 'no-gap': breakpointObserver.isXSmallOrSmall}">
+<div class="main" [ngClass]="{
+    'mobile-height': breakpointObserver.isXSmallOrSmall, 
+    'no-gap': breakpointObserver.isXSmallOrSmall
+    }">
     <app-side-nav [ngClass]="{'full-width': breakpointObserver.isXSmallOrSmall}"></app-side-nav>
 
-    <div class="right-content" [ngClass]="{'full-width': !uiService.showSidenav() && !uiService.showThread, 'd-none': breakpointObserver.isXSmallOrSmall && uiService.showSidenav()}">
-        <app-channel-chat [ngClass]="{'full-width': breakpointObserver.isXSmallOrSmall, 'no-margin': breakpointObserver.isXSmallOrSmall, 'd-none': breakpointObserver.isXSmallOrSmall && uiService.showThread}"></app-channel-chat>
+    <div class="right-content" [ngClass]="{
+        'full-width': !uiService.showSidenav() && !uiService.showThread, 
+        'd-none': breakpointObserver.isXSmallOrSmall && uiService.showSidenav()}">
+        <app-channel-chat [ngClass]="{
+            'full-width': breakpointObserver.isXSmallOrSmall, 'no-margin': breakpointObserver.isXSmallOrSmall, 
+            'd-none': breakpointObserver.isXSmallOrSmall && uiService.showThread}"></app-channel-chat>
         <app-thread class="thread" [ngStyle]="{'display': this.uiService.showThread === true ? 'flex' : 'none'}">
         </app-thread>
     </div>

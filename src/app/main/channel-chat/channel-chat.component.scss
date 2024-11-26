@@ -23,6 +23,10 @@ header {
     border-top-right-radius: 30px;
 }
 
+.padding-small{
+    padding: 16px !important;
+}
+
 .hoverEffect{
     &:hover {
         color: $contHover;

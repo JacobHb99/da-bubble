@@ -12,6 +12,7 @@ import { ConversationService } from '../../services/conversation.service';
 import { user } from '@angular/fire/auth';
 import { AuthService } from '../../services/auth.service';
 import { BreakpointObserverService } from '../../services/breakpoint-observer.service';
+import { SearchbarService } from '../../services/searchbar.service';
 
 
 
@@ -47,14 +48,19 @@ conService = inject(ConversationService);
 channelService = inject(ChannelService)
 channels: any[] = []
 
-constructor(public firebaseService: FirebaseService, public userDataService: UserDataService, public dialog: MatDialog, public breakpointObserver: BreakpointObserverService){}
+constructor(
+  public firebaseService: FirebaseService,
+  public userDataService: UserDataService, 
+  public dialog: MatDialog, 
+  public breakpointObserver: BreakpointObserverService,
+  public searchbarService: SearchbarService
+){}
 
 
 toggleMenu() {
   this.menuVisible = !this.menuVisible
   this.uiService.toggleSidenav();
   console.log(this.uiService.showSidenav);
-  
 }
 
 changeImg() {

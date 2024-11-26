@@ -1,5 +1,5 @@
 <section class="main" [ngClass]="{'mobile-height': breakpointObserver.isXSmallOrSmall}">
-    <header>
+    <header [ngClass]="{'padding-small': breakpointObserver.isXSmallOrSmall}">
         @if (this.uiService.content === 'channelChat' && channel) {
         <div (click)="openEditChannel()" class="channelName hoverEffect"
             [ngStyle]="{'display': this.uiService.content === 'channelChat' ? 'flex' : 'none'}">

@@ -15,6 +15,8 @@ import { timeout } from 'rxjs';
 import { ConversationService } from '../services/conversation.service';
 import { ChannelService } from '../services/channel.service';
 import { BreakpointObserverService } from '../services/breakpoint-observer.service';
+import { SideNavComponent } from '../main/side-nav/side-nav.component';
+import { InterfaceService } from '../services/interface.service';
 
 
 @Component({
@@ -27,6 +29,9 @@ import { BreakpointObserverService } from '../services/breakpoint-observer.servi
 export class HeaderComponent {
   authService = inject(AuthService);
   readonly dialog = inject(MatDialog);
+  isHoveredEdit = false;
+  uiService = inject(InterfaceService)
+
 
   constructor(public searchbarService: SearchbarService, public conService: ConversationService, public channelService: ChannelService, public breakpointObserver: BreakpointObserverService) {
     setTimeout(() => {

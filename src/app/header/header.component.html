@@ -3,8 +3,21 @@
         <div class="logo" [ngClass]="{
         'min-width': breakpointObserver.isXSmallOrSmall, 
         'mobile-logo': breakpointObserver.isXSmallOrSmall, 
+        'd-none': breakpointObserver.isXSmallOrSmall && !uiService.showSidenav()
         }">
-            <img src="./img/logo-text.png" alt="">
+            <img src="img/logo-text.png" alt="">
+        </div>
+
+        <div class="workspace-container" [ngClass]="{'d-none': !breakpointObserver.isXSmallOrSmall || uiService.showSidenav()}">
+            <div class="workspace-text">
+
+                <div (mouseenter)="isHoveredEdit = true" (mouseleave)="isHoveredEdit = false" class="edit-square" (click)="uiService.toggleSidenav()">
+                    <img [src]="isHoveredEdit ? 'icons/arrow_left_blue.png' : 'icons/arrow_left_black.png'" alt="">
+                </div>
+
+                <img class="img" src="icons/Workspace-logo.png" alt="">
+                <p>Devspace</p>
+            </div>
         </div>
 
         <div class="search-container" [ngClass]="{'d-none': breakpointObserver.isXSmallOrSmall}">

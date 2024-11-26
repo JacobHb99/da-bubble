@@ -6,12 +6,15 @@ export class InterfaceService {
   showThread = true;
   content: 'channelChat' | 'newMessage' | 'directMessage' = 'newMessage';
   showSidenav = signal(true);
+  menuVisible = false;
+
 
 
 
   constructor() {}
 
   toggleSidenav() {
+    this.menuVisible = !this.menuVisible
     this.showSidenav.set(!this.showSidenav());
   }
 
