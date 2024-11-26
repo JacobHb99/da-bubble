@@ -14,8 +14,8 @@ export class UserDataService {
   currentUserSig = signal<UserInterface | null | undefined>(undefined);
 
 
-constructor(private firestore: Firestore, private authService: AuthService) {
-  
+constructor(private authService: AuthService, private firebaseService: FirebaseService) {
+  this.currentUserSig = this.authService.currentUserSig;
 }
 
 
@@ -36,6 +36,6 @@ getCurrentUser() {
   }
 
 
- 
+
 
 }

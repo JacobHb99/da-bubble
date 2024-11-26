@@ -351,6 +351,7 @@ section {
       width: 100%; /* Nimmt den verfügbaren Platz im flex-Container ein */
       padding: 17.5px 45px;
       box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+      border: 1px solid #ADB0D9;
 
   
       &:focus {
@@ -362,6 +363,37 @@ section {
         transition: ease-in-out 100ms;
       }
     }
+}
+
+.new-msg-btn{
+    background-color: #444DF2;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.2);
+    @include dFlex();
+
+
+    &:hover{
+        scale: 1.1;
+    }
+
+    .postion-box{
+        position: relative;
+        height: 60px;
+        width: 60px;
+
+        img{
+            position: relative;
+            top: 16px;
+            left: 18px;
+            height: 24px;
+            width: 24px;
+        }
+    }
+    
+
 }
 
   

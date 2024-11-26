@@ -91,6 +91,7 @@
                 </div>
         
                 <div [ngClass]="{'hide': hideUser}" class="users">
+                    
                     <div *ngFor="let user of firebaseService.allUsers"
                         class="single-user">
                         <div (click)="startConversation(user)"  class="single-user-hover">
@@ -100,6 +101,9 @@
                             </div>
                             <div class="username">
                                 <p>{{ user.username }}</p>
+                                @if (user.uid == userDataService.currentUserSig()?.uid) {
+                                    <p> (Du)</p>
+                                }
                             </div>
                         </div>
                     </div>
@@ -107,6 +111,12 @@
             </div>
         </div>
     </section>
+
+    <div class="new-msg-btn" (click)="openNewMessage()" [ngClass]="{'d-none': !breakpointObserver.isXSmallOrSmall}">
+        <div class="postion-box">
+            <img src="./icons/new-msg-small-white.png" alt="">
+        </div>
+    </div>
 
 <div (mouseenter)="isHoveredMenu = true" (mouseleave)="isHoveredMenu = false" (mouseenter)="changeImgMenu()"
     (mouseleave)="resetImgMenu()" (click)="toggleMenu()" class="workspace-show-hide" [ngClass]="{'d-none': breakpointObserver.isXSmallOrSmall}">

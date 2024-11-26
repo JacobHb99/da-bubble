@@ -58,45 +58,50 @@ constructor(
 
 
 toggleMenu() {
-  this.menuVisible = !this.menuVisible
+  this.menuVisible = !this.menuVisible;
   this.uiService.toggleSidenav();
   console.log(this.uiService.showSidenav);
 }
 
+openNewMessage() {
+  this.uiService.changeContent('newMessage');
+  this.toggleMenu();
+}
+
 changeImg() {
-  this.arrowImg = 'icons/arrow_drop_down-blue.png'
-  this.workspaceImg = 'icons/workspaces-blue.png'
+  this.arrowImg = 'icons/arrow_drop_down-blue.png';
+  this.workspaceImg = 'icons/workspaces-blue.png';
   
 }
 resetImg() {
-  this.arrowImg = 'icons/arrow_drop_down.png'
-  this.workspaceImg = 'icons/workspaces.png'
+  this.arrowImg = 'icons/arrow_drop_down.png';
+  this.workspaceImg = 'icons/workspaces.png';
 }
 
 
 changeImgChannel() {
-  this.addImg= "icons/add_circle-blue.png"
+  this.addImg= "icons/add_circle-blue.png";
   
 }
 resetImgChannel() {
-  this.addImg = "icons/add_circle.png"
+  this.addImg = "icons/add_circle.png";
 }
 
 changeImgMessage() {
-  this.arrowImg= 'icons/arrow_drop_down-blue.png'
-  this.accountImg = "/icons/account_circle-blue.png"
+  this.arrowImg= 'icons/arrow_drop_down-blue.png';
+  this.accountImg = "/icons/account_circle-blue.png";
   
 }
 resetImgMessage() {
-   this.arrowImg= 'icons/arrow_drop_down.png'
-   this.accountImg = "/icons/account_circle.png"
+   this.arrowImg= 'icons/arrow_drop_down.png';
+   this.accountImg = "/icons/account_circle.png";
 }
 
 changeImgMenu() {
- this.menuImg = "icons/hide-navigation-blue.png"
+ this.menuImg = "icons/hide-navigation-blue.png";
 }
 resetImgMenu() {
-   this.menuImg = "icons/Hide-navigation.png"
+   this.menuImg = "icons/Hide-navigation.png";
   
 }
 
