@@ -43,9 +43,15 @@ export class HeaderComponent {
 
   openDialog() {
     const rightPosition = window.innerWidth>1920 ? (window.innerWidth - 1920) /2 : 0;
+    let topPosition;
+    if (this.breakpointObserver.isXSmallOrSmall) {
+      topPosition = '85px';
+    } else {
+      topPosition = '110px';
+    }
     const dialogRef = this.dialog.open(ProfilLogoutButtonsComponent,{
       width: '70px',
-      position: { top: '110px', right: `${rightPosition}px` },
+      position: { top: topPosition, right: `${rightPosition}px` },
     });
 
     dialogRef.afterClosed().subscribe(result => {

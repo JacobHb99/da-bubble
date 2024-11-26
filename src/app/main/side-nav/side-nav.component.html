@@ -24,8 +24,8 @@
                         <div class="single-user-hover">
                             @if (obj.name == "user") {
                             <div (click)="conService.startConversation(obj.data)" class="single-search">
-                                <img class="avatar" src="{{ obj.data.avatar}}" alt="">
-                                <p class="username">{{ obj.data.username }}</p>
+                                <img class="search-avatar" src="{{ obj.data.avatar}}" alt="">
+                                <p class="searchusername">{{ obj.data.username }}</p>
                             </div>
                             }
                             @if (obj.name == "channel") {
@@ -52,7 +52,7 @@
 
 
 
-            <div class="channel-row">
+            <div class="channel-row" [ngClass]="{'d-none': breakpointObserver.isXSmallOrSmall && searchbarService.filteredUsers.length > 0}">
                 <div class="channel-container">
                     <div (click)="toggleChannel()" (mouseenter)="isHoveredChannel = true"
                         (mouseleave)="isHoveredChannel = false" (mouseenter)="changeImg()" (mouseleave)="resetImg()"

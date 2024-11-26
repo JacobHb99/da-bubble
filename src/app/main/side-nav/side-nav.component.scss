@@ -26,6 +26,8 @@ section {
     height: 100%;
     overflow-y: auto;
     width: 100%;
+    padding-right: 30px;
+    box-sizing: border-box;
 }
 
 .logo{
@@ -243,7 +245,7 @@ section {
     gap: 10px;
     width: 302px;
     justify-content: center;
-    z-index: 9999;
+    z-index: 90;
 
     &:hover {
         cursor: pointer;
@@ -286,6 +288,39 @@ section {
     display: flex;
     flex-direction: column;
     position: relative;
+  }
+  
+  .search-username {
+    font-size: 18px;
+    margin: 0;
+  }
+  
+  .search-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+  }
+
+  .single-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .single-search {
+    padding: 4px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  
+    &:hover {
+      cursor: pointer;
+      background: #ECEEFE;
+      border-radius: 30px;
+      color: #535AF1;
+  
+    }
+  
   }
 
   .input-container {

@@ -29,33 +29,36 @@
             </div>
             <div [ngClass]="{'hideUserDialog' : this.searchbarService.searchName.length <= 0}"
                 class="user-dialog showUserDialog">
-                <div *ngFor="let obj of searchbarService.filteredUsers" class="single-user">
-                    <div class="single-user-hover">
-                        @if (obj.name == "user") {
-                        <div (click)="conService.startConversation(obj.data)" class="single-search">
-                            <img class="avatar" src="{{ obj.data.avatar}}" alt="">
-                            <p class="username">{{ obj.data.username }}</p>
-                        </div>
-                        }
-                        @if (obj.name == "channel") {
-                        <div (click)="channelService.showChannelChat(obj.data)" class="single-search">
-                            <img src="./icons/users-alt.png" alt="">
-                            <p class="username">{{ obj.data.title }}</p>
-                        </div>
-                        }
-                        <div *ngIf="obj.name === 'conversation'">
-                            <div *ngFor="let message of obj.data.messages">
-                                <div *ngIf="message.text.toLowerCase().includes(this.searchbarService.searchName.toLowerCase())"
-                                    class="single-search">
-                                    <img src="./icons/messages.png" alt="">
-                                    <p class="username">
-                                        {{ message.text }}
-                                    </p>
+                <div class="scroll-container">
+                    <div *ngFor="let obj of searchbarService.filteredUsers" class="single-user">
+                        <div class="single-user-hover">
+                            @if (obj.name == "user") {
+                            <div (click)="conService.startConversation(obj.data)" class="single-search">
+                                <img class="avatar" src="{{ obj.data.avatar}}" alt="">
+                                <p class="username">{{ obj.data.username }}</p>
+                            </div>
+                            }
+                            @if (obj.name == "channel") {
+                            <div (click)="channelService.showChannelChat(obj.data)" class="single-search">
+                                <img src="./icons/users-alt.png" alt="">
+                                <p class="username">{{ obj.data.title }}</p>
+                            </div>
+                            }
+                            <div *ngIf="obj.name === 'conversation'">
+                                <div *ngFor="let message of obj.data.messages">
+                                    <div *ngIf="message.text.toLowerCase().includes(this.searchbarService.searchName.toLowerCase())"
+                                        class="single-search">
+                                        <img src="./icons/messages.png" alt="">
+                                        <p class="username">
+                                            {{ message.text }}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                
             </div>
         </div>
         <div (click)="openDialog()" class="user-container">
