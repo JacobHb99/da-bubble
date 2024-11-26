@@ -135,6 +135,8 @@ section {
     align-items: center;
     gap: 10px;
     padding: 4px 20px;
+    width: 100%;
+    box-sizing: border-box;
 
     >p {
         font-size: 18px;
@@ -174,7 +176,7 @@ section {
     gap: 12px;
     visibility: visible;
     transition: opacity 130ms ease, visibility 130ms ease;
-
+    width: 100%;
 }
 
 .channels {
@@ -183,14 +185,14 @@ section {
     flex-direction: column;
     visibility: visible;
     transition: opacity 130ms ease, visibility 130ms ease;
+    width: 100%;
 }
 
 .single-user {
     display: flex;
     align-items: center;
     gap: 10px;
-
-
+    width: 100%;
 }
 
 .single-user-hover {
@@ -198,6 +200,8 @@ section {
     display: flex;
     align-items: center;
     gap: 10px;
+    width: 100%;
+
 
     &:hover {
         cursor: pointer;

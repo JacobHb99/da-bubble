@@ -1,5 +1,5 @@
 <section class="main" [ngClass]="{'mobile-height': breakpointObserver.isXSmallOrSmall, 'no-gap': breakpointObserver.isXSmallOrSmall}">
-    <header>
+    <header [ngClass]="{'padding-small': breakpointObserver.isXSmallOrSmall}">
         <div class="channelThread">
             <p>Thread</p>
             @if (this.uiService.content==='channelChat') {

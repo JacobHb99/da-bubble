@@ -19,6 +19,10 @@ header {
     border-top-right-radius: 30px;
 }
 
+.padding-small{
+    padding: 16px !important;
+}
+
 .channelThread{
     @include dFlex($gap: 5px);
 
