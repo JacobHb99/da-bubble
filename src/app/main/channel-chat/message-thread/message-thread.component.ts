@@ -5,6 +5,7 @@ import { SideNavComponent } from '../../side-nav/side-nav.component';
 import { UserDataService } from '../../../services/user.service';
 import { InterfaceService } from '../../../services/interface.service';
 import { FirebaseService } from '../../../services/firebase.service';
+import { BreakpointObserverService } from '../../../services/breakpoint-observer.service';
 
 @Component({
   selector: 'app-message-thread',
@@ -18,7 +19,9 @@ export class MessageThreadComponent {
   uiService = inject(InterfaceService);
   fiBaService = inject(FirebaseService);
 
-  constructor(private userDataService: UserDataService) {
+  constructor(
+    private userDataService: UserDataService,
+    public breakpointObserver: BreakpointObserverService) {
     this.userDataService.selectedUser.subscribe((user) => {
       this.user = user;
     });

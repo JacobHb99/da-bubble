@@ -9,6 +9,7 @@ import { AuthService } from '../../../../services/auth.service';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { EmojiComponent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { ReactionService } from '../../../../services/reaction.service';
+import { BreakpointObserverService } from '../../../../services/breakpoint-observer.service';
 
 @Component({
   selector: 'app-single-message',
@@ -38,7 +39,10 @@ export class SingleMessageComponent {
 
 
 
-  constructor(private userDataService: UserDataService) {
+  constructor(
+    private userDataService: UserDataService,
+    public breakpointObserver: BreakpointObserverService
+  ) {
     this.userDataService.selectedUser.subscribe((user) => {
       this.user = user;
     });
