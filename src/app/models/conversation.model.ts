@@ -1,4 +1,5 @@
 import { Message } from "./message.model";
+import { User } from "./user.model";
 
 export class Conversation {
     conId: string | unknown;;
@@ -6,6 +7,7 @@ export class Conversation {
     partnerId: string; //Gesprächspartner
     messages: Message[];
     active: boolean;
+    user: string[];
 
     constructor(obj?: Partial<Conversation>) {
         this.conId = obj?.conId ?? '';
@@ -13,6 +15,7 @@ export class Conversation {
         this.partnerId = obj?.partnerId ?? '';
         this.messages = obj?.messages ?? [];
         this.active = obj?.active ?? false;
+        this.user = obj?.user ?? [];
     }
 
 

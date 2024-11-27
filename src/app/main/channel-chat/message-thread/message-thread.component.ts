@@ -21,10 +21,24 @@ export class MessageThreadComponent {
 
   constructor(
     private userDataService: UserDataService,
-    public breakpointObserver: BreakpointObserverService) {
+    public breakpointObserver: BreakpointObserverService,
+  ) {
     this.userDataService.selectedUser.subscribe((user) => {
       this.user = user;
     });
   }
 
+
+  ngOnInit() {
+    this.uiService.scrollTrigger$.subscribe((elementId: string) => {
+      setTimeout(() => {
+        const targetElement = document.getElementById(elementId);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          console.warn("Element not found:", elementId);
+        }
+      }, 0); // Timeout, um sicherzustellen, dass das DOM gerendert ist
+    });
+  }
 }

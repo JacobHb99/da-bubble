@@ -176,6 +176,7 @@ setConversationObject(conversation: any): Conversation {
     partnerId: conversation.partnerId || '',
     messages: conversation.messages || [],
     active: conversation.active || false,
+    user : conversation.user || []
   };
 }
 
