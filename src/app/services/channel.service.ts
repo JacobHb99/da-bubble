@@ -8,6 +8,7 @@ import { FirebaseService } from './firebase.service';
 import { where } from 'firebase/firestore';
 import { UserDataService } from './user.service';
 import { AuthService } from './auth.service';
+import { SearchbarService } from './searchbar.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +24,13 @@ export class ChannelService {
   private currentChannelSubject = new BehaviorSubject<Channel>(new Channel());
   currentChannel$ = this.currentChannelSubject.asObservable();
 
-  constructor(private firestore: Firestore, private firebaseService: FirebaseService, private userService: UserDataService, private authService: AuthService){
+  constructor(
+    private firestore: Firestore, 
+    private firebaseService: FirebaseService, 
+    private userService: UserDataService, 
+    private authService: AuthService,
+    private searchbarSearvice: SearchbarService
+  ){
     this.getAllChannels();
   }
 
@@ -77,6 +84,7 @@ export class ChannelService {
     this.setChannel(channel)
     this.setCurrentChannel(channel)
     this.uiService.changeContent('channelChat');
+    this.searchbarSearvice.emptyInput();
   }
  
 

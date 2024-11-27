@@ -23,6 +23,10 @@ header {
     padding: 16px !important;
 }
 
+.no-maxWidth{
+    max-width: unset !important;
+}
+
 .channelThread{
     @include dFlex($gap: 5px);
 

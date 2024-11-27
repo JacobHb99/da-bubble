@@ -1,5 +1,9 @@
     
-    <section [ngClass]="{'slide-in': uiService.menuVisible, 'no-margin': breakpointObserver.isXSmallOrSmall, 'mobile-height': breakpointObserver.isXSmallOrSmall}" [ngStyle]="{'display': uiService.showSidenav() ? 'block' : 'none'}">
+    <section [ngClass]="{
+        'slide-in': uiService.menuVisible, 
+        'no-margin': breakpointObserver.isXSmallOrSmall, 
+        'mobile-height': breakpointObserver.isXSmallOrSmall}" 
+        [ngStyle]="{'display': (breakpointObserver.isMedium && uiService.showThread) ? 'none' : ((breakpointObserver.isXSmallOrSmall && uiService.showSidenav()) || (!breakpointObserver.isXSmallOrSmall && uiService.showSidenav()) ? 'block' : 'none')}">
         <div class="scroll-container">
             <div class="workspace-container" [ngClass]="{'d-none': breakpointObserver.isXSmallOrSmall}">
                 <div class="workspace-text">
@@ -23,13 +27,13 @@
                     <div *ngFor="let obj of searchbarService.filteredUsers" class="single-user">
                         <div class="single-user-hover">
                             @if (obj.name == "user") {
-                            <div (click)="conService.startConversation(obj.data)" class="single-search">
+                            <div (click)="startConversation(obj.data)" class="single-search">
                                 <img class="search-avatar" src="{{ obj.data.avatar}}" alt="">
                                 <p class="searchusername">{{ obj.data.username }}</p>
                             </div>
                             }
                             @if (obj.name == "channel") {
-                            <div (click)="channelService.showChannelChat(obj.data)" class="single-search">
+                            <div (click)="openChannel(obj.data)" class="single-search">
                                 <img src="./icons/users-alt.png" alt="">
                                 <p class="username">{{ obj.data.title }}</p>
                             </div>
@@ -68,7 +72,7 @@
                     </div>
                 </div>
                 <div class="channels" [ngClass]="{'hide' : hideChannel}">
-                        <div  *ngFor="let channel of firebaseService.allChannels " (click)="channelService.showChannelChat(channel)" class="developer">
+                        <div  *ngFor="let channel of firebaseService.allChannels " (click)="openChannel(channel)" class="developer">
                             <div  class="dev-hover">
                                 <img [src]="tagImg" alt="">
                                 <p>{{ channel.title}}</p>

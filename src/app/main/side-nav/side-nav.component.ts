@@ -13,6 +13,7 @@ import { user } from '@angular/fire/auth';
 import { AuthService } from '../../services/auth.service';
 import { BreakpointObserverService } from '../../services/breakpoint-observer.service';
 import { SearchbarService } from '../../services/searchbar.service';
+import { Channel } from '../../models/channel.model';
 
 
 
@@ -114,7 +115,19 @@ toggleChannel() {
 }
 
 startConversation(obj: User) {
+  console.log('openMSG');
+
   this.conService.startConversation(obj);
+  
+  if (this.breakpointObserver.isXSmallOrSmall) {
+    this.toggleMenu();
+  }
+}
+
+openChannel(obj: any) {
+  console.log('openchannel');
+  
+  this.channelService.showChannelChat(obj)  
   if (this.breakpointObserver.isXSmallOrSmall) {
     this.toggleMenu();
   }

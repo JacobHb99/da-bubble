@@ -44,6 +44,7 @@ export class SearchbarService {
 
   emptyInput() {
     this.isInputEmpty = this.firebaseService.selectedUsers.length === 0;
+    this.searchName = "";
   }
 
   get filteredUsers() {

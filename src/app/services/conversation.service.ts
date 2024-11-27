@@ -8,6 +8,7 @@ import { InterfaceService } from './../services/interface.service';
 import { FirebaseService } from './firebase.service';
 import { UserDataService } from './user.service';
 import { BehaviorSubject } from 'rxjs';
+import { SearchbarService } from './searchbar.service';
 
 @Injectable({
     providedIn: 'root'
@@ -21,7 +22,7 @@ export class ConversationService {
     // private allConvSubject = new BehaviorSubject<any>(null);
     // selectedConv = this.allConvSubject.asObservable();
 
-    constructor(private userDataService: UserDataService) {
+    constructor(private userDataService: UserDataService,private searchbarSearvice: SearchbarService) {
     }
 
     async startConversation(user: any) {
@@ -40,6 +41,7 @@ export class ConversationService {
             console.log("newConv", this.FiBaService.currentConversation)
             this.listenToCurrentConversationChanges(this.FiBaService.currentConversation.conId);
         }
+        this.searchbarSearvice.emptyInput();
     }
 
     async createNewConversation(creatorId: any, partnerId: any) {

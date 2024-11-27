@@ -13,6 +13,7 @@ export class BreakpointObserverService {
   private screenSizeSubject = new BehaviorSubject<'XSmall' | 'Small' | 'Medium' | 'Large'>('Large');
   screenSize$ = this.screenSizeSubject.asObservable();
   isXSmallOrSmall: boolean = false;
+  isMedium: boolean = false;
 
 
   constructor(private breakpointObserver: BreakpointObserver) {
@@ -26,20 +27,29 @@ export class BreakpointObserverService {
         Breakpoints.Small,
         Breakpoints.Medium,
         Breakpoints.Large,
+        Breakpoints.Tablet
       ])
       .subscribe((result) => {
         if (result.breakpoints[Breakpoints.XSmall]) {
           this.screenSizeSubject.next('XSmall');
           this.isXSmallOrSmall = true;
+          this.isMedium = false;
         } else if (result.breakpoints[Breakpoints.Small]) {
           this.screenSizeSubject.next('Small');
           this.isXSmallOrSmall = true;
-        } else if (result.breakpoints[Breakpoints.Medium]) {
+          this.isMedium = false;
+          console.log('BREAKPOINT-SMALL' ,this.isXSmallOrSmall);
+
+        } else if (result.breakpoints[Breakpoints.Medium] || result.breakpoints[Breakpoints.Tablet]) {
           this.screenSizeSubject.next('Medium');
           this.isXSmallOrSmall = false;
+          this.isMedium = true;
+          console.log('BREAKPOINT-MEDIUM' ,this.isMedium);
+
         } else if (result.breakpoints[Breakpoints.Large]) {
           this.screenSizeSubject.next('Large');
           this.isXSmallOrSmall = false;
+          this.isMedium = false;
         }
       });
   }
