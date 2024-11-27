@@ -92,7 +92,7 @@ export class ChannelService {
     const newChannel = new Channel(); 
     newChannel.title = this.currentChannel.title; 
     newChannel.creatorId = this.authService.currentUserSig()?.username ?? ""; 
-    newChannel.users = isSelected ? this.firebaseService.selectedUsers : this.firebaseService.allUsersIds;
+    newChannel.users = isSelected ? this.firebaseService.selectedUsers.map((user:any) => user.uid) : this.firebaseService.allUsersIds;
     newChannel.description = this.currentChannel.description;
     
     
@@ -106,6 +106,7 @@ export class ChannelService {
     
   
     if (isSelected) {
+      this.firebaseService.selectedUsers = newChannel.users;
       this.firebaseService.selectedUsers.push(currentUser)
       console.log(currentUser);
       await this.firebaseService.addUsersToChannel(newChannel.chaId);
