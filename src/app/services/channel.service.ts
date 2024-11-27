@@ -89,10 +89,8 @@ export class ChannelService {
  
 
   async createChannel(isSelected: boolean, currentUser: any) {
-    
     const newChannel = new Channel(); 
     newChannel.title = this.currentChannel.title; 
-   
     newChannel.creatorId = this.authService.currentUserSig()?.username ?? ""; 
     newChannel.users = isSelected ? this.firebaseService.selectedUsers : this.firebaseService.allUsersIds;
     newChannel.description = this.currentChannel.description;

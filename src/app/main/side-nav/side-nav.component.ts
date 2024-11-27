@@ -141,7 +141,8 @@ openChannel(obj: any) {
 
   openDialogChannel(): void {
     const dialogRef = this.dialog.open(AddChannelComponent, {
-      minWidth: '873px'
+      width: '100%', 
+      maxWidth: '873px', 
     });
     dialogRef.afterClosed().subscribe(result => {
     });
