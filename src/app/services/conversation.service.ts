@@ -48,6 +48,7 @@ export class ConversationService {
         this.FiBaService.currentConversation = new Conversation();
         this.FiBaService.currentConversation.creatorId = creatorId;
         this.FiBaService.currentConversation.partnerId = partnerId;
+        this.FiBaService.currentConversation.user = [creatorId ,partnerId];
         await this.addConversation(this.FiBaService.currentConversation);
     }
 
@@ -118,6 +119,7 @@ export class ConversationService {
             partnerId: conversation.partnerId,
             messages: conversation.messages,
             active: conversation.active,
+            user: conversation.user
         };
     }
 

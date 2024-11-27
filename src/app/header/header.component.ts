@@ -17,6 +17,10 @@ import { ChannelService } from '../services/channel.service';
 import { BreakpointObserverService } from '../services/breakpoint-observer.service';
 import { SideNavComponent } from '../main/side-nav/side-nav.component';
 import { InterfaceService } from '../services/interface.service';
+import { Conversation } from '../models/conversation.model';
+import { FirebaseService } from '../services/firebase.service';
+import { User } from '../models/user.model';
+import { Message } from '../models/message.model';
 
 
 @Component({
@@ -33,7 +37,13 @@ export class HeaderComponent {
   uiService = inject(InterfaceService)
 
 
-  constructor(public searchbarService: SearchbarService, public conService: ConversationService, public channelService: ChannelService, public breakpointObserver: BreakpointObserverService) {
+  constructor(
+    public searchbarService: SearchbarService, 
+    public conService: ConversationService, 
+    public channelService: ChannelService, 
+    public breakpointObserver: BreakpointObserverService,
+    private firebaseService: FirebaseService
+  ) {
     setTimeout(() => {
       this.searchbarService.combineArraysWithTypes();
     }, 3000);
@@ -80,5 +90,30 @@ export class HeaderComponent {
     const dialogRef = this.dialog.open(EditProfileComponent);
   }
   
+  openSearchMsg(conversation: Conversation, msg: Message) {
+    let currentUid = this.authService.currentUserSig()?.uid as string;
+    let foundId: string | null = null;
+    let foundUser: User;
 
+    foundUser = this.searchforId(conversation, currentUid, foundId);
+    
+    if (foundUser) {
+      this.conService.startConversation(foundUser);
+
+      // Sende die ID des Ziels an den Service
+      const targetMessageId = `${msg.msgId}`; // Beispiel-ID
+      this.uiService.triggerScrollTo(targetMessageId);
+    } else {
+      console.error("No matching user found in allUsers.");
+    }
+  }
+
+  searchforId(conversation: Conversation, currentUid: string, foundId: string | null) {
+    conversation.user.forEach(uid => {
+      if (uid !== currentUid) {
+        foundId = uid;
+      }
+    });
+    return this.firebaseService.allUsers.find(user => user.uid === foundId) as User;
+  }
 }

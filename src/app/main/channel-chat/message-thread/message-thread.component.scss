@@ -2,7 +2,7 @@
 
 Section{
     position: relative;   
-    height: calc(100% - 300px); 
+    height: calc(100% - 250px); 
     //height: 50%;
 }
 
@@ -63,6 +63,11 @@ Section{
             font-weight: 700;
         }
     }
+}
+
+.mobile-img{
+    height: 88px !important;
+    width: 88px !important;
 }
 
 .clickName{

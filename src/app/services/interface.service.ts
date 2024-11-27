@@ -1,4 +1,5 @@
 import { Injectable, signal } from '@angular/core';
+import { Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
@@ -29,6 +30,13 @@ closeThread() {
 
 openThread(){
   this.showThread = true;
+}
+
+private scrollTrigger = new Subject<string>();
+scrollTrigger$ = this.scrollTrigger.asObservable();
+
+triggerScrollTo(elementId: string) {
+  this.scrollTrigger.next(elementId);
 }
 
 }
