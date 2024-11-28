@@ -40,12 +40,12 @@ openThread(){
 
 setMsg(currentMsg: any) {
   this.currentMessage = currentMsg;
-  this.findThread();
 }
 
-findThread() {
-  this.currentThread = this.firebaseService.allThreads.find(u => u.id === this.currentMessage.thread);
-  console.log(this.currentThread);
+
+findThread(currentMsg?: any) {
+  let thread = this.firebaseService.allThreads.find(u => u.id === currentMsg.thread);
+  return thread
 }
 
 private scrollTrigger = new Subject<string>();
