@@ -30,7 +30,9 @@
             </div>
             <div class="bottomBox">
                 <div class="answerBox">
-                    <span (click)="this.uiService.openThread()" [ngClass]="{'mobile-font': breakpointObserver.isXSmallOrSmall}">2 Antworten</span>
+                    <span (click)="this.uiService.openThread()" (click)="uiService.setMsg(currentMessage)" [ngClass]="{'mobile-font': breakpointObserver.isXSmallOrSmall}">
+                        2 Antworten
+                    </span>
                     <p><span [ngClass]="{'d-none': breakpointObserver.isXSmallOrSmall}">Letzt Antwort</span> 14:52</p>
                 </div>
                 <div class="reactionBox">
