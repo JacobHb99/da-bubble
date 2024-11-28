@@ -41,12 +41,9 @@ export class ChannelService {
     
     const unsubscribe = onSnapshot(channelRef, (docSnapshot) => {
       
-      
       if (docSnapshot.exists()) {
         const updatedChannel = docSnapshot.data() as Channel;
         this.currentChannelSubject.next(updatedChannel); 
-        
-        
       }
     });
    this.firebaseService.registerListener(unsubscribe);
@@ -84,6 +81,7 @@ export class ChannelService {
     this.setChannel(channel)
     this.setCurrentChannel(channel)
     this.uiService.changeContent('channelChat');
+    this.listenToChannel(channel.chaId);
     this.searchbarSearvice.emptyInput();
   }
  
@@ -149,8 +147,30 @@ this.firebaseService.registerListener(unsubscribe);
     newChannel.reactions = data['reactions'];
 
     this.allChannels.push(newChannel)
-  
-    
+  }
+
+  listenToCurrentChannelChanges() {
+    const conversationRef = doc(this.firestore, `channels/${this.currentChannelSubject.value.chaId}`);
+    const unsubscribe = onSnapshot(conversationRef, (docSnapshot) => {
+        if (docSnapshot.exists()) {
+            const updatedConversation = this.setChannelObject(docSnapshot.data() as Channel);
+            this.currentChannelSubject = updatedConversation;
+        }
+    });
+    this.firebaseService.registerListener(unsubscribe);
+  }
+
+  setChannelObject(channel: Channel): any {
+    return {
+      chaId: channel.chaId || '',
+      creatorId: channel.creatorId || '',
+      messages: channel.messages || [],
+      title: channel.title || '',
+      users : channel.users || [],
+      description: channel.description,
+      reactions: channel.reactions,
+      comments: channel.comments,
+    };
   }
 }
 
