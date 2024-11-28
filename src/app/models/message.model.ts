@@ -24,7 +24,7 @@ export class Reaction {
     counter: number;
     id: string;    
     //reactedUser: string[];
-    reactedUser: object = {};
+    reactedUser: {[key: string]: boolean};
 
     constructor(obj?: Partial<Reaction>) {
         this.counter = obj?.counter ?? 0;

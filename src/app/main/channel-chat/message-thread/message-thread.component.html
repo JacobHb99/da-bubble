@@ -9,9 +9,12 @@
 
                 }
         }@else {
-            @for (message of this.fiBaService.currentConversation.messages; track $index) {
-                <app-single-message [id]="message.msgId" [currentMessage]="message"></app-single-message>
-                }
+            <!-- @for (message of this.fiBaService.currentConversation.messages; track message; let index = $index) {
+                <app-single-message [index]="index" [currentMessage]="message"></app-single-message>
+                } -->
+                @for (message of this.fiBaService.currentConversation.messages; track $index) {
+                    <app-single-message [id]="message.msgId" [currentMessage]="message"></app-single-message>
+                    }
                 
                 @empty {
                     @if (this.uiService.content === 'directMessage') {

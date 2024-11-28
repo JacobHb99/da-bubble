@@ -57,6 +57,7 @@ export class SingleMessageComponent {
   }
 
   ngOnInit(): void {
+    //this.fiBaService.currentMsg = this.currentMessage
     this.currentMessage = new Message(this.currentMessage);
     this.loggedInUser = this.authService.currentUserSig();
     console.log(this.loggedInUser)
@@ -98,51 +99,24 @@ export class SingleMessageComponent {
     this.showEmojiPicker = !this.showEmojiPicker;
   }
 
-  // getReactedUserNames(reactedUser: object) {
-  //   return Object.keys(reactedUser);   //wandelt object in ein array um
-  // }
-
   checkPlural(counter: number) {
     return counter > 1 ? 'haben reagiert' : 'hat reagiert';
   }
 
   manageEmoji(event: any) {
-    //console.log('emoji', event);
     const emoji = event.emoji;
     console.log('emoji', emoji)
-    const reaction = this.createNewReaction(emoji);
-    console.log('reaction', reaction)
-    let msgId = this.currentMessage.msgId
-    const currentConversation = this.fiBaService.currentConversation;
-
-    //let user = this.authService.currentUserSig()?.username as string;
-    this.reactService.updateMessageWithReaction(reaction, msgId, currentConversation)
+    this.reactService.updateMessageWithReaction(emoji, this.currentMessage)
 
     //this.toggleEmojiPicker();
   }
 
-  // createNewReaction(emoji: any) {
-  //   return new Reaction({
-  //     counter: 1,
-  //     id: emoji.id,
-  //     reactedUser: new Array(this.authService.currentUserSig()?.username as string),
-  //   });
-  // }
-
-  createNewReaction(emoji: any) {
-    const username = this.authService.currentUserSig()?.username as string;
-
-    return new Reaction({
-      counter: 1,
-      id: emoji.id,
-      reactedUser: {
-        [`${username}`]: true
-      }
-    });
-  }
-
   // getReactedUsers(reactedUser: { [key: string]: boolean }): string[] {
   //   return Object.keys(reactedUser);
+  // }
+
+    // getReactedUserNames(reactedUser: object) {
+  //   return Object.keys(reactedUser);   //wandelt object in ein array um
   // }
 
 }

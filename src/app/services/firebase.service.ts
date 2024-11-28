@@ -63,269 +63,269 @@ export class FirebaseService {
   moveUserToFront(currentUid: string): void {
     console.log(this.allUsers);
 
-  // Finden des Index des Benutzers mit der aktuellen UID
-  const index = this.allUsers.findIndex(user => user.uid === currentUid);
+    // Finden des Index des Benutzers mit der aktuellen UID
+    const index = this.allUsers.findIndex(user => user.uid === currentUid);
 
-  // Wenn der Benutzer gefunden wird und nicht bereits an Position 0 ist
-  if (index > 0) {
-    // Entfernen des Benutzers aus seiner aktuellen Position
-    const [currentUser] = this.allUsers.splice(index, 1);
+    // Wenn der Benutzer gefunden wird und nicht bereits an Position 0 ist
+    if (index > 0) {
+      // Entfernen des Benutzers aus seiner aktuellen Position
+      const [currentUser] = this.allUsers.splice(index, 1);
 
-    // Einfügen des Benutzers an Position 0
-    this.allUsers.unshift(currentUser);
-    console.log(this.allUsers);
+      // Einfügen des Benutzers an Position 0
+      this.allUsers.unshift(currentUser);
+      console.log(this.allUsers);
 
-  }
-  
-}
-
-
-unsubscribeAll() {
-  console.log("Starte Unsubscribe aller Listener...");
-  console.log(`Anzahl der registrierten Listener: ${this.unsubscribeListeners.length}`);
-
-
-  this.unsubscribeListeners.forEach((unsub, index) => {
-    try {
-      unsub(); // Listener entfernen 
-      console.log(`Listener ${index + 1} erfolgreich entfernt.`);
-    } catch (error) {
-      console.warn(`Fehler beim Entfernen von Listener ${index + 1}:, error`);
     }
-  });
 
-  this.unsubscribeListeners = []; // Liste leeren
-  this.isUserChannelsListenerActive = false; // Flag zurücksetzen
-  console.log("Alle Listener wurden erfolgreich entfernt.");
-}
-
-
-loadUserChannels(userUid: string) {
-  if (!userUid) {
-    console.error("Kein Benutzer angemeldet. Channels werden nicht geladen.");
-    return;
   }
 
-  if (this.isUserChannelsListenerActive) {
-    console.warn("Listener für User Channels ist bereits aktiv. Abbruch.");
-    return;
+
+  unsubscribeAll() {
+    console.log("Starte Unsubscribe aller Listener...");
+    console.log(`Anzahl der registrierten Listener: ${this.unsubscribeListeners.length}`);
+
+
+    this.unsubscribeListeners.forEach((unsub, index) => {
+      try {
+        unsub(); // Listener entfernen 
+        console.log(`Listener ${index + 1} erfolgreich entfernt.`);
+      } catch (error) {
+        console.warn(`Fehler beim Entfernen von Listener ${index + 1}:, error`);
+      }
+    });
+
+    this.unsubscribeListeners = []; // Liste leeren
+    this.isUserChannelsListenerActive = false; // Flag zurücksetzen
+    console.log("Alle Listener wurden erfolgreich entfernt.");
   }
 
-  const channelsRef = collection(this.firestore, 'channels');
-  const userChannelsQuery = query(channelsRef, where("users", "array-contains", userUid));
+
+  loadUserChannels(userUid: string) {
+    if (!userUid) {
+      console.error("Kein Benutzer angemeldet. Channels werden nicht geladen.");
+      return;
+    }
+
+    if (this.isUserChannelsListenerActive) {
+      console.warn("Listener für User Channels ist bereits aktiv. Abbruch.");
+      return;
+    }
+
+    const channelsRef = collection(this.firestore, 'channels');
+    const userChannelsQuery = query(channelsRef, where("users", "array-contains", userUid));
 
 
-  const unsubscribe = onSnapshot(userChannelsQuery, (snapshot) => {
-    this.allChannels = [];
-    snapshot.forEach((doc) => {
-      this.allChannels.push(doc.data() as Channel)
+    const unsubscribe = onSnapshot(userChannelsQuery, (snapshot) => {
+      this.allChannels = [];
+      snapshot.forEach((doc) => {
+        this.allChannels.push(doc.data() as Channel)
 
 
 
 
-    })
-    console.log("Aktualisierte Channels:", this.allChannels);
-  }, (error) => {
-    console.error("Fehler beim Laden der Channels:", error);
-  });
+      })
+      console.log("Aktualisierte Channels:", this.allChannels);
+    }, (error) => {
+      console.error("Fehler beim Laden der Channels:", error);
+    });
 
-  this.registerListener(unsubscribe); // Listener registrieren
-  this.isUserChannelsListenerActive = true; // Flag setzen
-}
+    this.registerListener(unsubscribe); // Listener registrieren
+    this.isUserChannelsListenerActive = true; // Flag setzen
+  }
 
 
 
 
   public registerListener(unsubscribeFn: () => void): void {
-  this.unsubscribeListeners.push(unsubscribeFn);
-}
+    this.unsubscribeListeners.push(unsubscribeFn);
+  }
 
 
   async getAllUsers(currentUid: string) {
-  const q = query(collection(this.firestore, "users"));
-  const unsubscribe = onSnapshot(q, (querySnapshot) => {
-    this.allUsers = [];
-    this.allUsersIds = [];
-    querySnapshot.forEach((doc) => {
-      let user = doc.data() as User
+    const q = query(collection(this.firestore, "users"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      this.allUsers = [];
+      this.allUsersIds = [];
+      querySnapshot.forEach((doc) => {
+        let user = doc.data() as User
 
-      this.allUsers.push(user);
-      this.allUsersIds.push(doc.id);
+        this.allUsers.push(user);
+        this.allUsersIds.push(doc.id);
+      });
+      this.moveUserToFront(currentUid);
     });
-    this.moveUserToFront(currentUid);
-  });
-  this.registerListener(unsubscribe);
-}
+    this.registerListener(unsubscribe);
+  }
 
-async loadAllThreads() {
-  const q = query(collection(this.firestore, "threads"));
-  const unsubscribe = onSnapshot(q, (querySnapshot) => {
-    this.allThreads = [];
-    querySnapshot.forEach((doc) => {
-      let thread = doc.data() as Thread
-      thread.id = doc.id;
-      this.allThreads.push(thread);
+  async loadAllThreads() {
+    const q = query(collection(this.firestore, "threads"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      this.allThreads = [];
+      querySnapshot.forEach((doc) => {
+        let thread = doc.data() as Thread
+        thread.id = doc.id;
+        this.allThreads.push(thread);
+      });
     });
-  });
-  
-  this.registerListener(unsubscribe);
-}
+
+    this.registerListener(unsubscribe);
+  }
 
 
-listenToCurrentThreadChanges(threadId: any) {
-  const conversationRef = doc(this.firestore, `conversations/${threadId}`);
-  const unsubscribe = onSnapshot(conversationRef, (docSnapshot) => {
+  listenToCurrentThreadChanges(threadId: any) {
+    const conversationRef = doc(this.firestore, `conversations/${threadId}`);
+    const unsubscribe = onSnapshot(conversationRef, (docSnapshot) => {
       if (docSnapshot.exists()) {
-          const updatedConversation = this.setConversationObject(docSnapshot.data());
-          this.currentConversation = updatedConversation;
+        const updatedConversation = this.setConversationObject(docSnapshot.data());
+        this.currentConversation = updatedConversation;
       }
-  });
-  this.registerListener(unsubscribe);
-}
+    });
+    this.registerListener(unsubscribe);
+  }
 
 
   async getAllConversations() {
-  const q = query(collection(this.firestore, "conversations"));
-  const unsubscribe = onSnapshot(q, (querySnapshot) => {
-    this.allConversations = [];
-    querySnapshot.forEach((doc) => {
-      const conv = this.setConversationObject(doc.data());
-      this.allConversations.push(conv);
+    const q = query(collection(this.firestore, "conversations"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      this.allConversations = [];
+      querySnapshot.forEach((doc) => {
+        const conv = this.setConversationObject(doc.data());
+        this.allConversations.push(conv);
+      });
+
     });
-
-  });
-  this.registerListener(unsubscribe);
-  console.log("allConvgetAllConv", this.allConversations)
-}
+    this.registerListener(unsubscribe);
+    console.log("allConvgetAllConv", this.allConversations)
+  }
 
 
-setConversationObject(conversation: any): Conversation {
-  return {
-    conId: conversation.conId || '',
-    creatorId: conversation.creatorId || '',
-    partnerId: conversation.partnerId || '',
-    messages: conversation.messages || [],
-    active: conversation.active || false,
-    user : conversation.user || []
-  };
-}
+  setConversationObject(conversation: any): Conversation {
+    return {
+      conId: conversation.conId || '',
+      creatorId: conversation.creatorId || '',
+      partnerId: conversation.partnerId || '',
+      messages: conversation.messages || [],
+      active: conversation.active || false,
+      user: conversation.user || []
+    };
+  }
 
 
   async assignUsersToChannel(chaId: string, currentChannel: any) {
-  try {
-    const channelRef = doc(this.firestore, `channels/${chaId}`);
-    await updateDoc(channelRef, { users: this.allUsersIds, chaId: currentChannel.chaId });
+    try {
+      const channelRef = doc(this.firestore, `channels/${chaId}`);
+      await updateDoc(channelRef, { users: this.allUsersIds, chaId: currentChannel.chaId });
 
-  } catch (error) {
+    } catch (error) {
+    }
   }
-}
 
 
-   async addAllUsersToChannel(chaId: string, currentChannel: any) {
-  await this.assignUsersToChannel(chaId, currentChannel)
+  async addAllUsersToChannel(chaId: string, currentChannel: any) {
+    await this.assignUsersToChannel(chaId, currentChannel)
 
-}
+  }
 
 
   async addUser(user: any) {
-  const userId = user.uid;
-  const userData = user.getJSON();
+    const userId = user.uid;
+    const userData = user.getJSON();
 
-  await setDoc(doc(this.firestore, "users", userId), userData);
-}
+    await setDoc(doc(this.firestore, "users", userId), userData);
+  }
 
 
   async setUserStatus(currentUser: UserCredential | null, status: string) {
-  if (!currentUser || !currentUser.user) {
-    console.warn("setUserStatus: currentUser oder user ist undefined.");
-    return;
-  }
+    if (!currentUser || !currentUser.user) {
+      console.warn("setUserStatus: currentUser oder user ist undefined.");
+      return;
+    }
 
-  const userRef = doc(this.firestore, "users", currentUser.user.uid);
-  try {
-    await updateDoc(userRef, { status: status });
-    console.log(`Status erfolgreich auf '${status}' gesetzt für Benutzer ${currentUser.user.uid}`);
-  } catch (error) {
-    console.error("Fehler beim Aktualisieren des Status:", error);
+    const userRef = doc(this.firestore, "users", currentUser.user.uid);
+    try {
+      await updateDoc(userRef, { status: status });
+      console.log(`Status erfolgreich auf '${status}' gesetzt für Benutzer ${currentUser.user.uid}`);
+    } catch (error) {
+      console.error("Fehler beim Aktualisieren des Status:", error);
+    }
   }
-}
 
   async addUsersToChannel(ChannelId: string) {
-  const userRef = doc(this.firestore, "channels", ChannelId);
-  await updateDoc(userRef, {
-    users: this.selectedUsers
-  });
-}
-
-
-
-
-
-getCurrentUser(uid: string): Promise < any > {
-  return new Promise((resolve, reject) => {
-    const unsubscribe = onSnapshot(doc(this.firestore, "users", uid), (doc) => {
-      if (doc.exists()) {
-        resolve(doc.data()); // Gibt die Benutzerdaten zurück
-      } else {
-        reject("Benutzer nicht gefunden");
-      }
-      unsubscribe(); // Beendet den Listener, um Speicherlecks zu vermeiden
+    const userRef = doc(this.firestore, "channels", ChannelId);
+    await updateDoc(userRef, {
+      users: this.selectedUsers
     });
-  });
-}
-  
+  }
+
+
+
+
+
+  getCurrentUser(uid: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const unsubscribe = onSnapshot(doc(this.firestore, "users", uid), (doc) => {
+        if (doc.exists()) {
+          resolve(doc.data()); // Gibt die Benutzerdaten zurück
+        } else {
+          reject("Benutzer nicht gefunden");
+        }
+        unsubscribe(); // Beendet den Listener, um Speicherlecks zu vermeiden
+      });
+    });
+  }
+
 
   async subscribeUserById(id: any) {
-  const unsubscribe = onSnapshot(this.getUserDocRef(id), (user) => {
-    this.user = this.setUserJson(user.data(), user.id);
+    const unsubscribe = onSnapshot(this.getUserDocRef(id), (user) => {
+      this.user = this.setUserJson(user.data(), user.id);
 
-  });
-  this.registerListener(unsubscribe);
-}
+    });
+    this.registerListener(unsubscribe);
+  }
 
   async updateUser(user: any) {
-  if (user.uid) {
-    let docRef = this.getUserDocRef(user.uid);
-    await updateDoc(docRef, this.getUserAsCleanJson(user));
+    if (user.uid) {
+      let docRef = this.getUserDocRef(user.uid);
+      await updateDoc(docRef, this.getUserAsCleanJson(user));
 
-  }
-}
-
-toggleChannel() {
-  this.isClosed = !this.isClosed;
-
-
-
-}
-
-getUserDocRef(docId: any) {
-  return doc(collection(this.firestore, 'users'), docId);
-}
-
-setUserJson(object: any, id: string): any {
-  return {
-    uid: id,
-    username: object.username,
-    email: object.email,
-    status: object.status,
-    avatar: object.avatar,
-    channels: object.channels,
-    role: object.role
-  }
-
-}
-
-getUserAsCleanJson(object: any): { } {
-  return {
-    uid: object.uid,
-    username: object.username,
-    email: object.email,
-    status: object.status,
-    avatar: object.avatar,
-    channels: object.channels,
-    role: object.role
-  }
-}
     }
+  }
+
+  toggleChannel() {
+    this.isClosed = !this.isClosed;
+
+
+
+  }
+
+  getUserDocRef(docId: any) {
+    return doc(collection(this.firestore, 'users'), docId);
+  }
+
+  setUserJson(object: any, id: string): any {
+    return {
+      uid: id,
+      username: object.username,
+      email: object.email,
+      status: object.status,
+      avatar: object.avatar,
+      channels: object.channels,
+      role: object.role
+    }
+
+  }
+
+  getUserAsCleanJson(object: any): {} {
+    return {
+      uid: object.uid,
+      username: object.username,
+      email: object.email,
+      status: object.status,
+      avatar: object.avatar,
+      channels: object.channels,
+      role: object.role
+    }
+  }
+}
 
 
