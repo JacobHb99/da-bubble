@@ -42,10 +42,9 @@ export class AddPeopleComponent {
 
   onCheckboxChange(event: any) {
     if (event.target.checked) {
-      console.log('checked');
       
     } else {
-      console.log('not checked');
+      
     }
   }
 

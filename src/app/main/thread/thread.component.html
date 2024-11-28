@@ -14,6 +14,13 @@
         <div class="closeThread" (click)="this.uiService.closeThread()">
         </div>
     </header>
-    <div></div>
-    <app-send-message placeholder="Antworten..."></app-send-message>
+    <div class="chat">
+    <div class="thread">
+        @for (message of this.uiService.findThread(uiService.currentMessage)?.messages; track $index) {
+            <app-single-message [id]="message.msgId" [currentMessage]="message"></app-single-message>
+            }   
+    </div>
+    </div>
+
+    <app-send-message placeholder="Antworten..." input="thread"></app-send-message>
 </section>

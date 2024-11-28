@@ -6,7 +6,7 @@ export class Message {
     senderId: string | unknown;
     //recipientId: string; //Benötigt??
     text: string;
-    thread?: Thread;
+    thread: string;
     reactions: Reaction[];
 
     constructor(obj?: Partial<Message>) {
@@ -15,7 +15,7 @@ export class Message {
         this.senderId = obj?.senderId ?? '';
         //this.recipientId = obj?.recipientId ?? '';
         this.text = obj?.text ?? '';
-        this.thread = obj?.thread;
+        this.thread = obj?.thread ?? '';
         this.reactions = obj?.reactions ?? [];
     }
 }

@@ -5,6 +5,7 @@ import { InterfaceService } from '../../services/interface.service';
 import { CommonModule } from '@angular/common';
 import { SingleMessageComponent } from '../channel-chat/message-thread/single-message/single-message.component';
 import { BreakpointObserverService } from '../../services/breakpoint-observer.service';
+import { FirebaseService } from '../../services/firebase.service';
 
 @Component({
   selector: 'app-thread',
@@ -16,8 +17,9 @@ import { BreakpointObserverService } from '../../services/breakpoint-observer.se
 export class ThreadComponent {
   uiService = inject(InterfaceService);
 
-  constructor(public breakpointObserver: BreakpointObserverService) {
+  constructor(public breakpointObserver: BreakpointObserverService, public firebaseService: FirebaseService) {
     this.uiService.showThread = false;
   }
+  
 
 }

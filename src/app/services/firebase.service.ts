@@ -9,6 +9,8 @@ import { ChannelService } from './channel.service';
 import { UserDataService } from './user.service';
 import { AuthService } from './auth.service';
 import { ConversationService } from './conversation.service';
+import { Thread } from '../models/thread.model';
+import { Message } from '../models/message.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +19,8 @@ export class FirebaseService {
   userObject!: DocumentData | undefined;
   allUsers: User[] = [];
   allUsersIds: any = [];
-  //allUsers: User[] = []; 
+  allThreads: Thread[] = [];
+
   allConversations: Conversation[] = [];
   allChannels: Channel[] = []; //besteht aus einem array von objekten des types channel + startet mit leerem array
   selectedUsers: any = []
@@ -43,6 +46,7 @@ export class FirebaseService {
         this.getAllUsers(currentUid),
         this.getAllConversations(),
         this.loadUserChannels(currentUid || ''),
+        this.loadAllThreads(),
       ]);
 
       console.log("Alle Daten erfolgreich geladen.");
@@ -149,6 +153,32 @@ loadUserChannels(userUid: string) {
       this.allUsersIds.push(doc.id);
     });
     this.moveUserToFront(currentUid);
+  });
+  this.registerListener(unsubscribe);
+}
+
+async loadAllThreads() {
+  const q = query(collection(this.firestore, "threads"));
+  const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    this.allThreads = [];
+    querySnapshot.forEach((doc) => {
+      let thread = doc.data() as Thread
+      thread.id = doc.id;
+      this.allThreads.push(thread);
+    });
+  });
+  
+  this.registerListener(unsubscribe);
+}
+
+
+listenToCurrentThreadChanges(threadId: any) {
+  const conversationRef = doc(this.firestore, `conversations/${threadId}`);
+  const unsubscribe = onSnapshot(conversationRef, (docSnapshot) => {
+      if (docSnapshot.exists()) {
+          const updatedConversation = this.setConversationObject(docSnapshot.data());
+          this.currentConversation = updatedConversation;
+      }
   });
   this.registerListener(unsubscribe);
 }

@@ -17,13 +17,15 @@
             </svg>
         </div>
         <div class="users" [ngStyle]="{'display': this.uiService.content === 'channelChat' ? 'flex' : 'none'}">
-            <div (click)="openShowMembersDialog()" class="involvedUsers">
-                <!-- <img class="avatar-img" [src]="user.avatar" alt=""> -->
-               @for (user of getFirstNElements(3,allUsersFromAChannel); track user.uid) {
-                <img src="{{user.avatar}}" alt="">
-               }
-                <p>{{allUsersFromAChannel.length}}</p>
-            </div>
+            @if (!breakpointObserver.isXSmallOrSmall) {
+                <div (click)="openShowMembersDialog()" class="involvedUsers">
+                    <!-- <img class="avatar-img" [src]="user.avatar" alt=""> -->
+                   @for (user of getFirstNElements(3,allUsersFromAChannel); track user.uid) {
+                    <img src="{{user.avatar}}" alt="">
+                   }
+                    <p>{{allUsersFromAChannel.length}}</p>
+                </div>
+            }
             <div (click)="addToChoosenChannelDialog()" class="addToChannel">
                 <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect width="40" height="40" rx="20" fill="#ECEEFE" />
@@ -62,7 +64,7 @@
 
     @if (this.uiService.content !== 'newMessage') {
     <app-message-thread></app-message-thread>
-    <app-send-message placeholder="Nachricht an {{ user.username }}"></app-send-message>
+    <app-send-message placeholder="Nachricht an {{ user.username }}" input="chat"></app-send-message>
     } @else {
         <app-send-message placeholder="Beginnen Sie eine neue Nachricht"></app-send-message>
     }

@@ -8,7 +8,7 @@
             <hr>
         </div>
     </div>
-    @if (this.uiService.content === 'directMessage') {
+    @if (this.uiService.content === 'directMessage' || 'channelChat') {
 
     <div [ngClass]="loggedInUser.uid===currentMessage.senderId ? 'myMessageBox': 'replyMessageBox'">
         <div [ngClass]="{'replyMessageDetails': loggedInUser.uid!==currentMessage.senderId }" class="messageDetails">
@@ -29,12 +29,25 @@
                 {{ currentMessage.text }}
             </div>
             <div class="bottomBox">
-                <div class="answerBox">
-                    <span (click)="this.uiService.openThread()"
-                        [ngClass]="{'mobile-font': breakpointObserver.isXSmallOrSmall}">2 Antworten</span>
-                    <p><span [ngClass]="{'d-none': breakpointObserver.isXSmallOrSmall}"></span>Letzt Antwort 14:52</p>
-                </div>
-                <div class="reactionBox" [ngClass]="{'replayReactionBox': loggedInUser.uid!==currentMessage.senderId }">
+                @if (currentMessage.thread) {
+                    <div class="answerBox">
+                        <span class="answer" (click)="this.uiService.openThread()" (click)="uiService.setMsg(currentMessage)" [ngClass]="{'mobile-font': breakpointObserver.isXSmallOrSmall}">
+                            @if ((uiService.findThread(currentMessage)?.messages?.length ?? 0) > 0) {
+                                <span>{{ uiService.findThread(currentMessage)?.messages?.length }}</span>
+                            }
+                            Antworten
+                        </span>
+
+                        @if ((uiService.findThread(currentMessage)?.messages?.length ?? 0) > 0) {
+                            <p>
+                                <span [ngClass]="{'d-none': breakpointObserver.isXSmallOrSmall}">Letzt Antwort</span> 
+                                {{ this.uiService.formatTimeFromTimestamp(uiService.findLastAnswer(currentMessage)?.timeStamp) }}
+                            </p>
+                        }
+
+                    </div>
+                }
+                <div class="reactionBox">
                     @for (reaction of currentMessage.reactions; track $index; let index = $index) {
                     <div class="emojiBox" (mouseleave)="onMouseLeave()" (mouseover)="onMouseOver()">
                         <ngx-emoji [emoji]="reaction.id"></ngx-emoji>

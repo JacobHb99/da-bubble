@@ -77,10 +77,10 @@ export class ChannelChatComponent{
 
     openEditChannel(): void {
       const dialogRef = this.dialog.open(EditChannelComponent, {
-        minWidth: '873px'
+        width: "100%",
+        maxWidth: '873px'
       });
       dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed');
       });
     }
 
