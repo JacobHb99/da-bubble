@@ -6,6 +6,7 @@ import { UserDataService } from '../../../services/user.service';
 import { InterfaceService } from '../../../services/interface.service';
 import { FirebaseService } from '../../../services/firebase.service';
 import { BreakpointObserverService } from '../../../services/breakpoint-observer.service';
+import { ChannelService } from '../../../services/channel.service';
 
 @Component({
   selector: 'app-message-thread',
@@ -18,6 +19,8 @@ export class MessageThreadComponent {
   user: any;
   uiService = inject(InterfaceService);
   fiBaService = inject(FirebaseService);
+  channelService = inject(ChannelService);
+
 
   constructor(
     private userDataService: UserDataService,
@@ -26,6 +29,8 @@ export class MessageThreadComponent {
     this.userDataService.selectedUser.subscribe((user) => {
       this.user = user;
     });
+    console.log(this.channelService.currentChannelSubject.value);
+    
   }
 
 

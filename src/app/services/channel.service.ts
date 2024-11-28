@@ -21,7 +21,7 @@ export class ChannelService {
   allChannels!: Channel[];
  // currentUser = this.authService.currentUserSig()?.uid
 
-  private currentChannelSubject = new BehaviorSubject<Channel>(new Channel());
+  public currentChannelSubject = new BehaviorSubject<Channel>(new Channel());
   currentChannel$ = this.currentChannelSubject.asObservable();
 
   constructor(

@@ -15,6 +15,7 @@ import { ConversationService } from '../../../services/conversation.service';
 import { InterfaceService } from '../../../services/interface.service';
 import { EmojiComponent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
+import { ChannelService } from '../../../services/channel.service';
 
 @Component({
   selector: 'app-send-message',
@@ -31,6 +32,7 @@ export class SendMessageComponent {
   firestore = inject(Firestore);
   conService = inject(ConversationService)
   uiService = inject(InterfaceService)
+  channelService = inject(ChannelService)
 
   @Input() placeholder: string = '';
   @Input() input: 'chat' | 'thread' | undefined;
@@ -105,10 +107,20 @@ export class SendMessageComponent {
 
 
   async addMessage(message: any) {
-    const convId = this.fiBaService.currentConversation.conId;
+    let objId;
+    let coll;
+    if (this.uiService.content == 'channelChat') {
+      console.log(this.channelService.currentChannel);
+      
+      objId = this.channelService.currentChannelSubject.value.chaId
+      coll = 'channels'
+    } else {
+      objId = this.fiBaService.currentConversation.conId;
+      coll = 'conversations'
+    }
     const msgData = this.getCleanJSON(message);
     msgData.msgId = uuidv4();
-    const conversationRef = doc(this.firestore, `conversations/${convId}`);
+    const conversationRef = doc(this.firestore, `${coll}/${objId}`);
     try {
       await updateDoc(conversationRef, {
         messages: arrayUnion(msgData)
