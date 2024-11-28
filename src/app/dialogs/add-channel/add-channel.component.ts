@@ -38,7 +38,8 @@ export class AddChannelComponent {
       this.channelService.currentChannel.description = this.inputDesc;
      
       const dialogRef = this.dialog.open(AddPeopleComponent, {
-        minWidth: '720px'
+        width: '100%',
+        maxWidth: '720px'
         
       });
       this.closeDialogChannel();

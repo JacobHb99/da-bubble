@@ -27,8 +27,8 @@
             <h2>Beschreibung</h2>
             <p (click)="editDesc = !editDesc" (click)="editChannelDesc()">{{ changeDesc }}</p>
         </div>
-        <div  [ngClass]="editDesc ? 'hide-channel-desc': 'show-channel-desc'" class="channel-name">
-            <p>{{ channel?.description }}</p>
+        <div [ngClass]="editDesc ? 'hide-channel-desc': 'show-channel-desc'" class="channel-desc">
+            <p class="description">{{ channel?.description }}</p>
         </div>
         <div class="desc-input-container">
             <input [(ngModel)]="descInput"  [ngClass]="editDesc ? 'show-channel-desc': 'hide-channel-desc'" placeholder="Dein Text hier"  type="text">
