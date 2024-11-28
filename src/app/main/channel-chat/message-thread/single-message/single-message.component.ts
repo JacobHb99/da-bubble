@@ -121,24 +121,28 @@ export class SingleMessageComponent {
     //this.toggleEmojiPicker();
   }
 
-  createNewReaction(emoji: any) {
-    return new Reaction({
-      counter: 1,
-      id: emoji.id,
-      reactedUser: new Array(this.authService.currentUserSig()?.username as string),
-    });
-  }
-
   // createNewReaction(emoji: any) {
-  //   const username = this.authService.currentUserSig()?.username as string;
-
   //   return new Reaction({
   //     counter: 1,
   //     id: emoji.id,
-  //     reactedUser: {
-  //       [`${username}`]: true
-  //     }
+  //     reactedUser: new Array(this.authService.currentUserSig()?.username as string),
   //   });
+  // }
+
+  createNewReaction(emoji: any) {
+    const username = this.authService.currentUserSig()?.username as string;
+
+    return new Reaction({
+      counter: 1,
+      id: emoji.id,
+      reactedUser: {
+        [`${username}`]: true
+      }
+    });
+  }
+
+  // getReactedUsers(reactedUser: { [key: string]: boolean }): string[] {
+  //   return Object.keys(reactedUser);
   // }
 
 }

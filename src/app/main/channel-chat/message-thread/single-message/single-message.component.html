@@ -30,22 +30,36 @@
             </div>
             <div class="bottomBox">
                 <div class="answerBox">
-                    <span (click)="this.uiService.openThread()" [ngClass]="{'mobile-font': breakpointObserver.isXSmallOrSmall}">2 Antworten</span>
-                    <p><span [ngClass]="{'d-none': breakpointObserver.isXSmallOrSmall}">Letzt Antwort</span> 14:52</p>
+                    <span (click)="this.uiService.openThread()"
+                        [ngClass]="{'mobile-font': breakpointObserver.isXSmallOrSmall}">2 Antworten</span>
+                    <p><span [ngClass]="{'d-none': breakpointObserver.isXSmallOrSmall}"></span>Letzt Antwort 14:52</p>
                 </div>
-                <div class="reactionBox">
+                <div class="reactionBox" [ngClass]="{'replayReactionBox': loggedInUser.uid!==currentMessage.senderId }">
                     @for (reaction of currentMessage.reactions; track $index; let index = $index) {
                     <div class="emojiBox" (mouseleave)="onMouseLeave()" (mouseover)="onMouseOver()">
                         <ngx-emoji [emoji]="reaction.id"></ngx-emoji>
                         <p>{{ reaction.counter }}</p>
                         <div class="whoReactInfo"
                             [ngClass]="{'whoReactInfoReply': loggedInUser.uid!==currentMessage.senderId }">
-                            <ngx-emoji [emoji]="reaction.id"></ngx-emoji>
+                             <ngx-emoji [emoji]="reaction.id"></ngx-emoji>
 
-                            @for (username of reaction.reactedUser; track $index) {
-                            <span *ngIf="loggedInUser.username === username">Du</span>
-                            <span *ngIf="loggedInUser.username !== username">{{ username }}</span>
-                            }
+
+                            <div *ngFor="let username of reaction.reactedUser | keyvalue">
+                                <!-- <span *ngIf="loggedInUser.username === username">Du</span> -->
+                                <span *ngIf="loggedInUser.username !== username">{{ username.key }}</span>
+                            </div> 
+
+                            <!-- @for (username of reaction.reactedUser | keyvalue; track $index) {
+                                <span *ngIf="loggedInUser.username === username">Du</span>
+                                <span *ngIf="loggedInUser.username !== username">{{ username }}</span>
+                                } -->
+
+
+
+                            <!-- @for (username of getReactedUsers(reaction.reactedUser); track $index) {
+                                <span *ngIf="loggedInUser.username === username">Du</span>
+                                <span *ngIf="loggedInUser.username !== username">{{ username }}</span>
+                                } -->
 
                             <!-- <span>{{ reaction.reactedUser}}</span> -->
                             <span>{{ checkPlural(reaction.counter) }}</span>
@@ -58,12 +72,13 @@
         @if (loggedInUser.uid==currentMessage.senderId) {
         <img [ngStyle]="{'width': '70px',
                         'heigt': '70px',
-                        'border-radius': '50%'}" [ngClass]="{'mobile-img': breakpointObserver.isXSmallOrSmall}" [src]="loggedInUser.avatar" referrerPolicy="no-referrer">
+                        'border-radius': '50%'}" [ngClass]="{'mobile-img': breakpointObserver.isXSmallOrSmall}"
+            [src]="loggedInUser.avatar" referrerPolicy="no-referrer">
         } @else {
         <img [ngStyle]="{'width': '70px',
                         'heigt': '70px',
-                        'border-radius': '50%'}" [ngClass]="{'mobile-img': breakpointObserver.isXSmallOrSmall}" [src]="findUserWithId(currentMessage.senderId)?.avatar"
-            referrerPolicy="no-referrer">
+                        'border-radius': '50%'}" [ngClass]="{'mobile-img': breakpointObserver.isXSmallOrSmall}"
+            [src]="findUserWithId(currentMessage.senderId)?.avatar" referrerPolicy="no-referrer">
         }
         <div class="floatingReactionBox"
             [ngClass]="{'replyfloatingReactionBox': loggedInUser.uid!==currentMessage.senderId }" [ngStyle]="{'left': loggedInUser.uid!==currentMessage.senderId ? 'auto' : '45px',

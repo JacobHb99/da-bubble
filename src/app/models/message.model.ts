@@ -23,13 +23,13 @@ export class Message {
 export class Reaction {
     counter: number;
     id: string;    
-    reactedUser: string[];
-    //reactedUser: object = {};
+    //reactedUser: string[];
+    reactedUser: object = {};
 
     constructor(obj?: Partial<Reaction>) {
         this.counter = obj?.counter ?? 0;
         this.id = obj?.id ?? '';
-        this.reactedUser = obj?.reactedUser ?? [];
-        //this.reactedUser = obj?.reactedUser ?? {};
+        //this.reactedUser = obj?.reactedUser ?? [];
+        this.reactedUser = obj?.reactedUser ?? {};
     }
 }

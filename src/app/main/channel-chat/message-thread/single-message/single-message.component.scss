@@ -198,6 +198,8 @@ section {
     }
 }
 
+
+
 .reactionBox {
     @include dFlex($jc: flex-end, $gap: 10px);
 
@@ -228,6 +230,10 @@ section {
             }
         }
     }
+}
+
+.replayReactionBox{
+    justify-content: flex-start;
 }
 
 .whoReactInfo {
