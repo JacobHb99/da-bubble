@@ -172,6 +172,18 @@ async loadAllThreads() {
 }
 
 
+listenToCurrentThreadChanges(threadId: any) {
+  const conversationRef = doc(this.firestore, `conversations/${threadId}`);
+  const unsubscribe = onSnapshot(conversationRef, (docSnapshot) => {
+      if (docSnapshot.exists()) {
+          const updatedConversation = this.setConversationObject(docSnapshot.data());
+          this.currentConversation = updatedConversation;
+      }
+  });
+  this.registerListener(unsubscribe);
+}
+
+
   async getAllConversations() {
   const q = query(collection(this.firestore, "conversations"));
   const unsubscribe = onSnapshot(q, (querySnapshot) => {

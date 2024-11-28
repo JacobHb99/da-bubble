@@ -178,7 +178,7 @@ section {
     .answerBox {
         @include dFlex($gap: 20px);
 
-        span {
+        .answer {
             font-size: 18px;
             color: #535AF1;
             cursor: pointer;

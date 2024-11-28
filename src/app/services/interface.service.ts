@@ -38,14 +38,42 @@ openThread(){
   this.showThread = true;
 }
 
-setMsg(currentMsg: any) {
+
+setMsg(currentMsg: Message) {
   this.currentMessage = currentMsg;
+  this.firebaseService.listenToCurrentThreadChanges(currentMsg.thread);
 }
 
 
 findThread(currentMsg?: any) {
   let thread = this.firebaseService.allThreads.find(u => u.id === currentMsg.thread);
   return thread
+}
+
+findLastAnswer(currentMessage: Message) {
+  let thread = this.findThread(currentMessage);
+  let messages = thread?.messages;
+
+  if (!messages || messages.length === 0) {
+    return ; // Kein Eintrag, kein Ergebnis
+  }
+
+  return messages.reduce((latest, message) => 
+    message.timeStamp > latest.timeStamp ? message : latest
+  );
+}
+
+formatTimeFromTimestamp(timestamp?: number): string {
+  let time : number;
+  if (timestamp) {
+    time = timestamp
+  }else{
+    time = 0
+  }
+  const date = new Date(time); // Erstelle ein Date-Objekt
+  const hours = date.getHours().toString().padStart(2, '0'); // Stunden, 2-stellig
+  const minutes = date.getMinutes().toString().padStart(2, '0'); // Minuten, 2-stellig
+  return `${hours}:${minutes}`; // Kombiniere Stunden und Minuten
 }
 
 private scrollTrigger = new Subject<string>();
