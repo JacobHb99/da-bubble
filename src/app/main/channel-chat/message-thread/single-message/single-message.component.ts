@@ -107,15 +107,19 @@ export class SingleMessageComponent {
     const emoji = event.emoji;
     console.log('emoji', emoji)
     this.reactService.updateMessageWithReaction(emoji, this.currentMessage)
+  }
 
-    //this.toggleEmojiPicker();
+  manageDeleteEmoji(reaction: any) {
+    //const emoji = event.emoji;
+    console.log('emoji', reaction)
+    this.reactService.deleteEmoji(this.currentMessage)
   }
 
   // getReactedUsers(reactedUser: { [key: string]: boolean }): string[] {
   //   return Object.keys(reactedUser);
   // }
 
-    // getReactedUserNames(reactedUser: object) {
+  // getReactedUserNames(reactedUser: object) {
   //   return Object.keys(reactedUser);   //wandelt object in ein array um
   // }
 
