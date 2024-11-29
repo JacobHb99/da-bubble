@@ -16,6 +16,7 @@ import { SearchbarService } from '../../services/searchbar.service';
 import { Channel } from '../../models/channel.model';
 import { Conversation } from '../../models/conversation.model';
 import { Message } from '../../models/message.model';
+import { Thread } from '../../models/thread.model';
 
 
 
@@ -143,37 +144,100 @@ export class SideNavComponent {
 
   openDialogChannel(): void {
     const dialogRef = this.dialog.open(AddChannelComponent, {
-      width: '100%', 
-      maxWidth: '873px', 
+      width: '100%',
+      maxWidth: '873px',
     });
     dialogRef.afterClosed().subscribe(result => {
     });
   }
 
 
-  openSearchMsg(conversation: Conversation, msg: Message) {
+  openSearchMsg(conversation: Conversation | Channel, msg: Message, chaId?: string) {
     let currentUid = this.userDataService.currentUserSig()?.uid as string;
     let foundId: string | null = null;
-    let foundUser: User;
+    let foundUser!: User | Channel | undefined;
 
-    foundUser = this.searchforId(conversation, currentUid, foundId);
+    if ('conId' in conversation) {
+      foundUser = this.searchforUserId(conversation, currentUid, foundId);
+    }
 
     if (foundUser) {
-      this.startConversation(foundUser)
+      if ('uid' in foundUser) {
+        this.startConversation(foundUser)
+      }
       // Sende die ID des Ziels an den Service
       const targetMessageId = `${msg.msgId}`; // Beispiel-ID
       this.uiService.triggerScrollTo(targetMessageId);
     } else {
-      console.error("No matching user found in allUsers.");
+      this.openChannel(conversation);
+      // Sende die ID des Ziels an den Service
+      const targetMessageId = `${msg.msgId}`; // Beispiel-ID
+      this.uiService.triggerScrollTo(targetMessageId);
     }
   }
 
-  searchforId(conversation: Conversation, currentUid: string, foundId: string | null) {
-    conversation.user.forEach(uid => {
-      if (uid !== currentUid) {
-        foundId = uid;
+  openThreadMsg(data: Thread, msg: Message) {
+    this.uiService.currentThread = data;
+    console.log(this.uiService.currentThread);
+
+    if (data.type == 'channel') {
+      this.openChannelThread(data, msg);
+    } else {
+      this.openConvThread(data, msg)
+    }
+    // Sende die ID des Ziels an den Service
+    const targetMessageId = `${msg.msgId}`; // Beispiel-ID
+    this.uiService.triggerScrollTo(targetMessageId);
+  }
+
+  openChannelThread(data: Thread, msg: Message) {
+    let channel = this.findChannel(data)
+    this.openChannel(channel)
+      this.uiService.openThread();
+      if(msg.parent) {
+        this.uiService.setMsg(msg.parent);
       }
-    });
-    return this.firebaseService.allUsers.find(user => user.uid === foundId) as User;
+  }
+
+  openConvThread(data: Thread, msg: Message) {
+    let currentUid = this.userDataService.currentUserSig()?.uid as string;
+    let foundId: string | null = null;
+    let conv = this.findConversation(data);
+    let user = this.searchforUserId(conv, currentUid, foundId)
+    if (user) {
+      if ('uid' in user) {
+        this.startConversation(user);
+        this.uiService.openThread();
+        if(msg.parent) {
+          this.uiService.setMsg(msg.parent);
+        }
+      }
+    }
+  }
+
+  findChannel(thread: Thread) {
+    return this.firebaseService.allChannels.find(channel => channel.chaId === thread.convId) as Channel;
+  }
+
+  findConversation(thread: Thread) {
+    return this.firebaseService.allConversations.find(conv => conv.conId === thread.convId) as Conversation;
+  }
+
+  searchforUserId(conversation: Conversation | Channel, currentUid: string, foundId: string | null) {
+    if (conversation) {
+      if ('user' in conversation) {
+        conversation.user.forEach(uid => {
+          if (uid !== currentUid) {
+            foundId = uid;
+          }
+        });
+        return this.firebaseService.allUsers.find(user => user.uid === foundId) as User;
+      } else {
+        let currentChannel = this.channelService.currentChannelSubject.value
+
+        return this.firebaseService.allChannels.find(channel => channel.chaId === foundId) as Channel;
+      }
+    }
+    return;
   }
 }

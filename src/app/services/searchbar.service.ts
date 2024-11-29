@@ -5,10 +5,13 @@ import { Conversation } from '../models/conversation.model';
 import { FirebaseService } from './firebase.service';
 import { user } from '@angular/fire/auth';
 import { AuthService } from './auth.service';
+import { Thread } from '../models/thread.model';
 type CurrentObject = 
   | { name: "user"; data: User }
   | { name: "channel"; data: Channel }
-  | { name: "conversation"; data: Conversation };
+  | { name: "conversation"; data: Conversation }
+  | { name: "channel-chat"; channelId: string; data: Channel}
+  | { name: "thread";  data: Thread}
 
 @Injectable({
   providedIn: 'root'
@@ -28,8 +31,9 @@ export class SearchbarService {
     this.firebaseService.allUsers.forEach(user => {
       this.allObjects.push({ name: "user", data: user });
     });
-    
+
     this.firebaseService.allChannels.forEach(channel => {
+      this.allObjects.push({ name: "channel-chat", channelId:channel.chaId, data: channel });
       this.allObjects.push({ name: "channel", data: channel });
     });
     
@@ -37,6 +41,10 @@ export class SearchbarService {
       if (conversation.creatorId == (this.authService.currentUserSig()?.uid) || conversation.partnerId == (this.authService.currentUserSig()?.uid) ) {
         this.allObjects.push({ name: "conversation", data: conversation });
       }
+    });
+
+    this.firebaseService.allThreads.forEach(thread => {
+        this.allObjects.push({ name: "thread", data: thread });
     });
     console.log(this.allObjects);
   }
@@ -70,6 +78,22 @@ export class SearchbarService {
       }
   
       if (obj.name === "conversation") {
+        console.log(obj.data.messages);
+        
+        return obj.data.messages.some((message: any) =>
+          message.text.toLowerCase().includes(searchTerm)
+        );
+      }
+
+      if (obj.name === "channel-chat") {
+        console.log(obj.data.messages);
+        
+        return obj.data.messages.some((message: any) =>
+          message.text.toLowerCase().includes(searchTerm)
+        );
+      }
+
+      if (obj.name === "thread") {
         console.log(obj.data.messages);
         
         return obj.data.messages.some((message: any) =>

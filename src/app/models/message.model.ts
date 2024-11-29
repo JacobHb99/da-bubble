@@ -8,6 +8,7 @@ export class Message {
     text: string;
     thread: string;
     reactions: Reaction[];
+    parent: Message | null
 
     constructor(obj?: Partial<Message>) {
         this.msgId = obj?.msgId ?? '';
@@ -17,6 +18,7 @@ export class Message {
         this.text = obj?.text ?? '';
         this.thread = obj?.thread ?? '';
         this.reactions = obj?.reactions ?? [];
+        this.parent = obj?.parent ?? null
     }
 }
 

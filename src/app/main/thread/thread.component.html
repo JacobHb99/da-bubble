@@ -16,6 +16,7 @@
     </header>
     <div class="chat">
     <div class="thread">
+        <h1>{{ uiService.currentMessage.text }}</h1>
         @for (message of this.uiService.findThread(uiService.currentMessage)?.messages; track $index) {
             <app-single-message [id]="message.msgId" [currentMessage]="message"></app-single-message>
             }   

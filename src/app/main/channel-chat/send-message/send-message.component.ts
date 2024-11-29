@@ -35,7 +35,7 @@ export class SendMessageComponent {
   channelService = inject(ChannelService)
 
   @Input() placeholder: string = '';
-  @Input() input: 'chat' | 'thread' | undefined;
+  @Input() input: 'chat' | 'thread' | 'channel' | undefined;
   @ViewChild('emojiPicker', { static: false }) emojiPicker!: ElementRef;
 
   //currentRecipient: Conversation = new Conversation;
@@ -48,8 +48,8 @@ export class SendMessageComponent {
 
   async createNewMsg() {
     if (this.text.trim()) {
-      if (this.input == 'chat') {
-        let currentThreadId = await this.createThread();
+      if (this.input == 'chat' || this.input == 'channel') {
+        let currentThreadId = await this.createThread(this.input);
         this.currentMsg = new Message();
         this.currentMsg.timeStamp = Date.now();
         this.currentMsg.senderId = this.authService.currentUserSig()?.uid;
@@ -65,6 +65,7 @@ export class SendMessageComponent {
         this.currentMsg.senderId = this.authService.currentUserSig()?.uid;
         this.currentMsg.text = this.text,
           this.currentMsg.reactions = [], //wird erstmal nicht erstellt (wegen array)
+          this.currentMsg.parent = this.uiService.currentMessage
           await this.addThreadMessage(this.currentMsg);
       }
 
@@ -74,14 +75,21 @@ export class SendMessageComponent {
   }
 
 
-  async createThread(): Promise<string> {
+  async createThread(input: 'chat' | 'channel'): Promise<string> {
     const currentUser = this.authService.currentUserSig();
+    let objId: string;
     if (!currentUser) {
       console.error('Kein authentifizierter Benutzer gefunden');
       throw new Error('User not authenticated');
     }
     // `addDoc` nutzen, um den Thread hinzuzufügen
-    let thread = this.getCleanThreadJSON(new Thread())
+    if(input == 'chat') {
+      objId = this.fiBaService.currentConversation.conId as string;
+    } else{
+      objId = this.channelService.currentChannelSubject.value.chaId
+    }
+
+    let thread = this.getCleanThreadJSON(new Thread(), input, objId)
     const threadRef = await addDoc(collection(this.firestore, 'threads'), thread);
   
     // Zurückgegebene Thread-ID
@@ -94,6 +102,8 @@ export class SendMessageComponent {
     const msgData = this.getCleanJSON(message);
     msgData.msgId = uuidv4();
     try {
+      console.log(threadId);
+      
       const threadRef = doc(this.firestore, "threads", threadId);
       // Füge die Nachricht in das "messages"-Array hinzu
       await updateDoc(threadRef, {
@@ -109,6 +119,7 @@ export class SendMessageComponent {
   async addMessage(message: any) {
     let objId;
     let coll;
+    let conversationId;
     if (this.uiService.content == 'channelChat') {
       console.log(this.channelService.currentChannel);
       
@@ -142,15 +153,18 @@ export class SendMessageComponent {
       //recipientId: message.recipientId,
       text: message.text,
       thread: message.thread,
-      reactions: message.reactions
+      reactions: message.reactions,
+      parent: message.parent
     };
   }
 
-  getCleanThreadJSON(thread: Thread) {
+  getCleanThreadJSON(thread: Thread, input: string, objId: string) {
     return {
       id: thread.id,
       rootMessage: thread.rootMessage,
       messages: thread.messages,
+      type: input,
+      convId: objId
     };
   }
 

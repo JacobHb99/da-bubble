@@ -62,9 +62,12 @@
         }
     </header>
 
-    @if (this.uiService.content !== 'newMessage') {
+    @if (this.uiService.content == 'directMessage') {
     <app-message-thread></app-message-thread>
     <app-send-message placeholder="Nachricht an {{ user.username }}" input="chat"></app-send-message>
+    }@else if (this.uiService.content == 'channelChat') {
+        <app-message-thread></app-message-thread>
+        <app-send-message placeholder="Nachricht an {{ user.username }}" input="channel"></app-send-message>
     } @else {
         <app-send-message placeholder="Beginnen Sie eine neue Nachricht"></app-send-message>
     }

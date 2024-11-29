@@ -26,8 +26,7 @@ export class InterfaceService {
   }
 
 changeContent(content: 'channelChat' | 'newMessage' | 'directMessage'){
-  this.content = content;
-  
+  this.content = content;  
 }
 
 closeThread() {
@@ -42,6 +41,10 @@ openThread(){
 setMsg(currentMsg: Message) {
   this.currentMessage = currentMsg;
   this.firebaseService.listenToCurrentThreadChanges(currentMsg.thread);
+}
+
+findParentMsg(currentMsg: Message) {
+  let msg = this.firebaseService.allThreads.find(u => u.id === currentMsg.thread);
 }
 
 
