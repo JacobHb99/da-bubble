@@ -8,6 +8,7 @@ import { FirebaseService } from '../../../services/firebase.service';
 import { BreakpointObserverService } from '../../../services/breakpoint-observer.service';
 import { ChannelService } from '../../../services/channel.service';
 
+
 @Component({
   selector: 'app-message-thread',
   standalone: true,
@@ -23,7 +24,8 @@ export class MessageThreadComponent {
 
 
   constructor(
-    private userDataService: UserDataService,
+    //private userDataService: UserDataService,
+    public userDataService: UserDataService,
     public breakpointObserver: BreakpointObserverService,
   ) {
     this.userDataService.selectedUser.subscribe((user) => {

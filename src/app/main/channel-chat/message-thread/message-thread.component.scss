@@ -43,7 +43,7 @@ Section{
 
 .startChat{
     @include dFlex($jc: flex-start, $ai: flex-start, $fd: column, $gap: 25px);
-    padding-left: 45px;
+    padding:0 45px;
     position: absolute;
     bottom: 0;
 
@@ -62,6 +62,15 @@ Section{
             font-size: 24px;
             font-weight: 700;
         }
+    }
+}
+
+.infoText{
+    color: #686868;
+    //font-size: 20px;
+    p{
+        margin: 0;
+        font-weight: 700;
     }
 }
 

@@ -52,8 +52,9 @@
                 }
                 <div class="reactionBox">
                     @for (reaction of currentMessage.reactions; track $index; let index = $index) {
-                    <div class="emojiBox" (click)="manageDeleteEmoji(reaction)" (mouseleave)="onMouseLeave()" (mouseover)="onMouseOver()">
-                        <ngx-emoji [emoji]="reaction.id" ></ngx-emoji>
+                    <div class="emojiBox" (click)="manageDeleteEmoji(reaction)" (mouseleave)="onMouseLeave()"
+                        (mouseover)="onMouseOver()">
+                        <ngx-emoji [emoji]="reaction.id"></ngx-emoji>
                         <p>{{ reaction.counter }}</p>
                         <div class="whoReactInfo"
                             [ngClass]="{'whoReactInfoReply': loggedInUser.uid!==currentMessage.senderId }">
@@ -63,13 +64,7 @@
                                 <span *ngIf="loggedInUser.username === username.key">Du</span>
                                 <span *ngIf="loggedInUser.username !== username.key">{{ username.key }}</span>
                             </div>
-
-                            <!-- @for (username of reaction.reactedUser | keyvalue; track $index) {
-                                <span *ngIf="loggedInUser.username === username">Du</span>
-                                <span *ngIf="loggedInUser.username !== username">{{ username }}</span>
-                                } -->
-                            <span class="plural">{{ checkPlural(reaction.counter) }}</span>
-                            
+                            <span class="plural">{{ checkPlural(reaction) }}</span>
                         </div>
                     </div>
                     }
@@ -91,10 +86,12 @@
             [ngClass]="{'replyfloatingReactionBox': loggedInUser.uid!==currentMessage.senderId }" [ngStyle]="{'left': loggedInUser.uid!==currentMessage.senderId ? 'auto' : '45px',
                         'right': loggedInUser.uid!==currentMessage.senderId ? '45px' : 'auto'}">
             <div class="iconBox">
-                <ngx-emoji class="singleEmoji" [size]="25" emoji="white_check_mark" (emojiClick)="manageEmoji($event)"></ngx-emoji>
+                <ngx-emoji class="singleEmoji" [size]="25" emoji="white_check_mark"
+                    (emojiClick)="manageEmoji($event)"></ngx-emoji>
             </div>
             <div class="iconBox">
-                <ngx-emoji class="singleEmoji" [size]="25" emoji="raised_hands" (emojiClick)="manageEmoji($event)"></ngx-emoji>
+                <ngx-emoji class="singleEmoji" [size]="25" emoji="raised_hands"
+                    (emojiClick)="manageEmoji($event)"></ngx-emoji>
             </div>
             <div class="iconBox svg-hover" (click)="toggleEmojiPicker()">
                 <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -112,8 +109,8 @@
             @if (showEmojiPicker) {
             <div [ngClass]="loggedInUser.uid===currentMessage.senderId ? 'myEmojiPicker': 'replyEmojiPicker'"
                 #emojiPicker>
-                <emoji-mart (emojiSelect)="manageEmoji($event); toggleEmojiPicker() " [showPreview]="false" [darkMode]="false" color="#444DF2"
-                    title="Pick your emoji…" [showSingleCategory]="true">
+                <emoji-mart (emojiSelect)="manageEmoji($event); toggleEmojiPicker() " [showPreview]="false"
+                    [darkMode]="false" color="#444DF2" title="Pick your emoji…" [showSingleCategory]="true">
                 </emoji-mart>
             </div>
             }

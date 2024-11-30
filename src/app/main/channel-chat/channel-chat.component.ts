@@ -33,7 +33,7 @@ export class ChannelChatComponent{
   firebaseService = inject(FirebaseService);
 ;
 
-  constructor(private userDataService: UserDataService,  public dialog: MatDialog, public breakpointObserver: BreakpointObserverService) {
+  constructor(public userDataService: UserDataService,  public dialog: MatDialog, public breakpointObserver: BreakpointObserverService) {
     this.userDataService.selectedUser.subscribe((user) => {
       this.user = user;      
       

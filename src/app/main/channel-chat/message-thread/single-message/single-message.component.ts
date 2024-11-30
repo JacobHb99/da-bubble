@@ -99,8 +99,15 @@ export class SingleMessageComponent {
     this.showEmojiPicker = !this.showEmojiPicker;
   }
 
-  checkPlural(counter: number) {
-    return counter > 1 ? 'haben reagiert' : 'hat reagiert';
+  checkPlural(reaction: Reaction) {
+    const hasReacted = Object.keys(reaction.reactedUser).some(
+      (username) => username === this.loggedInUser.username
+    );
+    if (reaction.counter > 1) {
+      return 'haben reagiert';
+    } else {
+      return hasReacted ? 'hast reagiert' : 'hat reagiert';
+    }
   }
 
   manageEmoji(event: any) {

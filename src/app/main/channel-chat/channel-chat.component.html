@@ -48,7 +48,11 @@
                 <img class="avatar-img" [src]="user.avatar" referrerPolicy="no-referrer" alt=""> 
                 <img class="status" [src]="user.status == 'online' ? '/icons/Online.png' : '/icons/Offline.png'" alt="">
             </div>
-            <p>{{ user.username }}</p>
+            @if (user.uid === userDataService.currentUserSig()?.uid) {
+                <p>{{ user.username }} (Du)</p>
+            }@else {
+                <p>{{ user.username }}</p>
+            } 
         </div>
     }
         
@@ -67,7 +71,7 @@
     <app-send-message placeholder="Nachricht an {{ user.username }}" input="chat"></app-send-message>
     }@else if (this.uiService.content == 'channelChat') {
         <app-message-thread></app-message-thread>
-        <app-send-message placeholder="Nachricht an {{ user.username }}" input="channel"></app-send-message>
+        <app-send-message placeholder="Nachricht an #{{ channel.title }}" input="channel"></app-send-message>
     } @else {
         <app-send-message placeholder="Beginnen Sie eine neue Nachricht"></app-send-message>
     }
