@@ -83,7 +83,9 @@ private scrollTrigger = new Subject<string>();
 scrollTrigger$ = this.scrollTrigger.asObservable();
 
 triggerScrollTo(elementId: string) {
-  this.scrollTrigger.next(elementId);
+  setTimeout(() => {
+    this.scrollTrigger.next(elementId);
+  }, 500);
 }
 
 }

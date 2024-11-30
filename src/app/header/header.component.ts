@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from './../services/auth.service';
-import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ProfilLogoutButtonsComponent } from '../dialogs/profil-logout-buttons/profil-logout-buttons.component';
 import { MyProfilComponent } from '../dialogs/my-profil/my-profil.component';
 import { EditProfileComponent } from '../dialogs/edit-profile/edit-profile.component';
@@ -40,58 +40,58 @@ export class HeaderComponent {
 
 
   constructor(
-    public searchbarService: SearchbarService, 
-    public conService: ConversationService, 
-    public channelService: ChannelService, 
+    public searchbarService: SearchbarService,
+    public conService: ConversationService,
+    public channelService: ChannelService,
     public breakpointObserver: BreakpointObserverService,
     private firebaseService: FirebaseService
   ) {
     setTimeout(() => {
       this.searchbarService.combineArraysWithTypes();
     }, 3000);
-    
+
   }
-   
+
 
   openDialog() {
-    const rightPosition = window.innerWidth>1920 ? (window.innerWidth - 1920) /2 : 0;
+    const rightPosition = window.innerWidth > 1920 ? (window.innerWidth - 1920) / 2 : 0;
     let topPosition;
     if (this.breakpointObserver.isXSmallOrSmall) {
       topPosition = '85px';
     } else {
       topPosition = '110px';
     }
-    const dialogRef = this.dialog.open(ProfilLogoutButtonsComponent,{
+    const dialogRef = this.dialog.open(ProfilLogoutButtonsComponent, {
       width: '70px',
       position: { top: topPosition, right: `${rightPosition}px` },
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result=='profil') {
+      if (result == 'profil') {
         this.openOwnProfilDialog();
-      }else if (result=='logout'){
-         this.authService.signOut();
+      } else if (result == 'logout') {
+        this.authService.signOut();
       }
     });
   }
- 
-  openOwnProfilDialog(){
-    const rightPosition = window.innerWidth>1920 ? (window.innerWidth - 1920) /2 : 0;
-    const dialogRef = this.dialog.open(MyProfilComponent,{
+
+  openOwnProfilDialog() {
+    const rightPosition = window.innerWidth > 1920 ? (window.innerWidth - 1920) / 2 : 0;
+    const dialogRef = this.dialog.open(MyProfilComponent, {
       position: { top: '110px', right: `${rightPosition}px` },
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result=='edit') {
+      if (result == 'edit') {
         this.openEditProfilDialog();
       }
     });
   }
 
-  openEditProfilDialog(){
+  openEditProfilDialog() {
     const dialogRef = this.dialog.open(EditProfileComponent);
   }
-  
+
   openSearchMsg(conversation: Conversation | Channel, msg: Message, chaId?: string) {
     let currentUid = this.authService.currentUserSig()?.uid as string;
     let foundId: string | null = null;
@@ -105,14 +105,10 @@ export class HeaderComponent {
       if ('uid' in foundUser) {
         this.startConversation(foundUser)
       }
-      // Sende die ID des Ziels an den Service
-      const targetMessageId = `${msg.msgId}`; // Beispiel-ID
-      this.uiService.triggerScrollTo(targetMessageId);
+      this.scrollInChat(msg);
     } else {
       this.openChannel(conversation);
-      // Sende die ID des Ziels an den Service
-      const targetMessageId = `${msg.msgId}`; // Beispiel-ID
-      this.uiService.triggerScrollTo(targetMessageId);
+      this.scrollInChat(msg);
     }
   }
 
@@ -125,18 +121,31 @@ export class HeaderComponent {
     } else {
       this.openConvThread(data, msg)
     }
+
+    this.scrollInParentChat(msg);
+    this.scrollInChat(msg);
+
+  }
+
+  scrollInParentChat(msg: Message) {
     // Sende die ID des Ziels an den Service
-    const targetMessageId = `${msg.msgId}`; // Beispiel-ID
+    const targetParentId = `${msg.parent?.msgId}`;
+    this.uiService.triggerScrollTo(targetParentId);
+  }
+
+  scrollInChat(msg: Message) {
+    // Sende die ID des Ziels an den Service
+    const targetMessageId = `${msg.msgId}`;
     this.uiService.triggerScrollTo(targetMessageId);
   }
 
   openChannelThread(data: Thread, msg: Message) {
     let channel = this.findChannel(data)
     this.openChannel(channel)
-      this.uiService.openThread();
-      if(msg.parent) {
-        this.uiService.setMsg(msg.parent);
-      }
+    this.uiService.openThread();
+    if (msg.parent) {
+      this.uiService.setMsg(msg.parent);
+    }
   }
 
   openConvThread(data: Thread, msg: Message) {
@@ -148,7 +157,7 @@ export class HeaderComponent {
       if ('uid' in user) {
         this.startConversation(user);
         this.uiService.openThread();
-        if(msg.parent) {
+        if (msg.parent) {
           this.uiService.setMsg(msg.parent);
         }
       }

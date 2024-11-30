@@ -117,7 +117,7 @@ export class SideNavComponent {
     this.hideChannel = !this.hideChannel;
   }
 
-  startConversation(obj: User) {
+  startConversation(obj: User, msg?: Message) {
     console.log('openMSG');
 
     this.conService.startConversation(obj);
@@ -125,14 +125,24 @@ export class SideNavComponent {
     if (this.breakpointObserver.isXSmallOrSmall) {
       this.toggleMenu();
     }
+    if (msg) {
+      this.scrollInChat(msg);
+    }else{
+      this.scrollToLastMessage(obj);
+    }
   }
 
-  openChannel(obj: any) {
+  openChannel(obj: any, msg?: Message) {
     console.log('openchannel');
 
     this.channelService.showChannelChat(obj)
     if (this.breakpointObserver.isXSmallOrSmall) {
       this.toggleMenu();
+    }
+    if (msg) {
+      this.scrollInChat(msg);
+    }else{
+      this.scrollToLastMessage(obj);
     }
   }
 
@@ -165,14 +175,9 @@ export class SideNavComponent {
       if ('uid' in foundUser) {
         this.startConversation(foundUser)
       }
-      // Sende die ID des Ziels an den Service
-      const targetMessageId = `${msg.msgId}`; // Beispiel-ID
-      this.uiService.triggerScrollTo(targetMessageId);
+      this.scrollInChat(msg);
     } else {
-      this.openChannel(conversation);
-      // Sende die ID des Ziels an den Service
-      const targetMessageId = `${msg.msgId}`; // Beispiel-ID
-      this.uiService.triggerScrollTo(targetMessageId);
+      this.openChannel(conversation, msg);
     }
   }
 
@@ -185,14 +190,44 @@ export class SideNavComponent {
     } else {
       this.openConvThread(data, msg)
     }
+
+    this.scrollInChat(msg);
+  }
+
+  scrollToLastMessage(obj: User | Channel) {
+    let conv: Channel | Conversation;
+    let lastMsg: Message | undefined;
+    if ('uid' in obj) {
+      conv = this.conService.getCurrentConversation(obj)
+      let messages = conv.messages
+      lastMsg = messages[messages.length - 1]
+    }
+
+    if ('chaId' in obj) {
+      conv = obj;
+      let messages = conv.messages
+      lastMsg = messages[messages.length - 1]
+    }
+    if (lastMsg) {
+      this.scrollInChat(lastMsg);
+    }
+  }
+
+  scrollInParentChat(msg: Message) {
     // Sende die ID des Ziels an den Service
-    const targetMessageId = `${msg.msgId}`; // Beispiel-ID
+    const targetParentId = `${msg.parent?.msgId}`;
+    this.uiService.triggerScrollTo(targetParentId);
+  }
+
+  scrollInChat(msg: Message) {
+    // Sende die ID des Ziels an den Service
+    const targetMessageId = `${msg.msgId}`;
     this.uiService.triggerScrollTo(targetMessageId);
   }
 
   openChannelThread(data: Thread, msg: Message) {
     let channel = this.findChannel(data)
-    this.openChannel(channel)
+    this.openChannel(channel, msg)
       this.uiService.openThread();
       if(msg.parent) {
         this.uiService.setMsg(msg.parent);

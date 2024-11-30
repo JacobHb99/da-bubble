@@ -81,6 +81,7 @@ export class ChannelService {
     this.setChannel(channel)
     this.setCurrentChannel(channel)
     this.uiService.changeContent('channelChat');
+    this.uiService.closeThread();
     this.listenToChannel(channel.chaId);
     this.searchbarSearvice.emptyInput();
   }
@@ -100,28 +101,17 @@ export class ChannelService {
     newChannel.chaId = channelRef.id;
     console.log(newChannel);
     
-   
-    
-  
     if (isSelected) {
       this.firebaseService.selectedUsers = newChannel.users;
       this.firebaseService.selectedUsers.push(currentUser)
       console.log(currentUser);
       await this.firebaseService.addUsersToChannel(newChannel.chaId);
-      
-      
-      
     } else {
       await this.firebaseService.addAllUsersToChannel(newChannel.chaId, newChannel);
     }
     this.setCurrentChannel(newChannel); 
     this.showChannelChat(newChannel);
-
-
-    
   }
-
-
 
   
 async getAllChannels() {

@@ -44,6 +44,7 @@ export class ConversationService {
         this.searchbarSearvice.emptyInput();
     }
 
+
     async createNewConversation(creatorId: any, partnerId: any) {
         this.FiBaService.currentConversation = new Conversation();
         this.FiBaService.currentConversation.creatorId = creatorId;
@@ -88,6 +89,13 @@ export class ConversationService {
         }
     }
 
+    
+    getCurrentConversation(user: User) {
+        let partnerId = user.uid as string
+        let creatorId = this.authService.currentUserSig()?.uid;
+        return this.searchConversation(creatorId, partnerId)
+    }
+
     // async getAllConversations() {
     //     const q = query(collection(this.firestore, "conversations"));
     //     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -126,6 +134,7 @@ export class ConversationService {
     showUserChat(user: any) {
         this.userDataService.setUser(user);
         this.uiService.changeContent('directMessage');
+        this.uiService.closeThread();
     }
 
 
