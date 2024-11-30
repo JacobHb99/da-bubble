@@ -4,7 +4,7 @@
         <div mat-dialog-close class="close"></div>
     </div>
     <div  class="content">
-        @for (user of allUsersFromAChannelId; track user.id) {
+        @for (user of allUsersFromAChannelId; track $index) {
             <app-single-member [member]="this.user"></app-single-member>
             }
        <div class="add-member"> <div class="add-member-icon">  </div>     <span>Mitglieder hinzufügen</span></div>

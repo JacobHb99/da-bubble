@@ -2,7 +2,7 @@
     <div class="single-user-hover">
         <div class="avatar">
             <img class="avatar-img" src="{{member.avatar}}" alt="">
-            @if(member.status==1){
+            @if(member.status == 'online'){
                 <img class="status" src="/icons/Online.png" alt="">
             }@else  {
                 <img class="status" src="/icons/Offline.png" alt="">
