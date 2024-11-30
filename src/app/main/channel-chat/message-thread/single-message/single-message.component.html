@@ -3,7 +3,7 @@
         <div class="lineDiv">
             <hr>
         </div>
-        <div class="date">{{ getFormattedDate(currentMessage.timeStamp) }}</div>
+        <div class="date" *ngIf="shouldShowDateDivider(index)">{{ getFormattedDate(currentMessage.timeStamp) }}</div>
         <div class="lineDiv">
             <hr>
         </div>

@@ -34,6 +34,7 @@ export class SingleMessageComponent {
   //currentMessage: Message = new Message();
   @Input() currentMessage: Message = new Message();
   @Input() message: Message = new Message();
+  @Input() index: number = 0;
 
   loggedInUser: any;
 
@@ -93,6 +94,21 @@ export class SingleMessageComponent {
       }
     }
     return null;
+  }
+
+  shouldShowDateDivider(index: number): boolean {
+
+    if (index === 0) {
+      this.uiService.previousMessage = this.currentMessage
+      // Zeige immer einen Divider bei der ersten Nachricht
+      return true;
+    } else{
+      const currentDate = this.getFormattedDate(this.currentMessage.timeStamp);
+      const previousDate = this.getFormattedDate(this.uiService.previousMessage.timeStamp);
+      this.uiService.previousMessage = this.currentMessage;
+      // Zeige den Divider nur, wenn sich das Datum geändert hat
+      return currentDate !== previousDate;
+    }
   }
 
   toggleEmojiPicker() {

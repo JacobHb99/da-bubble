@@ -2,7 +2,7 @@
     <div class="thread">
         @if (uiService.content == 'channelChat') {
         @for (message of channelService.currentChannelSubject.value.messages; track $index) {
-        <app-single-message [id]="message.msgId" [currentMessage]="message"></app-single-message>
+        <app-single-message [id]="message.msgId" [index]="$index" [currentMessage]="message"></app-single-message>
         }
 
         @empty {
@@ -13,7 +13,7 @@
                 <app-single-message [index]="index" [currentMessage]="message"></app-single-message>
                 } -->
         @for (message of this.fiBaService.currentConversation.messages; track $index) {
-        <app-single-message [id]="message.msgId" [currentMessage]="message"></app-single-message>
+        <app-single-message [id]="message.msgId" [index]="$index" [currentMessage]="message"></app-single-message>
         }
 
         @empty {

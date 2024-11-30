@@ -20,7 +20,7 @@
             @if (!breakpointObserver.isXSmallOrSmall) {
                 <div (click)="openShowMembersDialog()" class="involvedUsers">
                     <!-- <img class="avatar-img" [src]="user.avatar" alt=""> -->
-                   @for (user of getFirstNElements(3,allUsersFromAChannel); track user.uid) {
+                   @for (user of getFirstNElements(3,allUsersFromAChannel); track $index) {
                     <img src="{{user.avatar}}" alt="">
                    }
                     <p>{{allUsersFromAChannel.length}}</p>

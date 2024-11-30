@@ -13,6 +13,7 @@ export class InterfaceService {
   menuVisible = false;
   currentMessage: Message = new Message();
   currentThread: Thread | undefined;
+  previousMessage!: Message;
 
 
 

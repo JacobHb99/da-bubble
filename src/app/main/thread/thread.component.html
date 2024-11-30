@@ -17,7 +17,7 @@
     <div class="chat">
     <div class="thread">
         @for (message of this.uiService.findThread(uiService.currentMessage)?.messages; track $index) {
-            <app-single-message [id]="message.msgId" [currentMessage]="message"></app-single-message>
+            <app-single-message [id]="message.msgId" [index]="$index" [currentMessage]="message"></app-single-message>
             }   
     </div>
     </div>
