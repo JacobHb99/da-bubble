@@ -35,12 +35,29 @@ closeThread() {
 
 openThread(){
   this.showThread = true;
+  
 }
 
 
 setMsg(currentMsg: Message) {
   this.currentMessage = currentMsg;
   this.firebaseService.listenToCurrentThreadChanges(currentMsg.thread);
+  this.setThread(currentMsg)
+}
+
+setThread(currentMsg: Message) {
+  let thread = this.findThread(currentMsg);
+  let index: number;
+  if (thread) {
+    index = thread?.messages.length - 1;
+    this.scrollInChat(thread.messages[index])
+  }
+}
+
+scrollInChat(msg: Message) {
+  // Sende die ID des Ziels an den Service
+  const targetMessageId = `${msg.msgId}`;
+  this.triggerScrollTo(targetMessageId);
 }
 
 findParentMsg(currentMsg: Message) {
