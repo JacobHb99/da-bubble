@@ -34,7 +34,7 @@
                             }
                             @if (obj.name == "channel") {
                             <div (click)="openChannel(obj.data)" class="single-search">
-                                <img src="./icons/users-alt.png" alt="">
+                                <img src="./icons/tag.png" alt="">
                                 <p class="username">{{ obj.data.title }}</p>
                             </div>
                             }
@@ -42,7 +42,7 @@
                                 <div *ngFor="let message of obj.data.messages">
                                     <div (click)="openSearchMsg(obj.data, message)" *ngIf="message.text.toLowerCase().includes(this.searchbarService.searchName.toLowerCase())"
                                         class="single-search">
-                                        <img src="./icons/messages.png" alt="">
+                                        <img src="./icons/chats-icon.png" alt="">
                                         <p class="username">
                                             {{ message.text }}
                                         </p>
@@ -54,7 +54,7 @@
                                 <div *ngFor="let message of obj.data.messages">
                                     <div (click)="openSearchMsg(obj.data, message, obj.channelId)" *ngIf="message.text.toLowerCase().includes(this.searchbarService.searchName.toLowerCase())"
                                         class="single-search">
-                                        <img src="./icons/messages.png" alt="">
+                                        <img src="./icons/chats-icon.png" alt="">
                                         <p class="username">
                                             {{ message.text }}
                                         </p>
@@ -67,7 +67,7 @@
                                 <div *ngFor="let message of obj.data.messages">
                                     <div (click)="openThreadMsg(obj.data, message)" *ngIf="message.text.toLowerCase().includes(this.searchbarService.searchName.toLowerCase())"
                                         class="single-search">
-                                        <img class="thread-img" src="./icons/messages.png" alt="">
+                                        <img src="./icons/thread-icon.png" alt="">
                                         <p class="username">
                                             {{ message.text }}
                                         </p>
