@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from './../services/auth.service';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { ProfilLogoutButtonsComponent } from '../dialogs/profil-logout-buttons/profil-logout-buttons.component';
 import { MyProfilComponent } from '../dialogs/my-profil/my-profil.component';
 import { EditProfileComponent } from '../dialogs/edit-profile/edit-profile.component';
@@ -23,6 +23,12 @@ import { User } from '../models/user.model';
 import { Message } from '../models/message.model';
 import { Thread } from '../models/thread.model';
 import { Channel } from '../models/channel.model';
+import { ProfilButtonMobileComponent } from '../dialogs/profil-button-mobile/profil-button-mobile.component';
+import {
+  MatBottomSheet,
+  MatBottomSheetModule,
+  MatBottomSheetRef,
+} from '@angular/material/bottom-sheet';
 
 
 @Component({
@@ -37,6 +43,7 @@ export class HeaderComponent {
   readonly dialog = inject(MatDialog);
   isHoveredEdit = false;
   uiService = inject(InterfaceService)
+  private _bottomSheet = inject(MatBottomSheet);
 
 
   constructor(
@@ -56,23 +63,29 @@ export class HeaderComponent {
   openDialog() {
     const rightPosition = window.innerWidth > 1920 ? (window.innerWidth - 1920) / 2 : 0;
     let topPosition;
+    let dialogRef: MatDialogRef<ProfilLogoutButtonsComponent, any>
     if (this.breakpointObserver.isXSmallOrSmall) {
-      topPosition = '85px';
+      this.openBottomSheet();
     } else {
       topPosition = '110px';
-    }
-    const dialogRef = this.dialog.open(ProfilLogoutButtonsComponent, {
-      width: '70px',
-      position: { top: topPosition, right: `${rightPosition}px` },
-    });
+      dialogRef = this.dialog.open(ProfilLogoutButtonsComponent, {
+        width: '70px',
+        position: { top: topPosition, right: `${rightPosition}px` },
+      });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result == 'profil') {
-        this.openOwnProfilDialog();
-      } else if (result == 'logout') {
-        this.authService.signOut();
-      }
-    });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result == 'profil') {
+          this.openOwnProfilDialog();
+        } else if (result == 'logout') {
+          this.authService.signOut();
+        }
+      });
+    }
+  }
+
+
+  openBottomSheet(): void {
+    this._bottomSheet.open(ProfilButtonMobileComponent);
   }
 
   openOwnProfilDialog() {

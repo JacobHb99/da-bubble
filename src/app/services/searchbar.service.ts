@@ -33,8 +33,8 @@ export class SearchbarService {
     });
 
     this.firebaseService.allChannels.forEach(channel => {
-      this.allObjects.push({ name: "channel-chat", channelId:channel.chaId, data: channel });
       this.allObjects.push({ name: "channel", data: channel });
+      this.allObjects.push({ name: "channel-chat", channelId:channel.chaId, data: channel });
     });
     
     this.firebaseService.allConversations.forEach(conversation => {
