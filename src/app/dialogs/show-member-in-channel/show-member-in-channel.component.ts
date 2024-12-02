@@ -6,6 +6,7 @@ import { user } from '@angular/fire/auth';
 import { elementAt } from 'rxjs';
 import { FirebaseService } from '../../services/firebase.service';
 import { CommonModule } from '@angular/common';
+import { BreakpointObserverService } from '../../services/breakpoint-observer.service';
 @Component({
   selector: 'app-show-member-in-channel',
   standalone: true,
@@ -21,7 +22,10 @@ export class ShowMemberInChannelComponent {
   channelService = inject(ChannelService);
   firebaseService = inject(FirebaseService);
 
-  constructor() {
+  constructor(
+    public breakpointObserver: BreakpointObserverService
+
+  ) {
     this.channelService.currentChannel$.subscribe(async (channel) => {
       this.channel = channel;
       this.allUsersFromAChannelId = [];

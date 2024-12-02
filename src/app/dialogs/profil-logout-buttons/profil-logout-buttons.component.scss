@@ -6,6 +6,14 @@ div {
   background-color: white;
 }
 
+.mobile-container{
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+}
+
 button {
   font-family: "Nunito", sans-serif;
   box-sizing: border-box;

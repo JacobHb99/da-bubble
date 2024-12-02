@@ -1,7 +1,7 @@
-<div class="container">
+<div [ngClass]="{'container': !breakpointObserver.isXSmallOrSmall}">
     <div class="header">
         <h2>Mitglieder</h2>
-        <div mat-dialog-close class="close"></div>
+        <div mat-dialog-close class="close" *ngIf="!breakpointObserver.isXSmallOrSmall"></div>
     </div>
     <div  class="content">
         @for (user of allUsersFromAChannelId; track $index) {

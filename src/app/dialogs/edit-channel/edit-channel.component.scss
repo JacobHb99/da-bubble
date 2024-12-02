@@ -5,6 +5,7 @@
     padding: 40px;
     font-family: 'Nunito';
     height: 616px;
+    overflow-y: auto;
     box-sizing: border-box;
     position: relative;
     border-radius: 0px 30px 30px 30px;
@@ -58,8 +59,14 @@
     border-radius: 20px;
     border: 1px solid #ADB0D9;
     margin-bottom: 20px;
+}
 
-
+.channel-user-container {
+    padding: 20px;
+    gap: 20px;
+    border-radius: 20px;
+    border: 1px solid #ADB0D9;
+    margin-bottom: 20px;
 }
 
 .channel-name {
@@ -103,14 +110,12 @@
     gap: 20px;
     border-radius: 20px;
     border: 1px solid #ADB0D9;
-
 }
 
 .line {
     margin-top: 10px;
     margin-bottom: 20px;
     border: 1px solid #ADB0D9;
-
 }
 
 .created-from {

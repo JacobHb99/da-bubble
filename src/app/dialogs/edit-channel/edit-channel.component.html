@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    <div [ngClass]="editDesc ? 'hide-border': ''"  class="channel-description-container">
+    <div [ngClass]="editDesc ? 'hide-border': ''"  class="channel-description-container" [ngClass]="{'margin-b-20': breakpointObserver.isXSmallOrSmall}">
         <div class="edit-name">
             <h2>Beschreibung</h2>
             <p (click)="editDesc = !editDesc" (click)="editChannelDesc()">{{ changeDesc }}</p>
@@ -39,6 +39,11 @@
             <p>{{ channel?.creatorId}}</p>
         </div>
     </div>
+
+    <div class="channel-user-container" *ngIf="breakpointObserver.isXSmallOrSmall">
+        <app-show-member-in-channel></app-show-member-in-channel>
+    </div>
+
     <div class="btn-container">
         <button>Channel verlassen</button>
     </div>

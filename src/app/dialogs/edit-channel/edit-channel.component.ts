@@ -9,12 +9,14 @@ import { doc, setDoc, Firestore, updateDoc, collection, onSnapshot, query } from
 import { FormsModule } from '@angular/forms';
 import { UserDataService } from '../../services/user.service';
 import { User } from '../../models/user.model';
+import { ShowMemberInChannelComponent } from "../show-member-in-channel/show-member-in-channel.component";
+import { BreakpointObserverService } from '../../services/breakpoint-observer.service';
 
 
 @Component({
   selector: 'app-edit-channel',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ShowMemberInChannelComponent],
   templateUrl: './edit-channel.component.html',
   styleUrl: './edit-channel.component.scss'
 })
@@ -34,7 +36,15 @@ export class EditChannelComponent implements OnInit {
  
 
 
-  constructor(public dialogRef: MatDialogRef<EditChannelComponent>, public dialog: MatDialog, public channelService: ChannelService , private userService: UserDataService, private authService: AuthService, private firebaseService: FirebaseService){}
+  constructor(
+    public dialogRef: MatDialogRef<EditChannelComponent>, 
+    public dialog: MatDialog, public channelService: ChannelService , 
+    private userService: UserDataService, 
+    private authService: AuthService, 
+    private firebaseService: FirebaseService,
+    public breakpointObserver: BreakpointObserverService
+  
+  ){}
 
   ngOnInit(): void {
     // Subscribes to channel data from ChannelService
