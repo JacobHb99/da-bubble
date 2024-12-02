@@ -3,6 +3,7 @@ import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { AuthService } from '../../services/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { EditProfileComponent } from '../edit-profile/edit-profile.component';
+import { MyProfilComponent } from '../my-profil/my-profil.component';
 
 @Component({
   selector: 'app-profil-button-mobile',
@@ -35,6 +36,9 @@ export class ProfilButtonMobileComponent {
   }
 
   openEditProfilDialog() {
-    const dialogRef = this.dialog.open(EditProfileComponent);
+    const dialogRef = this.dialog.open(MyProfilComponent, {
+      width: '100%',
+      maxWidth: '873px',
+    });
   }
 }
