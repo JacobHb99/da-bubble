@@ -7,6 +7,7 @@ import { elementAt } from 'rxjs';
 import { FirebaseService } from '../../services/firebase.service';
 import { CommonModule } from '@angular/common';
 import { BreakpointObserverService } from '../../services/breakpoint-observer.service';
+import { ChannelChatComponent } from '../../main/channel-chat/channel-chat.component';
 @Component({
   selector: 'app-show-member-in-channel',
   standalone: true,
@@ -21,6 +22,7 @@ export class ShowMemberInChannelComponent {
   user:any;
   channelService = inject(ChannelService);
   firebaseService = inject(FirebaseService);
+  channelChat = inject(ChannelChatComponent)
 
   constructor(
     public breakpointObserver: BreakpointObserverService
@@ -52,4 +54,6 @@ export class ShowMemberInChannelComponent {
     });
   }
   
+
+
 }

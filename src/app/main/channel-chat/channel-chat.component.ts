@@ -1,4 +1,4 @@
-import { Component,Inject,inject, OnInit } from '@angular/core';
+import { Component, Inject, inject, OnInit } from '@angular/core';
 import { SendMessageComponent } from './send-message/send-message.component';
 import { MessageThreadComponent } from './message-thread/message-thread.component';
 import { UserDataService } from '../../services/user.service';
@@ -19,31 +19,31 @@ import { FirebaseService } from '../../services/firebase.service';
 @Component({
   selector: 'app-channel-chat',
   standalone: true,
-  imports: [SingleMessageComponent,SendMessageComponent, MessageThreadComponent, CommonModule],
+  imports: [SingleMessageComponent, SendMessageComponent, MessageThreadComponent, CommonModule],
   templateUrl: './channel-chat.component.html',
   styleUrl: './channel-chat.component.scss'
 })
-export class ChannelChatComponent{
+export class ChannelChatComponent {
   user: any;
   threadIsEmpty = true;
   channel: any;
   uiService = inject(InterfaceService);
   channelService = inject(ChannelService)
-  allUsersFromAChannel:any;
+  allUsersFromAChannel: any;
   firebaseService = inject(FirebaseService);
-;
+  ;
 
-  constructor(public userDataService: UserDataService,  public dialog: MatDialog, public breakpointObserver: BreakpointObserverService) {
+  constructor(public userDataService: UserDataService, public dialog: MatDialog, public breakpointObserver: BreakpointObserverService) {
     this.userDataService.selectedUser.subscribe((user) => {
-      this.user = user;      
-      
-     
-    
+      this.user = user;
+
+
+
       this.uiService.changeContent('newMessage');
-    }); 
+    });
     this.channelService.currentChannel$.subscribe(async (channel) => {
-      this.channel = channel; 
-      
+      this.channel = channel;
+
       if (this.channel.users) {
         this.allUsersFromAChannel = [...this.channel.users]; // Nutzer-IDs kopieren
       }
@@ -51,62 +51,74 @@ export class ChannelChatComponent{
         const userPromises = this.allUsersFromAChannel.map((userId: any) =>
           this.firebaseService.getCurrentUser(userId)
         );
-  
+
         // Warten, bis alle Benutzerdaten geladen sind
         const users = await Promise.all(userPromises);
         console.log("Geladene Benutzer:", users);
-        
-        
-  
+
+
+
         this.allUsersFromAChannel = users; // Speichere Benutzer
       } catch (error) {
       }
-       
 
 
 
 
-           
-     // this.uiService.changeContent('newMessage');
-    }); 
+
+
+      // this.uiService.changeContent('newMessage');
+    });
     //console.log('active User', this.user.username)
 
   }
 
 
 
-    openEditChannel(): void {
-      const dialogRef = this.dialog.open(EditChannelComponent, {
-        width: "100%",
-        maxWidth: '873px'
-      });
-      dialogRef.afterClosed().subscribe(result => {
-      });
+  openEditChannel(): void {
+    const dialogRef = this.dialog.open(EditChannelComponent, {
+      width: "100%",
+      maxWidth: '873px'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
+
+  openShowMembersDialog() {
+    const dialogRef = this.dialog.open(ShowMemberInChannelComponent, {
+      width: "100%",
+      maxWidth: '873px'
+    });
+  }
+
+  openChannelDialog() {
+    if (this.breakpointObserver.isXSmallOrSmall) {
+      this.openShowMembersDialog();
+    } else {
+      this.addToChoosenChannelDialog();
     }
+  }
 
-    openShowMembersDialog(){
-      const dialogRef = this.dialog.open(ShowMemberInChannelComponent, {
-      });
-    }
+  addToChoosenChannelDialog() {
+    const dialogRef = this.dialog.open(AddToChoosenChannelComponent, {
+      width: "100%",
+      maxWidth: '873px'
+    });
+  }
 
-    addToChoosenChannelDialog(){
-      const dialogRef = this.dialog.open(AddToChoosenChannelComponent, {
-      });
-    }
+  openUserProfilDialog() {
+    const dialogRef = this.dialog.open(ProfilComponent, {
+      data: this.user
+    });
+  }
 
-    openUserProfilDialog(){
-      const dialogRef = this.dialog.open(ProfilComponent, {
-        data: this.user 
-      });
-    }
-
-    getFirstNElements(n:number, array:any): any[] {
-      return array.slice(0, Math.min(array.length, n));
-    }
+  getFirstNElements(n: number, array: any): any[] {
+    return array.slice(0, Math.min(array.length, n));
+  }
 
 
-  
-   
-  
+
+
+
 
 }

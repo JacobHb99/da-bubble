@@ -7,6 +7,11 @@
 }
 .container {
   margin: 45px 40px;
+  box-sizing: border-box;
+}
+
+.container-mobile{
+  margin: 25px 20px !important;
 }
 
 .header {
@@ -20,6 +25,9 @@ h2 {
 
 .content {
   margin-left: 8px;
+  height: 60svh;
+  overflow-y: auto;
+
 }
 
 app-single-member {
