@@ -4,6 +4,7 @@ import { AbstractControl, FormControl, NonNullableFormBuilder, ReactiveFormsModu
 import { Router, RouterLink } from '@angular/router';
 import { HeaderSignComponent } from '../header-sign/header-sign.component';
 import { confirmPasswordReset, getAuth } from '@angular/fire/auth';
+import { ImpressComponent } from '../impress/impress.component';
 
 @Component({
   selector: 'app-new-password',
@@ -12,7 +13,8 @@ import { confirmPasswordReset, getAuth } from '@angular/fire/auth';
     HeaderSignComponent,
     ReactiveFormsModule,
     CommonModule,
-    RouterLink
+    RouterLink,
+    ImpressComponent
   ],
   templateUrl: './new-password.component.html',
   styleUrl: './new-password.component.scss'

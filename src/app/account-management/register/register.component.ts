@@ -5,6 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { ImpressComponent } from '../impress/impress.component';
 
 
 @Component({
@@ -16,7 +17,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     RouterLink,
     ReactiveFormsModule,
     FormsModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    ImpressComponent
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'

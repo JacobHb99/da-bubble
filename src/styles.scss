@@ -40,7 +40,14 @@ app-header-sign {
 .submit-btns {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 30px;
+  min-width: max-content;
+}
+
+.submit-mobile{
+  gap: 16px !important;
+  justify-content: space-between !important;
 }
 
 .close {
@@ -61,6 +68,8 @@ app-header-sign {
 .mat-bottom-sheet-container{
   border-radius: 30px 30px 0px 0px !important;
   background-color: white !important;
+  box-shadow: 0px -3px 10px 0px rgba(0, 0, 0, 0.2);
+
 }
 
 .btn-blue,

@@ -112,6 +112,7 @@ form {
     border-bottom: 1px solid #ADB0D9;
     line-height: 0.1em;
     margin: 10px 0 20px;
+    box-sizing: border-box;
 
     span {
         background: white;
@@ -130,12 +131,15 @@ form {
     border: #ECEEFE solid 1px;
     transition: ease-out 100ms;
     width: 100%;
+    box-sizing: border-box;
     cursor: pointer;
 
     &:hover {
         border: #444DF2 solid 1px;
     }
 }
+
+
 
 .new-member-box{
     @include dFlex(center, center, column);
@@ -145,6 +149,8 @@ form {
         display: none !important;
     }
 }
+
+
 
 
 

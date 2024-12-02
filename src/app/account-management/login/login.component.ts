@@ -8,6 +8,7 @@ import { catchError, of } from 'rxjs';
 import { IntroAnimationComponent } from '../intro-animation/intro-animation.component';
 import { CommonModule } from '@angular/common';
 import { ImpressComponent } from '../impress/impress.component';
+import { BreakpointObserverService } from '../../services/breakpoint-observer.service';
 
 @Component({
   selector: 'app-login',
@@ -40,7 +41,7 @@ export class LoginComponent implements OnInit {
   });
 
 
-  constructor() {
+  constructor(public breakpointObserver: BreakpointObserverService) {
     this.authService.errorMessage = '';
   }
 

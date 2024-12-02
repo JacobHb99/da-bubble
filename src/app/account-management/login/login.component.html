@@ -61,10 +61,10 @@
             <img src="/img/icons/login/google.png">
             <span>Anmelden mit Google</span>
         </button>
-        <div class="submit-btns">
+        <div class="submit-btns" [ngClass]="{'submit-mobile': breakpointObserver.isXSmallOrSmall}">
             <button class="btn-blue" [disabled]="!userForm.valid" [class.btn-inactive]="!userForm.valid"
                 (click)="login()">Anmelden</button>
-            <button class="btn-white" (click)="guestLogin()">Gäste-Login</button>
+            <button class="btn-white" (click)="guestLogin()">Gast-Login</button>
         </div>
     </div>
 

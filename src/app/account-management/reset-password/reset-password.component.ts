@@ -4,6 +4,7 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
+import { ImpressComponent } from '../impress/impress.component';
 
 @Component({
   selector: 'app-reset-password',
@@ -12,7 +13,8 @@ import { Router, RouterLink } from '@angular/router';
     HeaderSignComponent,
     ReactiveFormsModule,
     CommonModule,
-    RouterLink
+    RouterLink,
+    ImpressComponent
   ],
   templateUrl: './reset-password.component.html',
   styleUrl: './reset-password.component.scss'

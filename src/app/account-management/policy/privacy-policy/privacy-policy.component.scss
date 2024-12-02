@@ -7,7 +7,18 @@ h1 {
     margin-block-end: 0;
     color: #535af1;
     text-align: center;
-    margin-left: 50px;
+}
+
+.h1-mobile{
+    font-size: 32px !important;
+}
+
+.h2-mobile{
+    font-size: 24px !important;
+}
+
+.h3-mobile{
+    font-size: 18px !important;
 }
 
 p{
@@ -38,13 +49,16 @@ ul{
     animation: fadeIn 1s ease-in-out forwards;
     box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
 
-    .arrow-back {
-        position: absolute;
-        height: 40px;
-        width: 40px;
-        cursor: pointer;
-        top: 32px;
-        left: 32px;
+    .arrow-box{
+        width: 100%;
+        @include dFlex($jc: flex-start);
 
+        .arrow-back {
+            height: 40px;
+            width: 40px;
+            cursor: pointer;
+
+    
+        }
     }
 }
