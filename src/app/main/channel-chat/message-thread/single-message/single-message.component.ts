@@ -129,7 +129,7 @@ export class SingleMessageComponent {
   manageEmoji(event: any) {
     const emoji = event.emoji;
     console.log('emoji', emoji)
-    this.reactService.updateMessageWithReaction(emoji, this.currentMessage)
+    this.reactService.updateMessageWithReaction(emoji, this.currentMessage)    
   }
 
   manageDeleteEmoji(reaction: any) {

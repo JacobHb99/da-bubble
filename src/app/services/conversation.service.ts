@@ -33,12 +33,12 @@ export class ConversationService {
         if (existCon) {
             this.FiBaService.currentConversation = new Conversation(existCon);
             this.showUserChat(user);
-            console.log("existConv", this.FiBaService.currentConversation)
+            //console.log("existConv", this.FiBaService.currentConversation)
             this.listenToCurrentConversationChanges(this.FiBaService.currentConversation.conId);
         } else {
             await this.createNewConversation(creatorId, partnerId)
             this.showUserChat(user);
-            console.log("newConv", this.FiBaService.currentConversation)
+           // console.log("newConv", this.FiBaService.currentConversation)
             this.listenToCurrentConversationChanges(this.FiBaService.currentConversation.conId);
         }
         this.searchbarSearvice.emptyInput();
