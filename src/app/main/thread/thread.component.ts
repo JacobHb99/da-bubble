@@ -19,6 +19,8 @@ export class ThreadComponent {
 
   constructor(public breakpointObserver: BreakpointObserverService, public firebaseService: FirebaseService) {
     this.uiService.showThread = false;
+    console.log('THREAD', this.uiService.currentMessage);
+    
   }
   
 

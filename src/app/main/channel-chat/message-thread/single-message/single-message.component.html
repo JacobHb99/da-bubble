@@ -31,8 +31,7 @@
             <div class="bottomBox">
                 @if (currentMessage.thread) {
                 <div class="answerBox">
-                    <span class="answer" (click)="this.uiService.openThread()"
-                        (click)="uiService.setMsg(currentMessage)"
+                    <span class="answer"(click)="uiService.setMsg(currentMessage)" (click)="this.openThread()"
                         [ngClass]="{'mobile-font': breakpointObserver.isXSmallOrSmall}">
                         @if ((uiService.findThread(currentMessage)?.messages?.length ?? 0) > 0) {
                         <span>{{ uiService.findThread(currentMessage)?.messages?.length }}</span>
