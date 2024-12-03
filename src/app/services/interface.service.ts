@@ -1,25 +1,32 @@
-import { Injectable, signal } from '@angular/core';
+import { ChangeDetectorRef, Injectable, signal } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Message } from '../models/message.model';
 import { FirebaseService } from './firebase.service';
 import { Thread } from '../models/thread.model';
+import { MatDialog } from '@angular/material/dialog';
+import { ShowMemberInChannelComponent } from '../dialogs/show-member-in-channel/show-member-in-channel.component';
+import { AddToChoosenChannelComponent } from '../dialogs/add-to-choosen-channel/add-to-choosen-channel.component';
+import { BreakpointObserverService } from './breakpoint-observer.service';
+import { Channel } from '../models/channel.model';
 @Injectable({
   providedIn: 'root',
 })
 export class InterfaceService {
-  showThread = true;
+  showThread = false;
   content: 'channelChat' | 'newMessage' | 'directMessage' = 'newMessage';
   showSidenav = signal(true);
   menuVisible = false;
   currentMessage: Message = new Message();
   currentThread: Thread | undefined;
   previousMessage!: Message;
+  currChannel!: Channel;
 
 
 
-  constructor(private firebaseService: FirebaseService) {
+  constructor(private firebaseService: FirebaseService, public dialog: MatDialog, public breakpointObserver: BreakpointObserverService) {
     
   }
+  
 
   toggleSidenav() {
     this.menuVisible = !this.menuVisible
@@ -35,8 +42,7 @@ closeThread() {
 }
 
 openThread(){
-  this.showThread = true;
-  
+  this.showThread = true; 
 }
 
 
@@ -95,6 +101,28 @@ formatTimeFromTimestamp(timestamp?: number): string {
   const hours = date.getHours().toString().padStart(2, '0'); // Stunden, 2-stellig
   const minutes = date.getMinutes().toString().padStart(2, '0'); // Minuten, 2-stellig
   return `${hours}:${minutes}`; // Kombiniere Stunden und Minuten
+}
+
+openShowMembersDialog() {
+  const dialogRef = this.dialog.open(ShowMemberInChannelComponent, {
+    width: "100%",
+    maxWidth: '873px'
+  });
+}
+
+openChannelDialog() {
+  if (this.breakpointObserver.isXSmallOrSmall) {
+    this.openShowMembersDialog();
+  } else {
+    this.addToChoosenChannelDialog();
+  }
+}
+
+addToChoosenChannelDialog() {
+  const dialogRef = this.dialog.open(AddToChoosenChannelComponent, {
+    width: "100%",
+    maxWidth: '873px'
+  });
 }
 
 private scrollTrigger = new Subject<string>();

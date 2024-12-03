@@ -1,4 +1,4 @@
-import { Component, inject, input, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, input, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserDataService } from '../../../../services/user.service';
 import { InterfaceService } from '../../../../services/interface.service';
@@ -42,7 +42,8 @@ export class SingleMessageComponent {
 
   constructor(
     private userDataService: UserDataService,
-    public breakpointObserver: BreakpointObserverService
+    public breakpointObserver: BreakpointObserverService,
+    private cdr: ChangeDetectorRef, 
   ) {
     this.userDataService.selectedUser.subscribe((user) => {
       this.user = user;
@@ -62,6 +63,11 @@ export class SingleMessageComponent {
     this.currentMessage = new Message(this.currentMessage);
     this.loggedInUser = this.authService.currentUserSig();
     console.log(this.loggedInUser)
+  }
+
+  openThread() {
+    this.uiService.openThread()
+    this.cdr.detectChanges();  // Erzwingt eine erneute Change Detection
   }
 
 

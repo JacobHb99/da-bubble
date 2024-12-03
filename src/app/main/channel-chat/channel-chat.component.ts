@@ -43,7 +43,9 @@ export class ChannelChatComponent {
     });
     this.channelService.currentChannel$.subscribe(async (channel) => {
       this.channel = channel;
-
+      this.uiService.currChannel = channel;
+      console.log('CHANNELS', this.uiService.currChannel);
+      
       if (this.channel.users) {
         this.allUsersFromAChannel = [...this.channel.users]; // Nutzer-IDs kopieren
       }
