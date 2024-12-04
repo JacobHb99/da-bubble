@@ -27,7 +27,7 @@
                     type="text" placeholder="Devspace durchsuchen">
                 <img src="./icons/search-thin-grey.png" alt="">
             </div>
-            <div [ngClass]="{'hideUserDialog' : this.searchbarService.searchName.length <= 0}"
+            <div [ngClass]="{'hideUserDialog' : searchbarService.filteredUsers.length <= 0}"
                 class="user-dialog showUserDialog">
                 <div class="scroll-container">
                     <div *ngFor="let obj of searchbarService.filteredUsers" class="single-user">

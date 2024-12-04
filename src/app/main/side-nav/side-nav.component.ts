@@ -77,7 +77,9 @@ export class SideNavComponent {
 
   openNewMessage() {
     this.uiService.changeContent('newMessage');
-    this.toggleMenu();
+    if (this.breakpointObserver.isXSmallOrSmall) {
+      this.toggleMenu();
+    }
   }
 
   changeImg() {

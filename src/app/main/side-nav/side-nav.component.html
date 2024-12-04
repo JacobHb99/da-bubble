@@ -10,7 +10,7 @@
                     <img src="./icons/Workspace-logo.png" alt="">
                     <p>Devspace</p>
                 </div>
-                <div (mouseenter)="isHoveredEdit = true" (mouseleave)="isHoveredEdit = false" class="edit-square">
+                <div (click)="openNewMessage()" (mouseenter)="isHoveredEdit = true" (mouseleave)="isHoveredEdit = false" class="edit-square">
                     <img [src]="isHoveredEdit ? 'icons/edit_square-blue.png' : 'icons/edit_square.png'" alt="">
                 </div>
             </div>
