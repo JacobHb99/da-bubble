@@ -4,7 +4,7 @@
         <div mat-dialog-close class="close" *ngIf="breakpointObserver.isXSmallOrSmall">
         </div>
     </div>
-    <div class="content">
+    <div class="content" [ngClass]="{'overflow-scroll': !breakpointObserver.isXSmallOrSmall}">
         @for (user of allUsersFromAChannelId; track $index) {
         <app-single-member [member]="this.user"></app-single-member>
         }

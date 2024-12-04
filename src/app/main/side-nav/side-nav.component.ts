@@ -62,9 +62,17 @@ export class SideNavComponent {
 
 
   toggleMenu() {
-    this.menuVisible = !this.menuVisible;
-    this.uiService.toggleSidenav();
-    console.log(this.uiService.showSidenav);
+    if (this.uiService.showThread && this.breakpointObserver.isMedium) {
+      this.uiService.closeThread()
+      if (!this.uiService.showSidenav()) {
+        this.uiService.toggleSidenav();
+      }
+    }else{
+      this.menuVisible = !this.menuVisible;
+      this.uiService.toggleSidenav();
+      console.log(this.uiService.showSidenav);
+    }
+
   }
 
   openNewMessage() {
