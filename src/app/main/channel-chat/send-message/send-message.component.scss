@@ -4,6 +4,7 @@ section {
     font-family: 'Nunito';
     border-radius: 0 0 30px 30px;
     background-color: white;
+    position: relative;
 }
 
 .main {
@@ -77,7 +78,7 @@ section {
     }
 }
 
-.emojiPicker{
+.emojiPicker {
     position: absolute;
     left: 0px;
     bottom: 140px;
@@ -103,6 +104,29 @@ section {
     }
 }
 
+.userList {
+    @include dFlex($fd: column,$jc: flex-start, $gap: 5px);
+    max-height: 120px;
+    width: 200px;
+    background-color: #444df2;
+    color: white;
+    border-radius: 20px;    
+    padding: 20px;    
+    font-size: 18px;
+    overflow-y: scroll;
+    position: absolute;
+    bottom: 140px;
+    left: 0;
+
+    span {
+        //@include dFlex($fd: column);
+        cursor: pointer;
+        &:hover{
+            font-weight: 700;
+        }        
+    }
+}
+
 .sendIcon {
     cursor: pointer;
 
@@ -118,5 +142,4 @@ section {
 .disabled {
     pointer-events: none;
     opacity: 0.5;
-  }
-
+}

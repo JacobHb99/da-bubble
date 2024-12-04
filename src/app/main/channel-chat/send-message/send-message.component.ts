@@ -45,6 +45,7 @@ export class SendMessageComponent {
   text: string = '';
   isDisabled: boolean = true;
   showEmojiPicker = false;
+  userList: boolean = false;
   currentMsg = new Message()
   loggedInUser = new User()
 
@@ -243,5 +244,13 @@ export class SendMessageComponent {
     const emoji = event.emoji.native;
     this.text += emoji;
     //this.toggleEmojiPicker(); //sinnvoll??
+  }
+
+  toggleUserList() {
+    this.userList = !this.userList;
+  }
+
+  tagUser(user: string) {
+    this.text += "@" + user;
   }
 }

@@ -75,14 +75,14 @@ app-send-message{
 }
 
 .thread{
-    height: 100%; 
-    padding-top: 10px;
+    height: calc(100% - 35px);; 
+    padding-top: 40px;
     overflow-y: auto;
 
     .divider{
         width: 100%;
         @include dFlex($gap: 20px);
-        padding: 20px 35px;
+        padding: 0 35px;
         box-sizing: border-box;
 
         p{

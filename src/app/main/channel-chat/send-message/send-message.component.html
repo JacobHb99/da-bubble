@@ -10,12 +10,12 @@
                 <div class="addReaction" (click)="toggleEmojiPicker()"></div>
                 @if (showEmojiPicker) {
                 <div class="emojiPicker" #emojiPicker>
-                    <emoji-mart (emojiSelect)="addEmoji($event)" [showPreview]="false" [darkMode]="false" color="#444DF2" title="Pick your emoji…"
-                        [showSingleCategory]="true">
+                    <emoji-mart (emojiSelect)="addEmoji($event)" [showPreview]="false" [darkMode]="false"
+                        color="#444DF2" title="Pick your emoji…" [showSingleCategory]="true">
                     </emoji-mart>
                 </div>
                 }
-                <div class="tagUser"></div>
+                <div class="tagUser" (click)="toggleUserList()"></div>
             </div>
             <div class="sendIcon" [class.disabled]="isDisabled" (click)="createNewMsg()">
                 <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -32,4 +32,12 @@
             </div>
         </div>
     </div>
+
+    @if (userList) {
+    <div class="userList">
+        @for (user of fiBaService.allUsers; track $index) {
+        <span (click)="tagUser(user.username)">{{user.username}}</span>
+        }
+    </div>
+    }
 </section>
