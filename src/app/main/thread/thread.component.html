@@ -6,7 +6,7 @@
         <div class="channelThread">
             <p>Thread</p>
             @if (this.uiService.content==='channelChat') {
-            <span># Entwicklerteam</span>
+            <span>#{{uiService.currChannel.title}}</span>
             } @else {
                 <span>#personal Thread</span>
             }
@@ -16,8 +16,17 @@
     </header>
     <div class="chat">
     <div class="thread">
+        <app-single-message [isThread]="true" [id]="uiService.currentMessage.msgId" [index]="-1" [currentMessage]="uiService.currentMessage"></app-single-message>
+        <div class="divider">
+            <p>{{ this.uiService.findThread(uiService.currentMessage)?.messages?.length }}
+                Antworten
+            </p>
+            <div class="line"></div>
+        </div>
+
+
         @for (message of this.uiService.findThread(uiService.currentMessage)?.messages; track $index) {
-            <app-single-message [id]="message.msgId" [index]="$index" [currentMessage]="message"></app-single-message>
+            <app-single-message [isThread]="true" [id]="message.msgId" [index]="$index" [currentMessage]="message"></app-single-message>
             }   
     </div>
     </div>

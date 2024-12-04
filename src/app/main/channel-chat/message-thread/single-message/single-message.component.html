@@ -1,21 +1,26 @@
 <section>
-    <div class="divider">
-        <div class="lineDiv">
-            <hr>
+    @if (!isThread) {
+        <div class="divider">
+            <div class="lineDiv">
+                <hr>
+            </div>
+    
+            <div class="date" *ngIf="shouldShowDateDivider(index)">{{ getFormattedDate(currentMessage.timeStamp) }}</div>
+    
+            <div class="lineDiv">
+                <hr>
+            </div>
         </div>
-        <div class="date" *ngIf="shouldShowDateDivider(index)">{{ getFormattedDate(currentMessage.timeStamp) }}</div>
-        <div class="lineDiv">
-            <hr>
-        </div>
-    </div>
+    }
+
     @if (this.uiService.content === 'directMessage' || 'channelChat') {
 
-    <div [ngClass]="loggedInUser.uid===currentMessage.senderId ? 'myMessageBox': 'replyMessageBox'">
-        <div [ngClass]="{'replyMessageDetails': loggedInUser.uid!==currentMessage.senderId }" class="messageDetails">
+    <div [ngClass]="authService.currentUserSig()?.uid === currentMessage.senderId ? 'myMessageBox': 'replyMessageBox'">
+        <div [ngClass]="{'replyMessageDetails': authService.currentUserSig()?.uid !== currentMessage.senderId }" class="messageDetails">
             <div class="messageInfo">
                 <p>{{ getFormattedTime(currentMessage.timeStamp) }}</p>
-                @if (loggedInUser.uid===currentMessage.senderId) {
-                <p>{{ loggedInUser.username }}</p>
+                @if (authService.currentUserSig()?.uid === currentMessage.senderId) {
+                <p>{{ authService.currentUserSig()?.username }}</p>
                 }
                 @else {
                 <p *ngIf="findUserWithId(currentMessage.senderId); else notFound">
@@ -25,11 +30,11 @@
                 }
 
             </div>
-            <div class="messageText" [ngClass]="{'replyMessageText': loggedInUser.uid!==currentMessage.senderId }">
+            <div class="messageText" [ngClass]="{'replyMessageText': authService.currentUserSig()?.uid !== currentMessage.senderId }">
                 {{ currentMessage.text }}
             </div>
             <div class="bottomBox">
-                @if (currentMessage.thread) {
+                @if (!isThread) {
                 <div class="answerBox">
                     <span class="answer"(click)="uiService.setMsg(currentMessage)" (click)="this.openThread()"
                         [ngClass]="{'mobile-font': breakpointObserver.isXSmallOrSmall}">
@@ -56,12 +61,12 @@
                         <ngx-emoji [emoji]="reaction.id"></ngx-emoji>
                         <p>{{ reaction.counter }}</p>
                         <div class="whoReactInfo"
-                            [ngClass]="{'whoReactInfoReply': loggedInUser.uid!==currentMessage.senderId }">
+                            [ngClass]="{'whoReactInfoReply': authService.currentUserSig()?.uid == currentMessage.senderId }">
                             <ngx-emoji [emoji]="reaction.id"></ngx-emoji>
 
                             <div class="reacteduser" *ngFor="let username of reaction.reactedUser | keyvalue">
-                                <span *ngIf="loggedInUser.username === username.key">Du</span>
-                                <span *ngIf="loggedInUser.username !== username.key">{{ username.key }}</span>
+                                <span *ngIf="this.authService.currentUserSig()?.username === username.key">Du</span>
+                                <span *ngIf="this.authService.currentUserSig()?.username !== username.key">{{ username.key }}</span>
                             </div>
                             <span class="plural">{{ checkPlural(reaction) }}</span>
                         </div>
@@ -70,11 +75,11 @@
                 </div>
             </div>
         </div>
-        @if (loggedInUser.uid==currentMessage.senderId) {
+        @if (authService.currentUserSig()?.uid == currentMessage.senderId) {
         <img [ngStyle]="{'width': '70px',
                         'heigt': '70px',
                         'border-radius': '50%'}" [ngClass]="{'mobile-img': breakpointObserver.isXSmallOrSmall}"
-            [src]="loggedInUser.avatar" referrerPolicy="no-referrer">
+            [src]="authService.currentUserSig()?.avatar" referrerPolicy="no-referrer">
         } @else {
         <img [ngStyle]="{'width': '70px',
                         'heigt': '70px',
@@ -82,8 +87,8 @@
             [src]="findUserWithId(currentMessage.senderId)?.avatar" referrerPolicy="no-referrer">
         }
         <div class="floatingReactionBox"
-            [ngClass]="{'replyfloatingReactionBox': loggedInUser.uid!==currentMessage.senderId }" [ngStyle]="{'left': loggedInUser.uid!==currentMessage.senderId ? 'auto' : '45px',
-                        'right': loggedInUser.uid!==currentMessage.senderId ? '45px' : 'auto'}">
+            [ngClass]="{'replyfloatingReactionBox': authService.currentUserSig()?.uid!==currentMessage.senderId }" [ngStyle]="{'left': authService.currentUserSig()?.uid!==currentMessage.senderId ? 'auto' : '45px',
+                        'right': authService.currentUserSig()?.uid!==currentMessage.senderId ? '45px' : 'auto'}">
             <div class="iconBox">
                 <ngx-emoji class="singleEmoji" [size]="25" emoji="white_check_mark"
                     (emojiClick)="manageEmoji($event)"></ngx-emoji>
@@ -106,7 +111,7 @@
                 </svg>
             </div>
             @if (showEmojiPicker) {
-            <div [ngClass]="loggedInUser.uid===currentMessage.senderId ? 'myEmojiPicker': 'replyEmojiPicker'"
+            <div [ngClass]="authService.currentUserSig()?.uid===currentMessage.senderId ? 'myEmojiPicker': 'replyEmojiPicker'"
                 #emojiPicker>
                 <emoji-mart (emojiSelect)="manageEmoji($event); toggleEmojiPicker() " [showPreview]="false"
                     [darkMode]="false" color="#444DF2" title="Pick your emoji…" [showSingleCategory]="true">
@@ -127,7 +132,7 @@
                     </g>
                 </svg>
             </div>
-            @if (loggedInUser.uid===currentMessage.senderId) {
+            @if (authService.currentUserSig()?.uid===currentMessage.senderId) {
             <div class="iconBox svg-hover">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <mask id="mask0_1823_21565" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"

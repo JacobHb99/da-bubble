@@ -50,6 +50,7 @@ setMsg(currentMsg: Message) {
   this.currentMessage = currentMsg;
   this.firebaseService.listenToCurrentThreadChanges(currentMsg.thread);
   this.setThread(currentMsg)
+  this.openThread()
 }
 
 setThread(currentMsg: Message) {

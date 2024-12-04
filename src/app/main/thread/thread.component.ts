@@ -21,6 +21,7 @@ export class ThreadComponent {
     this.uiService.showThread = false;
     console.log('THREAD', this.uiService.currentMessage);
     
+    
   }
   
 

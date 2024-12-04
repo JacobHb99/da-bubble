@@ -35,6 +35,7 @@ export class SingleMessageComponent {
   @Input() currentMessage: Message = new Message();
   @Input() message: Message = new Message();
   @Input() index: number = 0;
+  @Input() isThread: boolean = false;
 
   loggedInUser: any;
 
@@ -104,7 +105,7 @@ export class SingleMessageComponent {
 
   shouldShowDateDivider(index: number): boolean {
 
-    if (index === 0) {
+    if (index === 0 || -1) {
       this.uiService.previousMessage = this.currentMessage
       // Zeige immer einen Divider bei der ersten Nachricht
       return true;
@@ -123,7 +124,7 @@ export class SingleMessageComponent {
 
   checkPlural(reaction: Reaction) {
     const hasReacted = Object.keys(reaction.reactedUser).some(
-      (username) => username === this.loggedInUser.username
+      (username) => username === this.authService.currentUserSig()?.username
     );
     if (reaction.counter > 1) {
       return 'haben reagiert';
