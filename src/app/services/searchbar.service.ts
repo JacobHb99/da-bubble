@@ -19,6 +19,8 @@ type CurrentObject =
 
 export class SearchbarService {
   searchName: string = "";
+  newMsgSearchName: string = "";
+  filteredResults: any[] = []; // Gefilterte Ergebnisse für neue
   isInputEmpty: boolean = false;
  allObjects: CurrentObject[] = [];
   
@@ -53,6 +55,11 @@ export class SearchbarService {
   emptyInput() {
     this.isInputEmpty = this.firebaseService.selectedUsers.length === 0;
     this.searchName = "";
+  }
+
+  emptyMsgInput() {
+    this.newMsgSearchName = "";
+    this.filteredResults = [];
   }
 
   get filteredUsers() {
@@ -106,5 +113,33 @@ export class SearchbarService {
   
     console.log("Filtered Results:", results);
     return results;
+  }
+
+
+  newMsgSearch() {
+    if (this.newMsgSearchName.startsWith('@')) {
+      // Filter Benutzer bei '@'
+      const searchTerm = this.newMsgSearchName.slice(1).toLowerCase();
+      this.filteredResults = this.firebaseService.allUsers.filter(user =>
+        user.username.toLowerCase().includes(searchTerm)
+      );
+    } else if (this.newMsgSearchName.startsWith('#')) {
+      // Filter Channels bei '#'
+      const searchTerm = this.newMsgSearchName.slice(1).toLowerCase();
+      this.filteredResults = this.firebaseService.allChannels.filter(channel =>
+        channel.title.toLowerCase().includes(searchTerm)
+      );
+    } else if (this.newMsgSearchName) {
+      this.filteredResults = this.firebaseService.allUsers.filter(user =>
+        user.email.toLowerCase().includes(this.newMsgSearchName)
+      );
+    }else{
+      // Keine Filterbedingung, leer
+      this.filteredResults = [];
+    }
+    console.log('RESULTS', this.filteredResults);
+    console.log('MSG', this.newMsgSearchName);
+
+    
   }
 }

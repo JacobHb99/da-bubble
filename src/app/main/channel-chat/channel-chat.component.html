@@ -18,13 +18,13 @@
         </div>
         <div class="users" [ngStyle]="{'display': this.uiService.content === 'channelChat' ? 'flex' : 'none'}">
             @if (!breakpointObserver.isXSmallOrSmall) {
-                <div (click)="openShowMembersDialog()" class="involvedUsers">
-                    <!-- <img class="avatar-img" [src]="user.avatar" alt=""> -->
-                   @for (user of getFirstNElements(3,allUsersFromAChannel); track $index) {
-                    <img src="{{user.avatar}}" alt="">
-                   }
-                    <p>{{allUsersFromAChannel.length}}</p>
-                </div>
+            <div (click)="openShowMembersDialog()" class="involvedUsers">
+                <!-- <img class="avatar-img" [src]="user.avatar" alt=""> -->
+                @for (user of getFirstNElements(3,allUsersFromAChannel); track $index) {
+                <img src="{{user.avatar}}" alt="">
+                }
+                <p>{{allUsersFromAChannel.length}}</p>
+            </div>
             }
             <div (click)="openChannelDialog()" class="addToChannel">
                 <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -41,26 +41,55 @@
                 </svg>
             </div>
         </div>
-    }
+        }
         @if (this.uiService.content === 'directMessage'){
         <div (click)="openUserProfilDialog()" class="channelName">
             <div class="avatar">
-                <img class="avatar-img" [src]="user.avatar" referrerPolicy="no-referrer" alt=""> 
+                <img class="avatar-img" [src]="user.avatar" referrerPolicy="no-referrer" alt="">
                 <img class="status" [src]="user.status == 'online' ? '/icons/Online.png' : '/icons/Offline.png'" alt="">
             </div>
             @if (user.uid === userDataService.currentUserSig()?.uid) {
-                <p>{{ user.username }} (Du)</p>
+            <p>{{ user.username }} (Du)</p>
             }@else {
-                <p>{{ user.username }}</p>
-            } 
+            <p>{{ user.username }}</p>
+            }
         </div>
-    }
-        
+        }
+
         @if (this.uiService.content === 'newMessage'){
         <div class="newMsg">
             <span>Neue Nachricht</span>
-            <div>
-                <input placeholder="An: #channel, @jemand oder E-mail Adresse" type="text">
+            <div class="scroll-box">
+
+                <div class="input-container">
+                    <input placeholder="An: #channel, @jemand oder E-mail Adresse" type="text"
+                        [(ngModel)]="this.searchbarService.newMsgSearchName" (input)="searchbarService.newMsgSearch()">
+                </div>
+
+
+
+                <div [ngClass]="{'hideUserDialog' : searchbarService.filteredResults.length <= 0}"
+                    class="user-dialog showUserDialog">
+                    <div class="scroll-container">
+                        <div *ngFor="let obj of searchbarService.filteredResults" class="single-user">
+                            <div class="single-user-hover">
+                                @if (obj.uid) {
+                                <div class="single-search" (click)="setConv(obj)">
+                                    <img class="avatar" src="{{ obj.avatar}}" alt="">
+                                    <p class="username">{{ obj.username }}</p>
+                                </div>
+                                }
+                                @if (obj.chaId) {
+                                <div class="single-search" (click)="setChannel(obj)">
+                                    <img class="avatar" src="./icons/tag.png" alt="">
+                                    <p class="username">{{ obj.title }}</p>
+                                </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
         }
@@ -70,10 +99,23 @@
     <app-message-thread></app-message-thread>
     <app-send-message placeholder="Nachricht an {{ user.username }}" input="chat"></app-send-message>
     }@else if (this.uiService.content == 'channelChat') {
-        <app-message-thread></app-message-thread>
-        <app-send-message placeholder="Nachricht an #{{ channel.title }}" input="channel"></app-send-message>
+    <app-message-thread></app-message-thread>
+    <app-send-message placeholder="Nachricht an #{{ channel.title }}" input="channel"></app-send-message>
     } @else {
-        <app-send-message placeholder="Beginnen Sie eine neue Nachricht"></app-send-message>
+    <div class="selectedConv-container">
+        <div class="selcted-user" *ngFor="let obj of this.uiService.selectedConversations; let i = index">
+            @if (obj.uid) {
+            <img class="avatar" src="{{ obj.avatar}}" alt="">
+            <p class="username">{{ obj.username }}</p>
+            <img class="close-img" (click)="removeReceiver(i)" src="./icons/close.png" alt="">
+            } @else {
+                <img class="avatar" src="./icons/tag.png" alt="">
+                <p class="username">{{ obj.title }}</p>
+                <img class="close-img" (click)="removeReceiver(i)" src="./icons/close.png" alt="">
+            }
+        </div>
+    </div>
+    <app-send-message placeholder="Beginnen Sie eine neue Nachricht" [isNewMsg]="true"></app-send-message>
     }
 
 </section>

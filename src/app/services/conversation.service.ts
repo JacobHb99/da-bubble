@@ -22,7 +22,7 @@ export class ConversationService {
     // private allConvSubject = new BehaviorSubject<any>(null);
     // selectedConv = this.allConvSubject.asObservable();
 
-    constructor(private userDataService: UserDataService,private searchbarSearvice: SearchbarService) {
+    constructor(private userDataService: UserDataService, private searchbarSearvice: SearchbarService) {
     }
 
     async startConversation(user: any) {
@@ -38,7 +38,7 @@ export class ConversationService {
         } else {
             await this.createNewConversation(creatorId, partnerId)
             this.showUserChat(user);
-           // console.log("newConv", this.FiBaService.currentConversation)
+            // console.log("newConv", this.FiBaService.currentConversation)
             this.listenToCurrentConversationChanges(this.FiBaService.currentConversation.conId);
         }
         this.searchbarSearvice.emptyInput();
@@ -49,7 +49,7 @@ export class ConversationService {
         this.FiBaService.currentConversation = new Conversation();
         this.FiBaService.currentConversation.creatorId = creatorId;
         this.FiBaService.currentConversation.partnerId = partnerId;
-        this.FiBaService.currentConversation.user = [creatorId ,partnerId];
+        this.FiBaService.currentConversation.user = [creatorId, partnerId];
         await this.addConversation(this.FiBaService.currentConversation);
     }
 
@@ -89,7 +89,7 @@ export class ConversationService {
         }
     }
 
-    
+
     getCurrentConversation(user: User) {
         let partnerId = user.uid as string
         let creatorId = this.authService.currentUserSig()?.uid;
@@ -135,6 +135,18 @@ export class ConversationService {
         this.userDataService.setUser(user);
         this.uiService.changeContent('directMessage');
         this.uiService.closeThread();
+    }
+
+    searchForConversation(foundUser: User) {
+        let allConv = this.FiBaService.allConversations;
+        const currentUserUid = this.authService.currentUserSig()?.uid;
+
+        // Filtere die Conversation basierend auf den User-IDs
+        const filteredConversation = allConv.find((conv: any) =>
+            conv.user.includes(foundUser.uid) && conv.user.includes(currentUserUid)
+        );
+
+        return filteredConversation as Conversation;
     }
 
 

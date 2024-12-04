@@ -20,6 +20,8 @@ export class InterfaceService {
   currentThread: Thread | undefined;
   previousMessage!: Message;
   currChannel!: Channel;
+  selectedConversations: any = [];
+
 
 
 

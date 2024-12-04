@@ -35,6 +35,7 @@ export class SendMessageComponent {
   channelService = inject(ChannelService)
 
   @Input() placeholder: string = '';
+  @Input() isNewMsg: boolean = false;
   @Input() input: 'chat' | 'thread' | 'channel' | undefined;
   @ViewChild('emojiPicker', { static: false }) emojiPicker!: ElementRef;
 

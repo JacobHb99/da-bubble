@@ -14,12 +14,23 @@ import { AddToChoosenChannelComponent } from '../../dialogs/add-to-choosen-chann
 import { ProfilComponent } from '../../dialogs/profil/profil.component';
 import { BreakpointObserverService } from '../../services/breakpoint-observer.service';
 import { FirebaseService } from '../../services/firebase.service';
+import { SearchbarService } from '../../services/searchbar.service';
+import { FormsModule } from '@angular/forms';
+import { ConversationService } from '../../services/conversation.service';
+import { User } from '../../models/user.model';
+import { Channel } from '../../models/channel.model';
+import { Conversation } from '../../models/conversation.model';
 
 
 @Component({
   selector: 'app-channel-chat',
   standalone: true,
-  imports: [SingleMessageComponent, SendMessageComponent, MessageThreadComponent, CommonModule],
+  imports: [
+    SingleMessageComponent, 
+    SendMessageComponent, 
+    MessageThreadComponent, 
+    CommonModule,
+    FormsModule],
   templateUrl: './channel-chat.component.html',
   styleUrl: './channel-chat.component.scss'
 })
@@ -31,9 +42,15 @@ export class ChannelChatComponent {
   channelService = inject(ChannelService)
   allUsersFromAChannel: any;
   firebaseService = inject(FirebaseService);
-  ;
+  
 
-  constructor(public userDataService: UserDataService, public dialog: MatDialog, public breakpointObserver: BreakpointObserverService) {
+  constructor(
+    public userDataService: UserDataService,
+    public dialog: MatDialog,
+    public breakpointObserver: BreakpointObserverService,
+    public searchbarService: SearchbarService,
+    public convService: ConversationService
+  ) {
     this.userDataService.selectedUser.subscribe((user) => {
       this.user = user;
 
@@ -45,7 +62,7 @@ export class ChannelChatComponent {
       this.channel = channel;
       this.uiService.currChannel = channel;
       console.log('CHANNELS', this.uiService.currChannel);
-      
+
       if (this.channel.users) {
         this.allUsersFromAChannel = [...this.channel.users]; // Nutzer-IDs kopieren
       }
@@ -117,6 +134,29 @@ export class ChannelChatComponent {
   getFirstNElements(n: number, array: any): any[] {
     return array.slice(0, Math.min(array.length, n));
   }
+
+  setConv(obj: User) {
+    let conv = this.convService.searchForConversation(obj);
+    console.log('CONVERSATION', conv);
+
+    if (conv) {
+      this.uiService.selectedConversations.unshift(obj)
+    }
+    this.searchbarService.emptyMsgInput();
+  }
+
+  setChannel(obj: Channel) {
+    this.uiService.selectedConversations.unshift(obj)
+    this.searchbarService.emptyMsgInput();
+  }
+
+  removeReceiver(i: number) {
+    this.uiService.selectedConversations.splice(i, 1);
+    console.log('REMOVED');
+    
+  }
+
+
 
 
 
