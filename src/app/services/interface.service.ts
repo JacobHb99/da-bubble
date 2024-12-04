@@ -8,6 +8,7 @@ import { ShowMemberInChannelComponent } from '../dialogs/show-member-in-channel/
 import { AddToChoosenChannelComponent } from '../dialogs/add-to-choosen-channel/add-to-choosen-channel.component';
 import { BreakpointObserverService } from './breakpoint-observer.service';
 import { Channel } from '../models/channel.model';
+import { User } from '../models/user.model';
 @Injectable({
   providedIn: 'root',
 })
@@ -20,7 +21,7 @@ export class InterfaceService {
   currentThread: Thread | undefined;
   previousMessage!: Message;
   currChannel!: Channel;
-  selectedConversations: any = [];
+  selectedConversations: (User | Channel)[] = [];
 
 
 
@@ -29,6 +30,14 @@ export class InterfaceService {
     
   }
   
+    // Type Guard zur Unterscheidung von User und Channel
+    isUser(obj: User | Channel): obj is User {
+      return 'uid' in obj;
+    }
+
+    isChannel(obj: User | Channel): obj is Channel {
+      return 'chaId' in obj;
+    }
 
   toggleSidenav() {
     this.menuVisible = !this.menuVisible
@@ -60,7 +69,10 @@ setThread(currentMsg: Message) {
   let index: number;
   if (thread) {
     index = thread?.messages.length - 1;
-    this.scrollInChat(thread.messages[index])
+    if (thread?.messages.length > 0) {
+      this.scrollInChat(thread.messages[index])
+
+    }
   }
 }
 

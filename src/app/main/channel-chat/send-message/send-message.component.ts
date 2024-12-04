@@ -16,6 +16,8 @@ import { InterfaceService } from '../../../services/interface.service';
 import { EmojiComponent } from '@ctrl/ngx-emoji-mart/ngx-emoji';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { ChannelService } from '../../../services/channel.service';
+import { Channel } from '../../../models/channel.model';
+import { SearchbarService } from '../../../services/searchbar.service';
 
 @Component({
   selector: 'app-send-message',
@@ -36,7 +38,7 @@ export class SendMessageComponent {
 
   @Input() placeholder: string = '';
   @Input() isNewMsg: boolean = false;
-  @Input() input: 'chat' | 'thread' | 'channel' | undefined;
+  @Input() input: 'chat' | 'thread' | 'channel' | 'newMsg' | undefined;
   @ViewChild('emojiPicker', { static: false }) emojiPicker!: ElementRef;
 
   //currentRecipient: Conversation = new Conversation;
@@ -46,6 +48,10 @@ export class SendMessageComponent {
   currentMsg = new Message()
   loggedInUser = new User()
 
+
+  constructor(public searchbarService: SearchbarService) {
+
+  }
 
   async createNewMsg() {
     if (this.text.trim()) {
@@ -67,34 +73,71 @@ export class SendMessageComponent {
         this.currentMsg.text = this.text,
           this.currentMsg.reactions = [], //wird erstmal nicht erstellt (wegen array)
           this.currentMsg.parent = this.uiService.currentMessage
-          await this.addThreadMessage(this.currentMsg);
+        await this.addThreadMessage(this.currentMsg);
       }
 
-      this.text = '';
+      if (this.input == 'newMsg') {
+        this.createThreadsForAllReceivers();
+      }
+
       this.checkemptyInput();
     }
   }
 
+  async createThreadsForAllReceivers() {
+    let currentThreadId: string = "";
 
-  async createThread(input: 'chat' | 'channel'): Promise<string> {
+    for (const receiver of this.uiService.selectedConversations) {
+      if ('uid' in receiver) {
+        currentThreadId = await this.createThread('newMsg', receiver);
+      } else {
+        currentThreadId = await this.createThread('newMsg', receiver);
+      }
+      this.currentMsg = new Message();
+      this.currentMsg.timeStamp = Date.now();
+      this.currentMsg.senderId = this.authService.currentUserSig()?.uid;
+      this.currentMsg.text = this.text;
+      this.currentMsg.thread = currentThreadId;
+      this.currentMsg.reactions = [];
+      // Logik zum Speichern oder Senden der Nachricht, falls erforderlich
+      console.log('Thread erstellt für:', receiver);
+      await this.addMessage(this.currentMsg, receiver);
+    }
+  }
+
+
+  async createThread(input: 'chat' | 'channel' | 'newMsg', reciever?: Channel | User): Promise<string> {
     const currentUser = this.authService.currentUserSig();
-    let objId: string;
+    let objId: string = "";
     if (!currentUser) {
       console.error('Kein authentifizierter Benutzer gefunden');
       throw new Error('User not authenticated');
     }
     // `addDoc` nutzen, um den Thread hinzuzufügen
-    if(input == 'chat') {
+    if (input == 'chat') {
       objId = this.fiBaService.currentConversation.conId as string;
-    } else{
+    } else if (input == 'channel') {
       objId = this.channelService.currentChannelSubject.value.chaId
-    }
+    } else {
+      if (reciever) {
 
-    let thread = this.getCleanThreadJSON(new Thread(), input, objId)
-    const threadRef = await addDoc(collection(this.firestore, 'threads'), thread);
-  
-    // Zurückgegebene Thread-ID
-    return threadRef.id;
+        if ('uid' in reciever) {
+          objId = this.conService.searchForConversation(reciever).conId as string
+        } else {
+          objId = reciever.chaId
+        }
+        let thread = this.getCleanThreadJSON(new Thread(), input, objId)
+        const threadRef = await addDoc(collection(this.firestore, 'threads'), thread);
+        // Zurückgegebene Thread-ID
+        return threadRef.id;
+      } else {
+        let thread = this.getCleanThreadJSON(new Thread(), input, objId)
+        const threadRef = await addDoc(collection(this.firestore, 'threads'), thread);
+        // Zurückgegebene Thread-ID
+        return threadRef.id;
+      }
+    }
+    return ""
   }
 
 
@@ -104,7 +147,7 @@ export class SendMessageComponent {
     msgData.msgId = uuidv4();
     try {
       console.log(threadId);
-      
+
       const threadRef = doc(this.firestore, "threads", threadId);
       // Füge die Nachricht in das "messages"-Array hinzu
       await updateDoc(threadRef, {
@@ -117,18 +160,28 @@ export class SendMessageComponent {
   }
 
 
-  async addMessage(message: any) {
+  async addMessage(message: any, receiver?: Channel | User) {
     let objId;
     let coll;
     let conversationId;
     if (this.uiService.content == 'channelChat') {
       console.log(this.channelService.currentChannel);
-      
+
       objId = this.channelService.currentChannelSubject.value.chaId
       coll = 'channels'
-    } else {
+    } else if (this.uiService.content == 'directMessage') {
       objId = this.fiBaService.currentConversation.conId;
       coll = 'conversations'
+    } else {
+      if (receiver) {
+        if ('uid' in receiver) {
+          objId = this.conService.searchForConversation(receiver).conId;
+          coll = 'conversations'
+        } else {
+          objId = receiver.chaId;
+          coll = 'channels'
+        }
+      }
     }
     const msgData = this.getCleanJSON(message);
     msgData.msgId = uuidv4();
@@ -136,7 +189,7 @@ export class SendMessageComponent {
     try {
       await updateDoc(conversationRef, {
         messages: arrayUnion(msgData)
-        
+
       });
       console.log('Nachricht erfolgreich hinzugefügt');
       //this.conService.showUserChat()
@@ -187,8 +240,8 @@ export class SendMessageComponent {
 
   addEmoji(event: any) {
     console.log(event);
-    const emoji = event.emoji.native; 
-    this.text += emoji;  
+    const emoji = event.emoji.native;
+    this.text += emoji;
     //this.toggleEmojiPicker(); //sinnvoll??
   }
 }

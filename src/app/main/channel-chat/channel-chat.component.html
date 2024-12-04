@@ -104,18 +104,21 @@
     } @else {
     <div class="selectedConv-container">
         <div class="selcted-user" *ngFor="let obj of this.uiService.selectedConversations; let i = index">
-            @if (obj.uid) {
-            <img class="avatar" src="{{ obj.avatar}}" alt="">
-            <p class="username">{{ obj.username }}</p>
-            <img class="close-img" (click)="removeReceiver(i)" src="./icons/close.png" alt="">
-            } @else {
+            <ng-container *ngIf="uiService.isUser(obj)">
+                <!-- Es ist ein User -->
+                <img class="avatar" src="{{ obj.avatar }}" alt="">
+                <p class="username">{{ obj.username }}</p>
+                <img class="close-img" (click)="removeReceiver(i)" src="./icons/close.png" alt="">
+              </ng-container>
+              <ng-container *ngIf="uiService.isChannel(obj)">
+                <!-- Es ist ein Channel -->
                 <img class="avatar" src="./icons/tag.png" alt="">
                 <p class="username">{{ obj.title }}</p>
                 <img class="close-img" (click)="removeReceiver(i)" src="./icons/close.png" alt="">
-            }
+              </ng-container>
         </div>
     </div>
-    <app-send-message placeholder="Beginnen Sie eine neue Nachricht" [isNewMsg]="true"></app-send-message>
+    <app-send-message placeholder="Beginnen Sie eine neue Nachricht" input="newMsg" [isNewMsg]="true"></app-send-message>
     }
 
 </section>
