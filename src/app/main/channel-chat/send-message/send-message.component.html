@@ -33,8 +33,8 @@
         </div>
     </div>
 
-    @if (userList) {
-    <div class="userList">
+    @if (showUserList) {
+    <div class="userList" #userList>
         @for (user of fiBaService.allUsers; track $index) {
         <span (click)="tagUser(user.username)">{{user.username}}</span>
         }

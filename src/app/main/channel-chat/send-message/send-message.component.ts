@@ -40,12 +40,13 @@ export class SendMessageComponent {
   @Input() isNewMsg: boolean = false;
   @Input() input: 'chat' | 'thread' | 'channel' | 'newMsg' | undefined;
   @ViewChild('emojiPicker', { static: false }) emojiPicker!: ElementRef;
+  @ViewChild('userList', { static: false }) userList!: ElementRef;
 
   //currentRecipient: Conversation = new Conversation;
   text: string = '';
   isDisabled: boolean = true;
   showEmojiPicker = false;
-  userList: boolean = false;
+  showUserList: boolean = false;
   currentMsg = new Message()
   loggedInUser = new User()
 
@@ -237,6 +238,9 @@ export class SendMessageComponent {
     if (this.emojiPicker && !this.emojiPicker.nativeElement.contains(event.target)) {
       this.showEmojiPicker = false;
     }
+    if (this.userList) {
+      this.showUserList = false;
+    }
   }
 
   addEmoji(event: any) {
@@ -247,10 +251,10 @@ export class SendMessageComponent {
   }
 
   toggleUserList() {
-    this.userList = !this.userList;
+    this.showUserList = !this.showUserList;
   }
 
   tagUser(user: string) {
-    this.text += "@" + user;
+    this.text += `@${user}`;
   }
 }

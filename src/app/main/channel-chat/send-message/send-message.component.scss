@@ -127,6 +127,10 @@ section {
     }
 }
 
+::-webkit-scrollbar-track {
+    margin: 0;
+  }
+
 .sendIcon {
     cursor: pointer;
 
