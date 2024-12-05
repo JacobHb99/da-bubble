@@ -183,6 +183,7 @@ export class SendMessageComponent {
           objId = receiver.chaId;
           coll = 'channels'
         }
+        this.emptyNewMsgSearch();
       }
     }
     const msgData = this.getCleanJSON(message);
@@ -198,6 +199,12 @@ export class SendMessageComponent {
     } catch (error) {
       console.error('Fehler beim Hinzufügen der Nachricht:', error);
     }
+  }
+
+
+  emptyNewMsgSearch() {
+    this.searchbarService.newMsgSearchName = "";
+    this.searchbarService.filteredResults = [];
   }
 
 

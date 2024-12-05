@@ -195,6 +195,10 @@ section {
     width: 100%;
 }
 
+.w-100{
+    width: 100%;
+}
+
 .single-user-hover {
     padding: 4px 20px;
     display: flex;
@@ -311,10 +315,14 @@ section {
     gap: 10px;
   }
 
+
+
+
   .single-search {
     padding: 4px 20px;
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     gap: 10px;
     width: 100%;
     box-sizing: border-box;
@@ -402,6 +410,10 @@ section {
     height: 32px;
     width: 32px;
   }
+
+.no-padding{
+    padding: 0px !important;
+}
 
 
 

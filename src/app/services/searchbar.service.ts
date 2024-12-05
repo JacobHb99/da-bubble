@@ -136,10 +136,6 @@ export class SearchbarService {
     }else{
       // Keine Filterbedingung, leer
       this.filteredResults = [];
-    }
-    console.log('RESULTS', this.filteredResults);
-    console.log('MSG', this.newMsgSearchName);
-
-    
+    }    
   }
 }

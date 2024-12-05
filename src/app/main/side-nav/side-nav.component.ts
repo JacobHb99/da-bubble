@@ -209,14 +209,18 @@ export class SideNavComponent {
     let lastMsg: Message | undefined;
     if ('uid' in obj) {
       conv = this.conService.getCurrentConversation(obj)
-      let messages = conv.messages
-      lastMsg = messages[messages.length - 1]
+      if (conv) {
+        let messages = conv.messages
+        lastMsg = messages[messages.length - 1]
+      }
     }
 
     if ('chaId' in obj) {
       conv = obj;
-      let messages = conv.messages
-      lastMsg = messages[messages.length - 1]
+      if (conv) {
+        let messages = conv.messages
+        lastMsg = messages[messages.length - 1]
+      }
     }
     if (lastMsg) {
       this.scrollInChat(lastMsg);

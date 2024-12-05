@@ -160,14 +160,17 @@ header {
 
 .selectedConv-container {
     @include dFlex($gap: 8px, $jc: flex-start);
+    flex-wrap: wrap;
     padding: 25px 45px;
     box-sizing: border-box;
+    max-height: 300px;
+    overflow-y: auto;
 
     .selcted-user {
         padding: 8px;
         width: max-content;
-        background-color: #444DF2;
-        border-radius: 16px;
+        background-color: #ADB0D9;
+        border-radius: 24px;
         color: white;
         font-size: 16px;
         @include dFlex($gap: 8px);
@@ -244,10 +247,21 @@ app-send-message {
     margin: 0;
 }
 
-.avatar {
+.avatar-img {
     width: 32px;
     height: 32px;
     border-radius: 50%;
+}
+
+.avatar-img-selected{
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+}
+
+.username-selected{
+    font-size: 12px;
+    margin: 0;
 }
 
 .single-search {
@@ -270,4 +284,5 @@ app-send-message {
 
   .close-img{
     cursor: pointer;
+    scale: 0.8;
   }
