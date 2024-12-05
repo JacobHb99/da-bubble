@@ -20,7 +20,6 @@ export class FirebaseService {
   allUsers: User[] = [];
   allUsersIds: any = [];
   allThreads: Thread[] = [];
-
   allConversations: Conversation[] = [];
   allChannels: Channel[] = []; //besteht aus einem array von objekten des types channel + startet mit leerem array
   selectedUsers: any = []
@@ -37,6 +36,11 @@ export class FirebaseService {
 
   constructor() { }
 
+  /**
+   * Lädt alle relevanten Benutzerdaten asynchron und zeigt währenddessen eine Ladeanzeige an.
+   * Die Daten werden parallel geladen und anschließend verarbeitet.
+   * @param currentUid Die eindeutige Benutzer-ID des aktuell angemeldeten Benutzers.
+   */
   async initializeData(currentUid: string) {
     this.isLoading = true; // Ladeanzeige aktivieren
 
@@ -48,8 +52,6 @@ export class FirebaseService {
         this.loadUserChannels(currentUid || ''),
         this.loadAllThreads(),
       ]);
-
-      console.log("Alle Daten erfolgreich geladen.");
     } catch (error) {
       console.error("Fehler beim Laden der Daten:", error);
     } finally {
@@ -59,7 +61,11 @@ export class FirebaseService {
     }
   }
 
-
+  /**
+   * Verschiebt den Benutzer mit der angegebenen UID an den Anfang der Benutzerliste.
+   * Wird verwendet, um den aktuell angemeldeten Benutzer hervorzuheben.
+   * @param currentUid Die eindeutige Benutzer-ID des aktuellen Benutzers.
+   */
   moveUserToFront(currentUid: string): void {
     console.log(this.allUsers);
     // Finden des Index des Benutzers mit der aktuellen UID
@@ -73,29 +79,31 @@ export class FirebaseService {
       // Einfügen des Benutzers an Position 0
       this.allUsers.unshift(currentUser);
       console.log(this.allUsers);
-
     }
   }
 
+  /**
+   * Sortiert die Liste aller Benutzer basierend auf ihrem Status.
+   * Online-Benutzer werden an den Anfang der Liste verschoben.
+   */
   sortByStatus() {
-        // Sortiere zuerst die Benutzer nach Status
-        this.allUsers.sort((a, b) => {
-          if (a.status === 'online' && b.status !== 'online') {
-            return -1; // `a` kommt vor `b`
-          } else if (a.status !== 'online' && b.status === 'online') {
-            return 1; // `b` kommt vor `a`
-          } else {
-            return 0; // Reihenfolge bleibt gleich
-          }
-        });
+    // Sortiere zuerst die Benutzer nach Status
+    this.allUsers.sort((a, b) => {
+      if (a.status === 'online' && b.status !== 'online') {
+        return -1; // `a` kommt vor `b`
+      } else if (a.status !== 'online' && b.status === 'online') {
+        return 1; // `b` kommt vor `a`
+      } else {
+        return 0; // Reihenfolge bleibt gleich
+      }
+    });
   }
 
-
+  /**
+   * Entfernt alle aktiven Listener und leert die Liste der Listener.
+   * Setzt das Flag für aktive Channel-Listener zurück.
+   */
   unsubscribeAll() {
-    console.log("Starte Unsubscribe aller Listener...");
-    console.log(`Anzahl der registrierten Listener: ${this.unsubscribeListeners.length}`);
-
-
     this.unsubscribeListeners.forEach((unsub, index) => {
       try {
         unsub(); // Listener entfernen 
@@ -104,13 +112,16 @@ export class FirebaseService {
         console.warn(`Fehler beim Entfernen von Listener ${index + 1}:, error`);
       }
     });
-
     this.unsubscribeListeners = []; // Liste leeren
     this.isUserChannelsListenerActive = false; // Flag zurücksetzen
     console.log("Alle Listener wurden erfolgreich entfernt.");
   }
 
-
+  /**
+   * Lädt alle Channels, denen der Benutzer angehört.
+   * Verhindert mehrfaches Laden, wenn bereits ein Listener aktiv ist.
+   * @param userUid Die eindeutige Benutzer-ID.
+   */
   loadUserChannels(userUid: string) {
     if (!userUid) {
       console.error("Kein Benutzer angemeldet. Channels werden nicht geladen.");
@@ -121,19 +132,21 @@ export class FirebaseService {
       console.warn("Listener für User Channels ist bereits aktiv. Abbruch.");
       return;
     }
+    this.loadAfterChecking(userUid);
+  }
 
+  /**
+   * Startet einen Snapshot-Listener, um Benutzerkanäle in Echtzeit zu aktualisieren.
+   * Lädt Channels, die den Benutzer enthalten, und speichert sie lokal.
+   * @param userUid Die eindeutige Benutzer-ID.
+   */
+  loadAfterChecking(userUid: string) {
     const channelsRef = collection(this.firestore, 'channels');
     const userChannelsQuery = query(channelsRef, where("users", "array-contains", userUid));
-
-
     const unsubscribe = onSnapshot(userChannelsQuery, (snapshot) => {
       this.allChannels = [];
       snapshot.forEach((doc) => {
         this.allChannels.push(doc.data() as Channel)
-
-
-
-
       })
       console.log("Aktualisierte Channels:", this.allChannels);
     }, (error) => {
@@ -144,14 +157,19 @@ export class FirebaseService {
     this.isUserChannelsListenerActive = true; // Flag setzen
   }
 
-
-
-
+  /**
+   * Registriert einen Listener, um ihn später entfernen zu können.
+   * @param unsubscribeFn Die Funktion, die den Listener entfernt.
+   */
   public registerListener(unsubscribeFn: () => void): void {
     this.unsubscribeListeners.push(unsubscribeFn);
   }
 
-
+  /**
+   * Lädt alle Benutzer aus der Firestore-Datenbank und speichert sie in einer lokalen Liste.
+   * Sortiert die Benutzer nach Status und verschiebt den aktuellen Benutzer an den Anfang.
+   * @param currentUid Die eindeutige Benutzer-ID des aktuellen Benutzers.
+   */
   async getAllUsers(currentUid: string) {
     const q = query(collection(this.firestore, "users"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -169,6 +187,10 @@ export class FirebaseService {
     this.registerListener(unsubscribe);
   }
 
+  /**
+   * Lädt alle Threads aus der Firestore-Datenbank und speichert sie lokal.
+   * Aktualisiert die Liste in Echtzeit mithilfe eines Snapshot-Listeners.
+   */
   async loadAllThreads() {
     const q = query(collection(this.firestore, "threads"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -183,7 +205,10 @@ export class FirebaseService {
     this.registerListener(unsubscribe);
   }
 
-
+  /**
+   * Hört auf Änderungen an einem bestimmten Thread und aktualisiert die aktuelle Unterhaltung in Echtzeit.
+   * @param threadId Die eindeutige ID des Threads.
+   */
   listenToCurrentThreadChanges(threadId: any) {
     const conversationRef = doc(this.firestore, `conversations/${threadId}`);
     const unsubscribe = onSnapshot(conversationRef, (docSnapshot) => {
@@ -195,7 +220,10 @@ export class FirebaseService {
     this.registerListener(unsubscribe);
   }
 
-
+  /**
+   * Lädt alle Unterhaltungen aus der Firestore-Datenbank und speichert sie lokal.
+   * Aktualisiert die Liste in Echtzeit mithilfe eines Snapshot-Listeners.
+   */
   async getAllConversations() {
     const q = query(collection(this.firestore, "conversations"));
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -210,7 +238,11 @@ export class FirebaseService {
     console.log("allConvgetAllConv", this.allConversations)
   }
 
-
+  /**
+   * Erstellt ein strukturiertes Conversation-Objekt aus den Rohdaten einer Firestore-Datenbankabfrage.
+   * @param conversation Die Rohdaten der Unterhaltung.
+   * @returns Ein `Conversation`-Objekt.
+   */
   setConversationObject(conversation: any): Conversation {
     return {
       conId: conversation.conId || '',
@@ -222,7 +254,11 @@ export class FirebaseService {
     };
   }
 
-
+  /**
+   * Weist allen Benutzern die angegebene Channel-ID zu und speichert die Daten in der Firestore-Datenbank.
+   * @param chaId Die ID des Channels.
+   * @param currentChannel Die Daten des aktuellen Channels.
+   */
   async assignUsersToChannel(chaId: string, currentChannel: any) {
     try {
       const channelRef = doc(this.firestore, `channels/${chaId}`);
@@ -232,13 +268,21 @@ export class FirebaseService {
     }
   }
 
-
+  /**
+   * Fügt alle Benutzer zu einem bestimmten Channel hinzu.
+   * Ruft die Funktion `assignUsersToChannel` auf.
+   * @param chaId Die ID des Channels.
+   * @param currentChannel Die Daten des aktuellen Channels.
+   */
   async addAllUsersToChannel(chaId: string, currentChannel: any) {
     await this.assignUsersToChannel(chaId, currentChannel)
 
   }
 
-
+  /**
+   * Fügt einen neuen Benutzer in die Firestore-Datenbank ein.
+   * @param user Die Benutzerdaten, die gespeichert werden sollen.
+   */
   async addUser(user: any) {
     const userId = user.uid;
     const userData = user.getJSON();
@@ -246,7 +290,11 @@ export class FirebaseService {
     await setDoc(doc(this.firestore, "users", userId), userData);
   }
 
-
+  /**
+   * Aktualisiert den Status eines Benutzers in der Firestore-Datenbank.
+   * @param currentUser Die aktuellen Benutzerdaten.
+   * @param status Der neue Status, z. B. "online" oder "offline".
+   */
   async setUserStatus(currentUser: UserCredential | null, status: string) {
     if (!currentUser || !currentUser.user) {
       console.warn("setUserStatus: currentUser oder user ist undefined.");
@@ -262,6 +310,11 @@ export class FirebaseService {
     }
   }
 
+  /**
+   * Fügt die ausgewählten Benutzer zu einem Channel hinzu.
+   * Aktualisiert die Firestore-Datenbank mit den neuen Benutzerinformationen.
+   * @param ChannelId Die ID des Channels.
+   */
   async addUsersToChannel(ChannelId: string) {
     const userRef = doc(this.firestore, "channels", ChannelId);
     await updateDoc(userRef, {
@@ -269,10 +322,12 @@ export class FirebaseService {
     });
   }
 
-
-
-
-
+  /**
+   * Ruft die Daten eines bestimmten Benutzers anhand der UID ab.
+   * Verwendet einen Snapshot-Listener, um die Daten abzurufen.
+   * @param uid Die eindeutige Benutzer-ID.
+   * @returns Eine Promise, die die Benutzerdaten oder einen Fehler zurückgibt.
+   */
   getCurrentUser(uid: string): Promise<any> {
     return new Promise((resolve, reject) => {
       const unsubscribe = onSnapshot(doc(this.firestore, "users", uid), (doc) => {
@@ -286,34 +341,51 @@ export class FirebaseService {
     });
   }
 
-
+  /**
+   * Hört auf Änderungen der Benutzerdaten in der Firestore-Datenbank.
+   * Aktualisiert die lokalen Benutzerdaten bei jeder Änderung.
+   * @param id Die ID des Benutzers.
+   */
   async subscribeUserById(id: any) {
     const unsubscribe = onSnapshot(this.getUserDocRef(id), (user) => {
       this.user = this.setUserJson(user.data(), user.id);
-
     });
     this.registerListener(unsubscribe);
   }
 
+  /**
+   * Aktualisiert die Daten eines Benutzers in der Firestore-Datenbank.
+   * @param user Die neuen Benutzerdaten.
+   */
   async updateUser(user: any) {
     if (user.uid) {
       let docRef = this.getUserDocRef(user.uid);
       await updateDoc(docRef, this.getUserAsCleanJson(user));
-
     }
   }
 
+  /**
+   * Schaltet den Zustand eines Channels um (offen/geschlossen).
+   */
   toggleChannel() {
     this.isClosed = !this.isClosed;
-
-
-
   }
 
+  /**
+   * Gibt die Dokumentreferenz für einen Benutzer basierend auf der Dokument-ID zurück.
+   * @param docId Die ID des Benutzerdokuments.
+   * @returns Die Dokumentreferenz.
+   */
   getUserDocRef(docId: any) {
     return doc(collection(this.firestore, 'users'), docId);
   }
 
+  /**
+   * Erstellt ein strukturiertes JSON-Objekt für einen Benutzer.
+   * @param object Die Rohdaten des Benutzers.
+   * @param id Die eindeutige Benutzer-ID.
+   * @returns Ein JSON-Objekt mit den Benutzerdaten.
+   */
   setUserJson(object: any, id: string): any {
     return {
       uid: id,
@@ -324,9 +396,14 @@ export class FirebaseService {
       channels: object.channels,
       role: object.role
     }
-
   }
 
+  /**
+   * Konvertiert ein Benutzerobjekt in ein sauberes JSON-Format.
+   * Entfernt unnötige Felder und bereitet die Daten für die Speicherung vor.
+   * @param object Das Benutzerobjekt.
+   * @returns Ein JSON-Objekt mit den bereinigten Benutzerdaten.
+   */
   getUserAsCleanJson(object: any): {} {
     return {
       uid: object.uid,
