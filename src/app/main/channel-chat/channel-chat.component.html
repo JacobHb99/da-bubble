@@ -114,16 +114,16 @@
         <div class="selcted-user" *ngFor="let obj of this.uiService.selectedConversations; let i = index">
             <ng-container *ngIf="uiService.isUser(obj)">
                 <!-- Es ist ein User -->
-                <img class="avatar-img" src="{{ obj.avatar }}" alt="">
-                <p class="username">{{ obj.username }}</p>
-                <img class="close-img" (click)="removeReceiver(i)" src="./icons/close.png" alt="">
+                <img class="avatar-img-selected" src="{{ obj.avatar }}" alt="">
+                <p class="username-selected">{{ obj.username }}</p>
+                <mat-icon class="close-img" size="50" (click)="removeReceiver(i)" aria-hidden="false" aria-label="Example clear icon" fontIcon="clear"></mat-icon>
               </ng-container>
 
               <ng-container *ngIf="uiService.isChannel(obj)">
                 <!-- Es ist ein Channel -->
-                <img class="avatar-img" src="./icons/tag.png" alt="">
-                <p class="username">{{ obj.title }}</p>
-                <img class="close-img" (click)="removeReceiver(i)" src="./icons/close.png" alt="">
+                <img class="avatar-img-selected" src="./icons/tag.png" alt="">
+                <p class="username-selected">{{ obj.title }}</p>
+                <mat-icon class="close-img" (click)="removeReceiver(i)" aria-hidden="false" aria-label="Example clear icon" fontIcon="clear"></mat-icon>
               </ng-container>
         </div>
     </div>

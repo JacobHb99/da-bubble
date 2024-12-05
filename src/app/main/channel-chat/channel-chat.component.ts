@@ -20,6 +20,7 @@ import { ConversationService } from '../../services/conversation.service';
 import { User } from '../../models/user.model';
 import { Channel } from '../../models/channel.model';
 import { Conversation } from '../../models/conversation.model';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
@@ -30,7 +31,8 @@ import { Conversation } from '../../models/conversation.model';
     SendMessageComponent, 
     MessageThreadComponent, 
     CommonModule,
-    FormsModule],
+    FormsModule,
+    MatIconModule],
   templateUrl: './channel-chat.component.html',
   styleUrl: './channel-chat.component.scss'
 })
@@ -135,10 +137,15 @@ export class ChannelChatComponent {
     return array.slice(0, Math.min(array.length, n));
   }
 
-  setConv(obj: User) {
+  async setConv(obj: User) {
     let conv = this.convService.searchForConversation(obj);
-    console.log('CONVERSATION', conv);
+    
   
+    if(!conv){
+      await this.convService.startConversation(obj, 'close');
+      conv = this.convService.searchForConversation(obj);
+    }
+    console.log('CONVERSATION', conv);
     if (conv) {
       const exists = this.uiService.selectedConversations.some(
         (item) => this.uiService.isUser(item) && item.uid === obj.uid // Prüfung, ob `item` ein User ist

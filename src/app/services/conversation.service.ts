@@ -25,19 +25,25 @@ export class ConversationService {
     constructor(private userDataService: UserDataService, private searchbarSearvice: SearchbarService) {
     }
 
-    async startConversation(user: any) {
+    async startConversation(user: any, openChat?: string) {
         let partnerId = user.uid
         let creatorId = this.authService.currentUserSig()?.uid;
         let existCon = this.searchConversation(creatorId, partnerId)
 
         if (existCon) {
             this.FiBaService.currentConversation = new Conversation(existCon);
-            this.showUserChat(user);
+            if (openChat) {
+            }else{
+                this.showUserChat(user);
+            }           
             //console.log("existConv", this.FiBaService.currentConversation)
             this.listenToCurrentConversationChanges(this.FiBaService.currentConversation.conId);
         } else {
             await this.createNewConversation(creatorId, partnerId)
-            this.showUserChat(user);
+            if (openChat) {
+            }else{
+                this.showUserChat(user);
+            }
             // console.log("newConv", this.FiBaService.currentConversation)
             this.listenToCurrentConversationChanges(this.FiBaService.currentConversation.conId);
         }
