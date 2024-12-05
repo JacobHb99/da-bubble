@@ -127,6 +127,7 @@ export class AuthService {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential?.accessToken;
+        this.currentCredentials = result;
         // The signed-in user info.
         if (result.user.email && result.user.displayName && result.user.photoURL) {
           this.saveNewUserInFirestore(result.user.email, result.user.displayName, result.user.uid, result.user.photoURL);
@@ -150,18 +151,22 @@ export class AuthService {
   }
 
 
-  signOut() {
-    const auth = getAuth();
-    this.fireService.setUserStatus(this.currentCredentials, 'offline');
-    signOut(this.auth).then(() => {
+  async signOut() {
+    try {
+      const auth = getAuth();
+      // Setze den Benutzerstatus auf "offline", bevor der Logout erfolgt.
+      console.log(this.currentCredentials);
+      
+      await this.fireService.setUserStatus(this.currentCredentials, 'offline');
+      // Führe den eigentlichen Logout durch.
+      await signOut(auth);
+      // Navigiere zur Startseite nach erfolgreichem Logout.
       this.router.navigateByUrl('');
-
-      // Sign-out successful.
-    }).catch((error) => {
-      // An error happened.
-      console.log('logout fehlgeschlagen', this.currentCredentials);
-      console.log('currCredentials', this.currentUserSig());
-    });
+    } catch (error) {
+      console.error('Logout fehlgeschlagen', error);
+      console.log('CurrentCredentials', this.currentCredentials);
+      console.log('CurrentUserSig', this.currentUserSig());
+    }
   }
 
 

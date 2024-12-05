@@ -62,7 +62,6 @@ export class FirebaseService {
 
   moveUserToFront(currentUid: string): void {
     console.log(this.allUsers);
-
     // Finden des Index des Benutzers mit der aktuellen UID
     const index = this.allUsers.findIndex(user => user.uid === currentUid);
 
@@ -76,7 +75,19 @@ export class FirebaseService {
       console.log(this.allUsers);
 
     }
+  }
 
+  sortByStatus() {
+        // Sortiere zuerst die Benutzer nach Status
+        this.allUsers.sort((a, b) => {
+          if (a.status === 'online' && b.status !== 'online') {
+            return -1; // `a` kommt vor `b`
+          } else if (a.status !== 'online' && b.status === 'online') {
+            return 1; // `b` kommt vor `a`
+          } else {
+            return 0; // Reihenfolge bleibt gleich
+          }
+        });
   }
 
 
@@ -152,6 +163,7 @@ export class FirebaseService {
         this.allUsers.push(user);
         this.allUsersIds.push(doc.id);
       });
+      this.sortByStatus();
       this.moveUserToFront(currentUid);
     });
     this.registerListener(unsubscribe);

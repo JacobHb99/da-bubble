@@ -6,16 +6,20 @@ import { FirebaseService } from './firebase.service';
 import { Channel } from '../models/channel.model';
 import { AuthService } from './auth.service';
 import { UserInterface } from '../interfaces/user';
+import { UserCredential } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserDataService {
   currentUserSig = signal<UserInterface | null | undefined>(undefined);
+  currentCredentials: UserCredential;
+
 
 
 constructor(private authService: AuthService, private firebaseService: FirebaseService) {
   this.currentUserSig = this.authService.currentUserSig;
+  this.currentCredentials = this.authService.currentCredentials;
 }
 
 
