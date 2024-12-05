@@ -138,15 +138,27 @@ export class ChannelChatComponent {
   setConv(obj: User) {
     let conv = this.convService.searchForConversation(obj);
     console.log('CONVERSATION', conv);
-
+  
     if (conv) {
-      this.uiService.selectedConversations.unshift(obj)
+      const exists = this.uiService.selectedConversations.some(
+        (item) => this.uiService.isUser(item) && item.uid === obj.uid // Prüfung, ob `item` ein User ist
+      );
+  
+      if (!exists) {
+        this.uiService.selectedConversations.unshift(obj); // Füge nur hinzu, wenn es nicht existiert
+      }
     }
     this.searchbarService.emptyMsgInput();
   }
 
   setChannel(obj: Channel) {
-    this.uiService.selectedConversations.unshift(obj)
+    const exists = this.uiService.selectedConversations.some(
+      (item) => this.uiService.isChannel(item) && item.chaId === obj.chaId // Prüfung, ob `item` ein Channel ist
+    );
+  
+    if (!exists) {
+      this.uiService.selectedConversations.unshift(obj); // Füge nur hinzu, wenn es nicht existiert
+    }
     this.searchbarService.emptyMsgInput();
   }
 

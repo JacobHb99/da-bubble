@@ -73,15 +73,23 @@
                     <div class="scroll-container">
                         <div *ngFor="let obj of searchbarService.filteredResults" class="single-user">
                             <div class="single-user-hover">
-                                @if (obj.uid) {
+                                @if (obj.uid && searchbarService.newMsgSearchName.startsWith('@')) {
                                 <div class="single-search" (click)="setConv(obj)">
-                                    <img class="avatar" src="{{ obj.avatar}}" alt="">
+                                    <img class="avatar-img" src="{{ obj.avatar}}" alt="">
                                     <p class="username">{{ obj.username }}</p>
                                 </div>
                                 }
+
+                                @if (obj.uid && !searchbarService.newMsgSearchName.startsWith('@')) {
+                                    <div class="single-search" (click)="setConv(obj)">
+                                        <img class="avatar-img" src="{{ obj.avatar}}" alt="">
+                                        <p class="username">{{ obj.email }}</p>
+                                    </div>
+                                    }
+
                                 @if (obj.chaId) {
                                 <div class="single-search" (click)="setChannel(obj)">
-                                    <img class="avatar" src="./icons/tag.png" alt="">
+                                    <img class="avatar-img" src="./icons/tag.png" alt="">
                                     <p class="username">{{ obj.title }}</p>
                                 </div>
                                 }
@@ -106,13 +114,14 @@
         <div class="selcted-user" *ngFor="let obj of this.uiService.selectedConversations; let i = index">
             <ng-container *ngIf="uiService.isUser(obj)">
                 <!-- Es ist ein User -->
-                <img class="avatar" src="{{ obj.avatar }}" alt="">
+                <img class="avatar-img" src="{{ obj.avatar }}" alt="">
                 <p class="username">{{ obj.username }}</p>
                 <img class="close-img" (click)="removeReceiver(i)" src="./icons/close.png" alt="">
               </ng-container>
+
               <ng-container *ngIf="uiService.isChannel(obj)">
                 <!-- Es ist ein Channel -->
-                <img class="avatar" src="./icons/tag.png" alt="">
+                <img class="avatar-img" src="./icons/tag.png" alt="">
                 <p class="username">{{ obj.title }}</p>
                 <img class="close-img" (click)="removeReceiver(i)" src="./icons/close.png" alt="">
               </ng-container>

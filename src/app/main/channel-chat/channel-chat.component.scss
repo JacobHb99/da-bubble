@@ -160,8 +160,11 @@ header {
 
 .selectedConv-container {
     @include dFlex($gap: 8px, $jc: flex-start);
+    flex-wrap: wrap;
     padding: 25px 45px;
     box-sizing: border-box;
+    max-height: 300px;
+    overflow-y: auto;
 
     .selcted-user {
         padding: 8px;
@@ -244,7 +247,7 @@ app-send-message {
     margin: 0;
 }
 
-.avatar {
+.avatar-img {
     width: 32px;
     height: 32px;
     border-radius: 50%;
