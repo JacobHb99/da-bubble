@@ -1,12 +1,13 @@
-<div>
+<div class="edit-profil-dialog">
 
     <div class="header">
         <h2>Dieses Profil bearbeiten</h2>
         <div  mat-dialog-close class="close"></div>
        
     </div>
-
-    <img class="avatar" src="{{authService.currentUserSig()?.avatar}}" alt="">
+<div class="avatar"> 
+    <img class="avatar-image" src="{{authService.currentUserSig()?.avatar}}" alt="">
+</div>
     <div> <!--form-->
         <div class="form-group">
 
