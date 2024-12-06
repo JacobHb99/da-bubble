@@ -366,8 +366,12 @@ app-header-sign {
   /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
 
-.mat-mdc-dialog-surface:has(.login-profil-dialog),
-.mat-mdc-dialog-surface:has(.my-profil-dialog) {
+.mat-mdc-dialog-surface:has(.login-profil-dialog){
   background-color: white !important;
   border-radius: 30px 0 30px 30px !important;
 }
+
+.mat-mdc-dialog-surface:has(.my-profil-dialog) {
+  background-color: white !important;
+}
+ 

@@ -4,7 +4,14 @@
   padding: 0;
   margin: 0;
   font-family: "Nunito";
-  font-size: 18px;
+  font-size: 18px; 
+}
+
+ 
+
+.profil-dialog{
+  overflow-y: scroll;
+  height: 80vh;
 }
 
 h2 {
@@ -15,28 +22,28 @@ h2 {
 .username {
   font-size: 32px;
   font-weight: 700;
-  margin: 45px 40px;
+  margin: 20px 40px;
 }
 
 .header {
   @include dFlex($jc: space-between, $ai: unset, $fd: row, $gap: 0);
-  margin: 45px 40px;
+  margin: 20px 40px;
 }
 
 .avatar {
-  width: 420px;
+  width: 200px;
   margin: 0px 40px;
   border-radius: 200px;
 }
 
 .profil-name {
-  margin: 45px 40px;
+  margin: 20px 40px;
   @include dFlex($jc: space-between, $ai: unset, $fd: row, $gap: 0);
 }
 
 .online-status {
   display: flex;
-  margin: 45px 40px;
+  margin: 20px 40px;
   gap: 15px;
   align-items: center;
   >img {
@@ -58,7 +65,7 @@ h2 {
 }
 
 .email {
-  margin: 45px 40px;
+  margin: 20px 40px;
   @include dFlex($jc: unset, $ai: flex-start, $fd: row, $gap: 20px);
   div {
     @include dFlex($jc: none, $ai: none, $fd: column, $gap: 0);
@@ -73,5 +80,27 @@ h2 {
 }
 
 button {
-  margin: 0 0 40px 40px;
+  margin: 0 0 20px 40px;
 }
+
+@media (max-width: 500px) {
+  .profil-dialog{
+    width: 100vw;
+    height: 100vh;
+  }
+
+     .username, .profil-name{
+    margin: 20px 20px;
+  }
+
+  .header{
+    margin: 20px 40px 20px 20px;
+  }
+ 
+  button {
+    margin: 0 0 20px 20px;
+  }
+
+}
+
+
