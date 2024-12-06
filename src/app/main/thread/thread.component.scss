@@ -71,11 +71,10 @@ app-send-message{
 .chat{
     position: relative;   
     height: calc(100% - 300px); 
-    //height: 50%;
 }
 
 .thread{
-    height: calc(100% - 35px);; 
+    height: calc(100% - 50px);; 
     padding-top: 40px;
     overflow-y: auto;
 

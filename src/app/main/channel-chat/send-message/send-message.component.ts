@@ -41,6 +41,7 @@ export class SendMessageComponent {
   @Input() input: 'chat' | 'thread' | 'channel' | 'newMsg' | undefined;
   @ViewChild('emojiPicker', { static: false }) emojiPicker!: ElementRef;
   @ViewChild('userList', { static: false }) userList!: ElementRef;
+  @ViewChild('textArea') textArea!: ElementRef;
 
   //currentRecipient: Conversation = new Conversation;
   text: string = '';
@@ -254,7 +255,9 @@ export class SendMessageComponent {
     console.log(event);
     const emoji = event.emoji.native;
     this.text += emoji;
-    //this.toggleEmojiPicker(); //sinnvoll??
+    this.textArea.nativeElement.focus();    
+    this.toggleEmojiPicker(); 
+    this.checkemptyInput();
   }
 
   toggleUserList() {
@@ -263,5 +266,7 @@ export class SendMessageComponent {
 
   tagUser(user: string) {
     this.text += `@${user}`;
+    this.textArea.nativeElement.focus();
+    this.checkemptyInput();
   }
 }

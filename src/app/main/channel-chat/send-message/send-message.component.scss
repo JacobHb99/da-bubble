@@ -25,9 +25,12 @@ section {
         border: none;
         resize: none;
         outline: none;
+        font-size: 18px;
         font-weight: 400;
         text-wrap: wrap;
         word-break: break-word;
+        color: #686868;
+        font-family: 'Nunito';
     }
 }
 
@@ -81,11 +84,11 @@ section {
 .emojiPicker {
     position: absolute;
     left: 0px;
-    bottom: 140px;
+    bottom: 160px;
 }
 
 
-.tagUser {
+.tagUserIcon {
     background-image: url("/icons/alternate_email-grey.png");
     height: 40px;
     width: 40px;
@@ -105,31 +108,35 @@ section {
 }
 
 .userList {
-    @include dFlex($fd: column,$jc: flex-start, $gap: 5px);
+    @include dFlex($fd: column, $jc: flex-start, $gap: 5px);
     max-height: 120px;
     width: 200px;
     background-color: #444df2;
     color: white;
-    border-radius: 20px;    
-    padding: 20px;    
+    border-radius: 20px;
+    padding: 15px;    
     font-size: 18px;
-    overflow-y: scroll;
+    box-sizing: border-box;
+    overflow-y: auto;
     position: absolute;
-    bottom: 140px;
+    bottom: 160px;
     left: 0;
+    box-shadow: -8px 6px 16px #00000054;
 
     span {
-        //@include dFlex($fd: column);
+        text-align: center;
         cursor: pointer;
-        &:hover{
+
+        &:hover {
             font-weight: 700;
-        }        
+
+        }
     }
 }
 
-::-webkit-scrollbar-track {
-    margin: 0;
-  }
+// ::-webkit-scrollbar-track {
+//     margin: 0;
+//   }
 
 .sendIcon {
     cursor: pointer;

@@ -1,6 +1,6 @@
 <section>
     <div class="main">
-        <textarea type="text" [(ngModel)]="text" [placeholder]="placeholder" (input)="checkemptyInput()"></textarea>
+        <textarea type="text" #textArea [(ngModel)]="text" [placeholder]="placeholder" (input)="checkemptyInput()"></textarea>
         <div class="interactDiv">
             <div class="addDiv">
                 <div class="addFile"></div>
@@ -15,7 +15,7 @@
                     </emoji-mart>
                 </div>
                 }
-                <div class="tagUser" (click)="toggleUserList()"></div>
+                <div class="tagUserIcon" (click)="toggleUserList()"></div>
             </div>
             <div class="sendIcon" [class.disabled]="isDisabled" (click)="createNewMsg()">
                 <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -8,6 +8,7 @@ import { ConversationService } from './conversation.service';
 import { ChannelService } from './channel.service';
 import { InterfaceService } from './interface.service';
 import { StorageInstances } from '@angular/fire/storage';
+import { DocumentData } from 'firebase/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -22,57 +23,42 @@ export class ReactionService {
 
   constructor() { }
 
-  async deleteEmoji(currentMessage: Message) {
+  async updateMessageWithReaction(emoji: any, currentMessage: Message) {
+    let newReaction = this.createNewReaction(emoji)
     const username = this.authService.currentUserSig()?.username as string;
-    const msgId = currentMessage.msgId
-    const ref = await this.searchReactionSource(currentMessage);
-
+    const msgId = currentMessage.msgId;
+    const ref = await this.searchMsgById(msgId);
     if (!ref) {
       console.error('Reference path not found for the given message.');
       return;
     }
     const conversationData = await this.getDataFromRef(ref)
+
     if (conversationData) {
+      const message = this.findMessageData(conversationData, msgId);
       const messages = conversationData['messages'];
+      this.handleReaction(message, newReaction, username);
 
-      const messageIndex = this.findMessageIndex(messages, msgId);
-      if (messageIndex === -1) {
-        console.error("Message not found");
-        return;
-      }
-
-      const message = messages[messageIndex];
-      const oldReactionIndex = this.findUserReactionIndex(message.reactions, username);
-
-      if (oldReactionIndex !== -1) {
-        this.removeUserFromReaction(message.reactions[oldReactionIndex], username);
-
-        if (message.reactions[oldReactionIndex].counter === 0) {
-          this.removeReactionFromMessage(message, oldReactionIndex);
-        }
-      }
+      // Aktualisierte Nachricht speichern
       const dataRef = doc(this.firestore, ref)
       this.updateMessageInFirestore(dataRef, messages);
+    } else {
+      console.error("conversationData not found");
     }
   }
 
-  async searchReactionSource(currentMessage: Message) {
-    const msgId = currentMessage.msgId;
-    console.log('allConv', this.fiBaService.currentConversation)
-    console.log('allChannel', this.channelService.currentChannel)
-    console.log('allThreads', this.interfaceService.currentThread)
-
+  async searchMsgById(msgId: string) {
     const allSources = [
-      {data: this.fiBaService.allConversations,key: 'conId', basePath: 'conversations'},
-      {data: this.fiBaService.allChannels,key: 'chaId',basePath: 'channels'},
-      {data: this.fiBaService.allThreads,key: 'id',basePath: 'threads'},
+      { data: this.fiBaService.allConversations, key: 'conId', basePath: 'conversations' },
+      { data: this.fiBaService.allChannels, key: 'chaId', basePath: 'channels' },
+      { data: this.fiBaService.allThreads, key: 'id', basePath: 'threads' },
     ];
 
     for (const source of allSources) {
       console.log('Prüfe Quelle:', source.basePath);
 
       const message = source.data
-        .flatMap((conversation) => conversation.messages)
+        .flatMap((conv) => conv.messages)
         .find((message) => message.msgId === msgId);
 
       if (message) {
@@ -92,60 +78,100 @@ export class ReactionService {
     } return null;
   }
 
-  async updateMessageWithReaction(emoji: any, currentMessage: Message) {
-    let newReaction = this.createNewReaction(emoji)
+  findMessageData(conversationData: DocumentData, msgId: string) {
+    const messages = conversationData['messages'];
+    const messageIndex = this.findMessageIndex(messages, msgId);
+    if (messageIndex === -1) {
+      console.error("Message not found");
+      return;
+    }
+    const message = messages[messageIndex];
+    if (message) {
+      return message
+    }
+  }
+
+  handleReaction(message: any, newReaction: Reaction, username: string) {
+    this.removeReactionAndUserFromMessage(message, username);
+
+    // Neue Reaktion hinzufügen oder aktualisieren
+    const newReactionIndex = this.findReactionIndex(message.reactions, newReaction.id);
+
+    if (newReactionIndex !== -1) {
+      // Reaktion existiert -> Benutzer hinzufügen
+      this.addUserToReaction(message.reactions[newReactionIndex], username);
+    } else {
+      // Neue Reaktion erstellen und hinzufügen
+      this.addNewReactionToMessage(message, newReaction, username);
+    }
+  }
+
+  removeReactionAndUserFromMessage(message: any, username: string) {
+    const oldReactionIndex = this.findUserReactionIndex(message.reactions, username);
+
+    if (oldReactionIndex !== -1) {
+      this.removeUserFromReaction(message.reactions[oldReactionIndex], username);
+
+      if (message.reactions[oldReactionIndex].counter === 0) {
+        this.removeReactionFromMessage(message, oldReactionIndex);
+      }
+    }
+  }
+
+  async deleteEmoji(currentMessage: Message) {
     const username = this.authService.currentUserSig()?.username as string;
-    const msgId = currentMessage.msgId;
-    const ref = await this.searchReactionSource(currentMessage);
+    const msgId = currentMessage.msgId
+    const ref = await this.searchMsgById(msgId);
+
     if (!ref) {
       console.error('Reference path not found for the given message.');
       return;
     }
     const conversationData = await this.getDataFromRef(ref)
-    console.log('data', conversationData)
-
     if (conversationData) {
+      const message = this.findMessageData(conversationData, msgId);
       const messages = conversationData['messages'];
-      // Nachricht finden
-      const messageIndex = this.findMessageIndex(messages, msgId);
-      if (messageIndex === -1) {
-        console.error("Message not found");
-        return;
-      }
-      const message = messages[messageIndex];
-      console.log('message', message)
-      // Prüfen, ob Benutzer bereits eine Reaktion gegeben hat
-      const oldReactionIndex = this.findUserReactionIndex(message.reactions, username);
-      console.log('oldReactionIndex', oldReactionIndex)
-
-      if (oldReactionIndex !== -1) {
-        // Benutzer hat bereits reagiert -> Alte Reaktion entfernen
-        this.removeUserFromReaction(message.reactions[oldReactionIndex], username);
-      }
-
-      // Wenn alte Reaktion keine Nutzer mehr hat, Reaktion entfernen
-      const oldReaction = message.reactions[oldReactionIndex];
-      if (oldReaction && oldReaction.counter === 0) {
-        this.removeReactionFromMessage(message, oldReactionIndex);
-
-      }
-      // Neue Reaktion hinzufügen oder aktualisieren
-      const newReactionIndex = this.findReactionIndex(message.reactions, newReaction.id);
-
-      if (newReactionIndex !== -1) {
-        // Reaktion existiert -> Benutzer hinzufügen
-        this.addUserToReaction(message.reactions[newReactionIndex], username);
-      } else {
-        // Neue Reaktion erstellen und hinzufügen
-        this.addNewReactionToMessage(message, newReaction, username);
-      }
-
-      // Aktualisierte Nachricht speichern
+      this.removeReactionAndUserFromMessage(message, username);
       const dataRef = doc(this.firestore, ref)
       this.updateMessageInFirestore(dataRef, messages);
-    } else {
-      console.error("conversationData not found");
     }
+  }
+
+  async getDataFromRef(ref: string) {
+    const dataRef = doc(this.firestore, ref);
+    const dataSnapshot = await getDoc(dataRef)
+    const data = dataSnapshot.data();
+    return data
+  }
+
+  async updateMessageInFirestore(ref: any, messages: any[]) {
+    try {
+      await updateDoc(ref, { messages });
+      console.log("Messages successfully updated in Firestore");
+    } catch (error) {
+      console.error("Error updating messages in Firestore:", error);
+    }
+  }
+
+  createNewReaction(emoji: any) {
+    const username = this.authService.currentUserSig()?.username as string;
+
+    return new Reaction({
+      counter: 1,
+      id: emoji.id,
+      reactedUser: {
+        [`${username}`]: true
+      },
+    });
+  }
+
+  addNewReactionToMessage(message: Message, newReaction: Reaction, username: string) {
+    const reactionToAdd = {
+      id: newReaction.id,
+      reactedUser: { [username]: true },
+      counter: 1
+    };
+    message.reactions.push(reactionToAdd);
   }
 
   findMessageIndex(messages: any[], msgId: string): number {
@@ -172,43 +198,6 @@ export class ReactionService {
   addUserToReaction(reaction: Reaction, username: string) {
     reaction.reactedUser[username] = true;
     reaction.counter = Object.keys(reaction.reactedUser).length;
-  }
-
-  async getDataFromRef(ref: string) {
-    const dataRef = doc(this.firestore, ref);
-    const dataSnapshot = await getDoc(dataRef)
-    const data = dataSnapshot.data();
-    return data
-  }
-
-  addNewReactionToMessage(message: Message, newReaction: Reaction, username: string) {
-    const reactionToAdd = {
-      id: newReaction.id,
-      reactedUser: { [username]: true },
-      counter: 1
-    };
-    message.reactions.push(reactionToAdd);
-  }
-
-  async updateMessageInFirestore(ref: any, messages: any[]) {
-    try {
-      await updateDoc(ref, { messages });
-      console.log("Messages successfully updated in Firestore");
-    } catch (error) {
-      console.error("Error updating messages in Firestore:", error);
-    }
-  }
-
-  createNewReaction(emoji: any) {
-    const username = this.authService.currentUserSig()?.username as string;
-
-    return new Reaction({
-      counter: 1,
-      id: emoji.id,
-      reactedUser: {
-        [`${username}`]: true
-      },
-    });
   }
 
 }
