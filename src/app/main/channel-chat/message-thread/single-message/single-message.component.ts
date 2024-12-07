@@ -44,7 +44,7 @@ export class SingleMessageComponent {
   constructor(
     private userDataService: UserDataService,
     public breakpointObserver: BreakpointObserverService,
-    private cdr: ChangeDetectorRef, 
+    private cdr: ChangeDetectorRef,
   ) {
     this.userDataService.selectedUser.subscribe((user) => {
       this.user = user;
@@ -105,11 +105,11 @@ export class SingleMessageComponent {
 
   shouldShowDateDivider(index: number): boolean {
 
-    if (index === 0 || -1) {
+    if (index === 0) {
       this.uiService.previousMessage = this.currentMessage
       // Zeige immer einen Divider bei der ersten Nachricht
       return true;
-    } else{
+    } else {
       const currentDate = this.getFormattedDate(this.currentMessage.timeStamp);
       const previousDate = this.getFormattedDate(this.uiService.previousMessage.timeStamp);
       this.uiService.previousMessage = this.currentMessage;
@@ -136,7 +136,7 @@ export class SingleMessageComponent {
   manageEmoji(event: any) {
     const emoji = event.emoji;
     console.log('emoji', emoji)
-    this.reactService.updateMessageWithReaction(emoji, this.currentMessage)    
+    this.reactService.updateMessageWithReaction(emoji, this.currentMessage)
   }
 
   manageDeleteEmoji(reaction: any) {
@@ -145,12 +145,25 @@ export class SingleMessageComponent {
     this.reactService.deleteEmoji(this.currentMessage)
   }
 
-  // getReactedUsers(reactedUser: { [key: string]: boolean }): string[] {
-  //   return Object.keys(reactedUser);
-  // }
+  async editMessage(currentMessage: Message) {
+    // const msgId = currentMessage.msgId;
+    // const ref = await this.fiBaService.getMsgRefById(msgId);
 
-  // getReactedUserNames(reactedUser: object) {
-  //   return Object.keys(reactedUser);   //wandelt object in ein array um
-  // }
+    // if (!ref) {
+    //   console.error('Reference path not found for the given message.');
+    //   return;
+    // }
+    // const conversationData = await this.fiBaService.getDataFromRef(ref)
+    // if (conversationData) {
+    //   const messages = conversationData['messages'];
+    //   const message = this.fiBaService.getMessageData(conversationData, msgId);
+    //   this.handleEditMsg(message);
+
+    //   const dataRef = this.fiBaService.getDocWithRef(ref)
+    //   this.fiBaService.updateMessageInFirestore(dataRef, messages);
+    // }
+  }
+
+  handleEditMsg(message:any){}
 
 }

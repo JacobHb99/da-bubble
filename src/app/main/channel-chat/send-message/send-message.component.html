@@ -1,12 +1,13 @@
 <section>
     <div class="main">
-        <textarea type="text" #textArea [(ngModel)]="text" [placeholder]="placeholder" (input)="checkemptyInput()"></textarea>
+        <textarea type="text" #textArea [(ngModel)]="text" [placeholder]="placeholder"
+            (input)="checkemptyInput()"></textarea>
         <div class="interactDiv">
             <div class="addDiv">
-                <div class="addFile"></div>
+                <!-- <div class="addFile"></div>
                 <svg width="2" height="40" viewBox="0 0 2 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M1 0V40" stroke="#ADB0D9" />
-                </svg>
+                </svg> -->
                 <div class="addReaction" (click)="toggleEmojiPicker()"></div>
                 @if (showEmojiPicker) {
                 <div class="emojiPicker" #emojiPicker>
@@ -34,10 +35,15 @@
     </div>
 
     @if (showUserList) {
-    <div class="userList" #userList>
-        @for (user of fiBaService.allUsers; track $index) {
-        <span (click)="tagUser(user.username)">{{user.username}}</span>
-        }
+    <div class="scrollDiv">
+       
+        <div class="userList" #userList>
+            @for (user of fiBaService.allUsers; track $index) {
+            <span (click)="tagUser(user.username)">{{user.username}}</span>
+            }
+        </div>
+       
     </div>
     }
+
 </section>

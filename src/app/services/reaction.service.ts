@@ -91,7 +91,7 @@ export class ReactionService {
     }
   }
 
-  handleReaction(message: any, newReaction: Reaction, username: string) {
+  handleReaction(message: any, newReaction: Reaction, username: string) {    
     this.removeReactionAndUserFromMessage(message, username);
 
     // Neue Reaktion hinzufügen oder aktualisieren
@@ -105,6 +105,8 @@ export class ReactionService {
       this.addNewReactionToMessage(message, newReaction, username);
     }
   }
+
+
 
   removeReactionAndUserFromMessage(message: any, username: string) {
     const oldReactionIndex = this.findUserReactionIndex(message.reactions, username);
@@ -137,12 +139,25 @@ export class ReactionService {
     }
   }
 
+  
+
+
+
+
+
+
+
+ 
+
+
   async getDataFromRef(ref: string) {
     const dataRef = doc(this.firestore, ref);
     const dataSnapshot = await getDoc(dataRef)
     const data = dataSnapshot.data();
     return data
   }
+
+
 
   async updateMessageInFirestore(ref: any, messages: any[]) {
     try {
@@ -165,7 +180,7 @@ export class ReactionService {
     });
   }
 
-  addNewReactionToMessage(message: Message, newReaction: Reaction, username: string) {
+    addNewReactionToMessage(message: Message, newReaction: Reaction, username: string) {
     const reactionToAdd = {
       id: newReaction.id,
       reactedUser: { [username]: true },
@@ -199,5 +214,6 @@ export class ReactionService {
     reaction.reactedUser[username] = true;
     reaction.counter = Object.keys(reaction.reactedUser).length;
   }
+
 
 }
