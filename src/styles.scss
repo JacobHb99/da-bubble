@@ -92,6 +92,12 @@ app-header-sign {
   &:hover {
     opacity: 0.8;
   }
+
+  &:disabled {
+    background-color: #c0c0c0; 
+    color: #6c757d; 
+    cursor: not-allowed;
+}
 }
 
 .btn-white {

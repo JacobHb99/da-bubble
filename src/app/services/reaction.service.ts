@@ -47,6 +47,11 @@ export class ReactionService {
     }
   }
 
+  getDocRef(ref:string){
+    const dataRef = doc(this.firestore, ref)
+    return dataRef
+  }
+
   async searchMsgById(msgId: string) {
     const allSources = [
       { data: this.fiBaService.allConversations, key: 'conId', basePath: 'conversations' },
@@ -139,25 +144,12 @@ export class ReactionService {
     }
   }
 
-  
-
-
-
-
-
-
-
- 
-
-
   async getDataFromRef(ref: string) {
     const dataRef = doc(this.firestore, ref);
     const dataSnapshot = await getDoc(dataRef)
     const data = dataSnapshot.data();
     return data
   }
-
-
 
   async updateMessageInFirestore(ref: any, messages: any[]) {
     try {

@@ -31,10 +31,23 @@
                 }
 
             </div>
+            @if (!editMode) {
             <div class="messageText"
                 [ngClass]="{'replyMessageText': authService.currentUserSig()?.uid !== currentMessage.senderId }">
                 {{ currentMessage.text }}
             </div>
+            }
+            @if (editMode) {
+            <div class="editDiv" #editContainer>
+                <form id="editForm" #editForm="ngForm" (ngSubmit)="onSubmit(editForm)">
+                    <textarea name="edit-input" [(ngModel)]="editText" required #editTextArea></textarea>
+                </form>
+                <div class="editBtnDiv">
+                    <button class="btn-blue" [disabled]="!editForm.valid" type="submit" form="editForm">Speichern</button>
+                    <button class="btn-white" (click)="cancelEditArea()">Abbrechen</button>
+                </div>
+            </div>
+            }
             <div class="bottomBox">
                 @if (!isThread) {
                 <div class="answerBox">
@@ -60,7 +73,8 @@
 
                 </div>
                 }
-                <div class="reactionBox"  [ngClass]="{'replayReactionBox': authService.currentUserSig()?.uid !== currentMessage.senderId }">
+                <div class="reactionBox"
+                    [ngClass]="{'replayReactionBox': authService.currentUserSig()?.uid !== currentMessage.senderId }">
                     @for (reaction of currentMessage.reactions; track $index; let index = $index) {
                     <div class="emojiBox" (click)="manageDeleteEmoji(reaction)" (mouseleave)="onMouseLeave()"
                         (mouseover)="onMouseOver()">
@@ -145,7 +159,7 @@
             </div>
             }
             @if (authService.currentUserSig()?.uid===currentMessage.senderId) {
-            <div class="iconBox svg-hover" (click)="editMessage(currentMessage)">
+            <div class="iconBox svg-hover" (click)="showEditArea()">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <mask id="mask0_1823_21565" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
                         width="24" height="24">
