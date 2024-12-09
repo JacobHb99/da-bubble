@@ -6,7 +6,6 @@ export class Conversation {
     creatorId: string;
     partnerId: string; //Gesprächspartner
     messages: Message[];
-    active: boolean;
     user: string[];
 
     constructor(obj?: Partial<Conversation>) {
@@ -14,9 +13,6 @@ export class Conversation {
         this.creatorId = obj?.creatorId ?? '';
         this.partnerId = obj?.partnerId ?? '';
         this.messages = obj?.messages ?? [];
-        this.active = obj?.active ?? false;
         this.user = obj?.user ?? [];
     }
-
-
 }

@@ -1,13 +1,10 @@
 import { Injectable, inject } from '@angular/core';
 import { FirebaseService } from './firebase.service';
 import { Message, Reaction } from '../models/message.model';
-import { Conversation } from '../models/conversation.model';
 import { AuthService } from './auth.service';
-import { doc, setDoc, getDoc, Firestore, updateDoc, arrayUnion } from '@angular/fire/firestore';
-import { ConversationService } from './conversation.service';
+import { doc, getDoc, Firestore, updateDoc } from '@angular/fire/firestore';
 import { ChannelService } from './channel.service';
 import { InterfaceService } from './interface.service';
-import { StorageInstances } from '@angular/fire/storage';
 import { DocumentData } from 'firebase/firestore';
 
 @Injectable({
@@ -17,7 +14,6 @@ export class ReactionService {
   firestore = inject(Firestore);
   fiBaService = inject(FirebaseService);
   authService = inject(AuthService);
-  conService = inject(ConversationService);
   channelService = inject(ChannelService);
   interfaceService = inject(InterfaceService);
 
@@ -41,13 +37,11 @@ export class ReactionService {
       return;
     }
     const conversationData = await this.getDataFromRef(ref)
-
     if (conversationData) {
       const message = this.findMessageData(conversationData, msgId);
       const messages = conversationData['messages'];
       this.handleReaction(message, newReaction, username);
 
-      // Aktualisierte Nachricht speichern
       const dataRef = doc(this.firestore, ref)
       this.updateMessageInFirestore(dataRef, messages);
     } else {
@@ -82,21 +76,17 @@ export class ReactionService {
     ];
 
     for (const source of allSources) {
-      console.log('Prüfe Quelle:', source.basePath);
-
       const message = source.data
         .flatMap((conv) => conv.messages)
         .find((message) => message.msgId === msgId);
 
       if (message) {
-        // Dynamischer refPath basierend auf dem Schlüssel und Basispfad
         const refId = (source.data.find((conv) =>
           conv.messages.some((msg) => msg.msgId === msgId)
         ) as any)?.[source.key];
 
         if (refId) {
           const refPath = `${source.basePath}/${refId}`;
-          console.log('Gefundene Referenz:', refPath);
           if (refPath) {
             return refPath;
           }
@@ -135,15 +125,10 @@ export class ReactionService {
    */
   handleReaction(message: any, newReaction: Reaction, username: string) {
     this.removeReactionAndUserFromMessage(message, username);
-
-    // Neue Reaktion hinzufügen oder aktualisieren
     const newReactionIndex = this.findReactionIndex(message.reactions, newReaction.id);
-
     if (newReactionIndex !== -1) {
-      // Reaktion existiert -> Benutzer hinzufügen
       this.addUserToReaction(message.reactions[newReactionIndex], username);
     } else {
-      // Neue Reaktion erstellen und hinzufügen
       this.addNewReactionToMessage(message, newReaction, username);
     }
   }
@@ -156,10 +141,8 @@ export class ReactionService {
    */
   removeReactionAndUserFromMessage(message: any, username: string) {
     const oldReactionIndex = this.findUserReactionIndex(message.reactions, username);
-
     if (oldReactionIndex !== -1) {
       this.removeUserFromReaction(message.reactions[oldReactionIndex], username);
-
       if (message.reactions[oldReactionIndex].counter === 0) {
         this.removeReactionFromMessage(message, oldReactionIndex);
       }
@@ -213,9 +196,8 @@ export class ReactionService {
   async updateMessageInFirestore(ref: any, messages: any[]) {
     try {
       await updateDoc(ref, { messages });
-      console.log("Messages successfully updated in Firestore");
     } catch (error) {
-      console.error("Error updating messages in Firestore:", error);
+      console.error('Fehler beim aktualisieren der Nachricht:', error);
     }
   }
 
@@ -228,7 +210,6 @@ export class ReactionService {
    */
   createNewReaction(emoji: any) {
     const username = this.authService.currentUserSig()?.username as string;
-
     return new Reaction({
       counter: 1,
       id: emoji.id,

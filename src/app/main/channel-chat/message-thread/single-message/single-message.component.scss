@@ -66,9 +66,7 @@ section {
 
 .replyfloatingReactionBox {
     transform: translateX(150%);   
-
 }
-
 
 .floatingReactionBox {
     @include dFlex($gap: 5px);
@@ -124,8 +122,6 @@ section {
     right: 0;
     top: 50px;
 }
-
-
 
 .messageDetails {
     @include dFlex($ai: flex-end, $fd: column, $gap: 8px);
@@ -189,14 +185,18 @@ section {
         border: none;
         color: #686868;
         text-wrap: wrap;
-        word-break: break-word;
-        overflow-y: auto;
+        word-break: break-word;        
     }
 
     .editBtnDiv{
         @include dFlex($gap: 8px);
         padding-top: 20px;
     }
+}
+
+.btn-editMsg{
+    font-size: 14px;
+    padding: 6px 12px;
 }
 
 .bottomBox {
@@ -225,11 +225,8 @@ section {
     }
 }
 
-
-
 .reactionBox {
     @include dFlex($jc: flex-end, $gap: 10px);
-
 
     .emojiBox {
         @include dFlex($gap: 10px);
@@ -294,7 +291,6 @@ section {
     border-radius: 30px 30px 30px 0;
 }
 
-
 .mobile-img{
     height: 50px !important;
     width: 50px !important;
@@ -306,7 +302,6 @@ section {
 }
 
 .answerBox{
-
     span{
         min-width: max-content;
     }

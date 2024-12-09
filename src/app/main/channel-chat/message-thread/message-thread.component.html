@@ -9,9 +9,6 @@
 
         }
         }@else {
-        <!-- @for (message of this.fiBaService.currentConversation.messages; track message; let index = $index) {
-                <app-single-message [index]="index" [currentMessage]="message"></app-single-message>
-                } -->
         @for (message of this.fiBaService.currentConversation.messages; track $index) {
         <app-single-message [id]="message.msgId" [index]="$index" [currentMessage]="message"></app-single-message>
         }
@@ -22,15 +19,16 @@
             <div>
                 <img src="{{ user.avatar }}" referrerPolicy="no-referrer" alt="img avatar"
                     [ngClass]="{'mobile-img': breakpointObserver.isXSmallOrSmall}">
-                    @if (user.uid === userDataService.currentUserSig()?.uid) {
-                        <span>{{ user.username }} (Du)</span>
-                    }@else {
-                        <span>{{ user.username }}</span>
-                    }                
+                @if (user.uid === userDataService.currentUserSig()?.uid) {
+                <span>{{ user.username }} (Du)</span>
+                }@else {
+                <span>{{ user.username }}</span>
+                }
             </div>
             <div class="infoText">
                 @if (user.uid === userDataService.currentUserSig()?.uid ) {
-                <span><p>Dieser Raum ist nur für dich da.</p> Mache dir Notizen, liste deine To-dos auf oder bewahre Links
+                <span>
+                    <p>Dieser Raum ist nur für dich da.</p> Mache dir Notizen, liste deine To-dos auf oder bewahre Links
                     und Dateien griffbereit auf. Du kannst hier auch gerne Dinge mit dir selbst besprechen.
                 </span>
                 }@else{

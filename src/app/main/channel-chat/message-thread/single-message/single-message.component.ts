@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, input, Input, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Input, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserDataService } from '../../../../services/user.service';
 import { InterfaceService } from '../../../../services/interface.service';
@@ -25,23 +25,18 @@ export class SingleMessageComponent {
   authService = inject(AuthService);
   reactService = inject(ReactionService);
 
-  messageIsMine: boolean = true;
-  showReactionPopups: boolean = false; //nachsehen welche 
+  showReactionPopups: boolean = false; 
   showEmojiPicker = false;
   editMode = false;
   editText = '';
-  currentReaction = new Reaction();
-  allReactions: Reaction[] = [];
   loggedInUser: any;
   user: any;
 
-  //currentMessage: Message = new Message();
   @Input() currentMessage: Message = new Message();
   @Input() message: Message = new Message();
   @Input() index: number = 0;
   @Input() isThread: boolean = false;
-  @ViewChild('editTextArea') editTextArea!: ElementRef;
-  @ViewChild('editContainer') editContainer!: ElementRef;
+  //@ViewChild('editTextArea') editTextArea!: ElementRef;
 
 
   constructor(
@@ -63,10 +58,8 @@ export class SingleMessageComponent {
   }
 
   ngOnInit(): void {
-    //this.fiBaService.currentMsg = this.currentMessage
     this.currentMessage = new Message(this.currentMessage);
     this.loggedInUser = this.authService.currentUserSig();
-    console.log(this.loggedInUser)
   }
 
   openThread() {
@@ -74,14 +67,13 @@ export class SingleMessageComponent {
     this.cdr.detectChanges();  // Erzwingt eine erneute Change Detection
   }
 
-
   getFormattedDate(timestamp: number): string {
     const date = new Date(timestamp);
 
     const options: Intl.DateTimeFormatOptions = {
-      weekday: 'long', // Wochentag ausgeschrieben (z.B. "Dienstag")
-      day: 'numeric',  // Tag als Zahl (z.B. "14")
-      month: 'long'    // Monat ausgeschrieben (z.B. "Januar")
+      weekday: 'long',
+      day: 'numeric', 
+      month: 'long'    
     };
     return date.toLocaleDateString('de-DE', options);
   }
@@ -108,14 +100,13 @@ export class SingleMessageComponent {
 
   shouldShowDateDivider(index: number): boolean {
     if (index === 0) {
-      this.uiService.previousMessage = this.currentMessage
-      // Zeige immer einen Divider bei der ersten Nachricht
+      this.uiService.previousMessage = this.currentMessage      
       return true;
+
     } else {
       const currentDate = this.getFormattedDate(this.currentMessage.timeStamp);
       const previousDate = this.getFormattedDate(this.uiService.previousMessage.timeStamp);
-      this.uiService.previousMessage = this.currentMessage;
-      // Zeige den Divider nur, wenn sich das Datum geändert hat
+      this.uiService.previousMessage = this.currentMessage;     
       return currentDate !== previousDate;
     }
   }
@@ -137,13 +128,10 @@ export class SingleMessageComponent {
 
   manageEmoji(event: any) {
     const emoji = event.emoji;
-    console.log('emoji', emoji)
     this.reactService.updateMessageWithReaction(emoji, this.currentMessage)
   }
 
-  manageDeleteEmoji(reaction: any) {
-    //const emoji = event.emoji;
-    console.log('emoji', reaction)
+  manageDeleteEmoji() {
     this.reactService.deleteEmoji(this.currentMessage)
   }
 
@@ -160,9 +148,7 @@ export class SingleMessageComponent {
 
   async onSubmit(ngForm: NgForm) {
     if (ngForm.valid && ngForm.submitted) {
-      console.log('rightValid')
       await this.saveEditMessage();
-      console.log('edited and save msg')
       this.editText = '';
       this.editMode = false;
     }
@@ -172,32 +158,18 @@ export class SingleMessageComponent {
     const msgId = this.currentMessage.msgId;
     this.currentMessage.text = this.editText;
     const ref = await this.reactService.searchMsgById(msgId);
-    console.log('refMsg', ref)
     if (!ref) {
       console.error('Reference path not found for the given message.');
       return;
     }
 
     const convData = await this.reactService.getDataFromRef(ref);
-
     if (convData) {
       const message = this.reactService.findMessageData(convData, msgId);
       message.text = this.editText;
-      console.log('currenTText', message)
       const messages = convData['messages'];
-
       const dataRef = this.reactService.getDocRef(ref)
       this.reactService.updateMessageInFirestore(dataRef, messages)
     }
   }
-
-  @HostListener('document:click', ['$event'])
-  handleOutsideClick(event: Event) {
-    // Prüfen, ob das Emoji-Picker-Element existiert und der Klick außerhalb davon war
-    if (this.editContainer && !this.editContainer.nativeElement.contains(event.target)) {
-      this.editText = '';
-      this.editMode = false;
-    }
-  }
-
 }

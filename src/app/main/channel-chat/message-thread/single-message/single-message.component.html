@@ -4,9 +4,7 @@
         <div class="lineDiv">
             <hr>
         </div>
-
         <div class="date" *ngIf="shouldShowDateDivider(index)">{{ getFormattedDate(currentMessage.timeStamp) }}</div>
-
         <div class="lineDiv">
             <hr>
         </div>
@@ -38,13 +36,14 @@
             </div>
             }
             @if (editMode) {
-            <div class="editDiv" #editContainer>
+            <div class="editDiv">
                 <form id="editForm" #editForm="ngForm" (ngSubmit)="onSubmit(editForm)">
                     <textarea name="edit-input" [(ngModel)]="editText" required #editTextArea></textarea>
                 </form>
                 <div class="editBtnDiv">
-                    <button class="btn-blue" [disabled]="!editForm.valid" type="submit" form="editForm">Speichern</button>
-                    <button class="btn-white" (click)="cancelEditArea()">Abbrechen</button>
+                    <button class="btn-blue btn-editMsg" [disabled]="!editForm.valid" type="submit"
+                        form="editForm">Speichern</button>
+                    <button class="btn-white btn-editMsg" (click)="cancelEditArea()">Abbrechen</button>
                 </div>
             </div>
             }
@@ -76,7 +75,7 @@
                 <div class="reactionBox"
                     [ngClass]="{'replayReactionBox': authService.currentUserSig()?.uid !== currentMessage.senderId }">
                     @for (reaction of currentMessage.reactions; track $index; let index = $index) {
-                    <div class="emojiBox" (click)="manageDeleteEmoji(reaction)" (mouseleave)="onMouseLeave()"
+                    <div class="emojiBox" (click)="manageDeleteEmoji()" (mouseleave)="onMouseLeave()"
                         (mouseover)="onMouseOver()">
                         <ngx-emoji [emoji]="reaction.id"></ngx-emoji>
                         <p>{{ reaction.counter }}</p>

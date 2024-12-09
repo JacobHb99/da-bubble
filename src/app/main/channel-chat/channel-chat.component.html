@@ -19,7 +19,6 @@
         <div class="users" [ngStyle]="{'display': this.uiService.content === 'channelChat' ? 'flex' : 'none'}">
             @if (!breakpointObserver.isXSmallOrSmall) {
             <div (click)="openShowMembersDialog()" class="involvedUsers">
-                <!-- <img class="avatar-img" [src]="user.avatar" alt=""> -->
                 @for (user of getFirstNElements(3,allUsersFromAChannel); track $index) {
                 <img src="{{user.avatar}}" alt="">
                 }
@@ -60,14 +59,10 @@
         <div class="newMsg">
             <span>Neue Nachricht</span>
             <div class="scroll-box">
-
                 <div class="input-container">
                     <input placeholder="An: #channel, @jemand oder E-mail Adresse" type="text"
                         [(ngModel)]="this.searchbarService.newMsgSearchName" (input)="searchbarService.newMsgSearch()">
                 </div>
-
-
-
                 <div [ngClass]="{'hideUserDialog' : searchbarService.filteredResults.length <= 0}"
                     class="user-dialog showUserDialog">
                     <div class="scroll-container">
@@ -81,11 +76,11 @@
                                 }
 
                                 @if (obj.uid && !searchbarService.newMsgSearchName.startsWith('@')) {
-                                    <div class="single-search" (click)="setConv(obj)">
-                                        <img class="avatar-img" src="{{ obj.avatar}}" alt="">
-                                        <p class="username">{{ obj.email }}</p>
-                                    </div>
-                                    }
+                                <div class="single-search" (click)="setConv(obj)">
+                                    <img class="avatar-img" src="{{ obj.avatar}}" alt="">
+                                    <p class="username">{{ obj.email }}</p>
+                                </div>
+                                }
 
                                 @if (obj.chaId) {
                                 <div class="single-search" (click)="setChannel(obj)">
@@ -96,7 +91,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -116,18 +110,20 @@
                 <!-- Es ist ein User -->
                 <img class="avatar-img-selected" src="{{ obj.avatar }}" alt="">
                 <p class="username-selected">{{ obj.username }}</p>
-                <mat-icon class="close-img" size="50" (click)="removeReceiver(i)" aria-hidden="false" aria-label="Example clear icon" fontIcon="clear"></mat-icon>
-              </ng-container>
+                <mat-icon class="close-img" size="50" (click)="removeReceiver(i)" aria-hidden="false"
+                    aria-label="Example clear icon" fontIcon="clear"></mat-icon>
+            </ng-container>
 
-              <ng-container *ngIf="uiService.isChannel(obj)">
+            <ng-container *ngIf="uiService.isChannel(obj)">
                 <!-- Es ist ein Channel -->
                 <img class="avatar-img-selected" src="./icons/tag.png" alt="">
                 <p class="username-selected">{{ obj.title }}</p>
-                <mat-icon class="close-img" (click)="removeReceiver(i)" aria-hidden="false" aria-label="Example clear icon" fontIcon="clear"></mat-icon>
-              </ng-container>
+                <mat-icon class="close-img" (click)="removeReceiver(i)" aria-hidden="false"
+                    aria-label="Example clear icon" fontIcon="clear"></mat-icon>
+            </ng-container>
         </div>
     </div>
-    <app-send-message placeholder="Beginnen Sie eine neue Nachricht" input="newMsg" [isNewMsg]="true"></app-send-message>
+    <app-send-message placeholder="Beginnen Sie eine neue Nachricht" input="newMsg"
+        [isNewMsg]="true"></app-send-message>
     }
-
 </section>

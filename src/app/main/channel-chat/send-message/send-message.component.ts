@@ -43,7 +43,6 @@ export class SendMessageComponent {
   @ViewChild('userList', { static: false }) userList!: ElementRef;
   @ViewChild('textArea') textArea!: ElementRef;
 
-  //currentRecipient: Conversation = new Conversation;
   text: string = '';
   isDisabled: boolean = true;
   showEmojiPicker = false;
@@ -214,7 +213,6 @@ export class SendMessageComponent {
       msgId: message.msgId,
       timeStamp: message.timeStamp,
       senderId: message.senderId,
-      //recipientId: message.recipientId,
       text: message.text,
       thread: message.thread,
       reactions: message.reactions,

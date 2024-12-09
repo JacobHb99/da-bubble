@@ -1,13 +1,11 @@
 import { inject, Injectable } from '@angular/core';
-import { doc, addDoc, setDoc, Firestore, updateDoc, collection, onSnapshot, query } from '@angular/fire/firestore';
+import { doc, addDoc, setDoc, Firestore, collection, onSnapshot} from '@angular/fire/firestore';
 import { User } from '../models/user.model';
 import { Conversation } from '../models/conversation.model';
-import { where, } from "firebase/firestore";
 import { AuthService } from './../services/auth.service';
 import { InterfaceService } from './../services/interface.service';
 import { FirebaseService } from './firebase.service';
 import { UserDataService } from './user.service';
-import { BehaviorSubject } from 'rxjs';
 import { SearchbarService } from './searchbar.service';
 
 @Injectable({
@@ -18,9 +16,6 @@ export class ConversationService {
     firestore = inject(Firestore);
     authService = inject(AuthService);
     uiService = inject(InterfaceService);
-
-    // private allConvSubject = new BehaviorSubject<any>(null);
-    // selectedConv = this.allConvSubject.asObservable();
 
     constructor(private userDataService: UserDataService, private searchbarSearvice: SearchbarService) {
     }
@@ -36,14 +31,12 @@ export class ConversationService {
         let partnerId = user.uid
         let creatorId = this.authService.currentUserSig()?.uid;
         let existCon = this.searchConversation(creatorId, partnerId)
-
         if (existCon) {
             this.FiBaService.currentConversation = new Conversation(existCon);
             if (openChat) {
             } else {
                 this.showUserChat(user);
             }
-            //console.log("existConv", this.FiBaService.currentConversation)
             this.listenToCurrentConversationChanges(this.FiBaService.currentConversation.conId);
         } else {
             await this.createNewConversation(creatorId, partnerId)
@@ -51,12 +44,10 @@ export class ConversationService {
             } else {
                 this.showUserChat(user);
             }
-            // console.log("newConv", this.FiBaService.currentConversation)
             this.listenToCurrentConversationChanges(this.FiBaService.currentConversation.conId);
         }
         this.searchbarSearvice.emptyInput();
     }
-
 
     /**
      * Erstellt eine neue Konversation zwischen dem aktuellen Benutzer und einem Partner.
@@ -101,7 +92,7 @@ export class ConversationService {
         conData.conId = conversationRef.id,
             this.FiBaService.currentConversation.conId = conData.conId
         await setDoc(conversationRef, conData).catch((err) => {
-            console.log('Error adding Conversation to firebase', err);
+            console.error('Error adding Conversation to firebase', err);
         });
         this.FiBaService.getAllConversations();
     }
@@ -118,7 +109,6 @@ export class ConversationService {
             const conversation: Conversation = this.FiBaService.allConversations[i];
             const searchedCreatorId = conversation.creatorId;
             const searchedPartnerId = conversation.partnerId;
-
             if (creatorId === searchedCreatorId && partnerId === searchedPartnerId
                 ||
                 creatorId === searchedPartnerId && partnerId === searchedCreatorId) {
@@ -139,31 +129,6 @@ export class ConversationService {
         return this.searchConversation(creatorId, partnerId)
     }
 
-    // async getAllConversations() {
-    //     const q = query(collection(this.firestore, "conversations"));
-    //     const unsubscribe = onSnapshot(q, (querySnapshot) => {
-    //         this.FiBaService.allConversations = [];
-    //         querySnapshot.forEach((doc) => {
-    //             const conv = this.setConversationObject(doc.data());
-    //             this.FiBaService.allConversations.push(conv);
-    //         });
-
-    //     });
-    //     this.FiBaService.registerListener(unsubscribe);
-    //     console.log("allConvgetAllConv", this.FiBaService.allConversations)
-    // }
-
-    // setConversationObject(conversation: any): Conversation {
-    //     return {
-    //         conId: conversation.conId || '',
-    //         creatorId: conversation.creatorId || '',
-    //         partnerId: conversation.partnerId || '',
-    //         messages: conversation.messages || [],
-    //         active: conversation.active || false,
-    //     };
-    // }
-
-
     /**
      * Bereitet ein Konversationsobjekt für die Speicherung in Firebase vor.
      *
@@ -176,7 +141,6 @@ export class ConversationService {
             creatorId: conversation.creatorId,
             partnerId: conversation.partnerId,
             messages: conversation.messages,
-            active: conversation.active,
             user: conversation.user
         };
     }
@@ -206,7 +170,6 @@ export class ConversationService {
         const filteredConversation = allConv.find((conv: any) =>
             conv.user.includes(foundUser.uid) && conv.user.includes(currentUserUid)
         );
-
         return filteredConversation as Conversation;
     }
 }
