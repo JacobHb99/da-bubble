@@ -36,8 +36,8 @@ export class LoginComponent implements OnInit {
   loginFailed: boolean = false;
 
   userForm = this.fb.group({
-    email: this.fb.control('', {validators: [Validators.required, Validators.email, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/)]}),
-    password: this.fb.control('', {validators: [Validators.required, Validators.minLength(6)]})
+    email: this.fb.control('', { validators: [Validators.required, Validators.email, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/)] }),
+    password: this.fb.control('', { validators: [Validators.required, Validators.minLength(6)] })
   });
 
 
@@ -45,12 +45,15 @@ export class LoginComponent implements OnInit {
     this.authService.errorMessage = '';
   }
 
-
-  ngOnInit() {    
-    if(this.authService.currentUserSig()) {
+  /**
+   * Aufgerufen beim Initialisieren der Komponente. 
+   * Überprüft, ob der aktuelle Benutzer angemeldet ist. Wenn ja, wird der Benutzer zur Hauptansicht weitergeleitet.
+   */
+  ngOnInit() {
+    if (this.authService.currentUserSig()) {
       this.router.navigate(['/main']);
+    }
   }
-}
 
 
   // guestLogin() {
@@ -58,44 +61,55 @@ export class LoginComponent implements OnInit {
   // }
 
 
+  /**
+   * Methode zur Anmeldung eines Benutzers.
+   * Erstellt einen Benutzer-Objekt aus dem Formular und ruft die `login`-Methode des `authService` auf.
+   * Abonniert die Rückmeldungen des Login-Vorgangs.
+   * Bei erfolgreichem Login wird der Benutzer zur Hauptansicht weitergeleitet.
+   * Bei Fehlern werden entsprechende Fehlermeldungen gesetzt und angezeigt.
+   */
   login(): void {
     let user = this.userForm.getRawValue()
     this.loginFailed = false;
     this.authService.login(user.email, user.password)
-    .subscribe({
-      next: () => {
+      .subscribe({
+        next: () => {
 
-      },
+        },
 
-      error: (err) => {
-        console.log(err.code);  
-        if (err.code === "auth/invalid-credential") {
-          this.loginFailed = true;
-          this.errorMessage = 'Diese Anmeldedaten sind ungültig!';
-          console.log('loginFailed', this.loginFailed);
-          console.log('MESSAGE', this.errorMessage);
-        } else {
-          this.loginFailed = true;
-          this.errorMessage = 'Irgendetwas ist schief gelaufen!';
-          console.log('loginFailed', this.loginFailed);
-          console.log('MESSAGE', this.errorMessage);
+        error: (err) => {
+          console.log(err.code);
+          if (err.code === "auth/invalid-credential") {
+            this.loginFailed = true;
+            this.errorMessage = 'Diese Anmeldedaten sind ungültig!';
+            console.log('loginFailed', this.loginFailed);
+            console.log('MESSAGE', this.errorMessage);
+          } else {
+            this.loginFailed = true;
+            this.errorMessage = 'Irgendetwas ist schief gelaufen!';
+            console.log('loginFailed', this.loginFailed);
+            console.log('MESSAGE', this.errorMessage);
+          }
+          this.userForm.reset();
         }
-        this.userForm.reset();
-      }
-    })
-      // .pipe(
-      //   catchError((error) => {
-      //     this.loginFailed = true;
-      //     console.log('loginFailed', this.loginFailed);
-          
-      //     return of(null);  
-      //   })
-      // )
-      // .subscribe(() => {
-      // })
+      })
+    // .pipe(
+    //   catchError((error) => {
+    //     this.loginFailed = true;
+    //     console.log('loginFailed', this.loginFailed);
+
+    //     return of(null);  
+    //   })
+    // )
+    // .subscribe(() => {
+    // })
   }
 
-
+  /**
+   * Methode zur Durchführung der Anmeldung als Gast.
+   * Führt den Gast-Login-Vorgang aus und bei erfolgreichem Login wird der Benutzer zur Hauptansicht weitergeleitet.
+   * Bei Fehlern wird der Login-Versuch als fehlgeschlagen markiert.
+   */
   async guestLogin() {
     try {
       await this.authService.guestLogin();

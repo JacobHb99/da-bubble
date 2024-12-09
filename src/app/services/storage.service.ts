@@ -11,6 +11,13 @@ export class StorageService {
 
   private storage = inject(Storage);
 
+  /**
+   * Lädt eine Datei auf Firebase Storage hoch und gibt die Download-URL zurück.
+   * 
+   * @param {string} filePath - Der Speicherort der Datei im Firebase Storage.
+   * @param {File} file - Die Datei, die hochgeladen werden soll.
+   * @returns {Observable<string>} - Eine Observable, die die Download-URL der hochgeladenen Datei liefert, oder einen Fehler, wenn der Upload fehl schlägt.
+   */
   uploadFile(filePath: string, file: File): Observable<string> {
     const storageRef = ref(this.storage, filePath);
     const uploadTask = uploadBytesResumable(storageRef, file);

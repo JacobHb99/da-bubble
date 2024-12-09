@@ -28,7 +28,10 @@ export class NewPasswordComponent {
     verifyPassword: this.fb.control('', { validators: [Validators.required, Validators.minLength(6), this.validateSamePassword] })
   });
 
-
+/**
+ * Handler für das Formular-Sendenereignis.
+ * Führt das Zurücksetzen des Passworts durch und leitet dann nach einem Verzögerungszeitraum von 1 Sekunde zur Startseite um.
+ */
   onSubmit() {
     this.resetPassword();
     setTimeout(() => {
@@ -36,7 +39,13 @@ export class NewPasswordComponent {
     }, 1000);
   }
 
-
+/**
+ * Asynchrone Methode zum Zurücksetzen des Passworts.
+ * Extrahiert den One-Time-Password-Code (oobCode) aus den URL-Parametern und das geänderte Passwort aus dem Formular.
+ * Ruft Firebase `confirmPasswordReset` auf, um das Passwort zurückzusetzen.
+ * Gibt bei Erfolg eine Erfolgsmeldung aus, andernfalls wird ein Fehler protokolliert.
+ * @throws Fehler, falls beim Zurücksetzen des Passworts ein Problem auftritt.
+ */
   async resetPassword(): Promise<void> {
     const auth = getAuth();
     const urlParams = new URLSearchParams(window.location.search);
@@ -54,7 +63,13 @@ export class NewPasswordComponent {
     }
   }
 
-
+/**
+ * Überprüft, ob die eingegebenen Passwörter übereinstimmen.
+ * Vergleicht die Werte des `firstPassword`-Controls und des `verifyPassword`-Controls.
+ * Gibt `null` zurück, wenn die Passwörter übereinstimmen, andernfalls ein Objekt mit der Eigenschaft `notSame`.
+ * @param {AbstractControl} control Das aktuelle Formularelement, das überprüft wird.
+ * @returns {ValidationErrors | null} Rückgabeobjekt, das `null` bedeutet, wenn die Passwörter übereinstimmen oder ein Fehlerobjekt, wenn nicht.
+ */
   private validateSamePassword(control: AbstractControl): ValidationErrors | null {
     const password = control.parent?.get('firstPassword');
     const confirmPassword = control.parent?.get('verifyPassword');

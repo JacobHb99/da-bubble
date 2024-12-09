@@ -30,8 +30,13 @@ export class ResetPasswordComponent {
     this.emailConfirmed = false;
   }
 
+  /**
+   * Methode zum Senden eines Passwort-Reset-Links.
+   * Überprüft, ob eine gültige E-Mail-Adresse eingegeben wurde. Wenn ja, sendet einen Passwort-Reset-Link an diese E-Mail-Adresse.
+   * Setzt das Flag `emailConfirmed` auf `true`. Wenn keine E-Mail-Adresse eingegeben wurde, zeigt ein Alert mit der Nachricht "ERROR".
+   */
   onSubmit() {
-    if(this.emailForm.value) {
+    if (this.emailForm.value) {
       let email: string = this.emailForm.value;
       this.emailConfirmed = true;
       this.authService.sendPasswordReset(email);

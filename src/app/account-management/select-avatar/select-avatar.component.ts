@@ -37,14 +37,21 @@ export class SelectAvatarComponent {
 
   constructor() { }
 
-  // Funktion zum Triggern des versteckten Datei-Inputs
-  triggerFileInput(): void {
+/**
+ * Funktion zum Triggern des versteckten Datei-Inputs.
+ * Findet den Datei-Input-Element im DOM und simuliert einen Klick darauf, um die Datei-Auswahl zu starten.
+ */  triggerFileInput(): void {
     const fileInput = document.querySelector('input[type="file"]') as HTMLElement;
     fileInput.click();
   }
 
 
-  // Speichert die Datei, wenn der Benutzer sie auswählt, und startet den Upload
+/**
+ * Event-Handler für das Selektieren einer Datei.
+ * Überprüft, ob eine Datei ausgewählt wurde, und ruft `uploadFile()` auf, um die Datei zu speichern und hochzuladen.
+ * 
+ * @param {Event} event - Das Event-Objekt, das durch das Selektieren einer Datei ausgelöst wird.
+ */
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -54,7 +61,11 @@ export class SelectAvatarComponent {
   }
 
 
-  // Funktion zum Hochladen der Datei
+/**
+ * Funktion zum Hochladen einer Datei in Firebase Storage.
+ * Bestimmt den Speicherort der Datei und verwendet `uploadFile` aus dem `storageService`, um die Datei hochzuladen.
+ * Auf Erfolgreichmeldung wird die Download-URL gespeichert, andernfalls wird der Fehler in der Konsole ausgegeben.
+ */
   uploadFile(): void {
     if (this.selectedFile) {
       const filePath = `uploads/${this.selectedFile.name}`; // Speicherort in Firebase Storage
@@ -66,12 +77,19 @@ export class SelectAvatarComponent {
     }
   }
 
-
+/**
+ * Setzt das Avatar-Bild für den Benutzer.
+ * 
+ * @param {string} avatar - Die URL des Avatar-Bildes.
+ */
   setAvatar(avatar: string) {
     this.chosenAvatar = avatar;
   }
 
-
+/**
+ * Sendet das Registrierungsformular.
+ * Überprüft, ob die E-Mail bereits in Gebrauch ist, und navigiert entsprechend. Falls ein Fehler auftritt, wird eine Fehlermeldung angezeigt.
+ */
   submitRegistration(): void {
     this.authService.register(this.currentData.email, this.currentData.username, this.currentData.password, this.chosenAvatar)
       .subscribe({

@@ -10,6 +10,16 @@ import { BehaviorSubject } from 'rxjs';
 
 export class BreakpointObserverService {
 
+  /**
+   * Initializes the BreakpointObserver to monitor screen size changes.
+   * Updates the screen size state and boolean flags based on the active breakpoint.
+   * Observes the following breakpoints:
+   * - Breakpoints.XSmall
+   * - Breakpoints.Small
+   * - Breakpoints.Medium
+   * - Breakpoints.Large
+   * - Breakpoints.Tablet
+   */
   private screenSizeSubject = new BehaviorSubject<'XSmall' | 'Small' | 'Medium' | 'Large'>('Large');
   screenSize$ = this.screenSizeSubject.asObservable();
   isXSmallOrSmall: boolean = false;
@@ -38,13 +48,13 @@ export class BreakpointObserverService {
           this.screenSizeSubject.next('Small');
           this.isXSmallOrSmall = true;
           this.isMedium = false;
-          console.log('BREAKPOINT-SMALL' ,this.isXSmallOrSmall);
+          console.log('BREAKPOINT-SMALL', this.isXSmallOrSmall);
 
         } else if (result.breakpoints[Breakpoints.Medium] || result.breakpoints[Breakpoints.Tablet]) {
           this.screenSizeSubject.next('Medium');
           this.isXSmallOrSmall = false;
           this.isMedium = true;
-          console.log('BREAKPOINT-MEDIUM' ,this.isMedium);
+          console.log('BREAKPOINT-MEDIUM', this.isMedium);
 
         } else if (result.breakpoints[Breakpoints.Large]) {
           this.screenSizeSubject.next('Large');
@@ -62,6 +72,4 @@ export class BreakpointObserverService {
     return this.screenSizeSubject.getValue();
   }
 
-
-
-  }
+}

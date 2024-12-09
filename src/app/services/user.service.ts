@@ -17,29 +17,36 @@ export class UserDataService {
 
 
 
-constructor(private authService: AuthService, private firebaseService: FirebaseService) {
-  this.currentUserSig = this.authService.currentUserSig;
-  this.currentCredentials = this.authService.currentCredentials;
-}
+  constructor(private authService: AuthService, private firebaseService: FirebaseService) {
+    this.currentUserSig = this.authService.currentUserSig;
+    this.currentCredentials = this.authService.currentCredentials;
+  }
 
+  /**
+   * Setzt den aktuellen Benutzer im BehaviorSubject.
+   * @param {UserInterface | null | undefined} user - Das Benutzerobjekt, das gesetzt werden soll.
+   */
+  setCurrentUser(user: UserInterface | null | undefined) {
+    this.currentUserSig.set(user);
+  }
 
-setCurrentUser(user: UserInterface | null | undefined) {
-  this.currentUserSig.set(user);
-}
-
-getCurrentUser() {
-  return this.currentUserSig();
-}
+  /**
+   * Gibt den aktuellen Benutzer zurück.
+   * @returns {UserInterface | null | undefined} - Das aktuelle Benutzerobjekt oder `undefined`, wenn kein Benutzer gesetzt ist.
+   */
+  getCurrentUser() {
+    return this.currentUserSig();
+  }
 
 
   private userSource = new BehaviorSubject<User>(new User());
   selectedUser = this.userSource.asObservable();
 
+  /**
+   * Setzt einen neuen Benutzer im BehaviorSubject.
+   * @param {any} user - Das Benutzerobjekt, das gesetzt werden soll.
+   */
   setUser(user: any) {
     this.userSource.next(user);
   }
-
-
-
-
 }
