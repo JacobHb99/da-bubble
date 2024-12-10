@@ -90,12 +90,10 @@ export class ChannelChatComponent {
   private async handleChannelChange(channel: any) {
     this.channel = channel;
     this.uiService.currChannel = channel;
-    console.log('CHANNELS', this.uiService.currChannel);
 
     if (this.channel.users) {
       this.allUsersFromAChannel = [...this.channel.users]; // Nutzer-IDs kopieren
     }
-
     await this.loadUsersFromChannel();
   }
 
@@ -109,10 +107,9 @@ export class ChannelChatComponent {
       );
       // Warten, bis alle Benutzerdaten geladen sind
       const users = await Promise.all(userPromises);
-      console.log("Geladene Benutzer:", users);
       this.allUsersFromAChannel = users; // Speichere Benutzer
     } catch (error) {
-      console.error("Fehler beim Laden der Benutzer aus dem Kanal:", error);
+      // console.error("Fehler beim Laden der Benutzer aus dem Kanal:", error);
     }
   }
 
@@ -229,7 +226,5 @@ export class ChannelChatComponent {
    */
   removeReceiver(i: number) {
     this.uiService.selectedConversations.splice(i, 1);
-    console.log('REMOVED');
-
   }
 }

@@ -120,7 +120,6 @@ export class SendMessageComponent {
       this.currentMsg.thread = currentThreadId;
       this.currentMsg.reactions = [];
       // Logik zum Speichern oder Senden der Nachricht, falls erforderlich
-      console.log('Thread erstellt für:', receiver);
       await this.addMessage(this.currentMsg, receiver);
     }
   }
@@ -243,10 +242,10 @@ export class SendMessageComponent {
         messages: arrayUnion(msgData)
 
       });
-      console.log('Nachricht erfolgreich hinzugefügt');
+      // console.log('Nachricht erfolgreich hinzugefügt');
       //this.conService.showUserChat()
     } catch (error) {
-      console.error('Fehler beim Hinzufügen der Nachricht:', error);
+      // console.error('Fehler beim Hinzufügen der Nachricht:', error);
     }
   }
 
@@ -339,7 +338,6 @@ export class SendMessageComponent {
    * @param {any} event - Das Ereignis mit den Emoji-Daten.
    */
   addEmoji(event: any) {
-    console.log(event);
     const emoji = event.emoji.native;
     this.text += emoji;
     this.textArea.nativeElement.focus();
