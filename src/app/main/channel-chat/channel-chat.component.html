@@ -63,7 +63,10 @@
                     <input placeholder="An: #channel, @jemand oder E-mail Adresse" type="text"
                         [(ngModel)]="this.searchbarService.newMsgSearchName" (input)="searchbarService.newMsgSearch()">
                 </div>
-                <div [ngClass]="{'hideUserDialog' : searchbarService.filteredResults.length <= 0}"
+                <div [ngClass]="{
+                    'hideUserDialog' : searchbarService.filteredResults.length <= 0, 
+                    'user-dialog-mobile': breakpointObserver.isXSmallOrSmall
+                    }"
                     class="user-dialog showUserDialog">
                     <div class="scroll-container">
                         <div *ngFor="let obj of searchbarService.filteredResults" class="single-user">
