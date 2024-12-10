@@ -27,7 +27,6 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-channel-chat',
   standalone: true,
   imports: [
-    SingleMessageComponent,
     SendMessageComponent,
     MessageThreadComponent,
     CommonModule,

@@ -22,7 +22,7 @@ import { SearchbarService } from '../../../services/searchbar.service';
 @Component({
   selector: 'app-send-message',
   standalone: true,
-  imports: [CommonModule, FormsModule, EmojiComponent, PickerComponent],
+  imports: [CommonModule, FormsModule, PickerComponent],
   templateUrl: './send-message.component.html',
   styleUrl: './send-message.component.scss'
 })

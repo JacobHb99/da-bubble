@@ -25,7 +25,7 @@ export class SingleMessageComponent {
   authService = inject(AuthService);
   reactService = inject(ReactionService);
 
-  showReactionPopups: boolean = false; 
+  showReactionPopups: boolean = false;
   showEmojiPicker = false;
   editMode = false;
   editText = '';
@@ -49,35 +49,59 @@ export class SingleMessageComponent {
     });
   }
 
+  /**
+   * Zeigt das Reaktions-Popup an, wenn die Maus über das Element bewegt wird.
+   */
   onMouseOver() {
     this.showReactionPopups = true;
   }
 
+  /**
+   * Zeigt das Reaktions-Popup an, wenn die Maus über das Element bewegt wird.
+   */
   onMouseLeave() {
     this.showReactionPopups = false;
   }
 
+  /**
+   * Initialisiert die Komponente, indem die aktuelle Nachricht und der eingeloggte Benutzer gesetzt werden.
+   */
   ngOnInit(): void {
     this.currentMessage = new Message(this.currentMessage);
     this.loggedInUser = this.authService.currentUserSig();
   }
 
+/**
+ * Öffnet einen Thread und erzwingt eine erneute Change Detection.
+ */
   openThread() {
     this.uiService.openThread()
     this.cdr.detectChanges();  // Erzwingt eine erneute Change Detection
   }
 
+/**
+ * Formatiert einen Zeitstempel in ein deutsches Datum im Format "Wochentag, Tag. Monat".
+ * 
+ * @param {number} timestamp - Der zu formatierende Zeitstempel.
+ * @returns {string} - Das formatierte Datum.
+ */
   getFormattedDate(timestamp: number): string {
     const date = new Date(timestamp);
 
     const options: Intl.DateTimeFormatOptions = {
       weekday: 'long',
-      day: 'numeric', 
-      month: 'long'    
+      day: 'numeric',
+      month: 'long'
     };
     return date.toLocaleDateString('de-DE', options);
   }
 
+/**
+ * Formatiert einen Zeitstempel in eine deutsche Uhrzeit im Format "HH:MM Uhr".
+ * 
+ * @param {number} timestamp - Der zu formatierende Zeitstempel.
+ * @returns {string} - Die formatierte Uhrzeit.
+ */
   getFormattedTime(timestamp: number): string {
     const time = new Date(timestamp);
 
@@ -87,6 +111,12 @@ export class SingleMessageComponent {
     }) + ' Uhr';
   }
 
+/**
+ * Findet einen Benutzer basierend auf seiner ID.
+ * 
+ * @param {unknown} Id - Die Benutzer-ID, nach der gesucht wird.
+ * @returns {User | null} - Der gefundene Benutzer oder `null`, wenn kein Benutzer gefunden wurde.
+ */
   findUserWithId(Id: unknown) {
     for (let i = 0; i < this.fiBaService.allUsers.length; i++) {
       let user: User = this.fiBaService.allUsers[i];
@@ -98,23 +128,38 @@ export class SingleMessageComponent {
     return null;
   }
 
+/**
+ * Bestimmt, ob ein Datums-Trenner angezeigt werden soll.
+ * 
+ * @param {number} index - Der Index der aktuellen Nachricht.
+ * @returns {boolean} - `true`, wenn ein Trenner angezeigt werden soll, ansonsten `false`.
+ */
   shouldShowDateDivider(index: number): boolean {
     if (index === 0) {
-      this.uiService.previousMessage = this.currentMessage      
+      this.uiService.previousMessage = this.currentMessage
       return true;
 
     } else {
       const currentDate = this.getFormattedDate(this.currentMessage.timeStamp);
       const previousDate = this.getFormattedDate(this.uiService.previousMessage.timeStamp);
-      this.uiService.previousMessage = this.currentMessage;     
+      this.uiService.previousMessage = this.currentMessage;
       return currentDate !== previousDate;
     }
   }
 
+/**
+ * Umschalten des Emoji-Pickers.
+ */
   toggleEmojiPicker() {
     this.showEmojiPicker = !this.showEmojiPicker;
   }
 
+/**
+ * Überprüft, ob eine Reaktion im Singular oder Plural angezeigt werden soll.
+ * 
+ * @param {Reaction} reaction - Die Reaktion, die überprüft wird.
+ * @returns {string} - Der korrekte Text für Singular oder Plural.
+ */
   checkPlural(reaction: Reaction) {
     const hasReacted = Object.keys(reaction.reactedUser).some(
       (username) => username === this.authService.currentUserSig()?.username
@@ -126,26 +171,45 @@ export class SingleMessageComponent {
     }
   }
 
+/**
+ * Verarbeitet die Auswahl eines Emojis.
+ * 
+ * @param {any} event - Das Ereignis, das das ausgewählte Emoji enthält.
+ */
   manageEmoji(event: any) {
     const emoji = event.emoji;
     this.reactService.updateMessageWithReaction(emoji, this.currentMessage)
   }
 
+/**
+ * Entfernt ein Emoji aus der aktuellen Nachricht.
+ */
   manageDeleteEmoji() {
     this.reactService.deleteEmoji(this.currentMessage)
   }
 
+/**
+ * Aktiviert den Bearbeitungsmodus für eine Nachricht.
+ */
   async showEditArea() {
     this.editMode = true;
     this.editText = this.currentMessage.text;
     //this.editTextArea.nativeElement.focus();
   }
 
+/**
+ * Bricht den Bearbeitungsmodus ab.
+ */
   cancelEditArea() {
     this.editText = '';
     this.editMode = false;
   }
 
+/**
+ * Speichert die bearbeitete Nachricht, wenn das Formular gültig ist.
+ * 
+ * @param {NgForm} ngForm - Das Formular, das die bearbeitete Nachricht enthält.
+ */
   async onSubmit(ngForm: NgForm) {
     if (ngForm.valid && ngForm.submitted) {
       await this.saveEditMessage();
@@ -154,12 +218,15 @@ export class SingleMessageComponent {
     }
   }
 
+/**
+ * Speichert die bearbeitete Nachricht in Firestore.
+ */
   async saveEditMessage() {
     const msgId = this.currentMessage.msgId;
     this.currentMessage.text = this.editText;
     const ref = await this.reactService.searchMsgById(msgId);
     if (!ref) {
-      console.error('Reference path not found for the given message.');
+      // console.error('Reference path not found for the given message.');
       return;
     }
 
