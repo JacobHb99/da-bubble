@@ -53,7 +53,6 @@ export class FirebaseService {
         this.loadAllThreads(),
       ]);
     } catch (error) {
-      console.error("Fehler beim Laden der Daten:", error);
     } finally {
       setTimeout(() => {
         this.isLoading = false; // Ladeanzeige deaktivieren
@@ -67,7 +66,6 @@ export class FirebaseService {
    * @param currentUid Die eindeutige Benutzer-ID des aktuellen Benutzers.
    */
   moveUserToFront(currentUid: string): void {
-    console.log(this.allUsers);
     // Finden des Index des Benutzers mit der aktuellen UID
     const index = this.allUsers.findIndex(user => user.uid === currentUid);
 
@@ -78,7 +76,6 @@ export class FirebaseService {
 
       // Einfügen des Benutzers an Position 0
       this.allUsers.unshift(currentUser);
-      console.log(this.allUsers);
     }
   }
 
@@ -107,14 +104,11 @@ export class FirebaseService {
     this.unsubscribeListeners.forEach((unsub, index) => {
       try {
         unsub(); // Listener entfernen 
-        console.log(`Listener ${index + 1} erfolgreich entfernt.`);
       } catch (error) {
-        console.warn(`Fehler beim Entfernen von Listener ${index + 1}:, error`);
       }
     });
     this.unsubscribeListeners = []; // Liste leeren
     this.isUserChannelsListenerActive = false; // Flag zurücksetzen
-    console.log("Alle Listener wurden erfolgreich entfernt.");
   }
 
   /**
@@ -124,12 +118,10 @@ export class FirebaseService {
    */
   loadUserChannels(userUid: string) {
     if (!userUid) {
-      console.error("Kein Benutzer angemeldet. Channels werden nicht geladen.");
       return;
     }
 
     if (this.isUserChannelsListenerActive) {
-      console.warn("Listener für User Channels ist bereits aktiv. Abbruch.");
       return;
     }
     this.loadAfterChecking(userUid);
@@ -148,9 +140,7 @@ export class FirebaseService {
       snapshot.forEach((doc) => {
         this.allChannels.push(doc.data() as Channel)
       })
-      console.log("Aktualisierte Channels:", this.allChannels);
     }, (error) => {
-      console.error("Fehler beim Laden der Channels:", error);
     });
 
     this.registerListener(unsubscribe); // Listener registrieren
@@ -235,7 +225,6 @@ export class FirebaseService {
 
     });
     this.registerListener(unsubscribe);
-    console.log("allConvgetAllConv", this.allConversations)
   }
 
   /**
@@ -296,16 +285,13 @@ export class FirebaseService {
    */
   async setUserStatus(currentUser: UserCredential | null, status: string) {
     if (!currentUser || !currentUser.user) {
-      console.warn("setUserStatus: currentUser oder user ist undefined.");
       return;
     }
 
     const userRef = doc(this.firestore, "users", currentUser.user.uid);
     try {
       await updateDoc(userRef, { status: status });
-      console.log(`Status erfolgreich auf '${status}' gesetzt für Benutzer ${currentUser.user.uid}`);
     } catch (error) {
-      console.error("Fehler beim Aktualisieren des Status:", error);
     }
   }
 
