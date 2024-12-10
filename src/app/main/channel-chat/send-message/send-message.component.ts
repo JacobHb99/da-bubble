@@ -55,37 +55,57 @@ export class SendMessageComponent {
 
   }
 
+  /**
+   * Erstellt eine neue Nachricht basierend auf dem Eingabetyp und führt zugehörige Logik aus.
+   */
   async createNewMsg() {
     if (this.text.trim()) {
       if (this.input == 'chat' || this.input == 'channel') {
-        let currentThreadId = await this.createThread(this.input);
-        this.currentMsg = new Message();
-        this.currentMsg.timeStamp = Date.now();
-        this.currentMsg.senderId = this.authService.currentUserSig()?.uid;
-        this.currentMsg.text = this.text,
-          this.currentMsg.thread = currentThreadId, //wird erstmal nicht erstellt (wegen array)
-          this.currentMsg.reactions = [], //wird erstmal nicht erstellt (wegen array)
-          await this.addMessage(this.currentMsg);
+        await this.createChannelAndChatMsg(this.input);
       }
-
       if (this.input == 'thread') {
-        this.currentMsg = new Message();
-        this.currentMsg.timeStamp = Date.now();
-        this.currentMsg.senderId = this.authService.currentUserSig()?.uid;
-        this.currentMsg.text = this.text,
-          this.currentMsg.reactions = [], //wird erstmal nicht erstellt (wegen array)
-          this.currentMsg.parent = this.uiService.currentMessage
-        await this.addThreadMessage(this.currentMsg);
+        await this.createThreadMsg();
       }
-
       if (this.input == 'newMsg') {
-        this.createThreadsForAllReceivers();
+        await this.createThreadsForAllReceivers();
+        this.showConfirmBox();
       }
-
+      this.emptyNewMsgSearch();
       this.checkemptyInput();
     }
   }
 
+  /**
+   * Erstellt eine Nachricht für einen Kanal oder Chat und speichert sie.
+   * @param {('chat' | 'channel')} input - Gibt an, ob die Nachricht für einen Chat oder Kanal ist.
+   */
+  async createChannelAndChatMsg(input: 'chat' | 'channel') {
+    let currentThreadId = await this.createThread(input);
+    this.currentMsg = new Message();
+    this.currentMsg.timeStamp = Date.now();
+    this.currentMsg.senderId = this.authService.currentUserSig()?.uid;
+    this.currentMsg.text = this.text,
+      this.currentMsg.thread = currentThreadId, //wird erstmal nicht erstellt (wegen array)
+      this.currentMsg.reactions = [], //wird erstmal nicht erstellt (wegen array)
+      await this.addMessage(this.currentMsg);
+  }
+
+  /**
+   * Erstellt eine spezifische Nachricht für einen Thread und verknüpft sie mit einer Elternnachricht.
+   */
+  async createThreadMsg() {
+    this.currentMsg = new Message();
+    this.currentMsg.timeStamp = Date.now();
+    this.currentMsg.senderId = this.authService.currentUserSig()?.uid;
+    this.currentMsg.text = this.text,
+      this.currentMsg.reactions = [], //wird erstmal nicht erstellt (wegen array)
+      this.currentMsg.parent = this.uiService.currentMessage
+    await this.addThreadMessage(this.currentMsg);
+  }
+
+  /**
+   * Erstellt Threads für alle ausgewählten Empfänger und fügt Nachrichten hinzu.
+   */
   async createThreadsForAllReceivers() {
     let currentThreadId: string = "";
 
@@ -107,7 +127,12 @@ export class SendMessageComponent {
     }
   }
 
-
+  /**
+   * Erstellt einen neuen Thread in Firestore basierend auf dem Eingabetyp und einem optionalen Empfänger.
+   * @param {('chat' | 'channel' | 'newMsg')} input - Der Typ des zu erstellenden Threads.
+   * @param {Channel | User} [receiver] - Optionaler Empfänger des Threads.
+   * @returns {Promise<string>} Die ID des erstellten Threads.
+   */
   async createThread(input: 'chat' | 'channel' | 'newMsg', reciever?: Channel | User): Promise<string> {
     const currentUser = this.authService.currentUserSig();
     let objId: string = "";
@@ -122,53 +147,70 @@ export class SendMessageComponent {
       objId = this.channelService.currentChannelSubject.value.chaId
     } else {
       if (reciever) {
-
-        if ('uid' in reciever) {
-          objId = this.conService.searchForConversation(reciever).conId as string
-        } else {
-          objId = reciever.chaId
-        }
-        let thread = this.getCleanThreadJSON(new Thread(), input, objId)
-        const threadRef = await addDoc(collection(this.firestore, 'threads'), thread);
-        // Zurückgegebene Thread-ID
-        return threadRef.id;
+        await this.checkReceiver(reciever, objId, input);
       } else {
-        let thread = this.getCleanThreadJSON(new Thread(), input, objId)
-        const threadRef = await addDoc(collection(this.firestore, 'threads'), thread);
-        // Zurückgegebene Thread-ID
-        return threadRef.id;
+        await this.addThread(objId, input);
       }
     }
     return ""
   }
 
+  /**
+   * Überprüft den Typ des Empfängers (Benutzer oder Kanal) und erstellt den zugehörigen Thread.
+   * @param {User | Channel} receiver - Der Empfänger des Threads.
+   * @param {string} objId - Objekt-ID für die Konversation oder den Kanal.
+   * @param {('newMsg')} input - Der Typ des Threads.
+   */
+  async checkReceiver(receiver: User | Channel, objId: string, input: 'newMsg') {
+    if ('uid' in receiver) {
+      objId = this.conService.searchForConversation(receiver).conId as string
+    } else {
+      objId = receiver.chaId
+    }
+    await this.addThread(objId, input);
+  }
 
+  /**
+   * Fügt einen Thread in die Firestore-Sammlung mit den angegebenen Parametern hinzu.
+   * @param {string} objId - Objekt-ID für die Konversation oder den Kanal.
+   * @param {('conversation' | 'channel' | 'newMsg')} input - Der Typ des Threads.
+   * @returns {Promise<string>} Die ID des erstellten Threads.
+   */
+  async addThread(objId: string, input: 'conversation' | 'channel' | 'newMsg') {
+    let thread = this.getCleanThreadJSON(new Thread(), input, objId)
+    const threadRef = await addDoc(collection(this.firestore, 'threads'), thread);
+    // Zurückgegebene Thread-ID
+    return threadRef.id;
+  }
+
+  /**
+   * Fügt eine Nachricht zu einem bestehenden Thread in Firestore hinzu.
+   * @param {Message} message - Das hinzuzufügende Nachrichtenobjekt.
+   */
   async addThreadMessage(message: Message) {
     const threadId = this.uiService.currentMessage.thread;
     const msgData = this.getCleanJSON(message);
     msgData.msgId = uuidv4();
     try {
-      console.log(threadId);
-
       const threadRef = doc(this.firestore, "threads", threadId);
-      // Füge die Nachricht in das "messages"-Array hinzu
       await updateDoc(threadRef, {
         messages: arrayUnion(msgData)
       });
-      console.log('Nachricht erfolgreich hinzugefügt');
+      // console.log('Nachricht erfolgreich hinzugefügt');
     } catch (error) {
-      console.error('Fehler beim Hinzufügen der Nachricht:', error);
+      // console.error('Fehler beim Hinzufügen der Nachricht:', error);
     }
   }
 
-
+  /**
+   * Fügt eine Nachricht zu einer Konversation oder einem Kanal basierend auf dem Kontext hinzu.
+   * @param {any} message - Das hinzuzufügende Nachrichtenobjekt.
+   * @param {Channel | User} [receiver] - Optionaler Empfänger der Nachricht.
+   */
   async addMessage(message: any, receiver?: Channel | User) {
     let objId;
-    let coll;
-    let conversationId;
+    let coll = 'conversation';
     if (this.uiService.content == 'channelChat') {
-      console.log(this.channelService.currentChannel);
-
       objId = this.channelService.currentChannelSubject.value.chaId
       coll = 'channels'
     } else if (this.uiService.content == 'directMessage') {
@@ -183,9 +225,18 @@ export class SendMessageComponent {
           objId = receiver.chaId;
           coll = 'channels'
         }
-        this.emptyNewMsgSearch();
       }
     }
+    await this.updateDocument(message, coll, objId as string);
+  }
+
+  /**
+   * Aktualisiert ein Firestore-Dokument mit einer neuen Nachricht.
+   * @param {Message} message - Das hinzuzufügende Nachrichtenobjekt.
+   * @param {string} coll - Der Name der Sammlung ('conversations' oder 'channels').
+   * @param {string} objId - Die ID des zu aktualisierenden Dokuments.
+   */
+  async updateDocument(message: Message, coll: string, objId: string) {
     const msgData = this.getCleanJSON(message);
     msgData.msgId = uuidv4();
     const conversationRef = doc(this.firestore, `${coll}/${objId}`);
@@ -201,13 +252,32 @@ export class SendMessageComponent {
     }
   }
 
+  /**
+   * Zeigt ein Bestätigungsfeld für das Senden einer Nachricht an.
+   */
+  showConfirmBox() {
+    this.uiService.msgConfirmed = true;
 
+    setTimeout(() => {
+      this.uiService.msgConfirmed = false;
+    }, 4500);
+  }
+
+  /**
+   * Leert die Felder für die Suche nach neuen Nachrichten und setzt Eingaben zurück.
+   */
   emptyNewMsgSearch() {
     this.searchbarService.newMsgSearchName = "";
     this.searchbarService.filteredResults = [];
+    this.uiService.selectedConversations = [];
+    this.text = ""
   }
 
-
+  /**
+   * Gibt ein bereinigtes JSON-Objekt für eine gegebene Nachricht zurück.
+   * @param {Message} message - Die Nachricht, die bereinigt werden soll.
+   * @returns {object} Das bereinigte JSON-Objekt.
+   */
   getCleanJSON(message: Message) {
     return {
       msgId: message.msgId,
@@ -220,6 +290,13 @@ export class SendMessageComponent {
     };
   }
 
+  /**
+   * Gibt ein bereinigtes JSON-Objekt für einen gegebenen Thread zurück.
+   * @param {Thread} thread - Der Thread, der bereinigt werden soll.
+   * @param {string} input - Der Typ des Threads.
+   * @param {string} objId - Die Objekt-ID der Konversation oder des Kanals.
+   * @returns {object} Das bereinigte JSON-Objekt.
+   */
   getCleanThreadJSON(thread: Thread, input: string, objId: string) {
     return {
       id: thread.id,
@@ -230,14 +307,24 @@ export class SendMessageComponent {
     };
   }
 
+  /**
+   * Überprüft, ob das Eingabefeld leer ist, und passt den Eingabestatus entsprechend an.
+   */
   checkemptyInput() {
     this.isDisabled = this.text.trim() === '';
   }
 
+  /**
+   * Schaltet die Sichtbarkeit des Emoji-Pickers um.
+   */
   toggleEmojiPicker() {
     this.showEmojiPicker = !this.showEmojiPicker;
   }
 
+  /**
+   * Handhabt Klicks außerhalb bestimmter Elemente, um sie auszublenden.
+   * @param {Event} event - Das Klick-Ereignis.
+   */
   @HostListener('document:click', ['$event'])
   handleOutsideClick(event: Event) {
     // Prüfen, ob das Emoji-Picker-Element existiert und der Klick außerhalb davon war
@@ -249,19 +336,30 @@ export class SendMessageComponent {
     }
   }
 
+  /**
+   * Fügt ein Emoji zum Eingabetext hinzu.
+   * @param {any} event - Das Ereignis mit den Emoji-Daten.
+   */
   addEmoji(event: any) {
     console.log(event);
     const emoji = event.emoji.native;
     this.text += emoji;
-    this.textArea.nativeElement.focus();    
-    this.toggleEmojiPicker(); 
+    this.textArea.nativeElement.focus();
+    this.toggleEmojiPicker();
     this.checkemptyInput();
   }
 
+  /**
+   * Schaltet die Sichtbarkeit der Benutzerliste zum Markieren um.
+   */
   toggleUserList() {
     this.showUserList = !this.showUserList;
   }
 
+  /**
+   * Markiert einen Benutzer, indem sein Benutzername zum Eingabetext hinzugefügt wird.
+   * @param {string} user - Der zu markierende Benutzername.
+   */
   tagUser(user: string) {
     this.text += `@${user}`;
     this.textArea.nativeElement.focus();

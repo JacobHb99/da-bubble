@@ -97,6 +97,11 @@
         }
     </header>
 
+    <div class="confirm-box" *ngIf="uiService.msgConfirmed && this.uiService.content == 'newMessage'">
+        <mat-icon class="close-img" aria-hidden="false" aria-label="Example clear icon" fontIcon="message"></mat-icon>
+        <span>Nachricht wurde gesendet.</span>
+    </div>
+
     @if (this.uiService.content == 'directMessage') {
     <app-message-thread></app-message-thread>
     <app-send-message placeholder="Nachricht an {{ user.username }}" input="chat"></app-send-message>
