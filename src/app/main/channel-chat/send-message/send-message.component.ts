@@ -27,8 +27,6 @@ import { SearchbarService } from '../../../services/searchbar.service';
   styleUrl: './send-message.component.scss'
 })
 export class SendMessageComponent {
-
-
   fiBaService = inject(FirebaseService);
   authService = inject(AuthService)
   firestore = inject(Firestore);
