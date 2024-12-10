@@ -15,7 +15,7 @@
 
     <div [ngClass]="authService.currentUserSig()?.uid === currentMessage.senderId ? 'myMessageBox': 'replyMessageBox'">
         <div [ngClass]="{'replyMessageDetails': authService.currentUserSig()?.uid !== currentMessage.senderId }"
-            class="messageDetails">
+            class="messageDetails" [ngClass]="{'edit-messageDetails': editMode}">
             <div class="messageInfo">
                 <p>{{ getFormattedTime(currentMessage.timeStamp) }}</p>
                 @if (authService.currentUserSig()?.uid === currentMessage.senderId) {

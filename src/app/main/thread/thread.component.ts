@@ -10,7 +10,7 @@ import { FirebaseService } from '../../services/firebase.service';
 @Component({
   selector: 'app-thread',
   standalone: true,
-  imports: [SendMessageComponent, MessageThreadComponent,SingleMessageComponent, CommonModule],
+  imports: [SendMessageComponent,SingleMessageComponent, CommonModule],
   templateUrl: './thread.component.html',
   styleUrl: './thread.component.scss'
 })
@@ -19,9 +19,6 @@ export class ThreadComponent {
 
   constructor(public breakpointObserver: BreakpointObserverService, public firebaseService: FirebaseService) {
     this.uiService.showThread = false;
-    console.log('THREAD', this.uiService.currentMessage);
-    
-    
   }
   
 

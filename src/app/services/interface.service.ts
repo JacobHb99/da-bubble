@@ -22,6 +22,7 @@ export class InterfaceService {
   previousMessage!: Message;
   currChannel!: Channel;
   selectedConversations: (User | Channel)[] = [];
+  msgConfirmed: boolean = false;
 
 
 

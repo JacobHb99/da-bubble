@@ -163,4 +163,8 @@ export class SearchbarService {
       this.filteredResults = [];
     }
   }
+
+  ngOnDestroy(){
+    
+  }
 }

@@ -143,6 +143,11 @@ section {
     }
 }
 
+.edit-messageDetails{
+    box-sizing: border-box;
+    width: 100%;
+}
+
 .replyMessageDetails {
     align-items: flex-start;
 
@@ -176,6 +181,8 @@ section {
     font-size: 18px;
     padding: 15px;
     word-break: break-all;
+    box-sizing: border-box;
+    width: 100%;
 
     textarea{
         width: 100%;
@@ -189,7 +196,7 @@ section {
     }
 
     .editBtnDiv{
-        @include dFlex($gap: 8px);
+        @include dFlex($gap: 8px, $jc: flex-end);
         padding-top: 20px;
     }
 }

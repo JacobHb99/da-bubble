@@ -63,7 +63,10 @@
                     <input placeholder="An: #channel, @jemand oder E-mail Adresse" type="text"
                         [(ngModel)]="this.searchbarService.newMsgSearchName" (input)="searchbarService.newMsgSearch()">
                 </div>
-                <div [ngClass]="{'hideUserDialog' : searchbarService.filteredResults.length <= 0}"
+                <div [ngClass]="{
+                    'hideUserDialog' : searchbarService.filteredResults.length <= 0, 
+                    'user-dialog-mobile': breakpointObserver.isXSmallOrSmall
+                    }"
                     class="user-dialog showUserDialog">
                     <div class="scroll-container">
                         <div *ngFor="let obj of searchbarService.filteredResults" class="single-user">
@@ -96,6 +99,11 @@
         </div>
         }
     </header>
+
+    <div class="confirm-box" *ngIf="uiService.msgConfirmed && this.uiService.content == 'newMessage'">
+        <mat-icon class="close-img" aria-hidden="false" aria-label="Example clear icon" fontIcon="message"></mat-icon>
+        <span>Nachricht wurde gesendet.</span>
+    </div>
 
     @if (this.uiService.content == 'directMessage') {
     <app-message-thread></app-message-thread>
