@@ -9,8 +9,6 @@ import { AddChannelComponent } from '../../dialogs/add-channel/add-channel.compo
 import { FormsModule } from '@angular/forms';
 import { ChannelService } from '../../services/channel.service';
 import { ConversationService } from '../../services/conversation.service';
-import { user } from '@angular/fire/auth';
-import { AuthService } from '../../services/auth.service';
 import { BreakpointObserverService } from '../../services/breakpoint-observer.service';
 import { SearchbarService } from '../../services/searchbar.service';
 import { Channel } from '../../models/channel.model';
@@ -156,12 +154,6 @@ export class SideNavComponent {
     }
   }
 
-
-  // showUserChat(user: any) {
-  //   this.userDataService.setUser(user);
-  //   this.uiService.changeContent('directMessage');
-  // }
-
   openDialogChannel(): void {
     const dialogRef = this.dialog.open(AddChannelComponent, {
       width: '100%',
@@ -193,7 +185,6 @@ export class SideNavComponent {
 
   openThreadMsg(data: Thread, msg: Message) {
     this.uiService.currentThread = data;
-    console.log(this.uiService.currentThread);
 
     if (data.type == 'channel') {
       this.openChannelThread(data, msg);
@@ -228,13 +219,11 @@ export class SideNavComponent {
   }
 
   scrollInParentChat(msg: Message) {
-    // Sende die ID des Ziels an den Service
     const targetParentId = `${msg.parent?.msgId}`;
     this.uiService.triggerScrollTo(targetParentId);
   }
 
   scrollInChat(msg: Message) {
-    // Sende die ID des Ziels an den Service
     const targetMessageId = `${msg.msgId}`;
     this.uiService.triggerScrollTo(targetMessageId);
   }

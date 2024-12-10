@@ -17,6 +17,7 @@
     </div>
 
     <div *ngIf="isSelected" class="input-container1">
+        <div>
         <div class="selected-users">
             <div *ngFor="let user of firebaseService.selectedUsers" class="chip">
                 <img [src]="user.avatar" alt="Avatar" class="avatar">
@@ -24,6 +25,7 @@
                 <img class="user-close" (click)="removeUser(user)" src="/icons/close.png" alt="">
             </div>
         </div>
+        
 
         <div [ngClass]="{'show': isSelected}" class="input-container">
             <input placeholder="Name eingeben" [(ngModel)]="searchName"

@@ -11,11 +11,9 @@ import { ProfilLogoutButtonsComponent } from '../dialogs/profil-logout-buttons/p
 import { MyProfilComponent } from '../dialogs/my-profil/my-profil.component';
 import { EditProfileComponent } from '../dialogs/edit-profile/edit-profile.component';
 import { SearchbarService } from '../services/searchbar.service';
-import { timeout } from 'rxjs';
 import { ConversationService } from '../services/conversation.service';
 import { ChannelService } from '../services/channel.service';
 import { BreakpointObserverService } from '../services/breakpoint-observer.service';
-import { SideNavComponent } from '../main/side-nav/side-nav.component';
 import { InterfaceService } from '../services/interface.service';
 import { Conversation } from '../models/conversation.model';
 import { FirebaseService } from '../services/firebase.service';
@@ -24,11 +22,7 @@ import { Message } from '../models/message.model';
 import { Thread } from '../models/thread.model';
 import { Channel } from '../models/channel.model';
 import { ProfilButtonMobileComponent } from '../dialogs/profil-button-mobile/profil-button-mobile.component';
-import {
-  MatBottomSheet,
-  MatBottomSheetModule,
-  MatBottomSheetRef,
-} from '@angular/material/bottom-sheet';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 
 @Component({
@@ -141,13 +135,11 @@ export class HeaderComponent {
   }
 
   scrollInParentChat(msg: Message) {
-    // Sende die ID des Ziels an den Service
     const targetParentId = `${msg.parent?.msgId}`;
     this.uiService.triggerScrollTo(targetParentId);
   }
 
   scrollInChat(msg: Message) {
-    // Sende die ID des Ziels an den Service
     const targetMessageId = `${msg.msgId}`;
     this.uiService.triggerScrollTo(targetMessageId);
   }
@@ -186,12 +178,10 @@ export class HeaderComponent {
   }
 
   startConversation(obj: User) {
-    console.log('openMSG');
     this.conService.startConversation(obj);
   }
 
   openChannel(obj: any) {
-    console.log('openchannel');
     this.channelService.showChannelChat(obj)
   }
 
@@ -205,8 +195,6 @@ export class HeaderComponent {
         });
         return this.firebaseService.allUsers.find(user => user.uid === foundId) as User;
       } else {
-        let currentChannel = this.channelService.currentChannelSubject.value
-
         return this.firebaseService.allChannels.find(channel => channel.chaId === foundId) as Channel;
       }
     }
