@@ -7,7 +7,8 @@
     <h1>Leute hinzufügen</h1>
     <div class="checkbox-container">
         <div class="first-row">
-            <input (change)="onCheckboxChange($event)" (click)="hideInput()" checked type="radio" name="selection" id="">
+            <input (change)="onCheckboxChange($event)" (click)="hideInput()" checked type="radio" name="selection"
+                id="">
             <p>Alle Mitglieder von OfficeTeam hinzufügen</p>
         </div>
         <div class="second-row">
@@ -18,37 +19,38 @@
 
     <div *ngIf="isSelected" class="input-container1">
         <div>
-        <div class="selected-users">
-            <div *ngFor="let user of firebaseService.selectedUsers" class="chip">
-                <img [src]="user.avatar" alt="Avatar" class="avatar">
-                <span>{{ user.username }}</span>
-                <img class="user-close" (click)="removeUser(user)" src="/icons/close.png" alt="">
+            <div class="user-container">
+                <div class="selected-users">
+                    <div *ngFor="let user of firebaseService.selectedUsers" class="chip">
+                        <img [src]="user.avatar" alt="Avatar" class="avatar">
+                        <span>{{ user.username }}</span>
+                        <img class="user-close" (click)="removeUser(user)" src="/icons/close.png" alt="">
+                    </div>
+                </div>
             </div>
-        </div>
-        
 
-        <div [ngClass]="{'show': isSelected}" class="input-container">
-            <input placeholder="Name eingeben" [(ngModel)]="searchName"
-                type="text">
- 
-            <div [ngClass]="{'showUserDialog': this.searchName.length >= 1, 'hideUserDialog': filteredUsers.length == 1}"
-                class="user-dialog">
-                <div (click)="addUser(user)" *ngFor="let user of filteredUsers" class="single-user">
-                    <div class="single-user-hover">
-                        <div class="avatar">
-                            <img [src]="user.avatar" alt="">
-                        </div>
-                        <div class="username">
-                            <p>{{ user.username }}</p>
+
+            <div [ngClass]="{'show': isSelected}" class="input-container">
+                <input placeholder="Name eingeben" [(ngModel)]="searchName" type="text">
+
+                <div [ngClass]="{'showUserDialog': this.searchName.length >= 1, 'hideUserDialog': filteredUsers.length == 1}"
+                    class="user-dialog">
+                    <div (click)="addUser(user)" *ngFor="let user of filteredUsers" class="single-user">
+                        <div class="single-user-hover">
+                            <div class="avatar">
+                                <img [src]="user.avatar" alt="">
+                            </div>
+                            <div class="username">
+                                <p>{{ user.username }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
+        </div>
+        <div class="button-container">
+            <button (click)=" closeDialogAddPeople()" (click)="channelService.createChannel(isSelected, currentUser)"
+                class="button" [disabled]="isInputEmpty">Erstellen</button>
+        </div>
     </div>
-    <div class="button-container">
-        <button (click)=" closeDialogAddPeople()" (click)="channelService.createChannel(isSelected, currentUser)" class="button"
-            [disabled]="isInputEmpty">Erstellen</button>
-    </div>
-</div>

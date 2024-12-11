@@ -238,3 +238,46 @@ header {
   gap: 10px;
   width: 100%;
 }
+
+@media (max-width: 1150px) {
+  .input-container {
+   
+    >img {
+      width: 30px;
+      height: 30px;
+      right: 20px;
+
+    }
+    >input {
+      font-size: 20px;
+      padding: 17.5px 20px;
+    }
+   
+  }
+  .username {
+    font-size: 16px;
+  }
+}
+@media (max-width: 1050px) {
+  .input-container {
+    >input {
+      font-size: 16px;
+    }
+    >img {
+      width: 25px;
+      height: 25px;
+      right: 10px;
+
+    }
+  }
+  .user-container {
+    >p {
+      font-size: 28px;
+    }
+  }
+  .user-img {
+    width: 60px;
+    height: 60px;
+  }
+ 
+}
