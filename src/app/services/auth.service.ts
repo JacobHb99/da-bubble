@@ -125,7 +125,6 @@ export class AuthService {
         this.currentCredentials = userCredential;
         this.setCurrentUserData(this.currentCredentials.user);
         this.fireService.setUserStatus(this.currentCredentials, 'online');
-        console.log('loginUser', this.currentCredentials.user);
         this.getCurrentUserData();
         this.router.navigate(['/main']);
       })
@@ -143,7 +142,6 @@ export class AuthService {
     const guestPassword = 'gast123';
     this.guestLoggedIn = true;
     this.login(guestEmail, guestPassword);
-    console.log('Gast ist eingeloggt');
   }
 
   ///////////////////////////////////////////////////////////////////
@@ -206,19 +204,14 @@ export class AuthService {
  */
   async signOut() {
     try {
-      const auth = getAuth();
       // Setze den Benutzerstatus auf "offline", bevor der Logout erfolgt.
-      console.log(this.currentCredentials);
-
       await this.fireService.setUserStatus(this.currentCredentials, 'offline');
       // Führe den eigentlichen Logout durch.
-      await signOut(auth);
+      await signOut(this.auth);
       // Navigiere zur Startseite nach erfolgreichem Logout.
       this.router.navigateByUrl('');
     } catch (error) {
-      console.error('Logout fehlgeschlagen', error);
-      console.log('CurrentCredentials', this.currentCredentials);
-      console.log('CurrentUserSig', this.currentUserSig());
+      throw error
     }
   }
 
@@ -257,19 +250,15 @@ export class AuthService {
     const auth = getAuth();
 
     onAuthStateChanged(this.auth, (user) => {
-      console.log("Auth-Status geändert:", user ? "Angemeldet" : "Abgemeldet");
-
       // Entferne alle Listener, sobald der Auth-Status sich ändert
       this.fireService.unsubscribeAll();
 
       if (user) {
-        console.log(`Benutzer eingeloggt: ${user.uid}`);
         this.setCurrentUserData(user);
-
         // Lade alle relevanten Daten
         this.fireService.initializeData(user.uid);
       } else {
-        console.log("Benutzer ist ausgeloggt.");
+        // User wird ausgeloggt        
         this.currentUserSig.set(null);
       }
     });
@@ -285,12 +274,10 @@ export class AuthService {
   async sendPasswordReset(email: string): Promise<void> {
     try {
       await sendPasswordResetEmail(this.auth, email);
-      console.log(`Passwort-Zurücksetzungs-E-Mail wurde an ${email} gesendet.`);
       setTimeout(() => {
         this.router.navigate(['/']);
       }, 4000);
     } catch (error) {
-      console.error("Fehler beim Senden der Passwort-Zurücksetzungs-E-Mail:", error);
       throw error;
     }
   }
