@@ -143,6 +143,10 @@ section {
     }
 }
 
+.reply-details{
+    align-items: flex-start !important;
+}
+
 .edit-messageDetails{
     box-sizing: border-box;
     width: 100%;
@@ -154,6 +158,10 @@ section {
     .messageInfo {
         @include dFlex($fd: row-reverse, $gap: 20px);
     }
+}
+
+.flex-reverse{
+    @include dFlex($fd: row-reverse !important, $gap: 20px);
 }
 
 .messageText {

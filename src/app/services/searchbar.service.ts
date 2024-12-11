@@ -54,7 +54,6 @@ export class SearchbarService {
     this.firebaseService.allThreads.forEach(thread => {
       this.allObjects.push({ name: "thread", data: thread });
     });
-    console.log(this.allObjects);
   }
 
 
@@ -83,54 +82,39 @@ export class SearchbarService {
    */
   get filteredUsers() {
     if (this.searchName.trim().length < 1) {
-
       return [];
     }
 
     const searchTerm = this.searchName.toLowerCase();
     const results = this.allObjects.filter((obj: CurrentObject) => {
 
-
       if (obj.name === "user") {
         return obj.data.username.toLowerCase().includes(searchTerm);
 
       }
-
       if (obj.name === "channel") {
         return (
           obj.data.title.toLowerCase().includes(searchTerm) ||
           obj.data.description.toLowerCase().includes(searchTerm)
         );
       }
-
       if (obj.name === "conversation") {
-        console.log(obj.data.messages);
-
         return obj.data.messages.some((message: any) =>
           message.text.toLowerCase().includes(searchTerm)
         );
       }
-
       if (obj.name === "channel-chat") {
-        console.log(obj.data.messages);
-
         return obj.data.messages.some((message: any) =>
           message.text.toLowerCase().includes(searchTerm)
         );
       }
-
       if (obj.name === "thread") {
-        console.log(obj.data.messages);
-
         return obj.data.messages.some((message: any) =>
           message.text.toLowerCase().includes(searchTerm)
         );
       }
-
       return false;
     });
-
-    console.log("Filtered Results:", results);
     return results;
   }
 
@@ -165,6 +149,6 @@ export class SearchbarService {
   }
 
   ngOnDestroy(){
-    
+
   }
 }
