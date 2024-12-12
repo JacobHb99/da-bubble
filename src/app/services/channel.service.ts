@@ -121,6 +121,7 @@ async removeAUser(channelId: string, users:any): Promise<void> {
       this.firebaseService.selectedUsers.push(currentUser)
       console.log(currentUser);
       await this.firebaseService.addUsersToChannel(newChannel.chaId);
+      await this.assignChatId(newChannel.chaId);
     } else {
       await this.firebaseService.addAllUsersToChannel(newChannel.chaId, newChannel);
     }
@@ -163,6 +164,16 @@ this.firebaseService.registerListener(unsubscribe);
         }
     });
     this.firebaseService.registerListener(unsubscribe);
+  }
+
+
+  async assignChatId(chaId: string) {
+    try {
+      const channelRef = doc(this.firestore, `channels/${chaId}`);
+      await updateDoc(channelRef, { chaId:  `${chaId}` });
+
+    } catch (error) {
+    }
   }
 
   setChannelObject(channel: Channel): any {
