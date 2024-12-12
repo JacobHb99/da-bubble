@@ -33,6 +33,7 @@ export class EditChannelComponent implements OnInit {
  channelId: string = "";
  currentUser: any;
  isEditing: boolean = false;
+ allUserInThisChannel:any;
  
 
 
@@ -47,6 +48,9 @@ export class EditChannelComponent implements OnInit {
   ){}
 
   ngOnInit(): void {
+
+    this.currentUser = this.userService.getCurrentUser();
+
     // Subscribes to channel data from ChannelService
     this.channelService.currentChannel$.subscribe((channel) => {
      
@@ -55,6 +59,7 @@ export class EditChannelComponent implements OnInit {
         this.descInput = channel.description;
         this.titleInput = channel.title;
         this.channelId = channel.chaId;
+        this.allUserInThisChannel = this.channel.users;
       }
     });
     // this.channelService.listenToChannel(this.channelId);
@@ -111,8 +116,12 @@ async updateChannel() {
 
 
 
-   leaveChannel(currentUser: User) {
-    console.log(currentUser);
-    console.log(this.firebaseService.allUsers);
+   async leaveChannel() {
+    this.dialogRef.close();
+    const removeUserId = this.currentUser.uid;
+    const allUserWithoutLeavedUser = this.allUserInThisChannel.filter((allUser: any) => allUser !== removeUserId);
+    console.log(allUserWithoutLeavedUser);
+    await this.channelService.removeAUser(this.channelId,allUserWithoutLeavedUser);
+    location.reload();
    }
 }

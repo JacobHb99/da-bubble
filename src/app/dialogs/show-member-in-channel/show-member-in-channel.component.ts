@@ -27,7 +27,6 @@ export class ShowMemberInChannelComponent {
   constructor(
     public breakpointObserver: BreakpointObserverService,
     public uiService: InterfaceService
-
   ) {
     this.channelService.currentChannel$.subscribe(async (channel) => {
       this.channel = channel;

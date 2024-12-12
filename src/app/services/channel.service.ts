@@ -65,6 +65,21 @@ export class ChannelService {
     }
 }
 
+async removeAUser(channelId: string, users:any): Promise<void> {
+  if (!channelId) {
+      console.error("Fehler: Keine gültige Channel-ID angegeben.");
+      return;
+  }
+
+  const channelRef = doc(this.firestore, `channels/${channelId}`);
+  
+  try {
+      await updateDoc(channelRef, {users});
+      console.log("Channel erfolgreich aktualisiert:", channelId);
+  } catch (error) {
+      console.error("Fehler beim Aktualisieren des Channels:", error);
+  }
+}
 
   
 
