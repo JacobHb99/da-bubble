@@ -15,8 +15,10 @@
 
     <div [ngClass]="authService.currentUserSig()?.uid === currentMessage.senderId ? 'myMessageBox': 'replyMessageBox'">
         <div [ngClass]="{'replyMessageDetails': authService.currentUserSig()?.uid !== currentMessage.senderId }"
-            class="messageDetails" [ngClass]="{'edit-messageDetails': editMode, 'reply-details': authService.currentUserSig()?.uid !== currentMessage.senderId}">
-            <div class="messageInfo" [ngClass]="{'flex-reverse': authService.currentUserSig()?.uid !== currentMessage.senderId}">
+            class="messageDetails"
+            [ngClass]="{'edit-messageDetails': editMode, 'reply-details': authService.currentUserSig()?.uid !== currentMessage.senderId}">
+            <div class="messageInfo"
+                [ngClass]="{'flex-reverse': authService.currentUserSig()?.uid !== currentMessage.senderId}">
                 <p>{{ getFormattedTime(currentMessage.timeStamp) }}</p>
                 @if (authService.currentUserSig()?.uid === currentMessage.senderId) {
                 <p>{{ authService.currentUserSig()?.username }}</p>

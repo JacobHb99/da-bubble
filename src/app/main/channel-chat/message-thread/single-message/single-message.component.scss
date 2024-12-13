@@ -30,7 +30,7 @@ section {
 
 .myMessageBox {
     @include dFlex($ai: flex-start, $jc: flex-end, $gap: 30px);
-    padding: 20px 45px ;
+    padding: 20px 45px;
     position: relative;
 
     &:hover {
@@ -65,7 +65,7 @@ section {
 }
 
 .replyfloatingReactionBox {
-    transform: translateX(150%);   
+    transform: translateX(150%);
 }
 
 .floatingReactionBox {
@@ -99,7 +99,7 @@ section {
     cursor: pointer;
     position: relative;
 
-    .singleEmoji{
+    .singleEmoji {
         @include dFlex();
     }
 
@@ -109,14 +109,14 @@ section {
     }
 }
 
-.myEmojiPicker{
+.myEmojiPicker {
     position: absolute;
     left: 0;
     right: auto;
     top: 50px;
 }
 
-.replyEmojiPicker{
+.replyEmojiPicker {
     position: absolute;
     left: auto;
     right: 0;
@@ -143,11 +143,11 @@ section {
     }
 }
 
-.reply-details{
+.reply-details {
     align-items: flex-start !important;
 }
 
-.edit-messageDetails{
+.edit-messageDetails {
     box-sizing: border-box;
     width: 100%;
 }
@@ -160,7 +160,7 @@ section {
     }
 }
 
-.flex-reverse{
+.flex-reverse {
     @include dFlex($fd: row-reverse !important, $gap: 20px);
 }
 
@@ -181,7 +181,7 @@ section {
     color: black;
 }
 
-.editDiv{
+.editDiv {
     border: 1px solid #797EF3;
     color: white;
     border-radius: 30px 0 30px 30px;
@@ -192,7 +192,7 @@ section {
     box-sizing: border-box;
     width: 100%;
 
-    textarea{
+    textarea {
         width: 100%;
         resize: none;
         outline: none;
@@ -200,16 +200,16 @@ section {
         border: none;
         color: #686868;
         text-wrap: wrap;
-        word-break: break-word;        
+        word-break: break-word;
     }
 
-    .editBtnDiv{
+    .editBtnDiv {
         @include dFlex($gap: 8px, $jc: flex-end);
         padding-top: 20px;
     }
 }
 
-.btn-editMsg{
+.btn-editMsg {
     font-size: 14px;
     padding: 6px 12px;
 }
@@ -251,7 +251,7 @@ section {
         background-color: white;
         position: relative;
 
-        ngx-emoji{
+        ngx-emoji {
             @include dFlex();
         }
 
@@ -271,7 +271,7 @@ section {
     }
 }
 
-.replayReactionBox{
+.replayReactionBox {
     justify-content: flex-start;
 }
 
@@ -288,10 +288,10 @@ section {
     right: 32px;
     min-width: 140px;
 
-    .reacteduser{
-        span{
-        font-size: 18px;
-        font-weight: 700;
+    .reacteduser {
+        span {
+            font-size: 18px;
+            font-weight: 700;
         }
     }
 
@@ -306,21 +306,22 @@ section {
     border-radius: 30px 30px 30px 0;
 }
 
-.mobile-img{
+.mobile-img {
     height: 50px !important;
     width: 50px !important;
 }
 
-.mobile-font{
+.mobile-font {
     font-size: 18px !important;
     min-width: max-content;
 }
 
-.answerBox{
-    span{
+.answerBox {
+    span {
         min-width: max-content;
     }
-    p{
+
+    p {
         min-width: max-content;
     }
 }
