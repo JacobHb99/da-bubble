@@ -26,93 +26,102 @@ export class EditChannelComponent implements OnInit {
   isHoveredClose = false;
   editName: boolean = false;
   editDesc: boolean = false;
- changeName: string = "Bearbeiten";
- changeDesc: string = "Bearbeiten";
- descInput: string = "";
- titleInput: string = "";
- channelId: string = "";
- currentUser: any;
- isEditing: boolean = false;
- 
+  changeName: string = "Bearbeiten";
+  changeDesc: string = "Bearbeiten";
+  descInput: string = "";
+  titleInput: string = "";
+  channelId: string = "";
+  currentUser: any;
+  isEditing: boolean = false;
+  allUserInThisChannel: any;
+
 
 
   constructor(
-    public dialogRef: MatDialogRef<EditChannelComponent>, 
-    public dialog: MatDialog, public channelService: ChannelService , 
-    private userService: UserDataService, 
-    private authService: AuthService, 
+    public dialogRef: MatDialogRef<EditChannelComponent>,
+    public dialog: MatDialog, public channelService: ChannelService,
+    private userService: UserDataService,
+    private authService: AuthService,
     private firebaseService: FirebaseService,
     public breakpointObserver: BreakpointObserverService
-  
-  ){}
 
+  ) { }
+
+  /**
+ * Lifecycle hook called on component initialization.
+ * Fetches the current user and subscribes to the current channel observable 
+ * to load and initialize channel data.
+ */
   ngOnInit(): void {
-    // Subscribes to channel data from ChannelService
+    this.currentUser = this.userService.getCurrentUser();
     this.channelService.currentChannel$.subscribe((channel) => {
-     
       if (!this.isEditing && channel) {
         this.channel = channel;
         this.descInput = channel.description;
         this.titleInput = channel.title;
         this.channelId = channel.chaId;
+        this.allUserInThisChannel = this.channel.users;
       }
     });
-    // this.channelService.listenToChannel(this.channelId);
   }
-    
-   
-async updateChannel() {
-  if (this.channel) {
-    this.isEditing = true; // Bearbeitung wird gestartet
-    try {
-      await this.channelService.updateChannel(this.channel.chaId, this.titleInput, this.descInput);
-     
 
-      this.channel.title = this.titleInput;
-      this.channel.description = this.descInput;
-    } catch (error) {
-     
-    } finally {
-      this.isEditing = false; // Bearbeitung abgeschlossen
+  /**
+   * Updates the current channel with the provided title and description.
+   * Sets editing mode during the update process and handles errors if any occur.
+   * 
+   * @async
+   */
+  async updateChannel() {
+    if (this.channel) {
+      this.isEditing = true;
+      try {
+        await this.channelService.updateChannel(this.channel.chaId, this.titleInput, this.descInput);
+        this.channel.title = this.titleInput;
+        this.channel.description = this.descInput;
+      } catch (error) {
+      } finally {
+        this.isEditing = false;
+      }
     }
   }
-}
 
-  
+  /**
+   * Closes the Edit Channel dialog.
+   */
+  closeEditChannel(): void {
+    this.dialogRef.close();
+  }
 
-   closeEditChannel(): void {
-    this.dialogRef.close()
-   }
-
-
-
-
-   editChannelName() {
+  /**
+   * Toggles the edit state for the channel name and updates the channel with the new name.
+   */
+  editChannelName() {
     console.log(this.editName);
-    if (this.editName) {
-      this.changeName = 'Speichern'
-      
-    } else {
-      this.changeName = 'Bearbeiten'
-    }
+    this.changeName = this.editName ? 'Speichern' : 'Bearbeiten';
     this.updateChannel();
-   }
+  }
 
-   editChannelDesc() {
+  /**
+   * Toggles the edit state for the channel description and updates the channel with the new description.
+   */
+  editChannelDesc() {
     console.log(this.editDesc);
-    if (this.editDesc) {
-      this.changeDesc = 'Speichern'
-      
-    } else {
-      this.changeDesc = 'Bearbeiten'
-    }
+    this.changeDesc = this.editDesc ? 'Speichern' : 'Bearbeiten';
     this.updateChannel();
-   }
+  }
 
-
-
-   leaveChannel(currentUser: User) {
-    console.log(currentUser);
-    console.log(this.firebaseService.allUsers);
-   }
+  /**
+   * Removes the current user from the channel, updates the channel's user list,
+   * and reloads the page to reflect changes.
+   * 
+   * @async
+   */
+  async leaveChannel() {
+    this.dialogRef.close();
+    const removeUserId = this.currentUser.uid;
+    const allUserWithoutLeavedUser = this.allUserInThisChannel.filter((allUser: any) => allUser !== removeUserId);
+    console.log(allUserWithoutLeavedUser);
+    await this.channelService.removeAUser(this.channelId, allUserWithoutLeavedUser);
+    location.reload();
+  }
 }

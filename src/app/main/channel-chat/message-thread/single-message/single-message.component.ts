@@ -36,7 +36,6 @@ export class SingleMessageComponent {
   @Input() message: Message = new Message();
   @Input() index: number = 0;
   @Input() isThread: boolean = false;
-  //@ViewChild('editTextArea') editTextArea!: ElementRef;
 
 
   constructor(
@@ -76,7 +75,7 @@ export class SingleMessageComponent {
    */
   openThread() {
     this.uiService.openThread()
-    this.cdr.detectChanges();  // Erzwingt eine erneute Change Detection
+    this.cdr.detectChanges();  
   }
 
   /**
@@ -226,7 +225,6 @@ export class SingleMessageComponent {
     this.currentMessage.text = this.editText;
     const ref = await this.reactService.searchMsgById(msgId);
     if (!ref) {
-      // console.error('Reference path not found for the given message.');
       return;
     }
 

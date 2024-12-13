@@ -15,118 +15,177 @@ import { SearchbarService } from './searchbar.service';
 })
 export class ChannelService {
   currentChannel = new Channel();
-  newChannel: Channel = new Channel(); // Für Erstellen
+  newChannel: Channel = new Channel(); 
   uiService = inject(InterfaceService);
   conService = inject(ConversationService);
   allChannels!: Channel[];
- // currentUser = this.authService.currentUserSig()?.uid
 
   public currentChannelSubject = new BehaviorSubject<Channel>(new Channel());
   currentChannel$ = this.currentChannelSubject.asObservable();
 
   constructor(
-    private firestore: Firestore, 
-    private firebaseService: FirebaseService, 
-    private userService: UserDataService, 
+    private firestore: Firestore,
+    private firebaseService: FirebaseService,
+    private userService: UserDataService,
     private authService: AuthService,
     private searchbarSearvice: SearchbarService
-  ){
+  ) {
     this.getAllChannels();
   }
 
 
 
-  listenToChannel(chaId: string) { 
+  /**
+ * Listens to real-time updates for a specific channel by its ID.
+ * Updates the current channel subject with new data when changes occur.
+ * 
+ * @param {string} chaId - The ID of the channel to listen to.
+ */
+  listenToChannel(chaId: string) {
     const channelRef = doc(this.firestore, `channels/${chaId}`);
-    
+
     const unsubscribe = onSnapshot(channelRef, (docSnapshot) => {
-      
       if (docSnapshot.exists()) {
         const updatedChannel = docSnapshot.data() as Channel;
-        this.currentChannelSubject.next(updatedChannel); 
+        this.currentChannelSubject.next(updatedChannel);
       }
     });
-   this.firebaseService.registerListener(unsubscribe);
+    this.firebaseService.registerListener(unsubscribe);
   }
 
+  /**
+   * Updates the title and description of a specific channel.
+   * 
+   * @param {string} channelId - The ID of the channel to update.
+   * @param {string} title - The new title for the channel.
+   * @param {string} description - The new description for the channel.
+   * @returns {Promise<void>}
+   */
   async updateChannel(channelId: string, title: string, description: string): Promise<void> {
     if (!channelId) {
-        console.error("Fehler: Keine gültige Channel-ID angegeben.");
-        return;
+      console.error("Fehler: Keine gültige Channel-ID angegeben.");
+      return;
     }
 
     const channelRef = doc(this.firestore, `channels/${channelId}`);
-    
+
     try {
-        await updateDoc(channelRef, { title, description });
-        console.log("Channel erfolgreich aktualisiert:", channelId);
+      await updateDoc(channelRef, { title, description });
+      console.log("Channel erfolgreich aktualisiert:", channelId);
     } catch (error) {
-        console.error("Fehler beim Aktualisieren des Channels:", error);
+      console.error("Fehler beim Aktualisieren des Channels:", error);
     }
-}
-
-
-  
-
-  setCurrentChannel(channel: Channel) {
-    this.currentChannelSubject.next(channel)
   }
 
+  /**
+   * Removes a user from a channel.
+   * 
+   * @param {string} channelId - The ID of the channel to update.
+   * @param {any} users - The updated list of users.
+   * @returns {Promise<void>}
+   */
+  async removeAUser(channelId: string, users: any): Promise<void> {
+    if (!channelId) {
+      console.error("Fehler: Keine gültige Channel-ID angegeben.");
+      return;
+    }
+
+    const channelRef = doc(this.firestore, `channels/${channelId}`);
+
+    try {
+      await updateDoc(channelRef, { users });
+      console.log("Channel erfolgreich aktualisiert:", channelId);
+    } catch (error) {
+      console.error("Fehler beim Aktualisieren des Channels:", error);
+    }
+  }
+
+  /**
+   * Sets the current channel in the observable subject.
+   * 
+   * @param {Channel} channel - The channel to set as the current channel.
+   */
+  setCurrentChannel(channel: Channel) {
+    this.currentChannelSubject.next(channel);
+  }
+
+  /**
+   * Sets the channel in the observable subject.
+   * 
+   * @param {any} user - The channel or user to set.
+   */
   setChannel(user: any) {
     this.currentChannelSubject.next(user);
   }
 
-  
+  /**
+   * Displays the chat interface for a specific channel.
+   * 
+   * @param {any} channel - The channel to show in the chat.
+   */
   showChannelChat(channel: any) {
-    this.setChannel(channel)
-    this.setCurrentChannel(channel)
+    this.setChannel(channel);
+    this.setCurrentChannel(channel);
     this.uiService.changeContent('channelChat');
     this.uiService.closeThread();
     this.listenToChannel(channel.chaId);
     this.searchbarSearvice.emptyInput();
   }
- 
 
+  /**
+   * Creates a new channel with the provided parameters.
+   * Adds selected or all users to the channel and assigns an ID to it.
+   * 
+   * @param {boolean} isSelected - Whether to add selected users or all users to the channel.
+   * @param {any} currentUser - The currently logged-in user.
+   */
   async createChannel(isSelected: boolean, currentUser: any) {
-    const newChannel = new Channel(); 
-    newChannel.title = this.currentChannel.title; 
-    newChannel.creatorId = this.authService.currentUserSig()?.username ?? ""; 
-    newChannel.users = isSelected ? this.firebaseService.selectedUsers.map((user:any) => user.uid) : this.firebaseService.allUsersIds;
+    const newChannel = new Channel();
+    newChannel.title = this.currentChannel.title;
+    newChannel.creatorId = this.authService.currentUserSig()?.username ?? "";
+    newChannel.users = isSelected ? this.firebaseService.selectedUsers.map((user: any) => user.uid) : this.firebaseService.allUsersIds;
     newChannel.description = this.currentChannel.description;
-    
-    
-    
+
     const channelData = newChannel.getJSON();
     const channelRef = await addDoc(collection(this.firestore, "channels"), channelData);
     newChannel.chaId = channelRef.id;
     console.log(newChannel);
-    
+
     if (isSelected) {
       this.firebaseService.selectedUsers = newChannel.users;
-      this.firebaseService.selectedUsers.push(currentUser)
+      this.firebaseService.selectedUsers.push(currentUser);
       console.log(currentUser);
       await this.firebaseService.addUsersToChannel(newChannel.chaId);
+      await this.assignChatId(newChannel.chaId);
     } else {
       await this.firebaseService.addAllUsersToChannel(newChannel.chaId, newChannel);
     }
-    this.setCurrentChannel(newChannel); 
+    this.setCurrentChannel(newChannel);
     this.showChannelChat(newChannel);
   }
 
-  
-async getAllChannels() {
-  const q = query(collection(this.firestore, "channels"));
-  const unsubscribe = onSnapshot(q, (querySnapshot) => {
-  this.allChannels = [];
-   querySnapshot.forEach((doc) => {
-    this.convertData(doc.data(), doc.id)
-});
-});
-this.firebaseService.registerListener(unsubscribe);
-}
+  /**
+   * Retrieves all channels and listens for real-time updates.
+   */
+  async getAllChannels() {
+    const q = query(collection(this.firestore, "channels"));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      this.allChannels = [];
+      querySnapshot.forEach((doc) => {
+        this.convertData(doc.data(), doc.id);
+      });
+    });
+    this.firebaseService.registerListener(unsubscribe);
+  }
 
-  convertData(data: any, id: string ) {
-     let newChannel = new Channel();
+  /**
+   * Converts Firestore data into a Channel object and adds it to the channel list.
+   * 
+   * @param {any} data - The raw Firestore data for the channel.
+   * @param {string} id - The ID of the channel.
+   */
+  convertData(data: any, id: string) {
+    const newChannel = new Channel();
     newChannel.title = data['title'];
     newChannel.description = data['description'];
     newChannel.chaId = id;
@@ -136,32 +195,53 @@ this.firebaseService.registerListener(unsubscribe);
     newChannel.comments = data['comments'];
     newChannel.reactions = data['reactions'];
 
-    this.allChannels.push(newChannel)
+    this.allChannels.push(newChannel);
   }
 
+  /**
+   * Listens for changes to the current channel and updates its data.
+   */
   listenToCurrentChannelChanges() {
     const conversationRef = doc(this.firestore, `channels/${this.currentChannelSubject.value.chaId}`);
     const unsubscribe = onSnapshot(conversationRef, (docSnapshot) => {
-        if (docSnapshot.exists()) {
-            const updatedConversation = this.setChannelObject(docSnapshot.data() as Channel);
-            this.currentChannelSubject = updatedConversation;
-        }
+      if (docSnapshot.exists()) {
+        const updatedConversation = this.setChannelObject(docSnapshot.data() as Channel);
+        this.currentChannelSubject = updatedConversation;
+      }
     });
     this.firebaseService.registerListener(unsubscribe);
   }
 
+  /**
+   * Assigns a unique chat ID to a channel.
+   * 
+   * @param {string} chaId - The ID of the channel to update.
+   */
+  async assignChatId(chaId: string) {
+    try {
+      const channelRef = doc(this.firestore, `channels/${chaId}`);
+      await updateDoc(channelRef, { chaId: `${chaId}` });
+    } catch (error) {
+      console.error("Fehler beim Zuweisen der Chat-ID:", error);
+    }
+  }
+
+  /**
+   * Converts a Channel object to a structured data format.
+   * 
+   * @param {Channel} channel - The channel object to convert.
+   * @returns {any} A structured representation of the channel.
+   */
   setChannelObject(channel: Channel): any {
     return {
       chaId: channel.chaId || '',
       creatorId: channel.creatorId || '',
       messages: channel.messages || [],
       title: channel.title || '',
-      users : channel.users || [],
+      users: channel.users || [],
       description: channel.description,
       reactions: channel.reactions,
       comments: channel.comments,
     };
   }
 }
-
-

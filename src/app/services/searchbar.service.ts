@@ -20,7 +20,7 @@ type CurrentObject =
 export class SearchbarService {
   searchName: string = "";
   newMsgSearchName: string = "";
-  filteredResults: any[] = []; // Gefilterte Ergebnisse für neue
+  filteredResults: any[] = []; 
   isInputEmpty: boolean = false;
   allObjects: CurrentObject[] = [];
 
@@ -127,13 +127,11 @@ export class SearchbarService {
    */
   newMsgSearch() {
     if (this.newMsgSearchName.startsWith('@')) {
-      // Filter Benutzer bei '@'
       const searchTerm = this.newMsgSearchName.slice(1).toLowerCase();
       this.filteredResults = this.firebaseService.allUsers.filter(user =>
         user.username.toLowerCase().includes(searchTerm)
       );
     } else if (this.newMsgSearchName.startsWith('#')) {
-      // Filter Channels bei '#'
       const searchTerm = this.newMsgSearchName.slice(1).toLowerCase();
       this.filteredResults = this.firebaseService.allChannels.filter(channel =>
         channel.title.toLowerCase().includes(searchTerm)
@@ -143,7 +141,6 @@ export class SearchbarService {
         user.email.toLowerCase().includes(this.newMsgSearchName)
       );
     } else {
-      // Keine Filterbedingung, leer
       this.filteredResults = [];
     }
   }

@@ -20,41 +20,42 @@ export class ShowMemberInChannelComponent {
   channel: any;
   allUsersFromAChannelId: any;
   allUsersFromAChannel: any;
-  user:any;
+  user: any;
   channelService = inject(ChannelService);
   firebaseService = inject(FirebaseService);
 
+  /**
+ * Constructor for the component.
+ * Observes breakpoint changes and initializes user and channel data by subscribing to the current channel observable.
+ * 
+ * @param {BreakpointObserverService} breakpointObserver - Service for observing responsive breakpoints.
+ * @param {InterfaceService} uiService - Service for managing user interface interactions.
+ */
   constructor(
     public breakpointObserver: BreakpointObserverService,
     public uiService: InterfaceService
-
   ) {
     this.channelService.currentChannel$.subscribe(async (channel) => {
       this.channel = channel;
       this.allUsersFromAChannelId = [];
-  
+
       if (this.channel.users) {
-        this.allUsersFromAChannelId = [...this.channel.users]; // Nutzer-IDs kopieren
+        this.allUsersFromAChannelId = [...this.channel.users];
       }
-  
-      // Alle Benutzerinformationen laden
+
       try {
         const userPromises = this.allUsersFromAChannelId.map((userId: any) =>
           this.firebaseService.getCurrentUser(userId)
         );
-  
-        // Warten, bis alle Benutzerdaten geladen sind
+
         const users = await Promise.all(userPromises);
-        console.log("Geladene Benutzer:", users);
-        
-        
-  
-        this.allUsersFromAChannelId = users; // Speichere Benutzer
+        console.log("Loaded users:", users);
+
+        this.allUsersFromAChannelId = users;
       } catch (error) {
+        console.error("Error loading users:", error);
       }
     });
   }
-  
-
 
 }

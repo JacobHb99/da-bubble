@@ -17,8 +17,4 @@ export class ProfilComponent {
   constructor( public dialogRef: MatDialogRef<ProfilComponent>,  @Inject(MAT_DIALOG_DATA) public data:any, public breakpointObserver: BreakpointObserverService){
     
   }
-  
- 
-  
-
 }
