@@ -27,6 +27,7 @@ export class SingleMessageComponent {
 
   showReactionPopups: boolean = false;
   showEmojiPicker = false;
+  showEditPopup = false;
   editMode = false;
   editText = '';
   loggedInUser: any;
@@ -36,6 +37,8 @@ export class SingleMessageComponent {
   @Input() message: Message = new Message();
   @Input() index: number = 0;
   @Input() isThread: boolean = false;
+  @ViewChild('emojiPicker', { static: false }) emojiPicker!: ElementRef;
+  @ViewChild('editPopup', { static: false }) editPopup!: ElementRef;
 
 
   constructor(
@@ -75,7 +78,7 @@ export class SingleMessageComponent {
    */
   openThread() {
     this.uiService.openThread()
-    this.cdr.detectChanges();  
+    this.cdr.detectChanges();
   }
 
   /**
@@ -235,6 +238,29 @@ export class SingleMessageComponent {
       const messages = convData['messages'];
       const dataRef = this.reactService.getDocRef(ref)
       this.reactService.updateMessageInFirestore(dataRef, messages)
+    }
+  }
+
+  /**
+   * Schaltet die Sichtbarkeit des Bearbeiten-Popups für Nachrichten um.
+   */
+  toggleEditPopup() {
+    this.showEditPopup = !this.showEditPopup;
+  }
+
+  /**
+ * Behandelt Klicks außerhalb bestimmter Elemente im Dokument.
+ * 
+ * @param {Event} event - Das Klick-Ereignis, das irgendwo im Dokument ausgelöst wurde.
+ * 
+ */
+  @HostListener('document:click', ['$event'])
+  handleOutsideClick(event: Event) {
+    if (this.emojiPicker && !this.emojiPicker.nativeElement.contains(event.target)) {
+      this.showEmojiPicker = false;
+    }
+    if (this.editPopup) {
+      this.showEditPopup = false;
     }
   }
 }
