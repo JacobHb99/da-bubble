@@ -21,16 +21,15 @@ export class FirebaseService {
   allUsersIds: any = [];
   allThreads: Thread[] = [];
   allConversations: Conversation[] = [];
-  allChannels: Channel[] = []; //besteht aus einem array von objekten des types channel + startet mit leerem array
+  allChannels: Channel[] = [];
   selectedUsers: any = []
-  public unsubscribeListeners: (() => void)[] = []; // Liste der Unsubscribe-Funktionen
+  public unsubscribeListeners: (() => void)[] = [];
   isUserChannelsListenerActive: boolean = false;
   isClosed = false;
   user: any;
   currentConversation: Conversation = new Conversation();
-  //currentConversation = signal<Conversation | null>(null)
   firestore = inject(Firestore);
-  isLoading = true; // Zeigt das Overlay an
+  isLoading = true;
 
 
 
@@ -42,7 +41,7 @@ export class FirebaseService {
    * @param currentUid Die eindeutige Benutzer-ID des aktuell angemeldeten Benutzers.
    */
   async initializeData(currentUid: string) {
-    this.isLoading = true; // Ladeanzeige aktivieren
+    this.isLoading = true;
 
     try {
       // Daten parallel laden
@@ -55,7 +54,7 @@ export class FirebaseService {
     } catch (error) {
     } finally {
       setTimeout(() => {
-        this.isLoading = false; // Ladeanzeige deaktivieren
+        this.isLoading = false;
       }, 1500);
     }
   }
@@ -66,15 +65,10 @@ export class FirebaseService {
    * @param currentUid Die eindeutige Benutzer-ID des aktuellen Benutzers.
    */
   moveUserToFront(currentUid: string): void {
-    // Finden des Index des Benutzers mit der aktuellen UID
     const index = this.allUsers.findIndex(user => user.uid === currentUid);
 
-    // Wenn der Benutzer gefunden wird und nicht bereits an Position 0 ist
     if (index > 0) {
-      // Entfernen des Benutzers aus seiner aktuellen Position
       const [currentUser] = this.allUsers.splice(index, 1);
-
-      // Einfügen des Benutzers an Position 0
       this.allUsers.unshift(currentUser);
     }
   }
@@ -84,14 +78,13 @@ export class FirebaseService {
    * Online-Benutzer werden an den Anfang der Liste verschoben.
    */
   sortByStatus() {
-    // Sortiere zuerst die Benutzer nach Status
     this.allUsers.sort((a, b) => {
       if (a.status === 'online' && b.status !== 'online') {
-        return -1; // `a` kommt vor `b`
+        return -1;
       } else if (a.status !== 'online' && b.status === 'online') {
-        return 1; // `b` kommt vor `a`
+        return 1;
       } else {
-        return 0; // Reihenfolge bleibt gleich
+        return 0;
       }
     });
   }
@@ -103,12 +96,12 @@ export class FirebaseService {
   unsubscribeAll() {
     this.unsubscribeListeners.forEach((unsub, index) => {
       try {
-        unsub(); // Listener entfernen 
+        unsub();
       } catch (error) {
       }
     });
-    this.unsubscribeListeners = []; // Liste leeren
-    this.isUserChannelsListenerActive = false; // Flag zurücksetzen
+    this.unsubscribeListeners = [];
+    this.isUserChannelsListenerActive = false;
   }
 
   /**
@@ -143,8 +136,8 @@ export class FirebaseService {
     }, (error) => {
     });
 
-    this.registerListener(unsubscribe); // Listener registrieren
-    this.isUserChannelsListenerActive = true; // Flag setzen
+    this.registerListener(unsubscribe);
+    this.isUserChannelsListenerActive = true;
   }
 
   /**
@@ -317,11 +310,11 @@ export class FirebaseService {
     return new Promise((resolve, reject) => {
       const unsubscribe = onSnapshot(doc(this.firestore, "users", uid), (doc) => {
         if (doc.exists()) {
-          resolve(doc.data()); // Gibt die Benutzerdaten zurück
+          resolve(doc.data());
         } else {
           reject("Benutzer nicht gefunden");
         }
-        unsubscribe(); // Beendet den Listener, um Speicherlecks zu vermeiden
+        unsubscribe();
       });
     });
   }

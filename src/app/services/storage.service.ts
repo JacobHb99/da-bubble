@@ -26,13 +26,11 @@ export class StorageService {
       uploadTask.on(
         'state_changed',
         (snapshot) => {
-          // Optional: Hier könntest du Fortschritts-Updates hinzufügen
           const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           console.log(`Upload is ${progress}% done`);
         },
         (error) => observer.error(error),
         () => {
-          // Bei Erfolg die Download-URL abrufen
           getDownloadURL(uploadTask.snapshot.ref).then(downloadURL => {
             observer.next(downloadURL);
             observer.complete();

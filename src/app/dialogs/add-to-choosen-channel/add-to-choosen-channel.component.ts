@@ -18,43 +18,65 @@ export class AddToChoosenChannelComponent {
   user: any = ""
   isInputEmpty = false;
 
-  constructor(private channelService: ChannelService, public firebaseService: FirebaseService) {
-    this.channelService.currentChannel$.subscribe((channel) => {
-      this.channel = channel
+ /**
+ * Constructor for the component.
+ * Subscribes to the current channel observable to get the latest channel data.
+ * 
+ * @param {ChannelService} channelService - Service to handle channel-related operations.
+ * @param {FirebaseService} firebaseService - Service to handle Firebase-related operations.
+ */
+constructor(private channelService: ChannelService, public firebaseService: FirebaseService) {
+  this.channelService.currentChannel$.subscribe((channel) => {
+    this.channel = channel;
+  });
+}
 
-    })
+/**
+ * Filters the list of all users based on the entered search term.
+ * Returns an empty array if the search term is less than one character long.
+ * 
+ * @returns {Array<any>} Filtered list of users whose usernames match the search term.
+ */
+get filteredUsers() {
+  if (this.searchName.length < 1) {
+    return [];
   }
 
+  return this.firebaseService.allUsers.filter((user: any) =>
+    user.username.toLowerCase().includes(this.searchName.toLowerCase())
+  );
+}
 
-  get filteredUsers() {
-    if (this.searchName.length < 1) {
-      return [];
-    }
-
-    return this.firebaseService.allUsers.filter((user: any) =>
-      
-      user.username.toLowerCase().includes(this.searchName.toLowerCase())
-    
-    );
-   
-    
+/**
+ * Adds a user to the selected users list if they are not already added.
+ * Clears the search term and updates the input state.
+ * 
+ * @param {any} user - The user object to be added to the selected users list.
+ */
+addUser(user: any) {
+  if (!this.firebaseService.selectedUsers.some((u: any) => u.username === user.username)) {
+    this.firebaseService.selectedUsers.push(user);
+    this.emptyInput();
   }
+  this.searchName = "";
+  this.emptyInput();
+}
 
-  addUser(user: any) {
-    if (!this.firebaseService.selectedUsers.some((u: any ) => u.username === user.username)) {
-      this.firebaseService.selectedUsers.push(user);
-     this.emptyInput()
-    } 
-      this.searchName = "";
-     this.emptyInput()
-    }
+/**
+ * Removes a user from the selected users list.
+ * Updates the input state after removal.
+ * 
+ * @param {any} user - The user object to be removed from the selected users list.
+ */
+removeUser(user: any) {
+  this.firebaseService.selectedUsers = this.firebaseService.selectedUsers.filter((u: any) => u.username !== user.username);
+  this.emptyInput();
+}
 
-    removeUser(user: any) {
-      this.firebaseService.selectedUsers = this.firebaseService.selectedUsers.filter((u: any) => u.username !== user.username);
-      this.emptyInput()
-    }
-
-    emptyInput() {
-      this.isInputEmpty = this.firebaseService.selectedUsers.length === 0;
-    }
+/**
+ * Updates the `isInputEmpty` property based on whether the selected users list is empty.
+ */
+emptyInput() {
+  this.isInputEmpty = this.firebaseService.selectedUsers.length === 0;
+}
 }
