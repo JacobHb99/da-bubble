@@ -10,7 +10,6 @@
     animation-delay: 2.8s;
     font-family: 'Nunito';
 
-
     .logo {
         position: absolute;
         top: 50%;
@@ -23,7 +22,6 @@
         align-items: center;
         gap: 16px;
 
-
         @media(max-width: 600px) {
             font-size: 24px;
             animation: fadeOutLogo-mobile 1s ease-in-out forwards;
@@ -34,8 +32,6 @@
             animation: fadeOutLogo-desktop 1s ease-in-out forwards;
             animation-delay: 2s;
         }
-
-
 
         img {
             width: 180px;
