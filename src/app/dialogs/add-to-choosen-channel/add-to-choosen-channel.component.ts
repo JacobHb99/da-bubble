@@ -29,13 +29,14 @@ constructor(private channelService: ChannelService, public firebaseService: Fire
   this.channelService.currentChannel$.subscribe((channel) => {
     this.channel = channel;
   });
+  this.firebaseService.selectedUsers =[];
 }
 
 /**
  * Filters the list of all users based on the entered search term.
  * Returns an empty array if the search term is less than one character long.
  * 
- * @returns {Array<any>} Filtered list of users whose usernames match the search term.
+ * @returns {Array<any>} Filtered list of users whose usernames match the search term and are not in the selected channel.
  */
 get filteredUsers() {
   if (this.searchName.length < 1) {
@@ -43,7 +44,8 @@ get filteredUsers() {
   }
 
   return this.firebaseService.allUsers.filter((user: any) =>
-    user.username.toLowerCase().includes(this.searchName.toLowerCase())
+    user.username.toLowerCase().includes(this.searchName.toLowerCase()) &&  
+    !this.channel.users.includes(user?.uid)
   );
 }
 
@@ -78,5 +80,17 @@ removeUser(user: any) {
  */
 emptyInput() {
   this.isInputEmpty = this.firebaseService.selectedUsers.length === 0;
+}
+
+async addNewUserInChannel(){
+let allUser = this.getAllUserChannel();
+await this.channelService.updateUserList(this.channel.chaId, allUser);
+}
+
+getAllUserChannel(){
+let currentUser = this.channel.users;
+let newUser = this.firebaseService.selectedUsers.map((user:any) =>  user.uid);
+let allUser = currentUser.concat(newUser);
+return allUser;
 }
 }
