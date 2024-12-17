@@ -177,6 +177,8 @@ export class SendMessageComponent {
     let thread = this.getCleanThreadJSON(new Thread(), input, objId)
     const threadRef = await addDoc(collection(this.firestore, 'threads'), thread);
     // Zurückgegebene Thread-ID
+    console.log(thread);
+    
     return threadRef.id;
   }
 
