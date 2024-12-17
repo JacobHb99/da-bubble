@@ -140,13 +140,19 @@ export class SendMessageComponent {
     // `addDoc` nutzen, um den Thread hinzuzufügen
     if (input == 'chat') {
       objId = this.fiBaService.currentConversation.conId as string;
+      let threadid = await this.addThread(objId, 'conversation');
+      return threadid
     } else if (input == 'channel') {
       objId = this.channelService.currentChannelSubject.value.chaId
+      let threadid = await this.addThread(objId, 'channel');
+      return threadid
     } else {
       if (reciever) {
-        await this.checkReceiver(reciever, objId, input);
+        let threadId = await this.checkReceiver(reciever, objId, input);
+        return threadId
       } else {
-        await this.addThread(objId, input);
+        let threadid = await this.addThread(objId, input);
+        return threadid
       }
     }
     return ""
@@ -164,7 +170,8 @@ export class SendMessageComponent {
     } else {
       objId = receiver.chaId
     }
-    await this.addThread(objId, input);
+    let threadId = await this.addThread(objId, input);
+    return threadId;
   }
 
   /**
