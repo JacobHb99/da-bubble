@@ -49,7 +49,12 @@ export class EditProfileComponent {
     this.user.username = this.inputName;
     this.user.email = this.inputEmail;
     this.firebaseService.updateUser(this.user);
-    //this.authService.currentRegData.username = this.inputName
+    this.authService.currentUserSig.update((user) => {
+      if (user) {
+        return { ...user, username: this.inputName, email: this.inputEmail };
+      }
+      return user;
+    });
     this.dialogRef.close();
   }
 
