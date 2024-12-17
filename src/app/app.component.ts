@@ -16,7 +16,9 @@ export class AppComponent {
   title = 'dabubble';
   authService = inject(AuthService);
 
-
+/**
+ * initialize the Authservice
+ */
   ngOnInit(): void {
     this.authService.initialize();
   }

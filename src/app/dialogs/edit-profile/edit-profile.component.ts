@@ -49,6 +49,7 @@ export class EditProfileComponent {
     this.user.username = this.inputName;
     this.user.email = this.inputEmail;
     this.firebaseService.updateUser(this.user);
+    //this.authService.currentRegData.username = this.inputName
     this.dialogRef.close();
   }
 

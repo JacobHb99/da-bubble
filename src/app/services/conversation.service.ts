@@ -21,11 +21,11 @@ export class ConversationService {
     }
 
     /**
-     * Startet eine neue Konversation oder öffnet eine bestehende Konversation zwischen dem aktuellen Benutzer und einem anderen Benutzer.
+     * Starts a new conversation or opens an existing conversation between the current user and another user.
      *
-     * @param {any} user - Das Zielbenutzerobjekt mit den UID-Daten.
-     * @param {string} [openChat] - Optionaler Parameter, um eine geöffnete Konversation anzuzeigen.
-     * @returns {Promise<void>} Eine Promise, die abschließt, wenn die Konversation gestartet oder geöffnet wurde.
+     * @param {any} user - The target user object containing UID data.
+     * @param {string} [openChat] - Optional parameter to display an open conversation.
+     * @returns {Promise<void>} A promise that resolves when the conversation has started or opened.
      */
     async startConversation(user: any, openChat?: string) {
         let partnerId = user.uid
@@ -50,11 +50,11 @@ export class ConversationService {
     }
 
     /**
-     * Erstellt eine neue Konversation zwischen dem aktuellen Benutzer und einem Partner.
+     * Creates a new conversation between the current user and a partner.
      *
-     * @param {any} creatorId - Die UID des aktuellen Benutzers.
-     * @param {any} partnerId - Die UID des Partnerbenutzers.
-     * @returns {Promise<void>} Eine Promise, die abschließt, wenn die Konversation erstellt wurde.
+     * @param {any} creatorId - The UID of the current user.
+     * @param {any} partnerId - The UID of the partner user.
+     * @returns {Promise<void>} A promise that resolves when the conversation is created.
      */
     async createNewConversation(creatorId: any, partnerId: any) {
         this.FiBaService.currentConversation = new Conversation();
@@ -65,9 +65,9 @@ export class ConversationService {
     }
 
     /**
-     * Abonnieren auf Änderungen einer bestimmten Konversation im Firebase Firestore.
+     * Subscribes to changes in a specific conversation in Firebase Firestore.
      *
-     * @param {any} conversationId - Die ID der Konversation.
+     * @param {any} conversationId - The ID of the conversation.
      */
     listenToCurrentConversationChanges(conversationId: any) {
         const conversationRef = doc(this.firestore, `conversations/${conversationId}`);
@@ -81,10 +81,10 @@ export class ConversationService {
     }
 
     /**
-     * Fügt eine neue Konversation zu Firebase hinzu.
+     * Adds a new conversation to Firebase.
      *
-     * @param {any} conversation - Das Konversationsobjekt, das hinzugefügt werden soll.
-     * @returns {Promise<void>} Eine Promise, die abschließt, wenn die Konversation erfolgreich hinzugefügt wurde.
+     * @param {any} conversation - The conversation object to be added.
+     * @returns {Promise<void>} A promise that resolves when the conversation is successfully added.
      */
     async addConversation(conversation: any) {
         const conData = this.getCleanJSON(conversation);
@@ -98,11 +98,11 @@ export class ConversationService {
     }
 
     /**
-     * Sucht nach einer bestehenden Konversation zwischen dem aktuellen Benutzer und einem Partner.
+     * Searches for an existing conversation between the current user and a partner.
      *
-     * @param {unknown} creatorId - Die UID des aktuellen Benutzers.
-     * @param {string} partnerId - Die UID des Partnerbenutzers.
-     * @returns {Conversation | any} Das gefundenen Konversationsobjekt oder `undefined`, wenn keine Konversation gefunden wird.
+     * @param {unknown} creatorId - The UID of the current user.
+     * @param {string} partnerId - The UID of the partner user.
+     * @returns {Conversation | any} The found conversation object or `undefined` if no conversation is found.
      */
     searchConversation(creatorId: unknown, partnerId: string): Conversation | any {
         for (let i = 0; i < this.FiBaService.allConversations.length; i++) {
@@ -118,10 +118,10 @@ export class ConversationService {
     }
 
     /**
-     * Gibt die aktuelle Konversation des Benutzers zurück.
+     * Returns the current conversation of the user.
      *
-     * @param {User} user - Das Benutzerobjekt des Partners.
-     * @returns {Conversation} Die Konversationsinstanz.
+     * @param {User} user - The user object of the partner.
+     * @returns {Conversation} The conversation instance.
      */
     getCurrentConversation(user: User) {
         let partnerId = user.uid as string
@@ -130,10 +130,10 @@ export class ConversationService {
     }
 
     /**
-     * Bereitet ein Konversationsobjekt für die Speicherung in Firebase vor.
+     * Prepares a conversation object for storage in Firebase.
      *
-     * @param {Conversation} conversation - Das Konversationsobjekt, das in ein JSON umgewandelt werden soll.
-     * @returns {Object} Das umgewandelte JSON-Objekt.
+     * @param {Conversation} conversation - The conversation object to be converted to JSON.
+     * @returns {Object} The converted JSON object.
      */
     getCleanJSON(conversation: Conversation) {
         return {
@@ -146,9 +146,9 @@ export class ConversationService {
     }
 
     /**
-     * Zeigt den Chat mit einem bestimmten Benutzer an.
+     * Displays the chat with a specific user.
      *
-     * @param {any} user - Das Benutzerobjekt des Partners.
+     * @param {any} user - The user object of the partner.
      */
     showUserChat(user: any) {
         this.userDataService.setUser(user);
@@ -157,16 +157,14 @@ export class ConversationService {
     }
 
     /**
-     * Sucht nach einer Konversation, an der der aktuelle Benutzer und ein Zielbenutzer beteiligt sind.
+     * Searches for a conversation involving the current user and a target user.
      *
-     * @param {User} foundUser - Das Zielbenutzerobjekt.
-     * @returns {Conversation} Das gefundene Konversationsobjekt oder `undefined`, wenn keine Konversation existiert.
+     * @param {User} foundUser - The target user object.
+     * @returns {Conversation} The found conversation object or `undefined` if no conversation exists.
      */
     searchForConversation(foundUser: User) {
         let allConv = this.FiBaService.allConversations;
         const currentUserUid = this.authService.currentUserSig()?.uid;
-
-        // Filtere die Conversation basierend auf den User-IDs
         const filteredConversation = allConv.find((conv: any) =>
             conv.user.includes(foundUser.uid) && conv.user.includes(currentUserUid)
         );

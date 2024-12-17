@@ -20,13 +20,15 @@ export class ReactionService {
   constructor() { }
 
   /**
-   * Aktualisiert eine Nachricht mit einem Emoji-Reaktionsobjekt.
-   * 
-   * @param {any} emoji - Das Emoji, das als Reaktion hinzugefügt werden soll.
-   * @param {Message} currentMessage - Die Nachricht, die aktualisiert werden soll.
-   * 
-   * Diese Methode erstellt eine neue Reaktion basierend auf dem gegebenen Emoji und sucht nach der Nachricht in den verschiedenen Quellen (Konversationen, Kanälen, Threads). Wenn die Nachricht gefunden wird, wird die Reaktion auf die Nachricht angewendet und die aktualisierte Nachricht wird in Firestore gespeichert.
-   */
+ * Updates a message with an emoji reaction object.
+ * 
+ * @param {any} emoji - The emoji to be added as a reaction.
+ * @param {Message} currentMessage - The message to be updated.
+ * 
+ * This method creates a new reaction based on the provided emoji and searches for the 
+ * message in various sources (conversations, channels, threads). Once the message is found, 
+ * the reaction is applied to the message, and the updated message is saved in Firestore.
+ */
   async updateMessageWithReaction(emoji: any, currentMessage: Message) {
     let newReaction = this.createNewReaction(emoji)
     const username = this.authService.currentUserSig()?.username as string;
@@ -50,11 +52,11 @@ export class ReactionService {
   }
 
   /**
-   * Gibt den Dokumenten-Referenzpfad zurück, basierend auf dem gegebenen `ref`.
+   * Returns the document reference path based on the given `ref`.
    * 
-   * @param {string} ref - Der Pfad des Dokument-Referenzs in Firestore.
+   * @param {string} ref - The Firestore document reference path.
    * 
-   * @returns {DocumentReference} - Die Firestore-Dokument-Referenz.
+   * @returns {DocumentReference} - The Firestore document reference.
    */
   getDocRef(ref: string) {
     const dataRef = doc(this.firestore, ref)
@@ -62,11 +64,11 @@ export class ReactionService {
   }
 
   /**
-   * Sucht nach einer Nachricht basierend auf ihrer ID in verschiedenen Quellen (Konversationen, Kanälen, Threads).
+   * Searches for a message based on its ID in various sources (conversations, channels, threads).
    * 
-   * @param {string} msgId - Die ID der Nachricht, nach der gesucht werden soll.
+   * @param {string} msgId - The ID of the message to search for.
    * 
-   * @returns {Promise<string | null>} - Der Dokumentenpfad, falls gefunden, sonst `null`.
+   * @returns {Promise<string | null>} - The document path if found, otherwise `null`.
    */
   async searchMsgById(msgId: string) {
     const allSources = [
@@ -96,12 +98,12 @@ export class ReactionService {
   }
 
   /**
-   * Sucht nach der Nachricht in den übergebenen Daten.
+   * Searches for a message within the provided data.
    * 
-   * @param {DocumentData} conversationData - Die Daten der Konversation, die Nachrichten enthalten.
-   * @param {string} msgId - Die ID der Nachricht.
+   * @param {DocumentData} conversationData - The conversation data containing messages.
+   * @param {string} msgId - The ID of the message.
    * 
-   * @returns {any} - Die gefundene Nachricht oder `undefined`, falls nicht gefunden.
+   * @returns {any} - The found message or `undefined` if not found.
    */
   findMessageData(conversationData: DocumentData, msgId: string) {
     const messages = conversationData['messages'];
@@ -117,11 +119,11 @@ export class ReactionService {
   }
 
   /**
-   * Verarbeitet die Reaktion auf eine Nachricht.
+   * Processes the reaction to a message.
    * 
-   * @param {any} message - Die Nachricht, die die Reaktion erhält.
-   * @param {Reaction} newReaction - Das neue Emoji-Reaktionsobjekt.
-   * @param {string} username - Der Benutzername des aktuellen Benutzers, der die Reaktion hinterlässt.
+   * @param {any} message - The message receiving the reaction.
+   * @param {Reaction} newReaction - The new emoji reaction object.
+   * @param {string} username - The username of the current user adding the reaction.
    */
   handleReaction(message: any, newReaction: Reaction, username: string) {
     this.removeReactionAndUserFromMessage(message, username);
@@ -134,10 +136,10 @@ export class ReactionService {
   }
 
   /**
-   * Entfernt eine Reaktion und den Benutzer von einer Nachricht.
+   * Removes a reaction and the user from a message.
    * 
-   * @param {any} message - Die Nachricht, bei der die Reaktion entfernt werden soll.
-   * @param {string} username - Der Benutzername des aktuellen Benutzers, dessen Reaktion entfernt werden soll.
+   * @param {any} message - The message from which the reaction should be removed.
+   * @param {string} username - The username of the current user whose reaction should be removed.
    */
   removeReactionAndUserFromMessage(message: any, username: string) {
     const oldReactionIndex = this.findUserReactionIndex(message.reactions, username);
@@ -150,9 +152,9 @@ export class ReactionService {
   }
 
   /**
-   * Löscht ein Emoji-Reaktionsobjekt von einer Nachricht.
+   * Deletes an emoji reaction object from a message.
    * 
-   * @param {Message} currentMessage - Die Nachricht, bei der das Emoji gelöscht werden soll.
+   * @param {Message} currentMessage - The message from which the emoji should be deleted.
    */
   async deleteEmoji(currentMessage: Message) {
     const username = this.authService.currentUserSig()?.username as string;
@@ -174,11 +176,11 @@ export class ReactionService {
   }
 
   /**
-   * Holt die Daten aus der Firestore-Dokument-Referenz.
+   * Retrieves the data from the Firestore document reference.
    * 
-   * @param {string} ref - Der Firestore-Dokumentenpfad.
+   * @param {string} ref - The Firestore document path.
    * 
-   * @returns {Promise<DocumentData | undefined>} - Die Dokumentendaten oder `undefined`, falls Dokument nicht gefunden.
+   * @returns {Promise<DocumentData | undefined>} - The document data, or `undefined` if the document is not found.
    */
   async getDataFromRef(ref: string) {
     const dataRef = doc(this.firestore, ref);
@@ -187,11 +189,11 @@ export class ReactionService {
     return data
   }
 
-  /**
-   * Aktualisiert eine Nachricht in Firestore.
+/**
+   * Updates a message in Firestore.
    * 
-   * @param {any} ref - Der Firestore-Dokumenten-Referenz.
-   * @param {any[]} messages - Die aktualisierten Nachrichten.
+   * @param {any} ref - The Firestore document reference.
+   * @param {any[]} messages - The updated messages.
    */
   async updateMessageInFirestore(ref: any, messages: any[]) {
     try {
@@ -202,11 +204,11 @@ export class ReactionService {
   }
 
   /**
-   * Erzeugt ein neues Emoji-Reaktionsobjekt.
+   * Creates a new emoji reaction object.
    * 
-   * @param {any} emoji - Das Emoji für die Reaktion.
+   * @param {any} emoji - The emoji for the reaction.
    * 
-   * @returns {Reaction} - Das erstellte Emoji-Reaktionsobjekt.
+   * @returns {Reaction} - The created emoji reaction object.
    */
   createNewReaction(emoji: any) {
     const username = this.authService.currentUserSig()?.username as string;
@@ -220,11 +222,11 @@ export class ReactionService {
   }
 
   /**
-   * Fügt eine neue Reaktion zu einer Nachricht hinzu.
+   * Adds a new reaction to a message.
    * 
-   * @param {Message} message - Die Nachricht, zu der die Reaktion hinzugefügt werden soll.
-   * @param {Reaction} newReaction - Das neue Emoji-Reaktionsobjekt.
-   * @param {string} username - Der Benutzername des aktuellen Benutzers.
+   * @param {Message} message - The message to which the reaction should be added.
+   * @param {Reaction} newReaction - The new emoji reaction object.
+   * @param {string} username - The username of the current user.
    */
   addNewReactionToMessage(message: Message, newReaction: Reaction, username: string) {
     const reactionToAdd = {
@@ -236,46 +238,46 @@ export class ReactionService {
   }
 
   /**
-   * Sucht nach der Indexposition einer Nachricht in einem Array von Nachrichten.
+   * Searches for the index position of a message in an array of messages.
    * 
-   * @param {any[]} messages - Das Array von Nachrichten.
-   * @param {string} msgId - Die ID der Nachricht.
+   * @param {any[]} messages - The array of messages.
+   * @param {string} msgId - The ID of the message.
    * 
-   * @returns {number} - Die Indexposition der Nachricht oder `-1`, falls nicht gefunden.
+   * @returns {number} - The index position of the message, or `-1` if not found.
    */
   findMessageIndex(messages: any[], msgId: string): number {
     return messages.findIndex((msg: any) => msg.msgId === msgId);
   }
 
   /**
-   * Sucht nach der Indexposition einer Reaktion eines Benutzers in einem Array von Reaktionen.
+   * Searches for the index position of a user's reaction in an array of reactions.
    * 
-   * @param {Reaction[]} reactions - Das Array von Reaktionen.
-   * @param {string} username - Der Benutzername des aktuellen Benutzers.
+   * @param {Reaction[]} reactions - The array of reactions.
+   * @param {string} username - The username of the current user.
    * 
-   * @returns {number} - Die Indexposition der Reaktion oder `-1`, falls nicht gefunden.
+   * @returns {number} - The index position of the reaction, or `-1` if not found.
    */
   findUserReactionIndex(reactions: Reaction[], username: string): number {
     return reactions.findIndex((reaction: Reaction) => reaction.reactedUser[username]);
   }
 
-  /**
-   * Sucht nach der Indexposition einer bestimmten Reaktion im Array der Reaktionen einer Nachricht.
+ /**
+   * Searches for the index position of a specific reaction in the array of reactions of a message.
    * 
-   * @param {Reaction[]} reactions - Das Array von Reaktionen.
-   * @param {string} reactionId - Die ID der Reaktion.
+   * @param {Reaction[]} reactions - The array of reactions.
+   * @param {string} reactionId - The ID of the reaction.
    * 
-   * @returns {number} - Die Indexposition der Reaktion oder `-1`, falls nicht gefunden.
+   * @returns {number} - The index position of the reaction, or `-1` if not found.
    */
   findReactionIndex(reactions: Reaction[], reactionId: string): number {
     return reactions.findIndex((reaction: Reaction) => reaction.id === reactionId);
   }
 
   /**
-   * Entfernt einen Benutzer aus einer Reaktion.
+   * Removes a user from a reaction.
    * 
-   * @param {Reaction} reaction - Die Reaktion, bei der der Benutzer entfernt werden soll.
-   * @param {string} username - Der Benutzername des aktuellen Benutzers.
+   * @param {Reaction} reaction - The reaction from which the user should be removed.
+   * @param {string} username - The username of the current user.
    */
   removeUserFromReaction(reaction: Reaction, username: string) {
     delete reaction.reactedUser[username];
@@ -283,20 +285,20 @@ export class ReactionService {
   }
 
   /**
-   * Entfernt eine Reaktion aus einer Nachricht.
+   * Removes a reaction from a message.
    * 
-   * @param {any} message - Die Nachricht, bei der die Reaktion entfernt werden soll.
-   * @param {number} reactionIndex - Der Index der zu entfernenden Reaktion.
+   * @param {any} message - The message from which the reaction should be removed.
+   * @param {number} reactionIndex - The index of the reaction to be removed.
    */
   removeReactionFromMessage(message: any, reactionIndex: number) {
     message.reactions.splice(reactionIndex, 1);
   }
 
   /**
-   * Fügt einen Benutzer zu einer Reaktion hinzu.
+   * Adds a user to a reaction.
    * 
-   * @param {Reaction} reaction - Die Reaktion, zu der der Benutzer hinzugefügt werden soll.
-   * @param {string} username - Der Benutzername des aktuellen Benutzers.
+   * @param {Reaction} reaction - The reaction to which the user should be added.
+   * @param {string} username - The username of the current user.
    */
   addUserToReaction(reaction: Reaction, username: string) {
     reaction.reactedUser[username] = true;
