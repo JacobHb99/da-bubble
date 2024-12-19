@@ -7,6 +7,7 @@ import { FirebaseService } from '../../services/firebase.service';
 import { collection, doc, onSnapshot } from 'firebase/firestore';
 import { Firestore } from '@angular/fire/firestore';
 import { User } from '../../models/user.model';
+import { getAuth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-edit-profile',
@@ -22,6 +23,8 @@ export class EditProfileComponent {
 
   inputName = '';
   inputEmail = '';
+  inputPassword = '';
+  showPasswordInput: boolean = false;
 
   /**
  * Constructor for the EditProfileComponent.
@@ -41,14 +44,20 @@ export class EditProfileComponent {
     }, 100);
   }
 
+  verifyPassword() {
+    this.showPasswordInput = true;
+  }
+
   /**
    * Updates the user's profile information with the data entered in the input fields 
    * and saves the updated data to Firebase. Closes the dialog after updating.
    */
   changeProfil() {
+    const auth = getAuth();    
     this.user.username = this.inputName;
     this.user.email = this.inputEmail;
     this.firebaseService.updateUser(this.user);
+    this.authService.changeDatainAuthProfile(auth.currentUser, this.inputName, this.inputEmail, this.user.avatar, this.inputPassword);
     this.authService.currentUserSig.update((user) => {
       if (user) {
         return { ...user, username: this.inputName, email: this.inputEmail };

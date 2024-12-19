@@ -1,5 +1,5 @@
 import { forwardRef, Inject, inject, Injectable, signal } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, onAuthStateChanged, sendPasswordResetEmail, signInAnonymously, signInWithEmailAndPassword, signInWithPopup, signOut, updateProfile, UserCredential, UserInfo, } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, EmailAuthProvider, getAuth, GoogleAuthProvider, onAuthStateChanged, reauthenticateWithCredential, sendEmailVerification, sendPasswordResetEmail, signInAnonymously, signInWithEmailAndPassword, signInWithPopup, signOut, updateEmail, updateProfile, UserCredential, UserInfo, } from '@angular/fire/auth';
 import { from, Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { FirebaseService } from './firebase.service';
@@ -24,6 +24,7 @@ export class AuthService {
   errorMessage: string = '';
   errorCode!: string;
   guestLoggedIn: boolean = false;
+  currentUser: any = null;
 
 
   constructor(private fireService: FirebaseService, private firestore: Firestore) { }
@@ -87,6 +88,55 @@ export class AuthService {
       photoURL: avatar
     });
     this.saveNewUserInFirestore(email, username, response.user.uid, avatar);
+  }
+
+   changeDatainAuthProfile(user: any, username: string, email: string, avatar: string, password: string) {
+    updateProfile(user, {
+      displayName: username,
+      photoURL: avatar,
+    });
+
+    // Verifizierung und E-Mail-Update
+    // if (user.email !== email) {
+    //   this.verifyAndUpdateEmail(user, email, password);
+    // }
+    this.saveNewUserInFirestore(email, username, user.uid, avatar);
+  }
+
+  verifyAndUpdateEmail(user: any, email: string, currentPassword: string) {
+    // Re-Authentifiziere den Benutzer
+    const credential = EmailAuthProvider.credential(user.email, currentPassword);
+    console.log(user);
+    
+    reauthenticateWithCredential(user, credential)
+      .then(() => {
+        console.log('Re-authentication successful.');
+  
+        // Sende eine Verifizierungs-E-Mail
+        sendEmailVerification(user)
+          .then(() => {
+            console.log('Verification email sent. Please verify your new email address.');
+  
+            // Nach Verifizierung E-Mail-Adresse aktualisieren
+            setTimeout(() => {
+              this.updateEmail(user, email);
+            }, 1000); // Simulierter Ablauf, in Realität auf tatsächliche Verifizierung warten
+          })
+          .catch((error) => {
+            console.error('Error sending verification email:', error);
+          });
+      })
+      .catch((error) => {
+        console.error('Error during re-authentication:', error);
+      });
+  }
+
+  updateEmail(user: any, email: string) {
+    // Update email
+    updateEmail(user, email)
+      .then(() => {
+        console.log('Email updated successfully.');
+      })
   }
 
   /**
@@ -255,6 +305,9 @@ export class AuthService {
 
       if (user) {
         this.setCurrentUserData(user);
+        this.currentUser = user;
+        console.log('USER', this.currentUser);
+
         // Lade alle relevanten Daten
         this.fireService.initializeData(user.uid);
       } else {
