@@ -96,10 +96,10 @@ export class AuthService {
       photoURL: avatar,
     });
 
-    // Verifizierung und E-Mail-Update
-    // if (user.email !== email) {
-    //   this.verifyAndUpdateEmail(user, email, password);
-    // }
+    //Verifizierung und E-Mail-Update
+    if (user.email !== email) {
+      this.verifyAndUpdateEmail(user, email, password);
+    }
     this.saveNewUserInFirestore(email, username, user.uid, avatar);
   }
 
@@ -136,7 +136,11 @@ export class AuthService {
     updateEmail(user, email)
       .then(() => {
         console.log('Email updated successfully.');
-      })
+      }).catch((error) => {
+        // An error occurred
+        console.log('error', error);
+        
+      });
   }
 
   /**
