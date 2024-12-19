@@ -90,7 +90,10 @@ export class AuthService {
     this.saveNewUserInFirestore(email, username, response.user.uid, avatar);
   }
 
-   changeDatainAuthProfile(user: any, username: string, email: string, avatar: string, password: string) {
+   changeDatainAuthProfile(username: string, email: string, avatar: string, password: string) {
+    console.log(this.currentCredentials);
+    
+    let user = this.currentCredentials.user
     updateProfile(user, {
       displayName: username,
       photoURL: avatar,

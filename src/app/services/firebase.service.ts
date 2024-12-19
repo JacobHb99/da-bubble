@@ -327,7 +327,7 @@ export class FirebaseService {
   async subscribeUserById(id: any) {
     const unsubscribe = onSnapshot(this.getUserDocRef(id), (user) => {
       this.user = this.setUserJson(user.data(), user.id);
-    });
+    });    
     this.registerListener(unsubscribe);
   }
 
@@ -340,8 +340,19 @@ export class FirebaseService {
       let docRef = this.getUserDocRef(user.uid);
       await updateDoc(docRef, this.getUserAsCleanJson(user));
     }
-    this.getAllUsers(user.id)
+    this.getAllUsers(user.uid)
   }
+
+    /**
+   * Aktualisiert die Daten eines Benutzers in der Firestore-Datenbank.
+   * @param user Die neuen Benutzerdaten.
+   */
+    async updateUserData(user: any) {
+      if (user.uid) {
+        let docRef = this.getUserDocRef(user.uid);
+        await updateDoc(docRef, this.getUserAsCleanJson(user));
+      }
+    }
 
   /**
    * Schaltet den Zustand eines Channels um (offen/geschlossen).

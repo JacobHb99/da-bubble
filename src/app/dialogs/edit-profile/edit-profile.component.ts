@@ -53,11 +53,12 @@ export class EditProfileComponent {
    * and saves the updated data to Firebase. Closes the dialog after updating.
    */
   changeProfil() {
-    const auth = getAuth();    
     this.user.username = this.inputName;
     this.user.email = this.inputEmail;
-    this.firebaseService.updateUser(this.user);
-    this.authService.changeDatainAuthProfile(auth.currentUser, this.inputName, this.inputEmail, this.user.avatar, this.inputPassword);
+    console.log(this.user);
+    
+    this.authService.changeDatainAuthProfile(this.inputName, this.inputEmail, this.user.avatar, this.inputPassword);
+    this.firebaseService.updateUserData(this.user);
     this.authService.currentUserSig.update((user) => {
       if (user) {
         return { ...user, username: this.inputName, email: this.inputEmail };
@@ -73,7 +74,7 @@ export class EditProfileComponent {
    * 
    * @returns {void}
    */
-  setUser(): any {
+  setUser(): any {    
     this.user = {
       uid: this.firebaseService.user.uid,
       username: this.firebaseService.user.username,
