@@ -11,7 +11,7 @@
         @if (authService.currentUserSig()?.username == 'Gast') {
         <button mat-button matTooltip="Als Gast nicht verfügbar!">Bearbeiten</button>
         }@else {
-            <button mat-button matTooltip="Als Gast nicht verfügbar!" [mat-dialog-close]="'edit'">Bearbeiten</button>
+            <button mat-button [mat-dialog-close]="'edit'">Bearbeiten</button>
         }
     </div>
 

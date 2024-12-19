@@ -38,7 +38,7 @@ export class IntroAnimationComponent implements OnInit {
     setTimeout(() => {
       this.containerVisible = false;
       this.authService.showAnimation = false;
-    }, 3500);
+    }, 4000);
   }
 
   onImageLoad() {
