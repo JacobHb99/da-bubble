@@ -13,6 +13,8 @@ import { AuthService } from '../../services/auth.service';
 })
 export class IntroAnimationComponent implements OnInit {
   containerVisible: boolean | undefined | null;
+  startAnimation: boolean = false;
+  imageLoaded: boolean = false;
 
 
   constructor(public authService: AuthService) {
@@ -37,5 +39,12 @@ export class IntroAnimationComponent implements OnInit {
       this.containerVisible = false;
       this.authService.showAnimation = false;
     }, 3500);
+  }
+
+  onImageLoad() {
+    this.imageLoaded = true;
+    setTimeout(() => {
+      this.startAnimation = true;
+    }, 0); // Animation starten, sobald das Bild geladen ist
   }
 }

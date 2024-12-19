@@ -340,6 +340,7 @@ export class FirebaseService {
       let docRef = this.getUserDocRef(user.uid);
       await updateDoc(docRef, this.getUserAsCleanJson(user));
     }
+    this.getAllUsers(user.id)
   }
 
   /**

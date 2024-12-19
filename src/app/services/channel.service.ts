@@ -78,13 +78,13 @@ export class ChannelService {
   }
 
   /**
-   * Removes a user from a channel.
+   * Update the userlist from a channel
    * 
    * @param {string} channelId - The ID of the channel to update.
    * @param {any} users - The updated list of users.
    * @returns {Promise<void>}
    */
-  async removeAUser(channelId: string, users: any): Promise<void> {
+  async updateUserList(channelId: string, users: any): Promise<void> {
     if (!channelId) {
       console.error("Fehler: Keine gültige Channel-ID angegeben.");
       return;

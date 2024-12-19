@@ -123,7 +123,7 @@
                         <div (click)="startConversation(user)"  class="single-user-hover">
                             <div class="avatar">
                                 <img class="avatar-img" [src]="user.avatar" referrerPolicy="no-referrer" alt="">
-                                <img class="status" [src]="user.status == 'online' ? '/icons/Online.png' : '/icons/Offline.png'" alt="">
+                                <img class="status" [src]="user.status == 'online' ? './icons/Online.png' : './icons/Offline.png'" alt="">
                             </div>
                             <div class="username">
                                 <p>{{ user.username }}</p>

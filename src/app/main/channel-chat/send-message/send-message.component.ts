@@ -255,7 +255,8 @@ export class SendMessageComponent {
       //this.conService.showUserChat()
     } catch (error) {
       // console.error('Fehler beim Hinzufügen der Nachricht:', error);
-    }
+    }    
+    this.uiService.scrollInChat(msgData)
   }
 
   /**

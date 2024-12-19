@@ -51,216 +51,215 @@ export class SingleMessageComponent {
     });
   }
 
-  /**
-   * Zeigt das Reaktions-Popup an, wenn die Maus über das Element bewegt wird.
+    /**
+   * Displays the reaction popup when the mouse hovers over the element.
    */
-  onMouseOver() {
-    this.showReactionPopups = true;
-  }
-
-  /**
-   * Zeigt das Reaktions-Popup an, wenn die Maus über das Element bewegt wird.
-   */
-  onMouseLeave() {
-    this.showReactionPopups = false;
-  }
-
-  /**
-   * Initialisiert die Komponente, indem die aktuelle Nachricht und der eingeloggte Benutzer gesetzt werden.
-   */
-  ngOnInit(): void {
-    this.currentMessage = new Message(this.currentMessage);
-    this.loggedInUser = this.authService.currentUserSig();
-  }
-
-  /**
-   * Öffnet einen Thread und erzwingt eine erneute Change Detection.
-   */
-  openThread() {
-    this.uiService.openThread()
-    this.cdr.detectChanges();
-  }
-
-  /**
-   * Formatiert einen Zeitstempel in ein deutsches Datum im Format "Wochentag, Tag. Monat".
-   * 
-   * @param {number} timestamp - Der zu formatierende Zeitstempel.
-   * @returns {string} - Das formatierte Datum.
-   */
-  getFormattedDate(timestamp: number): string {
-    const date = new Date(timestamp);
-
-    const options: Intl.DateTimeFormatOptions = {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long'
-    };
-    return date.toLocaleDateString('de-DE', options);
-  }
-
-  /**
-   * Formatiert einen Zeitstempel in eine deutsche Uhrzeit im Format "HH:MM Uhr".
-   * 
-   * @param {number} timestamp - Der zu formatierende Zeitstempel.
-   * @returns {string} - Die formatierte Uhrzeit.
-   */
-  getFormattedTime(timestamp: number): string {
-    const time = new Date(timestamp);
-
-    return time.toLocaleTimeString('de-DE', {
-      hour: '2-digit',
-      minute: '2-digit'
-    }) + ' Uhr';
-  }
-
-  /**
-   * Findet einen Benutzer basierend auf seiner ID.
-   * 
-   * @param {unknown} Id - Die Benutzer-ID, nach der gesucht wird.
-   * @returns {User | null} - Der gefundene Benutzer oder `null`, wenn kein Benutzer gefunden wurde.
-   */
-  findUserWithId(Id: unknown) {
-    for (let i = 0; i < this.fiBaService.allUsers.length; i++) {
-      let user: User = this.fiBaService.allUsers[i];
-
-      if (Id === user.uid) {
-        return user;
+    onMouseOver() {
+      this.showReactionPopups = true;
+    }
+  
+    /**
+     * Hides the reaction popup when the mouse leaves the element.
+     */
+    onMouseLeave() {
+      this.showReactionPopups = false;
+    }
+  
+    /**
+     * Initializes the component by setting the current message and logged-in user.
+     */
+    ngOnInit(): void {
+      this.currentMessage = new Message(this.currentMessage);
+      this.loggedInUser = this.authService.currentUserSig();
+    }
+  
+    /**
+     * Opens a thread and forces a change detection.
+     */
+    openThread() {
+      this.uiService.openThread();
+      this.cdr.detectChanges();
+    }
+  
+    /**
+     * Formats a timestamp into a German date string in the format "Weekday, Day. Month".
+     * 
+     * @param {number} timestamp - The timestamp to be formatted.
+     * @returns {string} - The formatted date.
+     */
+    getFormattedDate(timestamp: number): string {
+      const date = new Date(timestamp);
+  
+      const options: Intl.DateTimeFormatOptions = {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long'
+      };
+      return date.toLocaleDateString('de-DE', options);
+    }
+  
+    /**
+     * Formats a timestamp into a German time string in the format "HH:MM Uhr".
+     * 
+     * @param {number} timestamp - The timestamp to be formatted.
+     * @returns {string} - The formatted time.
+     */
+    getFormattedTime(timestamp: number): string {
+      const time = new Date(timestamp);
+  
+      return time.toLocaleTimeString('de-DE', {
+        hour: '2-digit',
+        minute: '2-digit'
+      }) + ' Uhr';
+    }
+  
+    /**
+     * Finds a user by their ID.
+     * 
+     * @param {unknown} Id - The user ID to search for.
+     * @returns {User | null} - The found user or `null` if no user is found.
+     */
+    findUserWithId(Id: unknown) {
+      for (let i = 0; i < this.fiBaService.allUsers.length; i++) {
+        let user: User = this.fiBaService.allUsers[i];
+  
+        if (Id === user.uid) {
+          return user;
+        }
+      }
+      return null;
+    }
+  
+    /**
+     * Determines if a date divider should be shown.
+     * 
+     * @param {number} index - The index of the current message.
+     * @returns {boolean} - `true` if a divider should be shown, otherwise `false`.
+     */
+    shouldShowDateDivider(index: number): boolean {
+      if (index === 0) {
+        this.uiService.previousMessage = this.currentMessage;
+        return true;
+      } else {
+        const currentDate = this.getFormattedDate(this.currentMessage.timeStamp);
+        const previousDate = this.getFormattedDate(this.uiService.previousMessage.timeStamp);
+        this.uiService.previousMessage = this.currentMessage;
+        return currentDate !== previousDate;
       }
     }
-    return null;
-  }
-
-  /**
-   * Bestimmt, ob ein Datums-Trenner angezeigt werden soll.
-   * 
-   * @param {number} index - Der Index der aktuellen Nachricht.
-   * @returns {boolean} - `true`, wenn ein Trenner angezeigt werden soll, ansonsten `false`.
-   */
-  shouldShowDateDivider(index: number): boolean {
-    if (index === 0) {
-      this.uiService.previousMessage = this.currentMessage
-      return true;
-
-    } else {
-      const currentDate = this.getFormattedDate(this.currentMessage.timeStamp);
-      const previousDate = this.getFormattedDate(this.uiService.previousMessage.timeStamp);
-      this.uiService.previousMessage = this.currentMessage;
-      return currentDate !== previousDate;
+  
+    /**
+     * Toggles the emoji picker.
+     */
+    toggleEmojiPicker() {
+      this.showEmojiPicker = !this.showEmojiPicker;
     }
-  }
-
-  /**
-   * Umschalten des Emoji-Pickers.
-   */
-  toggleEmojiPicker() {
-    this.showEmojiPicker = !this.showEmojiPicker;
-  }
-
-  /**
-   * Überprüft, ob eine Reaktion im Singular oder Plural angezeigt werden soll.
-   * 
-   * @param {Reaction} reaction - Die Reaktion, die überprüft wird.
-   * @returns {string} - Der korrekte Text für Singular oder Plural.
-   */
-  checkPlural(reaction: Reaction) {
-    const hasReacted = Object.keys(reaction.reactedUser).some(
-      (username) => username === this.authService.currentUserSig()?.username
-    );
-    if (reaction.counter > 1) {
-      return 'haben reagiert';
-    } else {
-      return hasReacted ? 'hast reagiert' : 'hat reagiert';
+  
+    /**
+     * Checks whether to display the reaction in singular or plural form.
+     * 
+     * @param {Reaction} reaction - The reaction being checked.
+     * @returns {string} - The correct text for singular or plural.
+     */
+    checkPlural(reaction: Reaction) {
+      const hasReacted = Object.keys(reaction.reactedUser).some(
+        (username) => username === this.authService.currentUserSig()?.username
+      );
+      if (reaction.counter > 1) {
+        return 'haben reagiert';
+      } else {
+        return hasReacted ? 'hast reagiert' : 'hat reagiert';
+      }
     }
-  }
-
-  /**
-   * Verarbeitet die Auswahl eines Emojis.
-   * 
-   * @param {any} event - Das Ereignis, das das ausgewählte Emoji enthält.
-   */
-  manageEmoji(event: any) {
-    const emoji = event.emoji;
-    this.reactService.updateMessageWithReaction(emoji, this.currentMessage)
-  }
-
-  /**
-   * Entfernt ein Emoji aus der aktuellen Nachricht.
-   */
-  manageDeleteEmoji() {
-    this.reactService.deleteEmoji(this.currentMessage)
-  }
-
-  /**
-   * Aktiviert den Bearbeitungsmodus für eine Nachricht.
-   */
-  async showEditArea() {
-    this.editMode = true;
-    this.editText = this.currentMessage.text;
-    //this.editTextArea.nativeElement.focus();
-  }
-
-  /**
-   * Bricht den Bearbeitungsmodus ab.
-   */
-  cancelEditArea() {
-    this.editText = '';
-    this.editMode = false;
-  }
-
-  /**
-   * Speichert die bearbeitete Nachricht, wenn das Formular gültig ist.
-   * 
-   * @param {NgForm} ngForm - Das Formular, das die bearbeitete Nachricht enthält.
-   */
-  async onSubmit(ngForm: NgForm) {
-    if (ngForm.valid && ngForm.submitted) {
-      await this.saveEditMessage();
+  
+    /**
+     * Handles emoji selection.
+     * 
+     * @param {any} event - The event containing the selected emoji.
+     */
+    manageEmoji(event: any) {
+      const emoji = event.emoji;
+      this.reactService.updateMessageWithReaction(emoji, this.currentMessage);
+    }
+  
+    /**
+     * Removes an emoji from the current message.
+     */
+    manageDeleteEmoji() {
+      this.reactService.deleteEmoji(this.currentMessage);
+    }
+  
+    /**
+     * Enables the edit mode for a message.
+     */
+    async showEditArea() {
+      this.editMode = true;
+      this.editText = this.currentMessage.text;
+      //this.editTextArea.nativeElement.focus();
+    }
+  
+    /**
+     * Cancels the edit mode.
+     */
+    cancelEditArea() {
       this.editText = '';
       this.editMode = false;
     }
-  }
-
-  /**
-   * Speichert die bearbeitete Nachricht in Firestore.
-   */
-  async saveEditMessage() {
-    const msgId = this.currentMessage.msgId;
-    this.currentMessage.text = this.editText;
-    const ref = await this.reactService.searchMsgById(msgId);
-    if (!ref) {
-      return;
+  
+    /**
+     * Saves the edited message if the form is valid.
+     * 
+     * @param {NgForm} ngForm - The form containing the edited message.
+     */
+    async onSubmit(ngForm: NgForm) {
+      if (ngForm.valid && ngForm.submitted) {
+        await this.saveEditMessage();
+        this.editText = '';
+        this.editMode = false;
+      }
     }
-
-    const convData = await this.reactService.getDataFromRef(ref);
-    if (convData) {
-      const message = this.reactService.findMessageData(convData, msgId);
-      message.text = this.editText;
-      const messages = convData['messages'];
-      const dataRef = this.reactService.getDocRef(ref)
-      this.reactService.updateMessageInFirestore(dataRef, messages)
+  
+    /**
+     * Saves the edited message to Firestore.
+     */
+    async saveEditMessage() {
+      const msgId = this.currentMessage.msgId;
+      this.currentMessage.text = this.editText;
+      const ref = await this.reactService.searchMsgById(msgId);
+      if (!ref) {
+        return;
+      }
+  
+      const convData = await this.reactService.getDataFromRef(ref);
+      if (convData) {
+        const message = this.reactService.findMessageData(convData, msgId);
+        message.text = this.editText;
+        const messages = convData['messages'];
+        const dataRef = this.reactService.getDocRef(ref);
+        this.reactService.updateMessageInFirestore(dataRef, messages);
+      }
     }
-  }
-
-  /**
-   * Schaltet die Sichtbarkeit des Bearbeiten-Popups für Nachrichten um.
-   */
-  toggleEditPopup() {
-    this.showEditPopup = !this.showEditPopup;
-  }
-
-  /**
- * Behandelt Klicks außerhalb bestimmter Elemente im Dokument.
- * 
- * @param {Event} event - Das Klick-Ereignis, das irgendwo im Dokument ausgelöst wurde.
- * 
- */
-  @HostListener('document:click', ['$event'])
-  handleOutsideClick(event: Event) {
-    if (this.emojiPicker && !this.emojiPicker.nativeElement.contains(event.target)) {
-      this.showEmojiPicker = false;
+  
+    /**
+     * Toggles the visibility of the edit popup for messages.
+     */
+    toggleEditPopup() {
+      this.showEditPopup = !this.showEditPopup;
     }
-    if (this.editPopup) {
-      this.showEditPopup = false;
+  
+    /**
+     * Handles clicks outside specific elements in the document.
+     * 
+     * @param {Event} event - The click event triggered somewhere in the document.
+     */
+    @HostListener('document:click', ['$event'])
+    handleOutsideClick(event: Event) {
+      if (this.emojiPicker && !this.emojiPicker.nativeElement.contains(event.target)) {
+        this.showEmojiPicker = false;
+      }
+      if (this.editPopup) {
+        this.showEditPopup = false;
+      }
     }
-  }
+  
 }

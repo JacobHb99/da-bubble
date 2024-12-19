@@ -39,7 +39,8 @@ export class EditChannelComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<EditChannelComponent>,
-    public dialog: MatDialog, public channelService: ChannelService,
+    public dialog: MatDialog, 
+    public channelService: ChannelService,
     private userService: UserDataService,
     private authService: AuthService,
     private firebaseService: FirebaseService,
@@ -120,8 +121,7 @@ export class EditChannelComponent implements OnInit {
     this.dialogRef.close();
     const removeUserId = this.currentUser.uid;
     const allUserWithoutLeavedUser = this.allUserInThisChannel.filter((allUser: any) => allUser !== removeUserId);
-    console.log(allUserWithoutLeavedUser);
-    await this.channelService.removeAUser(this.channelId, allUserWithoutLeavedUser);
+    await this.channelService.updateUserList(this.channelId, allUserWithoutLeavedUser);
     location.reload();
   }
 }
