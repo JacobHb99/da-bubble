@@ -1,8 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import {MatDialogModule} from '@angular/material/dialog';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import {MatButton} from '@angular/material/button';
 import {MatTooltip} from '@angular/material/tooltip';
+import { EditProfileComponent } from '../edit-profile/edit-profile.component';
 
 @Component({
   selector: 'app-my-profil',
@@ -17,4 +18,12 @@ import {MatTooltip} from '@angular/material/tooltip';
 })
 export class MyProfilComponent {
   authService = inject(AuthService);
+    readonly dialog = inject(MatDialog);
+
+
+  openEditProfileDialog(){
+    const dialogRef = this.dialog.open(EditProfileComponent, {
+    });
+  }
+  
 }
