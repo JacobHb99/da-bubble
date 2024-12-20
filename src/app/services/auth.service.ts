@@ -90,16 +90,19 @@ export class AuthService {
     this.saveNewUserInFirestore(email, username, response.user.uid, avatar);
   }
 
-   changeDatainAuthProfile(user: any, username: string, email: string, avatar: string, password: string) {
+   changeDatainAuthProfile(username: string, email: string, avatar: string, password: string) {
+    console.log(this.currentCredentials);
+    
+    let user = this.currentCredentials.user
     updateProfile(user, {
       displayName: username,
       photoURL: avatar,
     });
 
-    // Verifizierung und E-Mail-Update
-    // if (user.email !== email) {
-    //   this.verifyAndUpdateEmail(user, email, password);
-    // }
+    //Verifizierung und E-Mail-Update
+    if (user.email !== email) {
+      this.verifyAndUpdateEmail(user, email, password);
+    }
     this.saveNewUserInFirestore(email, username, user.uid, avatar);
   }
 
@@ -136,7 +139,11 @@ export class AuthService {
     updateEmail(user, email)
       .then(() => {
         console.log('Email updated successfully.');
-      })
+      }).catch((error) => {
+        // An error occurred
+        console.log('error', error);
+        
+      });
   }
 
   /**

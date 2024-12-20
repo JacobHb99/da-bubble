@@ -8,11 +8,15 @@
     <img class="avatar" src="{{authService.currentUserSig()?.avatar}}" alt="">
     <div class="profil-name">
         <p class="username">{{authService.currentUserSig()?.username}}</p>
-        <p class="edit" [mat-dialog-close]="'edit'">Bearbeiten</p>
+        @if (authService.currentUserSig()?.username == 'Gast') {
+        <button mat-button matTooltip="Als Gast nicht verfügbar!">Bearbeiten</button>
+        }@else {
+            <button mat-button [mat-dialog-close]="'edit'">Bearbeiten</button>
+        }
     </div>
 
     <div class="online-status">
-        <img src="/img/online.svg" alt=""> 
+        <img src="/img/online.svg" alt="">
         <span>Aktiv</span>
     </div>
 

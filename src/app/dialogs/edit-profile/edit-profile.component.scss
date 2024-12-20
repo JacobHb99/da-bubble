@@ -2,7 +2,6 @@
 
 .header {
   @include dFlex($jc: space-between, $ai: center, $fd: row, $gap: 0);
-  margin: 45px 20px;
 }
 
 * {
@@ -10,8 +9,9 @@
 }
 
 .edit-profil-dialog {
-  overflow-y: scroll;
+  overflow-y: auto;
   height: 80vh;
+  padding: 30px;
 }
 
 .avatar {
