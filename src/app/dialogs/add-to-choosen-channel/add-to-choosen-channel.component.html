@@ -15,7 +15,7 @@
                 <div *ngFor="let user of firebaseService.selectedUsers" class="chip">
                     <img [src]="user.avatar" alt="Avatar" class="avatar">
                     <span>{{ user.username }}</span>
-                    <img class="user-close" (click)="removeUser(user)" src="/icons/close.png" alt="">
+                    <img class="user-close" (click)="removeUser(user)" src="/img/icons/close.png" alt="">
                 </div>
             </div>
         </div>
@@ -39,11 +39,6 @@
         </div>
 
     </div>
-
-
-
-
-
 
     <div class="button-position">
         <button (click)="addNewUserInChannel()" class="btn-blue">Hinzufügen</button>

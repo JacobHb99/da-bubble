@@ -39,12 +39,12 @@ export class SideNavComponent {
   isOnline = false;
   channelName = "";
   currentUser?: User;
-  arrowImg: string = 'icons/arrow_drop_down.png'
-  workspaceImg: string = 'icons/workspaces.png'
-  tagImg: string = "/icons/tag.png"
-  addImg: string = "/icons/add_circle.png"
-  accountImg: string = "/icons/account_circle.png"
-  menuImg: string = "/icons/Hide-navigation.png"
+  arrowImg: string = '/img/icons/arrow_drop_down.png'
+  workspaceImg: string = '/img/icons/workspaces.png'
+  tagImg: string = "/img/icons/tag.png"
+  addImg: string = "/img/icons/add_circle.png"
+  accountImg: string = "/img/icons/account_circle.png"
+  menuImg: string = "/img/icons/Hide-navigation.png"
   uiService = inject(InterfaceService);
   conService = inject(ConversationService);
   channelService = inject(ChannelService)
