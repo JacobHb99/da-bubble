@@ -7,11 +7,11 @@
         <div class="scroll-container">
             <div class="workspace-container" [ngClass]="{'d-none': breakpointObserver.isXSmallOrSmall}">
                 <div class="workspace-text">
-                    <img src="./icons/Workspace-logo.png" alt="">
+                    <img src="/img/icons/Workspace-logo.png" alt="">
                     <p>Devspace</p>
                 </div>
                 <div (click)="openNewMessage()" (mouseenter)="isHoveredEdit = true" (mouseleave)="isHoveredEdit = false" class="edit-square">
-                    <img [src]="isHoveredEdit ? 'icons/edit_square-blue.png' : 'icons/edit_square.png'" alt="">
+                    <img [src]="isHoveredEdit ? '/img/icons/edit_square-blue.png' : '/img/icons/edit_square.png'" alt="">
                 </div>
             </div>
 
@@ -20,7 +20,7 @@
                     <input (click)="this.searchbarService.combineArraysWithTypes()"
                         (input)="this.searchbarService.filteredUsers" [(ngModel)]="this.searchbarService.searchName"
                         type="text" placeholder="Devspace durchsuchen">
-                    <img src="./icons/search-thin-grey.png" alt="">
+                    <img src="/img/icons/search-thin-grey.png" alt="">
                 </div>
                 <div [ngClass]="{'hideUserDialog' : this.searchbarService.searchName.length <= 0}"
                     class="user-dialog showUserDialog">
@@ -34,7 +34,7 @@
                             }
                             @if (obj.name == "channel") {
                             <div (click)="openChannel(obj.data)" class="single-search">
-                                <img src="./icons/tag.png" alt="">
+                                <img src="/img/icons/tag.png" alt="">
                                 <p class="searchusername">{{ obj.data.title }}</p>
                             </div>
                             }
@@ -42,7 +42,7 @@
                                 <div *ngFor="let message of obj.data.messages" class="single-user">
                                     <div  class="single-user-hover no-padding" (click)="openSearchMsg(obj.data, message)" *ngIf="message.text.toLowerCase().includes(this.searchbarService.searchName.toLowerCase())"
                                         class="single-search flex-start">
-                                        <img src="./icons/chats-icon.png" alt="">
+                                        <img src="/img/icons/chats-icon.png" alt="">
                                         <p class="searchusername">
                                             {{ message.text }}
                                         </p>
@@ -54,7 +54,7 @@
                                 <div *ngFor="let message of obj.data.messages" class="single-user">
                                     <div  class="single-user-hover no-padding" (click)="openSearchMsg(obj.data, message, obj.channelId)" *ngIf="message.text.toLowerCase().includes(this.searchbarService.searchName.toLowerCase())"
                                         class="single-search flex-start">
-                                        <img src="./icons/chats-icon.png" alt="">
+                                        <img src="/img/icons/chats-icon.png" alt="">
                                         <p class="searchusername">
                                             {{ message.text }}
                                         </p>
@@ -66,7 +66,7 @@
                                 <div *ngFor="let message of obj.data.messages">
                                     <div (click)="openThreadMsg(obj.data, message)" *ngIf="message.text.toLowerCase().includes(this.searchbarService.searchName.toLowerCase())"
                                         class="single-search">
-                                        <img src="./icons/thread-icon.png" alt="">
+                                        <img src="/img/icons/thread-icon.png" alt="">
                                         <p class="searchusername">
                                             {{ message.text }}
                                         </p>
@@ -84,7 +84,7 @@
                         (mouseleave)="isHoveredChannel = false" (mouseenter)="changeImg()" (mouseleave)="resetImg()"
                         class="channel-header">
                         <img class="arrow-drop"
-                            [src]="hideChannel ? (isHoveredChannel ? '/icons/arrow_drop_down-right-blue.png' : '/icons/arrow_drop_down-right.png') : (isHoveredChannel ? '/icons/arrow_drop_down-blue.png' : '/icons/arrow_drop_down.png')"
+                            [src]="hideChannel ? (isHoveredChannel ? '/img/icons/arrow_drop_down-right-blue.png' : '/img/icons/arrow_drop_down-right.png') : (isHoveredChannel ? '/icons/arrow_drop_down-blue.png' : '/icons/arrow_drop_down.png')"
                             alt="">
                         <img class="workspaces-img" [src]="workspaceImg" alt="">
                         <p>Channels</p>
@@ -110,7 +110,7 @@
         
                 <div (mouseenter)="isHoveredUser = true" (mouseleave)="isHoveredUser = false" (click)="toggleUser()"
                     (mouseenter)="changeImgMessage()" (mouseleave)="resetImgMessage()" class="channel-header">
-                    <img [src]="hideUser ? (isHoveredUser ? '/icons/arrow_drop_down-right-blue.png' : '/icons/arrow_drop_down-right.png'): (isHoveredUser ? '/icons/arrow_drop_down-blue.png' : '/icons/arrow_drop_down.png')"
+                    <img [src]="hideUser ? (isHoveredUser ? '/img/icons/arrow_drop_down-right-blue.png' : '/img/icons/arrow_drop_down-right.png'): (isHoveredUser ? '/img/icons/arrow_drop_down-blue.png' : '/img/icons/arrow_drop_down.png')"
                         alt="">
                     <img [src]="accountImg" alt="">
                     <p>Direktnachrichten</p>
@@ -123,7 +123,7 @@
                         <div (click)="startConversation(user)"  class="single-user-hover">
                             <div class="avatar">
                                 <img class="avatar-img" [src]="user.avatar" referrerPolicy="no-referrer" alt="">
-                                <img class="status" [src]="user.status == 'online' ? './icons/Online.png' : './icons/Offline.png'" alt="">
+                                <img class="status" [src]="user.status == 'online' ? '/img/icons/Online.png' : '/img/icons/Offline.png'" alt="">
                             </div>
                             <div class="username">
                                 <p>{{ user.username }}</p>
@@ -140,14 +140,14 @@
 
     <div class="new-msg-btn" (click)="openNewMessage()" [ngClass]="{'d-none': !breakpointObserver.isXSmallOrSmall}">
         <div class="postion-box">
-            <img src="./icons/new-msg-small-white.png" alt="">
+            <img src="/img/icons/-msg-small-white.png" alt="">
         </div>
     </div>
 
 <div (mouseenter)="isHoveredMenu = true" (mouseleave)="isHoveredMenu = false" (mouseenter)="changeImgMenu()"
     (mouseleave)="resetImgMenu()" (click)="toggleMenu()" class="workspace-show-hide" [ngClass]="{'d-none': breakpointObserver.isXSmallOrSmall}">
     <p>{{ menuVisible ? "Workspace-Menü öffnen": "Workspace-Menü schließen" }}</p>
-    <img [src]="menuVisible ? (isHoveredMenu ? '/icons/open-navigation-blue.png' : '/icons/open-navigation.png'): (isHoveredMenu ? '/icons/hide-navigation-blue.png' : '/icons/Hide-navigation.png')"
+    <img [src]="menuVisible ? (isHoveredMenu ? '/img/icons/open-navigation-blue.png' : '/img/icons/open-navigation.png'): (isHoveredMenu ? '/img/icons/hide-navigation-blue.png' : '/img/icons/Hide-navigation.png')"
         alt="">
 
 </div>
