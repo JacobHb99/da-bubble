@@ -8,7 +8,7 @@
 }
  
 .profil-dialog{
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   height: 80vh;
 }
@@ -95,6 +95,10 @@ button {
     height: 100vh;
     padding: 20px;
     box-sizing: border-box;
+  }
+
+  .cdk-overlay-pane.mat-mdc-dialog-panel {
+    max-width: 100vw !important;
   }
 
   .avatar{
