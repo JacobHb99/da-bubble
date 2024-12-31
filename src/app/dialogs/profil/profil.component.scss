@@ -1,16 +1,12 @@
 @import "./../../../styles.scss";
 
 * {
-  padding: 0;
-  margin: 0;
   font-family: "Nunito";
-  font-size: 18px; 
 }
  
 .profil-dialog{
   overflow-y: auto;
   overflow-x: hidden;
-  height: 80vh;
 }
 
 h2 {
@@ -18,21 +14,24 @@ h2 {
   font-weight: 700;
 }
 
-.username {
+.profile-username {
   font-size: 32px;
   font-weight: 700;
   margin: 20px 40px;
 }
 
-.header {
+.profile-header {
   @include dFlex($jc: space-between, $ai: center, $fd: row, $gap: 0);
   margin: 20px 40px;
 }
 
 .avatar {
+  border-radius: 200px;
+}
+
+.prifile-img{
   width: 200px;
   margin: 0px 40px;
-  border-radius: 200px;
 }
 
 .profil-name {
@@ -84,7 +83,7 @@ button {
 
 @media (max-width: 500px) {
 
-  .header{
+  .profile-header{
     width: 100%;
   }
      
@@ -92,7 +91,6 @@ button {
     @include dFlex($jc:unset, $ai: center, $fd: column, $gap: 0px);
     max-width: 800px;
     width: 100vw;
-    height: 100vh;
     padding: 20px;
     box-sizing: border-box;
   }

@@ -1,12 +1,12 @@
 <div class="profil-dialog">
 
-    <div class="header">
+    <div class="profile-header">
         <h2>Profil</h2>
         <div mat-dialog-close class="close"></div>
     </div>
 
-    <img class="avatar" src="{{data.avatar}}" alt="">
-    <p class="username">{{data.username}}</p>
+    <img class="avatar prifile-img" src="{{data.avatar}}" alt="">
+    <p class="profile-username">{{data.username}}</p>
       
     <div class="online-status">
         @if (data.status == 'online') {
