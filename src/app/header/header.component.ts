@@ -100,19 +100,6 @@ export class HeaderComponent {
     const dialogRef = this.dialog.open(MyProfilComponent, {
       position: { top: '110px', right: `${rightPosition}px` },
     });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result === 'edit') {
-        this.openEditProfilDialog();
-      }
-    });
-  }
-
-  /**
-   * Opens a dialog for editing the user's profile.
-   */
-  openEditProfilDialog() {
-    this.dialog.open(EditProfileComponent);
   }
 
   /**

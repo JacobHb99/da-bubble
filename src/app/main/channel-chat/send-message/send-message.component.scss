@@ -43,7 +43,7 @@ section {
 }
 
 .addFile {
-    background-image: url("/icons/add-grey.png");
+    background-image: url("/img/icons/add-grey.png");
     height: 40px;
     width: 40px;
     background-repeat: no-repeat;
@@ -51,18 +51,18 @@ section {
     cursor: pointer;
 
     &:hover {
-        background-image: url("/icons/add-blue.png");
+        background-image: url("/img/icons/add-blue.png");
         background-color: $bgHover;
         border-radius: 50%;
     }
 
     &:active {
-        background-image: url("/icons/add-black.png");
+        background-image: url("/img/icons/add-black.png");
     }
 }
 
 .addReaction {
-    background-image: url("/icons/sentiment_satisfied-grey.png");
+    background-image: url("/img/icons/sentiment_satisfied-grey.png");
     height: 40px;
     width: 40px;
     background-repeat: no-repeat;
@@ -71,13 +71,13 @@ section {
     position: relative;
 
     &:hover {
-        background-image: url("/icons/sentiment_satisfied-blue.png");
+        background-image: url("/img/icons/sentiment_satisfied-blue.png");
         background-color: $bgHover;
         border-radius: 50%;
     }
 
     &:active {
-        background-image: url("/icons/sentiment_satisfied-black.png");
+        background-image: url("/img/icons/sentiment_satisfied-black.png");
     }
 }
 
@@ -89,7 +89,7 @@ section {
 
 
 .tagUserIcon {
-    background-image: url("/icons/alternate_email-grey.png");
+    background-image: url("/img/icons/alternate_email-grey.png");
     height: 40px;
     width: 40px;
     background-repeat: no-repeat;
@@ -97,13 +97,13 @@ section {
     cursor: pointer;
 
     &:hover {
-        background-image: url("/icons/alternate_email-blue.png");
+        background-image: url("/img/icons/alternate_email-blue.png");
         background-color: $bgHover;
         border-radius: 50%;
     }
 
     &:active {
-        background-image: url("/icons/alternate_email-black.png");
+        background-image: url("/img/icons/alternate_email-black.png");
     }
 }
 
