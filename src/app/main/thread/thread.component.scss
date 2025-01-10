@@ -43,7 +43,7 @@ header {
 }
 
 .closeThread {
-    background-image: url("/icons/close.png");
+    background-image: url("/img/icons/close.png");
     height: 40px;
     width: 40px;
     background-repeat: no-repeat;
@@ -51,7 +51,7 @@ header {
     cursor: pointer;
 
     &:hover {
-        background-image: url("/icons/close-blue.png");
+        background-image: url("/img/icons/close-blue.png");
         background-color: $bgHover;
         border-radius: 50%;
     }
