@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject ,ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -12,9 +12,10 @@ import { getAuth } from '@angular/fire/auth';
 @Component({
   selector: 'app-edit-profile',
   standalone: true,
-  imports: [MatDialogModule, CommonModule, FormsModule],
+  imports: [MatDialogModule, CommonModule, FormsModule,],
   templateUrl: './edit-profile.component.html',
   styleUrl: './edit-profile.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class EditProfileComponent {
   authService = inject(AuthService);
