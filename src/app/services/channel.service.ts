@@ -18,7 +18,7 @@ export class ChannelService {
   newChannel: Channel = new Channel(); 
   uiService = inject(InterfaceService);
   conService = inject(ConversationService);
-  allChannels!: Channel[];
+  allChannels: Channel[] = [];
 
   public currentChannelSubject = new BehaviorSubject<Channel>(new Channel());
   currentChannel$ = this.currentChannelSubject.asObservable();
@@ -173,6 +173,7 @@ export class ChannelService {
       this.allChannels = [];
       querySnapshot.forEach((doc) => {
         this.convertData(doc.data(), doc.id);
+        
       });
     });
     this.firebaseService.registerListener(unsubscribe);

@@ -20,6 +20,20 @@
 
 
 }
+.check-name {
+    min-height: 20px;
+    display: none;
+    >p {
+        color: red;
+        margin: 0;
+    }
+}
+
+.show {
+    display: flex;
+}
+
+
 
 .close-container {
     width: 40px;
@@ -116,7 +130,7 @@
     }
 }
 
-.button {
+.button-container {
     display: flex;
     justify-content: flex-end;
 
@@ -135,6 +149,10 @@
             cursor: pointer;
 
         }
+        &:disabled {
+            background: #A0A0A0; 
+            cursor: default;
+          }
 
     }
 }

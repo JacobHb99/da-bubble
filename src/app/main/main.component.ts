@@ -41,6 +41,5 @@ export class MainComponent {
 
 
   ngOnInit() {
-    console.log('active Channel default: ', this.uiService.content)
   }
 }

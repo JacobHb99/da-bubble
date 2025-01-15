@@ -169,8 +169,8 @@ header {
     font-size: 18px;
     font-weight: 400;
     z-index: 49;
-    transform: translateY(-100px); /* Ausgangsposition */
-    animation: slideIn 0.5s ease-out forwards, slideOut 0.5s ease-in-out 4s forwards; /* Animations-Effekt */
+    transform: translateY(-100px);
+    animation: slideIn 0.5s ease-out forwards, slideOut 0.5s ease-in-out 4s forwards; 
 
     mat-icon{
         scale: 1.2;

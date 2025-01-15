@@ -341,8 +341,8 @@ section {
 
   .input-container {
     position: relative;
-    width: 100%; /* Nimmt die volle Breite des Containers ein */
-    max-width: unset; /* Entfernt eventuell übernommene Einschränkungen */
+    width: 100%; 
+    max-width: unset;
     display: flex;
 
     >img {
@@ -360,7 +360,7 @@ section {
       font-family: 'Nunito';
       border-radius: 42px;
       border: none;
-      width: 100%; /* Nimmt den verfügbaren Platz im flex-Container ein */
+      width: 100%; 
       padding: 17.5px 45px;
       box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
       border: 1px solid #ADB0D9;

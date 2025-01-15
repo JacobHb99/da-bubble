@@ -32,7 +32,7 @@
             <div [ngClass]="{'show': isSelected}" class="input-container">
                 <input placeholder="Name eingeben" [(ngModel)]="searchName" type="text">
 
-                <div [ngClass]="{'showUserDialog': this.searchName.length >= 1, 'hideUserDialog': filteredUsers.length == 1}"
+                <div [ngClass]="{'showUserDialog': this.searchName.length >= 1 && filteredUsers.length > 0, 'hideUserDialog': filteredUsers.length == 1}"
                     class="user-dialog">
                     <div (click)="addUser(user)" *ngFor="let user of filteredUsers" class="single-user">
                         <div class="single-user-hover">

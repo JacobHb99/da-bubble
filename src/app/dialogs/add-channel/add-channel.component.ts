@@ -21,8 +21,11 @@ import { ConversationService } from '../../services/conversation.service';
 export class AddChannelComponent {
   isHoveredClose = false;
   channelName = '';
+  checkChannel = true;
+  checkName: boolean = false
   inputTitle: string = '';
   inputDesc: string = '';
+  isInputEmpty: boolean = false;
 
   constructor(
     public firebaseService: FirebaseService,
@@ -31,16 +34,20 @@ export class AddChannelComponent {
     public channelService: ChannelService
   ) {
     this.firebaseService.selectedUsers = [];
+
   }
 
   closeDialogChannel(): void {
     this.dialogRef.close();
   }
 
-   /**
-   * open dialog for add a new channel
-   */
+
+
+  /**
+  * open dialog for add a new channel
+  */
   openDialogAddPeople(): void {
+    this.checkChannelName();
     this.channelService.currentChannel.title = this.inputTitle;
     this.channelService.currentChannel.description = this.inputDesc;
     const dialogRef = this.dialog.open(AddPeopleComponent, {
@@ -49,4 +56,26 @@ export class AddChannelComponent {
     });
     this.closeDialogChannel();
   }
+
+
+  /**
+   Checks if the entered channel name is valid and not already in use.
+ *
+ * The function trims the input title to remove leading and trailing whitespace. 
+ * It then checks if the title matches any existing channel title in the 
+ * `allChannels` array from the Firebase service.
+ *
+   */
+
+  checkChannelName() {
+    let trimTitle = this.inputTitle.trim();
+    this.checkName = this.firebaseService.allChannels.some(channel => channel.title === trimTitle)
+    if (!this.checkName && this.inputTitle.length >= 1) {
+      this.checkChannel = false
+    }
+    else {
+      this.checkChannel = true;
+    }
+  }
+
 }

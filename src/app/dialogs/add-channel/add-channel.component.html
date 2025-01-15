@@ -10,7 +10,10 @@
         <h2>Channel-Name</h2>
         <div class="input-container">
             <img src="/img/icons/tag-grey.png" alt="">
-            <input [(ngModel)]="inputTitle" placeholder="z.B. Kooperationsprojekte" type="text">
+            <input (keyup)="checkChannelName()" [(ngModel)]="inputTitle" placeholder="z.B. Kooperationsprojekte" type="text">
+        </div>
+        <div [ngClass]="checkName ? 'show' : 'hide'" class="check-name ">
+            <p>Channel existiert bereits.</p>
         </div>
     </div>
 
@@ -21,8 +24,8 @@
     <div class="input-description">
         <input [(ngModel)]="inputDesc" placeholder="Dein Text hier" type="text">
     </div>
-    <div  class="button">
-        <button (click)="openDialogAddPeople()">Erstellen</button>
+    <div  class="button-container">
+        <button [disabled]="checkChannel" (click)="openDialogAddPeople()">Erstellen</button>
     </div>
 
 </div>

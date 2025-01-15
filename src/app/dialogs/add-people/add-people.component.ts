@@ -19,7 +19,7 @@ export class AddPeopleComponent {
   isHoveredClose = false;
   isSelected = false;
   isChecked = false;
-  searchName: string = '';
+  searchName: string = "";
   currentUser: any = '';
   isInputEmpty = false;
   constructor(

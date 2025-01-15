@@ -56,7 +56,9 @@ export class SideNavComponent {
     public dialog: MatDialog,
     public breakpointObserver: BreakpointObserverService,
     public searchbarService: SearchbarService
-  ) { }
+  ) {
+    
+   }
 
   /**
    * Schaltet das Menü ein/aus, je nach Bildschirmgröße und Thread-Zustand.
@@ -130,7 +132,7 @@ export class SideNavComponent {
    */
   resetImgMessage() {
     this.arrowImg = '/img/icons/arrow_drop_down.png';
-    this.accountImg = "/img//icons/account_circle.png";
+    this.accountImg = "/img/icons/account_circle.png";
   }
 
   /**

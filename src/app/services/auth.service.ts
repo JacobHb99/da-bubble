@@ -313,7 +313,6 @@ export class AuthService {
       if (user) {
         this.setCurrentUserData(user);
         this.currentUser = user;
-        console.log('USER', this.currentUser);
 
         // Lade alle relevanten Daten
         this.fireService.initializeData(user.uid);
