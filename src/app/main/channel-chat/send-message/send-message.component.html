@@ -1,13 +1,12 @@
 <section>
     <div class="main">
-        <textarea type="text" #textArea [(ngModel)]="text" [placeholder]="placeholder"
-            (input)="checkemptyInput()"></textarea>
+        @if (uiService.showTextarea) {
+        <textarea type="text" appAutofocus #textArea [(ngModel)]="text" [placeholder]="placeholder"
+            (input)="checkemptyInput(); searchbarService.searchSendMsg()"
+            [(ngModel)]="this.searchbarService.searchNameSendMsg"></textarea>
+        }
         <div class="interactDiv">
             <div class="addDiv">
-                <!-- <div class="addFile"></div>
-                <svg width="2" height="40" viewBox="0 0 2 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 0V40" stroke="#ADB0D9" />
-                </svg> -->
                 <div class="addReaction" (click)="toggleEmojiPicker()"></div>
                 @if (showEmojiPicker) {
                 <div class="emojiPicker" #emojiPicker>
@@ -35,15 +34,45 @@
     </div>
 
     @if (showUserList) {
-    <div class="scrollDiv">
-       
-        <div class="userList" #userList>
+    <div class="user-dialog showUserDialog">
+        <div class="scroll-container" #userList>
             @for (user of fiBaService.allUsers; track $index) {
-            <span (click)="tagUser(user.username)">{{user.username}}</span>
+            <div class="single-user-hover">
+                <div class="single-search" (click)="tagUserBtn(user.username)">
+                    <img class="avatar-img" src="{{ user.avatar}}" alt="">
+                    <p class="username">{{ user.username }}</p>
+                </div>
+            </div>
             }
+
         </div>
-       
     </div>
     }
+
+
+    <div [ngClass]="{
+        'hideUserDialog' : searchbarService.filteredResultsSendMsg.length <= 0, 
+        'user-dialog-mobile': breakpointObserver.isXSmallOrSmall
+        }" class="user-dialog showUserDialog">
+        <div class="scroll-container">
+            <div *ngFor="let obj of searchbarService.filteredResultsSendMsg" class="single-user">
+                <div class="single-user-hover">
+                    @if (obj.uid && searchbarService.searchNameSendMsg.startsWith('@')) {
+                    <div class="single-search" (click)="selectItem('@', obj.username)">
+                        <img class="avatar-img" src="{{ obj.avatar}}" alt="">
+                        <p class="username">{{ obj.username }}</p>
+                    </div>
+                    }
+                    
+                    @if (obj.chaId) {
+                    <div class="single-search" (click)="selectItem('#', obj.title)">
+                        <img class="avatar-img" src="/img/icons/tag.png" alt="">
+                        <p class="username">{{ obj.title }}</p>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 
 </section>

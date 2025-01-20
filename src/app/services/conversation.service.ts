@@ -28,6 +28,7 @@ export class ConversationService {
      * @returns {Promise<void>} A promise that resolves when the conversation has started or opened.
      */
     async startConversation(user: any, openChat?: string) {
+        this.uiService.toggleTextarea();
         let partnerId = user.uid
         let creatorId = this.authService.currentUserSig()?.uid;
         let existCon = this.searchConversation(creatorId, partnerId)

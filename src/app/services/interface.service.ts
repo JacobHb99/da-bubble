@@ -23,6 +23,8 @@ export class InterfaceService {
   currChannel!: Channel;
   selectedConversations: (User | Channel)[] = [];
   msgConfirmed: boolean = false;
+  showTextarea:boolean = false;
+  uniqueKey='';
 
 
 
@@ -77,6 +79,7 @@ export class InterfaceService {
    */
   openThread() {
     this.showThread = true;
+    //this.focusTextArea();
   }
 
   /**
@@ -225,6 +228,27 @@ export class InterfaceService {
     setTimeout(() => {
       this.scrollTrigger.next(elementId);
     }, 500);
+  }
+
+  // focusTextArea() {
+  //   const textarea = document.querySelector('textarea');
+  //   if (textarea) {
+  //     (textarea as HTMLElement).focus();
+  //   }
+  // }
+
+  
+  // forceRerender() {
+  //   this.uniqueKey = Date.now().toString(); // Oder eine andere einzigartige ID
+  // }
+
+  
+
+  toggleTextarea() {
+    this.showTextarea = false;
+    setTimeout(() => {
+      this.showTextarea = true;
+    }, );
   }
 
 }

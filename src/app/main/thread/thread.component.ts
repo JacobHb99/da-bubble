@@ -19,6 +19,7 @@ export class ThreadComponent {
 
   constructor(public breakpointObserver: BreakpointObserverService, public firebaseService: FirebaseService) {
     this.uiService.showThread = false;
+    this.uiService.toggleTextarea();
   }
   
 

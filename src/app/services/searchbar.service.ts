@@ -6,6 +6,8 @@ import { FirebaseService } from './firebase.service';
 import { user } from '@angular/fire/auth';
 import { AuthService } from './auth.service';
 import { Thread } from '../models/thread.model';
+import { BehaviorSubject } from 'rxjs';
+
 type CurrentObject =
   | { name: "user"; data: User }
   | { name: "channel"; data: Channel }
@@ -20,7 +22,9 @@ type CurrentObject =
 export class SearchbarService {
   searchName: string = "";
   newMsgSearchName: string = "";
-  filteredResults: any[] = []; 
+  searchNameSendMsg: string = "";
+  filteredResults: any[] = [];
+  filteredResultsSendMsg: any[] = [];
   isInputEmpty: boolean = false;
   allObjects: CurrentObject[] = [];
 
@@ -71,7 +75,9 @@ export class SearchbarService {
    */
   emptyMsgInput() {
     this.newMsgSearchName = "";
+    this.searchNameSendMsg = "";
     this.filteredResults = [];
+    this.filteredResultsSendMsg = [];
   }
 
   /**
@@ -145,7 +151,42 @@ export class SearchbarService {
     }
   }
 
-  ngOnDestroy(){
+
+  searchSendMsg() {
+    const searchTerm = this.searchNameSendMsg.toLowerCase();
+    let userResults: User[] = [];
+    let channelResults: Channel[] = [];
+
+    if (searchTerm.includes('@') || searchTerm.includes('#')) {
+      if (searchTerm.includes('@')) {
+        const userTerm = this.searchForAt(searchTerm);
+        userResults = this.firebaseService.allUsers.filter(user =>
+          user.username.toLowerCase().includes(userTerm)
+        );
+      }
+      if (searchTerm.includes('#')) {
+        const channelTerm = this.searchForHashtag(searchTerm);
+        channelResults = this.firebaseService.allChannels.filter(channel =>
+          channel.title.toLowerCase().includes(channelTerm)
+        );
+      }
+      this.filteredResultsSendMsg = [...userResults, ...channelResults];
+    } else {
+      this.filteredResultsSendMsg = [];
+    }
+  }
+
+  searchForAt(searchTerm: string) {
+    const atIndex = searchTerm.lastIndexOf('@');
+    return atIndex !== -1 ? searchTerm.substring(atIndex + 1) : '';
+  }
+
+  searchForHashtag(searchTerm: string) {
+    const hashtagIndex = searchTerm.lastIndexOf('#');
+    return hashtagIndex !== -1 ? searchTerm.substring(hashtagIndex + 1) : '';
+  }
+
+  ngOnDestroy() {
 
   }
 }

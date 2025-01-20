@@ -21,6 +21,7 @@ import { User } from '../../models/user.model';
 import { Channel } from '../../models/channel.model';
 import { Conversation } from '../../models/conversation.model';
 import { MatIconModule } from '@angular/material/icon';
+import { AutofocusDirective } from '../directives/autofocus.directive';
 
 
 @Component({
@@ -31,7 +32,8 @@ import { MatIconModule } from '@angular/material/icon';
     MessageThreadComponent,
     CommonModule,
     FormsModule,
-    MatIconModule],
+    MatIconModule,
+  AutofocusDirective],
   templateUrl: './channel-chat.component.html',
   styleUrl: './channel-chat.component.scss'
 })
@@ -53,6 +55,7 @@ export class ChannelChatComponent {
   ) {
     this.initializeUserSubscription();
     this.initializeChannelSubscription();
+    this.uiService.toggleTextarea();
   }
 
   /**
@@ -226,4 +229,6 @@ export class ChannelChatComponent {
   removeReceiver(i: number) {
     this.uiService.selectedConversations.splice(i, 1);
   }
+
+
 }

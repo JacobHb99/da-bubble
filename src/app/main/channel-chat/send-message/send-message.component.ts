@@ -18,11 +18,13 @@ import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { ChannelService } from '../../../services/channel.service';
 import { Channel } from '../../../models/channel.model';
 import { SearchbarService } from '../../../services/searchbar.service';
+import { AutofocusDirective } from '../../directives/autofocus.directive';
+import { BreakpointObserverService } from '../../../services/breakpoint-observer.service';
 
 @Component({
   selector: 'app-send-message',
   standalone: true,
-  imports: [CommonModule, FormsModule, PickerComponent],
+  imports: [CommonModule, FormsModule, PickerComponent, AutofocusDirective],
   templateUrl: './send-message.component.html',
   styleUrl: './send-message.component.scss'
 })
@@ -49,8 +51,7 @@ export class SendMessageComponent {
   loggedInUser = new User()
 
 
-  constructor(public searchbarService: SearchbarService) {
-
+  constructor(public searchbarService: SearchbarService, public breakpointObserver: BreakpointObserverService) {
   }
 
   /**
@@ -185,7 +186,7 @@ export class SendMessageComponent {
     const threadRef = await addDoc(collection(this.firestore, 'threads'), thread);
     // Zurückgegebene Thread-ID
     console.log(thread);
-    
+
     return threadRef.id;
   }
 
@@ -255,7 +256,7 @@ export class SendMessageComponent {
       //this.conService.showUserChat()
     } catch (error) {
       // console.error('Fehler beim Hinzufügen der Nachricht:', error);
-    }    
+    }
     this.uiService.scrollInChat(msgData)
   }
 
@@ -363,12 +364,30 @@ export class SendMessageComponent {
   }
 
   /**
-   * Markiert einen Benutzer, indem sein Benutzername zum Eingabetext hinzugefügt wird.
+   * Markiert einen Benutzer, indem sein Benutzername ausgewählt wird.
    * @param {string} user - Der zu markierende Benutzername.
    */
-  tagUser(user: string) {
-    this.text += `@${user}`;
+  tagUserBtn(user: string) {
+    this.text += `@${user} `;
     this.textArea.nativeElement.focus();
     this.checkemptyInput();
   }
+
+  selectItem(symbol: string, selectedName: string) {
+    const lastSymbol = this.text.lastIndexOf(symbol);
+    if (lastSymbol !== -1) {
+      this.text = this.text.substring(0, lastSymbol) + symbol + selectedName;
+    } else {
+      this.text += symbol + selectedName;
+    }
+    this.textArea.nativeElement.focus();
+    this.checkemptyInput();
+  }
+
+
+
+  // ngOnChanges(): void {
+  //   // Sicherstellen, dass der Fokus bei Änderungen der Komponente aktiviert wird
+  //   this.focus = true;
+  // }
 }
