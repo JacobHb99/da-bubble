@@ -1,9 +1,15 @@
 <section>
     <div class="main">
         @if (uiService.showTextarea) {
+        @if (input == 'thread') {
         <textarea type="text" appAutofocus #textArea [(ngModel)]="text" [placeholder]="placeholder"
-            (input)="checkemptyInput(); searchbarService.searchSendMsg()"
+        (input)="checkemptyInput()" (input)=" searchbarService.searchSendMsg(input)" 
+            [(ngModel)]="this.searchbarService.searchNameSendMsgThread"></textarea>
+        }@else {
+        <textarea type="text" appAutofocus #textArea [(ngModel)]="text" [placeholder]="placeholder"
+             (input)="checkemptyInput()" (input)=" searchbarService.searchSendMsg(input)"
             [(ngModel)]="this.searchbarService.searchNameSendMsg"></textarea>
+        }
         }
         <div class="interactDiv">
             <div class="addDiv">
@@ -63,7 +69,7 @@
                         <p class="username">{{ obj.username }}</p>
                     </div>
                     }
-                    
+
                     @if (obj.chaId) {
                     <div class="single-search" (click)="selectItem('#', obj.title)">
                         <img class="avatar-img" src="/img/icons/tag.png" alt="">

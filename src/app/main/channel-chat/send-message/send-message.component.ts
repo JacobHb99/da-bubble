@@ -49,6 +49,7 @@ export class SendMessageComponent {
   showUserList: boolean = false;
   currentMsg = new Message()
   loggedInUser = new User()
+  inputType!: string
 
 
   constructor(public searchbarService: SearchbarService, public breakpointObserver: BreakpointObserverService) {

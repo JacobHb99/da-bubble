@@ -23,6 +23,7 @@ export class SearchbarService {
   searchName: string = "";
   newMsgSearchName: string = "";
   searchNameSendMsg: string = "";
+  searchNameSendMsgThread: string = "";
   filteredResults: any[] = [];
   filteredResultsSendMsg: any[] = [];
   isInputEmpty: boolean = false;
@@ -76,6 +77,7 @@ export class SearchbarService {
   emptyMsgInput() {
     this.newMsgSearchName = "";
     this.searchNameSendMsg = "";
+    this.searchNameSendMsgThread = "";
     this.filteredResults = [];
     this.filteredResultsSendMsg = [];
   }
@@ -152,8 +154,17 @@ export class SearchbarService {
   }
 
 
-  searchSendMsg() {
-    const searchTerm = this.searchNameSendMsg.toLowerCase();
+
+  searchSendMsg(input: string | undefined) {
+    let searchTerm = '';
+    console.log('inputtype:',input)
+    if (input == 'thread') {
+      searchTerm = this.searchNameSendMsgThread.toLowerCase();
+    }
+    if (input == 'channel' || input == 'chat' || input == 'newMsg') {
+      searchTerm = this.searchNameSendMsg.toLowerCase();
+    }
+    console.log('searchterm:',searchTerm)
     let userResults: User[] = [];
     let channelResults: Channel[] = [];
 
