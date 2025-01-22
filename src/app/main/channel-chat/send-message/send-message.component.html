@@ -1,16 +1,16 @@
 <section>
     <div class="main">
-        @if (uiService.showTextarea) {
+        <!-- @if (uiService.showTextarea) { -->
         @if (input == 'thread') {
         <textarea type="text" appAutofocus #textArea [(ngModel)]="text" [placeholder]="placeholder"
-        (input)="checkemptyInput()" (input)=" searchbarService.searchSendMsg(input)" 
+            (input)="checkemptyInput()" (input)=" searchbarService.searchSendMsg(input)"
             [(ngModel)]="this.searchbarService.searchNameSendMsgThread"></textarea>
         }@else {
         <textarea type="text" appAutofocus #textArea [(ngModel)]="text" [placeholder]="placeholder"
-             (input)="checkemptyInput()" (input)=" searchbarService.searchSendMsg(input)"
+            (input)="checkemptyInput()" (input)=" searchbarService.searchSendMsg(input)"
             [(ngModel)]="this.searchbarService.searchNameSendMsg"></textarea>
         }
-        }
+        <!-- } -->
         <div class="interactDiv">
             <div class="addDiv">
                 <div class="addReaction" (click)="toggleEmojiPicker()"></div>
@@ -55,57 +55,27 @@
     </div>
     }
 
-@if (input !== 'thread') {
     <div [ngClass]="{
-        'hideUserDialog' : searchbarService.filteredResultsSendMsg.length <= 0, 
+        'hideUserDialog': (input !== 'thread' ? searchbarService.filteredResultsSendMsg : searchbarService.filteredResultsSendMsgThread).length <= 0, 
         'user-dialog-mobile': breakpointObserver.isXSmallOrSmall
-        }" class="user-dialog showUserDialog">
-        <div class="scroll-container">
-            <div *ngFor="let obj of searchbarService.filteredResultsSendMsg" class="single-user">
-                <div class="single-user-hover">
-                    @if (obj.uid) {
-                    <div class="single-search" (click)="selectItem('@', obj.username)">
-                        <img class="avatar-img" src="{{ obj.avatar}}" alt="">
-                        <p class="username">{{ obj.username }}</p>
-                    </div>
-                    }
-
-                    @if (obj.chaId) {
-                    <div class="single-search" (click)="selectItem('#', obj.title)">
-                        <img class="avatar-img" src="/img/icons/tag.png" alt="">
-                        <p class="username">{{ obj.title }}</p>
-                    </div>
-                    }
-                </div>
-            </div>
+      }" class="user-dialog showUserDialog">
+      <div class="scroll-container">
+        <div *ngFor="let obj of (input !== 'thread' ? searchbarService.filteredResultsSendMsg : searchbarService.filteredResultsSendMsgThread)" class="single-user">
+          <div class="single-user-hover">
+            <ng-container *ngIf="obj.uid">
+              <div class="single-search" (click)="selectItem('@', obj.username)">
+                <img class="avatar-img" src="{{ obj.avatar }}" alt="">
+                <p class="username">{{ obj.username }}</p>
+              </div>
+            </ng-container>    
+            <ng-container *ngIf="obj.chaId">
+              <div class="single-search" (click)="selectItem('#', obj.title)">
+                <img class="avatar-img" src="/img/icons/tag.png" alt="">
+                <p class="username">{{ obj.title }}</p>
+              </div>
+            </ng-container>
+          </div>
         </div>
+      </div>
     </div>
-}
-
-@if (input == 'thread') {
-    <div [ngClass]="{
-        'hideUserDialog' : searchbarService.filteredResultsSendMsgThread.length <= 0, 
-        'user-dialog-mobile': breakpointObserver.isXSmallOrSmall
-        }" class="user-dialog showUserDialog">
-        <div class="scroll-container">
-            <div *ngFor="let obj of searchbarService.filteredResultsSendMsgThread" class="single-user">
-                <div class="single-user-hover">
-                    @if (obj.uid) {
-                    <div class="single-search" (click)="selectItem('@', obj.username)">
-                        <img class="avatar-img" src="{{ obj.avatar}}" alt="">
-                        <p class="username">{{ obj.username }}</p>
-                    </div>
-                    }
-
-                    @if (obj.chaId) {
-                    <div class="single-search" (click)="selectItem('#', obj.title)">
-                        <img class="avatar-img" src="/img/icons/tag.png" alt="">
-                        <p class="username">{{ obj.title }}</p>
-                    </div>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-}
 </section>
