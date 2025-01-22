@@ -50,7 +50,8 @@ export class SendMessageComponent {
   currentMsg = new Message()
   loggedInUser = new User()
   inputType!: string
-
+  textareaSendMsg:string='sendMsg';
+  textareaSendMsgThread:string='thread';
 
   constructor(public searchbarService: SearchbarService, public breakpointObserver: BreakpointObserverService) {
   }

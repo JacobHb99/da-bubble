@@ -26,6 +26,7 @@ export class SearchbarService {
   searchNameSendMsgThread: string = "";
   filteredResults: any[] = [];
   filteredResultsSendMsg: any[] = [];
+  filteredResultsSendMsgThread: any[] = [];
   isInputEmpty: boolean = false;
   allObjects: CurrentObject[] = [];
 
@@ -80,6 +81,7 @@ export class SearchbarService {
     this.searchNameSendMsgThread = "";
     this.filteredResults = [];
     this.filteredResultsSendMsg = [];
+    this.filteredResultsSendMsgThread = [];
   }
 
   /**
@@ -156,35 +158,52 @@ export class SearchbarService {
 
 
   searchSendMsg(input: string | undefined) {
+    let userResults: User[] = [];
+    let channelResults: Channel[] = [];
+    let searchTerm = this.findRightInput(input)
+
+    if (searchTerm.includes('@') || searchTerm.includes('#')) {
+      if (searchTerm.includes('@')) {
+        userResults = this.fillUserResults(searchTerm);
+      }
+      if (searchTerm.includes('#')) {
+        channelResults = this.fillChannelResults(searchTerm);
+      }
+      this.fillResultsInRightArray(input, userResults, channelResults)
+
+    } else {
+      this.filteredResultsSendMsg = [];
+      this.filteredResultsSendMsgThread = [];
+    }
+  }
+
+  findRightInput(input: string | undefined) {
     let searchTerm = '';
-    console.log('inputtype:',input)
     if (input == 'thread') {
       searchTerm = this.searchNameSendMsgThread.toLowerCase();
     }
     if (input == 'channel' || input == 'chat' || input == 'newMsg') {
       searchTerm = this.searchNameSendMsg.toLowerCase();
     }
-    console.log('searchterm:',searchTerm)
-    let userResults: User[] = [];
-    let channelResults: Channel[] = [];
+    return searchTerm
+  }
 
-    if (searchTerm.includes('@') || searchTerm.includes('#')) {
-      if (searchTerm.includes('@')) {
-        const userTerm = this.searchForAt(searchTerm);
-        userResults = this.firebaseService.allUsers.filter(user =>
-          user.username.toLowerCase().includes(userTerm)
-        );
-      }
-      if (searchTerm.includes('#')) {
-        const channelTerm = this.searchForHashtag(searchTerm);
-        channelResults = this.firebaseService.allChannels.filter(channel =>
-          channel.title.toLowerCase().includes(channelTerm)
-        );
-      }
-      this.filteredResultsSendMsg = [...userResults, ...channelResults];
-    } else {
-      this.filteredResultsSendMsg = [];
-    }
+  fillUserResults(searchTerm: string) {
+    let userResults: User[] = [];
+    const userTerm = this.searchForAt(searchTerm);
+    userResults = this.firebaseService.allUsers.filter(user =>
+      user.username.toLowerCase().includes(userTerm)
+    );
+    return userResults
+  }
+
+  fillChannelResults(searchTerm: string) {
+    let channelResults: Channel[] = [];
+    const channelTerm = this.searchForHashtag(searchTerm);
+    channelResults = this.firebaseService.allChannels.filter(channel =>
+      channel.title.toLowerCase().includes(channelTerm)
+    );
+    return channelResults
   }
 
   searchForAt(searchTerm: string) {
@@ -195,6 +214,15 @@ export class SearchbarService {
   searchForHashtag(searchTerm: string) {
     const hashtagIndex = searchTerm.lastIndexOf('#');
     return hashtagIndex !== -1 ? searchTerm.substring(hashtagIndex + 1) : '';
+  }
+
+  fillResultsInRightArray(input: string | undefined, userResults: User[], channelResults: Channel[]) {
+    if (input == 'thread') {
+      this.filteredResultsSendMsgThread = [...userResults, ...channelResults];
+    }
+    if (input == 'channel' || input == 'chat' || input == 'newMsg') {
+      this.filteredResultsSendMsg = [...userResults, ...channelResults];
+    }
   }
 
   ngOnDestroy() {
