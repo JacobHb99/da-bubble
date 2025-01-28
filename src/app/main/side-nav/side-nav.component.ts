@@ -190,7 +190,6 @@ export class SideNavComponent {
    * @param {Message} [msg] - Die Nachricht, zu der gescrollt werden soll (optional).
    */
   openChannel(obj: any, msg?: Message) {
-    this.uiService.toggleTextarea();
     this.channelService.showChannelChat(obj)
     if (this.breakpointObserver.isXSmallOrSmall) {
       this.toggleMenu();

@@ -1,4 +1,4 @@
-import { Component, Inject, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { SendMessageComponent } from './send-message/send-message.component';
 import { MessageThreadComponent } from './message-thread/message-thread.component';
 import { UserDataService } from '../../services/user.service';
@@ -21,7 +21,6 @@ import { User } from '../../models/user.model';
 import { Channel } from '../../models/channel.model';
 import { Conversation } from '../../models/conversation.model';
 import { MatIconModule } from '@angular/material/icon';
-import { AutofocusDirective } from '../directives/autofocus.directive';
 
 
 @Component({
@@ -32,8 +31,7 @@ import { AutofocusDirective } from '../directives/autofocus.directive';
     MessageThreadComponent,
     CommonModule,
     FormsModule,
-    MatIconModule,
-  AutofocusDirective],
+    MatIconModule],
   templateUrl: './channel-chat.component.html',
   styleUrl: './channel-chat.component.scss'
 })
@@ -55,7 +53,7 @@ export class ChannelChatComponent {
   ) {
     this.initializeUserSubscription();
     this.initializeChannelSubscription();
-    this.uiService.toggleTextarea();
+    // this.uiService.toggleTextarea(); vv
   }
 
   /**

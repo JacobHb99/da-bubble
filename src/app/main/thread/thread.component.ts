@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject,ElementRef, ViewChild } from '@angular/core';
 import { SendMessageComponent } from '../channel-chat/send-message/send-message.component';
 import { MessageThreadComponent } from '../channel-chat/message-thread/message-thread.component';
 import { InterfaceService } from '../../services/interface.service';
@@ -16,11 +16,17 @@ import { FirebaseService } from '../../services/firebase.service';
 })
 export class ThreadComponent {
   uiService = inject(InterfaceService);
+   @ViewChild('textArea') textArea!: ElementRef;
 
   constructor(public breakpointObserver: BreakpointObserverService, public firebaseService: FirebaseService) {
     this.uiService.showThread = false;
-    this.uiService.toggleTextarea();
   }
   
-
+  ngAfterViewInit() {
+    if (this.textArea) {
+      setTimeout(() => {
+        this.textArea.nativeElement.focus();
+      }, 1);
+    }
+  }
 }

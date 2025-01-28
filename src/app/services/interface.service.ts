@@ -23,8 +23,6 @@ export class InterfaceService {
   currChannel!: Channel;
   selectedConversations: (User | Channel)[] = [];
   msgConfirmed: boolean = false;
-  showTextarea:boolean = false;
-  uniqueKey='';
 
 
 
@@ -79,7 +77,7 @@ export class InterfaceService {
    */
   openThread() {
     this.showThread = true;
-    //this.focusTextArea();
+    this.focusThreadTextArea();
   }
 
   /**
@@ -89,7 +87,7 @@ export class InterfaceService {
   setMsg(currentMsg: Message) {
     this.currentMessage = currentMsg;
     console.log(currentMsg.thread);
-    
+
     this.firebaseService.listenToCurrentThreadChanges(currentMsg.thread);
     this.setThread(currentMsg)
     this.openThread()
@@ -230,25 +228,13 @@ export class InterfaceService {
     }, 500);
   }
 
-  // focusTextArea() {
-  //   const textarea = document.querySelector('textarea');
-  //   if (textarea) {
-  //     (textarea as HTMLElement).focus();
-  //   }
-  // }
-
-  
-  // forceRerender() {
-  //   this.uniqueKey = Date.now().toString(); // Oder eine andere einzigartige ID
-  // }
-
-  
-
-  toggleTextarea() {
-    this.showTextarea = false;
+  focusThreadTextArea() {
     setTimeout(() => {
-      this.showTextarea = true;
-    }, );
+      const textareas = document.querySelectorAll('textarea');
+      if (textareas.length > 0) {
+        const lastTextarea = textareas[textareas.length - 1];
+        (lastTextarea as HTMLElement).focus();
+      }
+    }, 0); 
   }
-
 }

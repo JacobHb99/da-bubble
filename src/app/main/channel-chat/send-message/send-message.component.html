@@ -1,16 +1,14 @@
 <section>
     <div class="main">
-        <!-- @if (uiService.showTextarea) { -->
         @if (input == 'thread') {
-        <textarea type="text" appAutofocus #textArea [(ngModel)]="text" [placeholder]="placeholder"
+        <textarea type="text" #textArea [(ngModel)]="text" [placeholder]="placeholder"
             (input)="checkemptyInput()" (input)=" searchbarService.searchSendMsg(input)"
             [(ngModel)]="this.searchbarService.searchNameSendMsgThread"></textarea>
         }@else {
-        <textarea type="text" appAutofocus #textArea [(ngModel)]="text" [placeholder]="placeholder"
+        <textarea type="text" #textArea [(ngModel)]="text" [placeholder]="placeholder"
             (input)="checkemptyInput()" (input)=" searchbarService.searchSendMsg(input)"
             [(ngModel)]="this.searchbarService.searchNameSendMsg"></textarea>
         }
-        <!-- } -->
         <div class="interactDiv">
             <div class="addDiv">
                 <div class="addReaction" (click)="toggleEmojiPicker()"></div>
@@ -63,13 +61,13 @@
         <div *ngFor="let obj of (input !== 'thread' ? searchbarService.filteredResultsSendMsg : searchbarService.filteredResultsSendMsgThread)" class="single-user">
           <div class="single-user-hover">
             <ng-container *ngIf="obj.uid">
-              <div class="single-search" (click)="selectItem('@', obj.username)">
+              <div class="single-search" (click)="selectSearchedName('@', obj.username)">
                 <img class="avatar-img" src="{{ obj.avatar }}" alt="">
                 <p class="username">{{ obj.username }}</p>
               </div>
             </ng-container>    
             <ng-container *ngIf="obj.chaId">
-              <div class="single-search" (click)="selectItem('#', obj.title)">
+              <div class="single-search" (click)="selectSearchedName('#', obj.title)">
                 <img class="avatar-img" src="/img/icons/tag.png" alt="">
                 <p class="username">{{ obj.title }}</p>
               </div>

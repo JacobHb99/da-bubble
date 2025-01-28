@@ -18,13 +18,12 @@ import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { ChannelService } from '../../../services/channel.service';
 import { Channel } from '../../../models/channel.model';
 import { SearchbarService } from '../../../services/searchbar.service';
-import { AutofocusDirective } from '../../directives/autofocus.directive';
 import { BreakpointObserverService } from '../../../services/breakpoint-observer.service';
 
 @Component({
   selector: 'app-send-message',
   standalone: true,
-  imports: [CommonModule, FormsModule, PickerComponent, AutofocusDirective],
+  imports: [CommonModule, FormsModule, PickerComponent],
   templateUrl: './send-message.component.html',
   styleUrl: './send-message.component.scss'
 })
@@ -49,11 +48,10 @@ export class SendMessageComponent {
   showUserList: boolean = false;
   currentMsg = new Message()
   loggedInUser = new User()
-  inputType!: string
-  textareaSendMsg:string='sendMsg';
-  textareaSendMsgThread:string='thread';
+  
 
   constructor(public searchbarService: SearchbarService, public breakpointObserver: BreakpointObserverService) {
+
   }
 
   /**
@@ -375,7 +373,7 @@ export class SendMessageComponent {
     this.checkemptyInput();
   }
 
-  selectItem(symbol: string, selectedName: string) {
+  selectSearchedName(symbol: string, selectedName: string) {
     const lastSymbol = this.text.lastIndexOf(symbol);
     if (lastSymbol !== -1) {
       this.text = this.text.substring(0, lastSymbol) + symbol + selectedName;
@@ -386,10 +384,15 @@ export class SendMessageComponent {
     this.checkemptyInput();
   }
 
+  ngOnChanges(): void {
+    setTimeout(() => {
+    this.textArea.nativeElement.focus();
+  }, 0);
+  }
 
-
-  // ngOnChanges(): void {
-  //   // Sicherstellen, dass der Fokus bei Änderungen der Komponente aktiviert wird
-  //   this.focus = true;
-  // }
+  ngAfterViewInit() {
+    setTimeout(() => {
+    this.textArea.nativeElement.focus();
+  }, 0);
+  }
 }
