@@ -21,12 +21,12 @@ export class SelectAvatarComponent {
   router = inject(Router);
   currentData = this.authService.currentRegData;
   avatarIcons: string[] = [
-    "/img/avatars/avatar_big_0.png",
-    "/img/avatars/avatar_big_1.png",
-    "/img/avatars/avatar_big_2.png",
-    "/img/avatars/avatar_big_3.png",
-    "/img/avatars/avatar_big_4.png",
-    "/img/avatars/avatar_big_5.png",
+    "img/avatars/avatar_big_0.png",
+    "img/avatars/avatar_big_1.png",
+    "img/avatars/avatar_big_2.png",
+    "img/avatars/avatar_big_3.png",
+    "img/avatars/avatar_big_4.png",
+    "img/avatars/avatar_big_5.png",
   ];
   chosenAvatar!: string;
   registrationFailed: boolean = false;

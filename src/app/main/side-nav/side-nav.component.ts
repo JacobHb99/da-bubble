@@ -39,12 +39,12 @@ export class SideNavComponent {
   isOnline = false;
   channelName = "";
   currentUser?: User;
-  arrowImg: string = '/img/icons/arrow_drop_down.png'
-  workspaceImg: string = '/img/icons/workspaces.png'
-  tagImg: string = "/img/icons/tag.png"
-  addImg: string = "/img/icons/add_circle.png"
+  arrowImg: string = 'img/icons/arrow_drop_down.png'
+  workspaceImg: string = 'img/icons/workspaces.png'
+  tagImg: string = "img/icons/tag.png"
+  addImg: string = "img/icons/add_circle.png"
   accountImg: string = "/img/icons/account_circle.png"
-  menuImg: string = "/img/icons/Hide-navigation.png"
+  menuImg: string = "img/icons/Hide-navigation.png"
   uiService = inject(InterfaceService);
   conService = inject(ConversationService);
   channelService = inject(ChannelService)
@@ -90,8 +90,8 @@ export class SideNavComponent {
    * Ändert das Bild des Pfeils und des Arbeitsbereichs in die aktive Version.
    */
   changeImg() {
-    this.arrowImg = '/img/icons/arrow_drop_down-blue.png';
-    this.workspaceImg = '/img/icons/workspaces-blue.png';
+    this.arrowImg = 'img/icons/arrow_drop_down-blue.png';
+    this.workspaceImg = 'img/icons/workspaces-blue.png';
 
   }
 
@@ -99,15 +99,15 @@ export class SideNavComponent {
    * Setzt die Bilder des Pfeils und des Arbeitsbereichs auf die Standardversion zurück.
    */
   resetImg() {
-    this.arrowImg = '/img/icons/arrow_drop_down.png';
-    this.workspaceImg = '/img/icons/workspaces.png';
+    this.arrowImg = 'img/icons/arrow_drop_down.png';
+    this.workspaceImg = 'img/icons/workspaces.png';
   }
 
   /**
    * Ändert das Bild des Kanalsymbols in die aktive Version.
    */
   changeImgChannel() {
-    this.addImg = "/img/icons/add_circle-blue.png";
+    this.addImg = "img/icons/add_circle-blue.png";
 
   }
 
@@ -115,15 +115,15 @@ export class SideNavComponent {
    * Setzt das Bild des Kanalsymbols auf die Standardversion zurück.
    */
   resetImgChannel() {
-    this.addImg = "/img/icons/add_circle.png";
+    this.addImg = "img/icons/add_circle.png";
   }
 
   /**
    * Ändert das Bild des Nachrichten-Pfeils und des Profilsymbols in die aktive Version.
    */
   changeImgMessage() {
-    this.arrowImg = '/img/icons/arrow_drop_down-blue.png';
-    this.accountImg = "/img/icons/account_circle-blue.png";
+    this.arrowImg = 'img/icons/arrow_drop_down-blue.png';
+    this.accountImg = "img/icons/account_circle-blue.png";
 
   }
 
@@ -131,22 +131,22 @@ export class SideNavComponent {
    * Setzt das Bild des Nachrichten-Pfeils und des Profilsymbols auf die Standardversion zurück.
    */
   resetImgMessage() {
-    this.arrowImg = '/img/icons/arrow_drop_down.png';
-    this.accountImg = "/img/icons/account_circle.png";
+    this.arrowImg = 'img/icons/arrow_drop_down.png';
+    this.accountImg = "img/icons/account_circle.png";
   }
 
   /**
    * Ändert das Bild des Menüsymbols in die aktive Version.
    */
   changeImgMenu() {
-    this.menuImg = "/img/icons/hide-navigation-blue.png";
+    this.menuImg = "img/icons/hide-navigation-blue.png";
   }
 
   /**
    * Setzt das Bild des Menüsymbols auf die Standardversion zurück.
    */
   resetImgMenu() {
-    this.menuImg = "/img/icons/Hide-navigation.png";
+    this.menuImg = "img/icons/Hide-navigation.png";
 
   }
 

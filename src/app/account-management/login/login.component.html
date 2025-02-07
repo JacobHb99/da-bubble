@@ -14,7 +14,7 @@
         <form [formGroup]="userForm">
             <div class="input-control">
                 <div class="inputfield-container">
-                    <img src="/img/icons/login/mail_icon.svg">
+                    <img src="img/icons/login/mail_icon.svg">
                     <input id="email" type="email" formControlName="email" required
                         placeholder="beispielname@email.com">
                 </div>
@@ -33,7 +33,7 @@
 
             <div class="input-control">
                 <div class="inputfield-container">
-                    <img src="/img/icons/login/password_icon.svg">
+                    <img src="img/icons/login/password_icon.svg">
                     <input id="password" type="password" formControlName="password" placeholder="Passwort">
                 </div>
 
@@ -58,7 +58,7 @@
             <span>ODER</span>
         </div>
         <button class="google-btn" (click)="authService.signInWithGoogle()">
-            <img src="/img/icons/login/google.png">
+            <img src="img/icons/login/google.png">
             <span>Anmelden mit Google</span>
         </button>
         <div class="submit-btns" [ngClass]="{'submit-mobile': breakpointObserver.isXSmallOrSmall}">

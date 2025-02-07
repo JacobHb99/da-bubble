@@ -45,7 +45,7 @@
         <div (click)="openUserProfilDialog()" class="channelName">
             <div class="avatar">
                 <img class="avatar-img" [src]="user.avatar" referrerPolicy="no-referrer" alt="">
-                <img class="status" [src]="user.status == 'online' ? '/img/icons/Online.png' : '/img/icons/Offline.png'" alt="">
+                <img class="status" [src]="user.status == 'online' ? 'img/icons/Online.png' : 'img/icons/Offline.png'" alt="">
             </div>
             @if (user.uid === userDataService.currentUserSig()?.uid) {
             <p>{{ user.username }} (Du)</p>
@@ -87,7 +87,7 @@
 
                                 @if (obj.chaId) {
                                 <div class="single-search" (click)="setChannel(obj)">
-                                    <img class="avatar-img" src="/img/icons/tag.png" alt="">
+                                    <img class="avatar-img" src="img/icons/tag.png" alt="">
                                     <p class="username">{{ obj.title }}</p>
                                 </div>
                                 }
@@ -124,7 +124,7 @@
 
             <ng-container *ngIf="uiService.isChannel(obj)">
                 <!-- Es ist ein Channel -->
-                <img class="avatar-img-selected" src="/img/icons/tag.png" alt="">
+                <img class="avatar-img-selected" src="img/icons/tag.png" alt="">
                 <p class="username-selected">{{ obj.title }}</p>
                 <mat-icon class="close-img" (click)="removeReceiver(i)" aria-hidden="false"
                     aria-label="Example clear icon" fontIcon="clear"></mat-icon>

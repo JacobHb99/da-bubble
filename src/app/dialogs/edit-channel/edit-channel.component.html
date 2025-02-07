@@ -1,10 +1,10 @@
 <div class="channel-container">
     <div (click)="closeEditChannel()" (mouseenter)="isHoveredClose = true" (mouseleave)="isHoveredClose = false"
         class="close-container">
-        <img [src]="isHoveredClose ? '/img/icons/close-blue.png' : '/img/icons/close.png'" alt="">
+        <img [src]="isHoveredClose ? 'img/icons/close-blue.png' : 'img/icons/close.png'" alt="">
     </div>
     <div class="channel-header">
-        <img src="/img/icons/tag.png" alt="">
+        <img src="img/icons/tag.png" alt="">
         <h1>{{ channel?.title }}</h1>
     </div>
     <div [ngClass]="editName ? 'hide-border': ''"  class="channel-name-container">
@@ -13,11 +13,11 @@
             <p (click)="editName = !editName" (click)="editChannelName()">{{ changeName }}</p>
         </div>
         <div [ngClass]="editName ? 'hide-channel-name': 'show-channel-name'"  class="channel-name">
-            <img src="/img/icons/tag.png" alt="">
+            <img src="img/icons/tag.png" alt="">
             <p>{{ channel?.title }}</p>
         </div>
         <div [ngClass]="editName ? 'show-channel-name': 'hide-channel-name'" class="name-input-container">
-            <img src="/img/icons/tag.png" alt="">
+            <img src="img/icons/tag.png" alt="">
             <input [(ngModel)]="titleInput" value="{{ channel?.title }}" type="text">
         </div>
     </div>

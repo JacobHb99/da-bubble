@@ -2,12 +2,12 @@
     <app-header-sign></app-header-sign>
 
     <div class="card">
-        <img routerLink="/register" class="arrow-back" src="/img/icons/login/arrow_back.svg">
+        <img routerLink="/register" class="arrow-back" src="img/icons/login/arrow_back.svg">
 
         <h1>Wähle deinen Avatar</h1>
 
         @if(!chosenAvatar) {
-            <img class="big-img" src="/img/avatars/avatar_default.png" alt="">
+            <img class="big-img" src="img/avatars/avatar_default.png" alt="">
         }@else {
             <img class="big-img" src="{{chosenAvatar}}" alt="">
         }
