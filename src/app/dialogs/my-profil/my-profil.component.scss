@@ -77,4 +77,18 @@ h2{
     }
 }
 
+.close {
+    @include dFlex();
+    height: 40px;
+    width: 40px;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    position: relative;
+
+    &:hover {
+        background-color: $bgHover;
+        border-radius: 50%;
+    }
+}
  

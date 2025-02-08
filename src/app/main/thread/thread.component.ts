@@ -18,6 +18,8 @@ export class ThreadComponent {
   uiService = inject(InterfaceService);
    @ViewChild('textArea') textArea!: ElementRef;
 
+   isHoveredClose = false;
+
   constructor(public breakpointObserver: BreakpointObserverService, public firebaseService: FirebaseService) {
     this.uiService.showThread = false;
   }

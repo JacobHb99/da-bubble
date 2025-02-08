@@ -1,7 +1,9 @@
 <div class="container">
     <div class="header">
         <h2>Leute hinzufügen</h2>
-        <div mat-dialog-close class="close"></div>
+        <div class="close" (mouseenter)="isHoveredClose = true" (mouseleave)="isHoveredClose = false">
+            <img (click)="closeAddToChannel()" [src]="isHoveredClose ? 'img/icons/close-blue.png' : 'img/icons/close.png'" alt="">
+        </div>
     </div>
 
     <div class="channel-name"># {{ channel?.title }}</div>

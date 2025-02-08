@@ -42,27 +42,8 @@ section {
     }
 }
 
-.addFile {
-    background-image: url("/img/icons/add-grey.png");
-    height: 40px;
-    width: 40px;
-    background-repeat: no-repeat;
-    background-position: center;
-    cursor: pointer;
-
-    &:hover {
-        background-image: url("/img/icons/add-blue.png");
-        background-color: $bgHover;
-        border-radius: 50%;
-    }
-
-    &:active {
-        background-image: url("/img/icons/add-black.png");
-    }
-}
-
-.addReaction {
-    background-image: url("/img/icons/sentiment_satisfied-grey.png");
+.addIcons {
+    @include dFlex();
     height: 40px;
     width: 40px;
     background-repeat: no-repeat;
@@ -71,13 +52,8 @@ section {
     position: relative;
 
     &:hover {
-        background-image: url("/img/icons/sentiment_satisfied-blue.png");
         background-color: $bgHover;
         border-radius: 50%;
-    }
-
-    &:active {
-        background-image: url("/img/icons/sentiment_satisfied-black.png");
     }
 }
 
@@ -85,26 +61,6 @@ section {
     position: absolute;
     left: 20px;
     bottom: 160px;
-}
-
-
-.tagUserIcon {
-    background-image: url("/img/icons/alternate_email-grey.png");
-    height: 40px;
-    width: 40px;
-    background-repeat: no-repeat;
-    background-position: center;
-    cursor: pointer;
-
-    &:hover {
-        background-image: url("/img/icons/alternate_email-blue.png");
-        background-color: $bgHover;
-        border-radius: 50%;
-    }
-
-    &:active {
-        background-image: url("/img/icons/alternate_email-black.png");
-    }
 }
 
 // .scrollDiv {

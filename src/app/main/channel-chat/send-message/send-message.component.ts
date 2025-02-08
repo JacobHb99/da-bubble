@@ -42,13 +42,15 @@ export class SendMessageComponent {
   @ViewChild('userList', { static: false }) userList!: ElementRef;
   @ViewChild('textArea') textArea!: ElementRef;
 
+  isHoveredReaction= false;
+  isHoveredTagUser= false;
   text: string = '';
   isDisabled: boolean = true;
   showEmojiPicker = false;
   showUserList: boolean = false;
   currentMsg = new Message()
   loggedInUser = new User()
-  
+
 
   constructor(public searchbarService: SearchbarService, public breakpointObserver: BreakpointObserverService) {
 
@@ -386,13 +388,13 @@ export class SendMessageComponent {
 
   ngOnChanges(): void {
     setTimeout(() => {
-    this.textArea.nativeElement.focus();
-  }, 0);
+      this.textArea.nativeElement.focus();
+    }, 0);
   }
 
   ngAfterViewInit() {
     setTimeout(() => {
-    this.textArea.nativeElement.focus();
-  }, 0);
+      this.textArea.nativeElement.focus();
+    }, 0);
   }
 }

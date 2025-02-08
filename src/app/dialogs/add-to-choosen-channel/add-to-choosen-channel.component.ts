@@ -17,6 +17,7 @@ export class AddToChoosenChannelComponent {
   searchName: string = '';
   user: any = '';
   isInputEmpty = false;
+  isHoveredClose = false;
 
   /**
    * Constructor for the component.
@@ -115,5 +116,9 @@ export class AddToChoosenChannelComponent {
     );
     let allUser = currentUser.concat(newUser);
     return allUser;
+  }
+
+  closeAddToChannel(): void {
+    this.dialogRef.close();
   }
 }
