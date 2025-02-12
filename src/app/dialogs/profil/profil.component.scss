@@ -62,6 +62,21 @@ h2 {
   font-size: 20px;
 }
 
+.close {
+  @include dFlex();
+  height: 40px;
+  width: 40px;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  position: relative;
+
+  &:hover {
+      background-color: $bgHover;
+      border-radius: 50%;
+  }
+}
+
 .email {
   margin: 20px 40px;
   @include dFlex($jc: unset, $ai: flex-start, $fd: row, $gap: 20px);

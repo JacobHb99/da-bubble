@@ -14,8 +14,13 @@ import { CommonModule } from '@angular/common';
   encapsulation: ViewEncapsulation.None
 })
 export class ProfilComponent {
+  isHoveredClose = false;
 
   constructor( public dialogRef: MatDialogRef<ProfilComponent>,  @Inject(MAT_DIALOG_DATA) public data:any, public breakpointObserver: BreakpointObserverService){
     
+  }
+
+  closeMyProfil(): void {
+    this.dialogRef.close();
   }
 }
