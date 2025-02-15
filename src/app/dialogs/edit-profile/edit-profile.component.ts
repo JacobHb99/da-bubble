@@ -57,7 +57,6 @@ export class EditProfileComponent {
   changeProfil() {
     this.user.username = this.inputName;
     this.user.email = this.inputEmail;
-    console.log(this.user);
 
     this.authService.changeDatainAuthProfile(this.inputName, this.inputEmail, this.user.avatar, this.inputPassword);
     this.firebaseService.updateUserData(this.user);

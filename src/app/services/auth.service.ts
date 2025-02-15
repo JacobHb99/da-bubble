@@ -91,7 +91,6 @@ export class AuthService {
   }
 
    changeDatainAuthProfile(username: string, email: string, avatar: string, password: string) {
-    console.log(this.currentCredentials);
     
     let user = this.currentCredentials.user
     updateProfile(user, {
