@@ -45,16 +45,20 @@ app-single-member {
     background-color: $bgHover;
      color:#535AF1 ;
      border-radius: 30px;
-    .add-member-icon {
-      background-image: url("icons/user-add-blue.png");
-    }
   }
 }
+
 .add-member-icon {
-  background-image: url("icons/user-add.png");
+  @include dFlex();
   height: 40px;
   width: 40px;
   background-repeat: no-repeat;
   background-position: center;
   cursor: pointer;
+  position: relative;
+
+  &:hover {
+      background-color: $bgHover;
+      border-radius: 50%;
+  }
 }

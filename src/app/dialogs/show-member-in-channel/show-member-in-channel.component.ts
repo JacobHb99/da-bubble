@@ -21,6 +21,7 @@ export class ShowMemberInChannelComponent {
   allUsersFromAChannelId: any;
   allUsersFromAChannel: any;
   user: any;
+  isHoveredAddMember: boolean = false;
   channelService = inject(ChannelService);
   firebaseService = inject(FirebaseService);
 

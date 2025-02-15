@@ -9,7 +9,9 @@
         <app-single-member [member]="this.user"></app-single-member>
         }
         <div class="add-member" >
-            <div class="add-member-icon"></div>
+            <div class="add-member-icon" (mouseenter)="isHoveredAddMember = true" (mouseleave)="isHoveredAddMember = false">
+                <img [src]="isHoveredAddMember ? 'img/icons/user-add-blue.png' : 'img/icons/user-add.png'" alt="addUser">
+            </div>
             <span mat-dialog-close (click)="uiService.addToChoosenChannelDialog()">Mitglieder hinzufügen</span>
         </div>
     </div>

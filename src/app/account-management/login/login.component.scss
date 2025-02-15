@@ -33,6 +33,7 @@ p{
     max-width: 600px;
     animation: fadeIn 1s ease-in-out forwards;
     box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+
 }
 
 
@@ -139,6 +140,11 @@ form {
     }
 }
 
+.submit-btns button {    
+    @media(max-width: 371px) {
+        font-size: 12px !important
+     }
+  }
 
 
 .new-member-box{

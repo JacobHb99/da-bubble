@@ -121,7 +121,7 @@
                     <div *ngFor="let user of firebaseService.allUsers"
                         class="single-user">
                         <div (click)="startConversation(user)"  class="single-user-hover">
-                            <div class="avatar">
+                            <div class="avatar-side-nav">
                                 <img class="avatar-img" [src]="user.avatar" referrerPolicy="no-referrer" alt="">
                                 <img class="status" [src]="user.status == 'online' ? 'img/icons/Online.png' : 'img/icons/Offline.png'" alt="">
                             </div>
