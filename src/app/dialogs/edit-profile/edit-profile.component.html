@@ -2,7 +2,9 @@
 
     <div class="header">
         <h2>Dieses Profil bearbeiten</h2>
-        <div  mat-dialog-close class="close"></div>
+        <div class="closeDialog" (mouseenter)="isHoveredClose = true" (mouseleave)="isHoveredClose = false">
+            <img (click)="closeProfil()"  [src]="isHoveredClose ? 'img/icons/close-blue.png' : 'img/icons/close.png'" alt="">
+        </div>
        
     </div>
 <div class="avatar"> 
@@ -21,7 +23,7 @@
                 </div>
             </div>
 
-            <div class="email" *ngIf="!showPasswordInput">
+            <!-- <div class="email" *ngIf="!showPasswordInput">
                 <div>
                     <img src="img/icons/mail_icon.svg" alt="">
                     <label for="email">E-mail-Adresse</label>
@@ -29,7 +31,7 @@
                 <div class="inputfield-container">
                     <input [(ngModel)]="inputEmail" id="email" type="text">
                 </div>
-            </div>
+            </div> -->
 
             <div class="email" *ngIf="showPasswordInput">
                 <div>

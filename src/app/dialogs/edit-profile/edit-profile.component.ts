@@ -1,4 +1,4 @@
-import { Component, inject ,ViewEncapsulation } from '@angular/core';
+import { Component, inject, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -26,6 +26,7 @@ export class EditProfileComponent {
   inputEmail = '';
   inputPassword = '';
   showPasswordInput: boolean = false;
+  isHoveredClose: boolean = false
 
   /**
  * Constructor for the EditProfileComponent.
@@ -57,7 +58,7 @@ export class EditProfileComponent {
     this.user.username = this.inputName;
     this.user.email = this.inputEmail;
     console.log(this.user);
-    
+
     this.authService.changeDatainAuthProfile(this.inputName, this.inputEmail, this.user.avatar, this.inputPassword);
     this.firebaseService.updateUserData(this.user);
     this.authService.currentUserSig.update((user) => {
@@ -75,7 +76,7 @@ export class EditProfileComponent {
    * 
    * @returns {void}
    */
-  setUser(): any {    
+  setUser(): any {
     this.user = {
       uid: this.firebaseService.user.uid,
       username: this.firebaseService.user.username,
@@ -85,5 +86,9 @@ export class EditProfileComponent {
       channels: this.firebaseService.user.channels,
       role: this.firebaseService.user.role,
     };
+  }
+
+  closeProfil(): void {
+    this.dialogRef.close();
   }
 }
