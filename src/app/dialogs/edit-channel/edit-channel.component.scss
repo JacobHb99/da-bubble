@@ -13,9 +13,13 @@
     >p {
         font-size: 18px;
     }
-
-
 }
+
+.disabled-link {
+    pointer-events: none;
+    color: #A0A0A0 !important;
+    text-decoration: none;
+  }
 
 .close-container {
     width: 40px;

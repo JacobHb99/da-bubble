@@ -34,7 +34,7 @@ export class EditChannelComponent implements OnInit {
   currentUser: any;
   isEditing: boolean = false;
   allUserInThisChannel: any;
-
+  existChannel=false;
 
 
   constructor(
@@ -123,5 +123,26 @@ export class EditChannelComponent implements OnInit {
     const allUserWithoutLeavedUser = this.allUserInThisChannel.filter((allUser: any) => allUser !== removeUserId);
     await this.channelService.updateUserList(this.channelId, allUserWithoutLeavedUser);
     location.reload();
+  }
+
+    /**
+   Checks if the entered channel name is valid and not already in use.
+ *
+ * The function trims the input title to remove leading and trailing whitespace. 
+ * It then checks if the title matches any existing channel title in the 
+ * `allChannels` array from the Firebase service.
+ *
+   */
+  checkChannelName() {
+    let trimTitle = this.titleInput.trim();
+    let checkName = this.firebaseService.allChannels.some(channel => channel.title === trimTitle)
+    if ((!checkName && this.titleInput.length >= 1)||(this.channel?.title==this.titleInput)) {
+      this.existChannel = false;
+    }
+    else {
+      this.existChannel = true;
+    }
+    console.log(this.channel?.title);
+    
   }
 }
