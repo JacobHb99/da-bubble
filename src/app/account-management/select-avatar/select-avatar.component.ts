@@ -94,10 +94,7 @@ export class SelectAvatarComponent {
     this.authService.register(this.currentData.email, this.currentData.username, this.currentData.password, this.chosenAvatar)
       .subscribe({
         next: () => {
-
-          setTimeout(() => {
-            this.router.navigateByUrl('/');
-          }, 1000);
+          this.authService.login(this.currentData.email, this.currentData.password);
         },
 
         error: (err) => {
