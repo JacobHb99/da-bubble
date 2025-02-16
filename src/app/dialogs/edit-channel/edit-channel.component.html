@@ -20,6 +20,9 @@
             <img src="img/icons/tag.png" alt="">
             <input [(ngModel)]="titleInput" (keyup)="checkChannelName()" value="{{ channel?.title }}" type="text">
         </div>
+        <div [ngClass]="existChannel ? 'show' : 'hide'" class="check-name ">
+            <p>Dieser Channel existiert bereits.</p>
+        </div>
     </div>
 
     <div [ngClass]="editDesc ? 'hide-border': ''"  class="channel-description-container" [ngClass]="{'margin-b-20': breakpointObserver.isXSmallOrSmall}">
