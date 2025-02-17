@@ -25,6 +25,7 @@ export class EditProfileComponent {
   inputName = '';
   inputEmail = '';
   inputPassword = '';
+  validUsername: boolean = true;
   showPasswordInput: boolean = false;
   isHoveredClose: boolean = false
   passwordWrong = computed(() => this.authService.passwordWrong()); // Signal als computed-Wert
@@ -119,4 +120,14 @@ export class EditProfileComponent {
     this.authService.passwordWrong.set(false);
     this.dialogRef.close();
   }
+
+  checkUsername(){
+    console.log(this.inputName.trim().length)
+    if(this.inputName.trim().length>0){
+      this.validUsername=true;
+    }else{
+      this.validUsername=false;
+    }
+  }
+
 }

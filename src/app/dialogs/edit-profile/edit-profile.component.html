@@ -20,7 +20,7 @@
                     <label for="name">Vollständiger Name</label>
                 </div>
                 <div class="inputfield-container">
-                    <input [(ngModel)]="inputName" id="name" type="text">
+                    <input (keyup)="checkUsername()" [(ngModel)]="inputName" id="name" type="text">
                 </div>
             </div>
 
@@ -50,7 +50,7 @@
 
         <div class="buttons">
             <button mat-dialog-close class="btn-white">Abrechen</button>
-            <button (click)="verifyPassword()" class="btn-blue" *ngIf="!showPasswordInput">Speichern</button>
+            <button (click)="verifyPassword()"  [disabled]="!validUsername" class="btn-blue" *ngIf="!showPasswordInput">Speichern</button>
             <button (click)="changeProfil()" class="btn-blue" *ngIf="showPasswordInput">Bestätigen</button>
         </div>
     </div>
