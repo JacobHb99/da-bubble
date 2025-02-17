@@ -60,6 +60,12 @@ label {
   }
 }
 
+.hint{
+  margin-left: 32px;
+  height: 16px;
+  color: red;
+}
+
 .closeDialog {
   @include dFlex();
   height: 40px;

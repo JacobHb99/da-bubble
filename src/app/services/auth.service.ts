@@ -25,6 +25,7 @@ export class AuthService {
   errorCode!: string;
   guestLoggedIn: boolean = false;
   currentUser: any = null;
+  passwordWrong = signal(false);
 
 
   constructor(private fireService: FirebaseService, private firestore: Firestore) { }
@@ -90,8 +91,8 @@ export class AuthService {
     this.saveNewUserInFirestore(email, username, response.user.uid, avatar);
   }
 
-   changeDatainAuthProfile(username: string, email: string, avatar: string, password: string) {
-    
+  changeDatainAuthProfile(username: string, email: string, avatar: string, password: string) {
+
     let user = this.currentCredentials.user
     updateProfile(user, {
       displayName: username,
@@ -109,16 +110,16 @@ export class AuthService {
     // Re-Authentifiziere den Benutzer
     const credential = EmailAuthProvider.credential(user.email, currentPassword);
     console.log(user);
-    
+
     reauthenticateWithCredential(user, credential)
       .then(() => {
         console.log('Re-authentication successful.');
-  
+
         // Sende eine Verifizierungs-E-Mail
         sendEmailVerification(user)
           .then(() => {
             console.log('Verification email sent. Please verify your new email address.');
-  
+
             // Nach Verifizierung E-Mail-Adresse aktualisieren
             setTimeout(() => {
               this.updateEmail(user, email);
@@ -141,7 +142,7 @@ export class AuthService {
       }).catch((error) => {
         // An error occurred
         console.log('error', error);
-        
+
       });
   }
 
@@ -339,4 +340,22 @@ export class AuthService {
       throw error;
     }
   }
+
+  checkPassword(email: string, password: string): Promise<void> {
+    const user = this.auth.currentUser;
+    if (!user) {
+      return Promise.reject('Kein Nutzer angemeldet.');
+    }
+  
+    const credential = EmailAuthProvider.credential(email, password);
+    return reauthenticateWithCredential(user, credential)
+      .then(() => {
+        //console.log('Passwort erfolgreich überprüft.');
+        this.passwordWrong.set(false);
+      })
+      .catch((error) => {
+        //console.error('Passwortprüfung fehlgeschlagen:', error);
+        this.passwordWrong.set(true); 
+      });
+}
 }

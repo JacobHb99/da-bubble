@@ -3,13 +3,14 @@
     <div class="header">
         <h2>Dieses Profil bearbeiten</h2>
         <div class="closeDialog" (mouseenter)="isHoveredClose = true" (mouseleave)="isHoveredClose = false">
-            <img (click)="closeProfil()"  [src]="isHoveredClose ? 'img/icons/close-blue.png' : 'img/icons/close.png'" alt="">
+            <img (click)="closeProfil()" [src]="isHoveredClose ? 'img/icons/close-blue.png' : 'img/icons/close.png'"
+                alt="">
         </div>
-       
+
     </div>
-<div class="avatar"> 
-    <img class="avatar-image" src="{{authService.currentUserSig()?.avatar}}" alt="">
-</div>
+    <div class="avatar">
+        <img class="avatar-image" src="{{authService.currentUserSig()?.avatar}}" alt="">
+    </div>
     <div> <!--form-->
         <div class="form-group">
 
@@ -41,11 +42,14 @@
                 <div class="inputfield-container">
                     <input [(ngModel)]="inputPassword" id="password" type="password">
                 </div>
+                @if (passwordWrong()) {
+                    <small class="hint">Das eingegebene Passwort ist falsch!</small>
+                    }
             </div>
         </div>
 
         <div class="buttons">
-            <button  mat-dialog-close class="btn-white">Abrechen</button>
+            <button mat-dialog-close class="btn-white">Abrechen</button>
             <button (click)="verifyPassword()" class="btn-blue" *ngIf="!showPasswordInput">Speichern</button>
             <button (click)="changeProfil()" class="btn-blue" *ngIf="showPasswordInput">Bestätigen</button>
         </div>

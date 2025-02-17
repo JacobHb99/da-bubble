@@ -1,4 +1,4 @@
-import { Component, inject, ViewEncapsulation } from '@angular/core';
+import { Component, inject, ViewEncapsulation, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -27,7 +27,7 @@ export class EditProfileComponent {
   inputPassword = '';
   showPasswordInput: boolean = false;
   isHoveredClose: boolean = false
-
+  passwordWrong = computed(() => this.authService.passwordWrong()); // Signal als computed-Wert
   /**
  * Constructor for the EditProfileComponent.
  * Retrieves the current user's ID, subscribes to user data from Firebase, 
@@ -38,6 +38,9 @@ export class EditProfileComponent {
   constructor(public dialogRef: MatDialogRef<EditProfileComponent>) {
     let userId = this.authService.currentUserSig()?.uid;
     this.firebaseService.subscribeUserById(userId);
+    this.dialogRef.afterClosed().subscribe(() => {
+      this.authService.passwordWrong.set(false);
+    });
 
     setTimeout(() => {
       this.inputName = this.firebaseService.user.username;
@@ -54,19 +57,44 @@ export class EditProfileComponent {
    * Updates the user's profile information with the data entered in the input fields 
    * and saves the updated data to Firebase. Closes the dialog after updating.
    */
-  changeProfil() {
-    this.user.username = this.inputName;
-    this.user.email = this.inputEmail;
+  // changeProfil() {
+  //   this.user.username = this.inputName;
+  //   this.user.email = this.inputEmail;
+  //   //console.log('inputPasswort:',this.inputPassword )
+  //  // console.log('daten',this.authService.auth )
+  //   this.authService.checkPassword(this.user.email, this.user.username, this.user.avatar, this.inputPassword)
 
-    this.authService.changeDatainAuthProfile(this.inputName, this.inputEmail, this.user.avatar, this.inputPassword);
-    this.firebaseService.updateUserData(this.user);
-    this.authService.currentUserSig.update((user) => {
-      if (user) {
-        return { ...user, username: this.inputName, email: this.inputEmail };
-      }
-      return user;
-    });
-    this.dialogRef.close();
+  //  // this.authService.changeDatainAuthProfile(this.inputName, this.inputEmail, this.user.avatar, this.inputPassword);
+  //   this.firebaseService.updateUserData(this.user);
+  //   this.authService.currentUserSig.update((user) => {
+  //     if (user) {
+  //       return { ...user, username: this.inputName, email: this.inputEmail };
+  //     }
+  //     return user;
+  //   });
+  //   this.dialogRef.close();
+  // }
+
+  changeProfil() {
+    this.authService.checkPassword(this.user.email, this.inputPassword)
+      .then(() => {
+        if (this.passwordWrong()) {
+          //console.log('Änderung gestoppt: Falsches Passwort');
+          return;
+        }
+
+        this.user.username = this.inputName;
+        this.firebaseService.updateUserData(this.user);
+        this.authService.currentUserSig.update((user) => {
+          if (user) {
+            return { ...user, username: this.inputName, email: this.inputEmail };
+          }
+          return user;
+        });
+        this.firebaseService.updateUserData(this.user);
+        this.inputPassword='';
+        this.dialogRef.close();
+      });
   }
 
   /**
@@ -88,6 +116,7 @@ export class EditProfileComponent {
   }
 
   closeProfil(): void {
+    this.authService.passwordWrong.set(false);
     this.dialogRef.close();
   }
 }
