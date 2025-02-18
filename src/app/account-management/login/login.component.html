@@ -6,16 +6,14 @@
 
     <div class="card">
         <h1>Anmelden</h1>
-        @if (errorMessage) {
-        <p class="errMsg">{{ errorMessage }}</p>
-        }
+
         <p>Wir empfelen dir, die E-mailaddresse zu nehmen, die du auf der Arbeit benutzt.</p>
 
         <form [formGroup]="userForm">
             <div class="input-control">
                 <div class="inputfield-container">
                     <img src="img/icons/login/mail_icon.svg">
-                    <input id="email" type="email" formControlName="email" required
+                    <input (keydown)="removeErrorMessage()" id="email" type="email" formControlName="email" required
                         placeholder="beispielname@email.com">
                 </div>
                 <div class="hint">
@@ -34,7 +32,7 @@
             <div class="input-control">
                 <div class="inputfield-container">
                     <img src="img/icons/login/password_icon.svg">
-                    <input id="password" type="password" formControlName="password" placeholder="Passwort">
+                    <input (keydown)="removeErrorMessage()" id="password" type="password" formControlName="password" placeholder="Passwort">
                 </div>
 
                 <div class="hint">
@@ -48,6 +46,9 @@
                     }
                     }
                 </div>
+                @if (errorMessage) {
+                    <p class="errMsg">{{ errorMessage }}</p>
+                    }
             </div>
         </form>
 

@@ -79,16 +79,16 @@ export class LoginComponent implements OnInit {
 
         error: (err) => {
           console.log(err.code);
-          if (err.code === "auth/invalid-credential") {
+          if (err.code === "auth/invalid-credential" ||err.code === "auth/wrong-password" ||err.code === "auth/user-not-found") {
             this.loginFailed = true;
             this.errorMessage = 'Diese Anmeldedaten sind ungültig!';
-            console.log('loginFailed', this.loginFailed);
-            console.log('MESSAGE', this.errorMessage);
+           // console.log('loginFailed', this.loginFailed);
+           // console.log('MESSAGE', this.errorMessage);
           } else {
             this.loginFailed = true;
             this.errorMessage = 'Irgendetwas ist schief gelaufen!';
-            console.log('loginFailed', this.loginFailed);
-            console.log('MESSAGE', this.errorMessage);
+            // console.log('loginFailed', this.loginFailed);
+           //  console.log('MESSAGE', this.errorMessage);
           }
           this.userForm.reset();
         }
@@ -117,5 +117,9 @@ export class LoginComponent implements OnInit {
     } catch (error) {
       this.loginFailed = true;
     }
+  }
+
+  removeErrorMessage(){
+    this.errorMessage = null;
   }
 }
