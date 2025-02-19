@@ -149,12 +149,12 @@ export class ChannelService {
     const channelData = newChannel.getJSON();
     const channelRef = await addDoc(collection(this.firestore, "channels"), channelData);
     newChannel.chaId = channelRef.id;
-    console.log(newChannel);
+    //console.log(newChannel);
 
     if (isSelected) {
       this.firebaseService.selectedUsers = newChannel.users;
       this.firebaseService.selectedUsers.push(currentUser);
-      console.log(currentUser);
+      //console.log(currentUser);
       await this.firebaseService.addUsersToChannel(newChannel.chaId);
       await this.assignChatId(newChannel.chaId);
     } else {

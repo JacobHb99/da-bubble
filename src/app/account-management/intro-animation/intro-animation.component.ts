@@ -18,7 +18,7 @@ export class IntroAnimationComponent implements OnInit {
 
 
   constructor(public authService: AuthService) {
-    console.log(this.containerVisible);
+    //console.log(this.containerVisible);
   }
 
   /**
@@ -26,7 +26,7 @@ export class IntroAnimationComponent implements OnInit {
    * Sie überprüft, ob `containerVisible` bereits gesetzt ist. Wenn nicht, wird es auf `true` und `showAnimation` des `authService` auf `true` gesetzt. Andernfalls wird `containerVisible` auf `false` und `showAnimation` auf `false` gesetzt. Nach einer Verzögerung von 3500 Millisekunden wird `containerVisible` ebenfalls auf `false` und `showAnimation` auf `false` gesetzt.
    */
   ngOnInit() {
-    console.log(this.containerVisible);
+    //console.log(this.containerVisible);
 
     if (this.containerVisible === undefined) {
       this.containerVisible = true;

@@ -34,6 +34,8 @@ export class LoginComponent implements OnInit {
   fb = inject(NonNullableFormBuilder)
   errorMessage: string | null = null;
   loginFailed: boolean = false;
+  errorEmail: boolean = false;
+  errorPassword: boolean = false;
 
   userForm = this.fb.group({
     email: this.fb.control('', { validators: [Validators.required, Validators.email, Validators.pattern(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/)] }),
@@ -71,6 +73,8 @@ export class LoginComponent implements OnInit {
   login(): void {
     let user = this.userForm.getRawValue()
     this.loginFailed = false;
+    this.errorEmail = false;
+    this.errorPassword = false;
     this.authService.login(user.email, user.password)
       .subscribe({
         next: () => {
@@ -78,19 +82,17 @@ export class LoginComponent implements OnInit {
         },
 
         error: (err) => {
-          console.log(err.code);
-          if (err.code === "auth/invalid-credential" ||err.code === "auth/wrong-password" ||err.code === "auth/user-not-found") {
+          //console.log(err.code);          
+          if (err.code === "auth/user-not-found") {
             this.loginFailed = true;
-            this.errorMessage = 'Diese Anmeldedaten sind ungültig!';
-           // console.log('loginFailed', this.loginFailed);
-           // console.log('MESSAGE', this.errorMessage);
-          } else {
-            this.loginFailed = true;
-            this.errorMessage = 'Irgendetwas ist schief gelaufen!';
-            // console.log('loginFailed', this.loginFailed);
-           //  console.log('MESSAGE', this.errorMessage);
+            this.errorEmail = true;
+            this.userForm.get('password')?.reset();
           }
-          this.userForm.reset();
+          if (err.code === "auth/wrong-password") {
+            this.loginFailed = true;
+            this.errorPassword = true;
+            this.userForm.get('password')?.reset();
+          }
         }
       })
     // .pipe(
@@ -119,7 +121,11 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  removeErrorMessage(){
-    this.errorMessage = null;
+  removeErrorMsgEmail() {
+    this.errorEmail = false;
+  }
+
+  removeErrorMsgPwt() {
+    this.errorPassword= false;
   }
 }

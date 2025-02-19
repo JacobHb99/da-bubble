@@ -109,7 +109,7 @@ export class AuthService {
   verifyAndUpdateEmail(user: any, email: string, currentPassword: string) {
     // Re-Authentifiziere den Benutzer
     const credential = EmailAuthProvider.credential(user.email, currentPassword);
-    console.log(user);
+   // console.log(user);
 
     reauthenticateWithCredential(user, credential)
       .then(() => {

@@ -86,7 +86,7 @@ export class InterfaceService {
    */
   setMsg(currentMsg: Message) {
     this.currentMessage = currentMsg;
-    console.log(currentMsg.thread);
+    //console.log(currentMsg.thread);
 
     this.firebaseService.listenToCurrentThreadChanges(currentMsg.thread);
     this.setThread(currentMsg)

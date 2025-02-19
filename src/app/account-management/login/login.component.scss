@@ -14,9 +14,9 @@ p{
     text-align: center;
 }
 
-.errMsg{
-    color: red;
-}
+// .errMsg{
+//     color: red;
+// }
 
 .overlay {
     height: 100vh;
@@ -48,13 +48,20 @@ form {
     .input-control{
         display: flex;
         flex-direction: column;
+        gap: 12px;
         width: 100%;
         position: relative;
+        @media(max-width: 325px) {
+            gap: 20px;
+         }
 
         .hint{
+            @include dFlex($jc:flex-start);
             margin-left: 32px;
             height: 16px;
             color: red;
+
+
         }
 
 

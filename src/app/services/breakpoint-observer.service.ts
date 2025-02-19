@@ -48,13 +48,13 @@ export class BreakpointObserverService {
           this.screenSizeSubject.next('Small');
           this.isXSmallOrSmall = true;
           this.isMedium = false;
-          console.log('BREAKPOINT-SMALL', this.isXSmallOrSmall);
+          //console.log('BREAKPOINT-SMALL', this.isXSmallOrSmall);
 
         } else if (result.breakpoints[Breakpoints.Medium] || result.breakpoints[Breakpoints.Tablet]) {
           this.screenSizeSubject.next('Medium');
           this.isXSmallOrSmall = false;
           this.isMedium = true;
-          console.log('BREAKPOINT-MEDIUM', this.isMedium);
+          //console.log('BREAKPOINT-MEDIUM', this.isMedium);
 
         } else if (result.breakpoints[Breakpoints.Large]) {
           this.screenSizeSubject.next('Large');

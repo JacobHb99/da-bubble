@@ -13,7 +13,7 @@
             <div class="input-control">
                 <div class="inputfield-container">
                     <img src="img/icons/login/mail_icon.svg">
-                    <input (keydown)="removeErrorMessage()" id="email" type="email" formControlName="email" required
+                    <input (keydown)="removeErrorMsgEmail()" id="email" type="email" formControlName="email" required
                         placeholder="beispielname@email.com">
                 </div>
                 <div class="hint">
@@ -26,13 +26,17 @@
                     <small>*Bitte gebe eine gültige Email an!</small>
                     }
                     }
+                    @if (errorEmail) {
+                    <small>Diese E-Mailadresse besitzt kein registriertes Konto!</small>
+                    }
                 </div>
             </div>
 
             <div class="input-control">
                 <div class="inputfield-container">
                     <img src="img/icons/login/password_icon.svg">
-                    <input (keydown)="removeErrorMessage()" id="password" type="password" formControlName="password" placeholder="Passwort">
+                    <input (keydown)="removeErrorMsgPwt()" id="password" type="password" formControlName="password"
+                        placeholder="Passwort">
                 </div>
 
                 <div class="hint">
@@ -42,13 +46,13 @@
                     <small>*Bitte gebe dein Passwort ein!</small>
                     }
                     @if (userForm.controls.password.errors?.['minlength']) {
-                    <small>*Passwort muss aus min. 6 Zeichen bestehen</small>
+                    <small>*Passwort muss aus min. 6 Zeichen bestehen!</small>
                     }
+                    }
+                    @if (errorPassword) {
+                    <small>Ihr eingegebenes Passwort ist falsch!</small>
                     }
                 </div>
-                @if (errorMessage) {
-                    <p class="errMsg">{{ errorMessage }}</p>
-                    }
             </div>
         </form>
 

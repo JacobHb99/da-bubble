@@ -44,7 +44,7 @@ export class ProfilButtonMobileComponent {
 
     if (status === 'logout') {
       const currentUser = this.authService.currentCredentials;
-      console.log(currentUser);
+      //console.log(currentUser);
 
       await this.authService.signOut();
     }

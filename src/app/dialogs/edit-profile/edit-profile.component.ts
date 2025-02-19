@@ -122,7 +122,7 @@ export class EditProfileComponent {
   }
 
   checkUsername(){
-    console.log(this.inputName.trim().length)
+   // console.log(this.inputName.trim().length)
     if(this.inputName.trim().length>0){
       this.validUsername=true;
     }else{

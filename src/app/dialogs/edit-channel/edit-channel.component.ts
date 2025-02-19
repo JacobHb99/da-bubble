@@ -97,7 +97,6 @@ export class EditChannelComponent implements OnInit {
    * Toggles the edit state for the channel name and updates the channel with the new name.
    */
   editChannelName() {
-    console.log(this.editName);
     this.changeName = this.editName ? 'Speichern' : 'Bearbeiten';
     this.updateChannel();
   }
@@ -106,7 +105,6 @@ export class EditChannelComponent implements OnInit {
    * Toggles the edit state for the channel description and updates the channel with the new description.
    */
   editChannelDesc() {
-    console.log(this.editDesc);
     this.changeDesc = this.editDesc ? 'Speichern' : 'Bearbeiten';
     this.updateChannel();
   }
@@ -142,7 +140,6 @@ export class EditChannelComponent implements OnInit {
     else {
       this.existChannel = true;
     }
-    console.log(this.channel?.title);
     
   }
 }

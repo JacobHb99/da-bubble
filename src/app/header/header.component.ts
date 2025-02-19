@@ -137,7 +137,6 @@ export class HeaderComponent {
    */
   openThreadMsg(data: Thread, msg: Message) {
     this.uiService.currentThread = data;
-    console.log(this.uiService.currentThread);
 
     if (data.type === 'channel') {
       this.openChannelThread(data, msg);
