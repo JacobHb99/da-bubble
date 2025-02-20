@@ -8,11 +8,14 @@
         </div>
 
     </div>
-    <div class="avatar">
-        <img class="avatar-image" src="{{authService.currentUserSig()?.avatar}}" alt="">
+    <div class="avatar" [ngClass]="{'d-none': isEditingAvatar}">
+        <div [ngStyle]="{ 'position': 'relative'}">
+            <img class="position-edit-icon" (click)="showAvatar()" src="img/icons/edit.png" alt="">
+            <img class="avatar-image" src="{{this.currentAvatar}}" alt="">
+        </div>
     </div>
     <div> <!--form-->
-        <div class="form-group">
+        <div class="form-group" [ngClass]="{'d-none': isEditingAvatar}">
 
             <div class="profil-name" *ngIf="!showPasswordInput">
                 <div class="input">
@@ -43,15 +46,25 @@
                     <input [(ngModel)]="inputPassword" id="password" type="password">
                 </div>
                 @if (passwordWrong()) {
-                    <small class="hint">Das eingegebene Passwort ist falsch!</small>
-                    }
+                <small class="hint">Das eingegebene Passwort ist falsch!</small>
+                }
             </div>
         </div>
 
-        <div class="buttons">
+        <div class="buttons" [ngClass]="{'d-none': isEditingAvatar}">
             <button mat-dialog-close class="btn-white">Abrechen</button>
-            <button (click)="verifyPassword()"  [disabled]="!validUsername" class="btn-blue" *ngIf="!showPasswordInput">Speichern</button>
+            <button (click)="verifyPassword()" [disabled]="!validUsername" class="btn-blue"
+                *ngIf="!showPasswordInput">Speichern</button>
             <button (click)="changeProfil()" class="btn-blue" *ngIf="showPasswordInput">Bestätigen</button>
+        </div>
+    </div>
+
+    <div [ngClass]="{'d-none': !isEditingAvatar}">
+        <p>Wähle einen Avatar aus dieser Liste:</p>
+        <div class="avatar-box">
+            @for (avatar of avatarIcons; track $index) {
+            <img (click)="selectAvatar(avatar)" class="avatar-img" [src]="avatar" alt="">
+            }
         </div>
     </div>
 </div>

@@ -21,13 +21,23 @@ export class EditProfileComponent {
   authService = inject(AuthService);
   firebaseService = inject(FirebaseService);
   user: any;
+  currentAvatar:any;
+  avatarIcons: string[] = [
+    "img/avatars/avatar_big_0.png",
+    "img/avatars/avatar_big_1.png",
+    "img/avatars/avatar_big_2.png",
+    "img/avatars/avatar_big_3.png",
+    "img/avatars/avatar_big_4.png",
+    "img/avatars/avatar_big_5.png",
+  ];
 
   inputName = '';
   inputEmail = '';
   inputPassword = '';
+  isEditingAvatar: boolean = false;
   validUsername: boolean = true;
   showPasswordInput: boolean = false;
-  isHoveredClose: boolean = false
+  isHoveredClose: boolean = false;
   passwordWrong = computed(() => this.authService.passwordWrong()); // Signal als computed-Wert
   /**
  * Constructor for the EditProfileComponent.
@@ -46,6 +56,8 @@ export class EditProfileComponent {
     setTimeout(() => {
       this.inputName = this.firebaseService.user.username;
       this.inputEmail = this.firebaseService.user.email;
+      this.currentAvatar =this.firebaseService.user.avatar;
+      console.log(this.currentAvatar);
       this.setUser();
     }, 100);
   }
@@ -128,6 +140,15 @@ export class EditProfileComponent {
     }else{
       this.validUsername=false;
     }
+  }
+
+showAvatar(){
+  this.isEditingAvatar =  true;
+}
+
+  selectAvatar(avatar:string){
+    this.currentAvatar = avatar;
+    this.isEditingAvatar =  false;
   }
 
 }
