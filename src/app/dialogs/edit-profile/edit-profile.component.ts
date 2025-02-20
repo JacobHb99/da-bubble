@@ -97,6 +97,7 @@ export class EditProfileComponent {
         }
 
         this.user.username = this.inputName;
+        this.user.avatar = this.currentAvatar;
         this.firebaseService.updateUserData(this.user);
         this.authService.currentUserSig.update((user) => {
           if (user) {
