@@ -21,6 +21,13 @@
 .avatar-image {
   width: 200px;
   border-radius: 200px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+
+  &:hover{
+    opacity: 0.8;
+  }
 }
 
 .avatar-box {
@@ -111,6 +118,7 @@ label {
   position: absolute;
   right: 0px;
   top: 15px;
+  cursor: pointer;
 }
 
 @media (max-width: 500px) {

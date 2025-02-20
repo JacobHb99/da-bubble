@@ -49,7 +49,7 @@ export class HeaderComponent {
     public conService: ConversationService,
     public channelService: ChannelService,
     public breakpointObserver: BreakpointObserverService,
-    private firebaseService: FirebaseService
+    private firebaseService: FirebaseService    
   ) {
     setTimeout(() => {
       this.searchbarService.combineArraysWithTypes();

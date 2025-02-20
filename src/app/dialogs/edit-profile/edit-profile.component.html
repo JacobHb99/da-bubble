@@ -11,7 +11,7 @@
     <div class="avatar" [ngClass]="{'d-none': isEditingAvatar}">
         <div [ngStyle]="{ 'position': 'relative'}">
             <img class="position-edit-icon" (click)="showAvatar()" src="img/icons/edit.png" alt="">
-            <img class="avatar-image" src="{{this.currentAvatar}}" alt="">
+            <img class="avatar-image" src="{{this.currentAvatar}}" (click)="showAvatar()" alt="">
         </div>
     </div>
     <div> <!--form-->
