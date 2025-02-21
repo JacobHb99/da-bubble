@@ -91,7 +91,7 @@ export class AuthService {
     this.saveNewUserInFirestore(email, username, response.user.uid, avatar);
   }
 
-  changeDatainAuthProfile(username: string, email: string, avatar: string, password: string) {
+  changeDatainAuthProfile(username: string, avatar: string ) {
 
     let user = this.currentCredentials.user
     updateProfile(user, {
@@ -99,11 +99,7 @@ export class AuthService {
       photoURL: avatar,
     });
 
-    //Verifizierung und E-Mail-Update
-    if (user.email !== email) {
-      this.verifyAndUpdateEmail(user, email, password);
-    }
-    this.saveNewUserInFirestore(email, username, user.uid, avatar);
+ 
   }
 
   verifyAndUpdateEmail(user: any, email: string, currentPassword: string) {
