@@ -155,14 +155,12 @@ export class AuthService {
 
     reauthenticateWithCredential(user, credential)
       .then(() => {
-        console.log('Re-authentication successful.');
+       // console.log('Re-authentication successful.');
 
         // Sende eine Verifizierungs-E-Mail
         sendEmailVerification(user)
           .then(() => {
-            console.log(
-              'Verification email sent. Please verify your new email address.'
-            );
+            //console.log( 'Verification email sent. Please verify your new email address.' );
 
             // Nach Verifizierung E-Mail-Adresse aktualisieren
             setTimeout(() => {

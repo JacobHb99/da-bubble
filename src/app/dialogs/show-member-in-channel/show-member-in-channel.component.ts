@@ -50,7 +50,6 @@ export class ShowMemberInChannelComponent {
         );
 
         const users = await Promise.all(userPromises);
-        console.log("Loaded users:", users);
 
         this.allUsersFromAChannelId = users;
       } catch (error) {

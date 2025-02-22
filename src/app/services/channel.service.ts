@@ -71,7 +71,6 @@ export class ChannelService {
 
     try {
       await updateDoc(channelRef, { title, description });
-      console.log("Channel erfolgreich aktualisiert:", channelId);
     } catch (error) {
       console.error("Fehler beim Aktualisieren des Channels:", error);
     }
@@ -94,7 +93,6 @@ export class ChannelService {
 
     try {
       await updateDoc(channelRef, { users });
-      console.log("Channel erfolgreich aktualisiert:", channelId);
     } catch (error) {
       console.error("Fehler beim Aktualisieren des Channels:", error);
     }
@@ -149,12 +147,11 @@ export class ChannelService {
     const channelData = newChannel.getJSON();
     const channelRef = await addDoc(collection(this.firestore, "channels"), channelData);
     newChannel.chaId = channelRef.id;
-    //console.log(newChannel);
+     
 
     if (isSelected) {
       this.firebaseService.selectedUsers = newChannel.users;
       this.firebaseService.selectedUsers.push(currentUser);
-      //console.log(currentUser);
       await this.firebaseService.addUsersToChannel(newChannel.chaId);
       await this.assignChatId(newChannel.chaId);
     } else {

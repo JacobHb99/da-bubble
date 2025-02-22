@@ -57,7 +57,6 @@ export class EditProfileComponent {
       this.inputName = this.firebaseService.user.username;
       this.inputEmail = this.firebaseService.user.email;
       this.currentAvatar =this.firebaseService.user.avatar;
-      console.log(this.currentAvatar);
       this.setUser();
     }, 100);
   }

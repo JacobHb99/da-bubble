@@ -55,7 +55,7 @@ export class NewPasswordComponent {
     if(oobCode && changedPassword) {
       try {
         await confirmPasswordReset(auth, oobCode, changedPassword);
-        console.log("Passwort erfolgreich zurückgesetzt.");
+        //console.log("Passwort erfolgreich zurückgesetzt.");
       } catch (error) {
         console.error("Fehler beim Zurücksetzen des Passworts:", error);
         throw error;

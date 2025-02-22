@@ -44,7 +44,7 @@ export class RegisterComponent {
 
 
   test() {
-    console.log(this.form.checked);
+   // console.log(this.form.checked);
   }
 
   

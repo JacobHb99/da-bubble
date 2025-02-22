@@ -205,7 +205,6 @@ export class SendMessageComponent {
       await updateDoc(threadRef, {
         messages: arrayUnion(msgData)
       });
-      console.log('Nachricht erfolgreich hinzugefügt');
     } catch (error) {
       console.error('Fehler beim Hinzufügen der Nachricht:', error);
     }
