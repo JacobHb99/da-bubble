@@ -1,23 +1,54 @@
 import { forwardRef, Inject, inject, Injectable, signal } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, EmailAuthProvider, getAuth, GoogleAuthProvider, onAuthStateChanged, reauthenticateWithCredential, sendEmailVerification, sendPasswordResetEmail, signInAnonymously, signInWithEmailAndPassword, signInWithPopup, signOut, updateEmail, updateProfile, UserCredential, UserInfo, } from '@angular/fire/auth';
+import {
+  Auth,
+  createUserWithEmailAndPassword,
+  EmailAuthProvider,
+  getAuth,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  reauthenticateWithCredential,
+  sendEmailVerification,
+  sendPasswordResetEmail,
+  signInAnonymously,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+  updateEmail,
+  updateProfile,
+  UserCredential,
+  UserInfo,
+} from '@angular/fire/auth';
 import { from, Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { FirebaseService } from './firebase.service';
 import { UserInterface } from '../interfaces/user';
 import { Router } from '@angular/router';
 import { ChannelService } from './channel.service';
-import { collection, DocumentData, Firestore, onSnapshot, query, QuerySnapshot, where } from '@angular/fire/firestore';
+import {
+  collection,
+  DocumentData,
+  Firestore,
+  onSnapshot,
+  query,
+  QuerySnapshot,
+  where,
+} from '@angular/fire/firestore';
 import { Channel } from '../models/channel.model';
 import { ConversationService } from './conversation.service';
 import { UserDataService } from './user.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   auth = inject(Auth);
   router = inject(Router);
-  currentRegData!: { email: any; username: string; password: string, response?: UserCredential };
+  currentRegData!: {
+    email: any;
+    username: string;
+    password: string;
+    response?: UserCredential;
+  };
   currentUserSig = signal<UserInterface | null | undefined>(undefined);
   currentCredentials!: UserCredential;
   showAnimation: boolean = true;
@@ -27,8 +58,10 @@ export class AuthService {
   currentUser: any = null;
   passwordWrong = signal(false);
 
-
-  constructor(private fireService: FirebaseService, private firestore: Firestore) { }
+  constructor(
+    private fireService: FirebaseService,
+    private firestore: Firestore
+  ) {}
 
   /**
    * Speichert die Registrierungsdaten des Benutzers vorübergehend in einer Instanzvariablen.
@@ -46,7 +79,7 @@ export class AuthService {
    * Verwendet die UID des Benutzers, um dessen Datensatz zu identifizieren.
    */
   getCurrentUserData() {
-    this.fireService.getCurrentUser(this.currentUserSig()?.uid as string)
+    this.fireService.getCurrentUser(this.currentUserSig()?.uid as string);
   }
 
   /**
@@ -59,53 +92,66 @@ export class AuthService {
    * @param avatar Die URL des Avatars des neuen Benutzers.
    * @returns Ein Observable, das den Abschluss der Registrierung signalisiert.
    */
-  register(email: string, username: string, password: string, avatar: string): Observable<void> {
+  register(
+    email: string,
+    username: string,
+    password: string,
+    avatar: string
+  ): Observable<void> {
     const promise = createUserWithEmailAndPassword(
       this.auth,
       email,
       password
-    ).then(response => {
-      this.handleUserData(response, email, username, password, avatar)
-    })
+    ).then((response) => {
+      this.handleUserData(response, email, username, password, avatar);
+    });
     return from(promise);
   }
 
   /**
- * Verarbeitet die Benutzerdaten nach erfolgreicher Registrierung.
- * Aktualisiert das Profil des Benutzers mit einem Benutzernamen und einem Avatar,
- * und speichert die neuen Benutzerdaten in der Firestore-Datenbank.
- * @param response Die Antwort des Registrierungsprozesses, die die Benutzerinformationen enthält.
- * @param email Die E-Mail-Adresse des Benutzers.
- * @param username Der Benutzername des Benutzers.
- * @param password Das Passwort des Benutzers.
- * @param avatar Die URL des Avatars des Benutzers.
- */
-  handleUserData(response: UserCredential, email: string, username: string, password: string, avatar: string) {
+   * Verarbeitet die Benutzerdaten nach erfolgreicher Registrierung.
+   * Aktualisiert das Profil des Benutzers mit einem Benutzernamen und einem Avatar,
+   * und speichert die neuen Benutzerdaten in der Firestore-Datenbank.
+   * @param response Die Antwort des Registrierungsprozesses, die die Benutzerinformationen enthält.
+   * @param email Die E-Mail-Adresse des Benutzers.
+   * @param username Der Benutzername des Benutzers.
+   * @param password Das Passwort des Benutzers.
+   * @param avatar Die URL des Avatars des Benutzers.
+   */
+  handleUserData(
+    response: UserCredential,
+    email: string,
+    username: string,
+    password: string,
+    avatar: string
+  ) {
     // if(username === 'Gast') {
     //   avatar = '/img/avatars/avatar_default.png'
     // }
     updateProfile(response.user, {
       displayName: username,
-      photoURL: avatar
+      photoURL: avatar,
     });
     this.saveNewUserInFirestore(email, username, response.user.uid, avatar);
   }
 
-  changeDatainAuthProfile(username: string, avatar: string ) {
-
-    let user = this.currentCredentials.user
-    updateProfile(user, {
-      displayName: username,
-      photoURL: avatar,
-    });
-
- 
+  changeDatainAuthProfile(username: string, avatar: string) {
+    let user = this.auth.currentUser;
+    if (user) {
+      updateProfile(user, {
+        displayName: username,
+        photoURL: avatar,
+      });
+    }
   }
 
   verifyAndUpdateEmail(user: any, email: string, currentPassword: string) {
     // Re-Authentifiziere den Benutzer
-    const credential = EmailAuthProvider.credential(user.email, currentPassword);
-   // console.log(user);
+    const credential = EmailAuthProvider.credential(
+      user.email,
+      currentPassword
+    );
+    // console.log(user);
 
     reauthenticateWithCredential(user, credential)
       .then(() => {
@@ -114,7 +160,9 @@ export class AuthService {
         // Sende eine Verifizierungs-E-Mail
         sendEmailVerification(user)
           .then(() => {
-            console.log('Verification email sent. Please verify your new email address.');
+            console.log(
+              'Verification email sent. Please verify your new email address.'
+            );
 
             // Nach Verifizierung E-Mail-Adresse aktualisieren
             setTimeout(() => {
@@ -135,53 +183,57 @@ export class AuthService {
     updateEmail(user, email)
       .then(() => {
         console.log('Email updated successfully.');
-      }).catch((error) => {
+      })
+      .catch((error) => {
         // An error occurred
         console.log('error', error);
-
       });
   }
 
   /**
- * Erstellt und speichert einen neuen Benutzereintrag in der Firestore-Datenbank.
- * Setzt Standardwerte für neue Benutzer, wie beispielsweise die Rolle und Kanäle.
- * @param email Die E-Mail-Adresse des Benutzers.
- * @param username Der Benutzername des Benutzers.
- * @param uid Die eindeutige Benutzer-ID (UID) des Benutzers.
- * @param avatar Die URL des Avatars des Benutzers.
- * @returns Eine Promise, die den Abschluss des Speicherprozesses signalisiert.
- */
-  async saveNewUserInFirestore(email: string, username: string, uid: string, avatar: string) {
-    let newUser = new User;
+   * Erstellt und speichert einen neuen Benutzereintrag in der Firestore-Datenbank.
+   * Setzt Standardwerte für neue Benutzer, wie beispielsweise die Rolle und Kanäle.
+   * @param email Die E-Mail-Adresse des Benutzers.
+   * @param username Der Benutzername des Benutzers.
+   * @param uid Die eindeutige Benutzer-ID (UID) des Benutzers.
+   * @param avatar Die URL des Avatars des Benutzers.
+   * @returns Eine Promise, die den Abschluss des Speicherprozesses signalisiert.
+   */
+  async saveNewUserInFirestore(
+    email: string,
+    username: string,
+    uid: string,
+    avatar: string
+  ) {
+    let newUser = new User();
     newUser.avatar = avatar;
     newUser.email = email;
     newUser.username = username;
     newUser.uid = uid;
     newUser.channels = [];
-    newUser.role = 'user'
+    newUser.role = 'user';
     await this.fireService.addUser(newUser);
-
   }
 
   /**
- * Authentifiziert einen Benutzer mit einer E-Mail-Adresse und einem Passwort.
- * Nach erfolgreichem Login werden die Benutzerdaten gesetzt, der Status aktualisiert, 
- * und der Benutzer wird auf die Hauptseite weitergeleitet.
- * @param email Die E-Mail-Adresse des Benutzers.
- * @param password Das Passwort des Benutzers.
- * @returns Ein Observable, das den Erfolg oder Fehler des Logins enthält.
- */
+   * Authentifiziert einen Benutzer mit einer E-Mail-Adresse und einem Passwort.
+   * Nach erfolgreichem Login werden die Benutzerdaten gesetzt, der Status aktualisiert,
+   * und der Benutzer wird auf die Hauptseite weitergeleitet.
+   * @param email Die E-Mail-Adresse des Benutzers.
+   * @param password Das Passwort des Benutzers.
+   * @returns Ein Observable, das den Erfolg oder Fehler des Logins enthält.
+   */
   login(email: string, password: string) {
-    const promise = signInWithEmailAndPassword(this.auth, email, password)
-      .then((userCredential) => {
-        // Signed in 
+    const promise = signInWithEmailAndPassword(this.auth, email, password).then(
+      (userCredential) => {
+        // Signed in
         this.currentCredentials = userCredential;
         this.setCurrentUserData(this.currentCredentials.user);
         this.fireService.setUserStatus(this.currentCredentials, 'online');
         this.getCurrentUserData();
         this.router.navigate(['/main']);
-      })
-
+      }
+    );
 
     return from(promise);
   }
@@ -214,11 +266,11 @@ export class AuthService {
   /////////////////////////////////////////////////////////////////
 
   /**
- * Meldet den Benutzer über ein Google-Konto an.
- * Erstellt einen neuen Benutzer in der Firestore-Datenbank, falls dieser noch nicht existiert.
- * Aktualisiert den Status des Benutzers und leitet ihn auf die Hauptseite weiter.
- * Bei Fehlern wird eine entsprechende Fehlermeldung gespeichert.
- */
+   * Meldet den Benutzer über ein Google-Konto an.
+   * Erstellt einen neuen Benutzer in der Firestore-Datenbank, falls dieser noch nicht existiert.
+   * Aktualisiert den Status des Benutzers und leitet ihn auf die Hauptseite weiter.
+   * Bei Fehlern wird eine entsprechende Fehlermeldung gespeichert.
+   */
   signInWithGoogle() {
     const provider = new GoogleAuthProvider();
     signInWithPopup(this.auth, provider)
@@ -228,8 +280,17 @@ export class AuthService {
         const token = credential?.accessToken;
         this.currentCredentials = result;
         // The signed-in user info.
-        if (result.user.email && result.user.displayName && result.user.photoURL) {
-          this.saveNewUserInFirestore(result.user.email, result.user.displayName, result.user.uid, result.user.photoURL);
+        if (
+          result.user.email &&
+          result.user.displayName &&
+          result.user.photoURL
+        ) {
+          this.saveNewUserInFirestore(
+            result.user.email,
+            result.user.displayName,
+            result.user.uid,
+            result.user.photoURL
+          );
           this.setCurrentUserData(result.user);
           this.fireService.setUserStatus(result, 'online');
           this.router.navigate(['/main']);
@@ -237,7 +298,8 @@ export class AuthService {
         const user = result.user;
         // IdP data available using getAdditionalUserInfo(result)
         // ...
-      }).catch((error) => {
+      })
+      .catch((error) => {
         // Handle Errors here.
         this.errorCode = error.code;
         this.errorMessage = error.message;
@@ -250,11 +312,11 @@ export class AuthService {
   }
 
   /**
- * Meldet den aktuellen Benutzer ab und setzt den Status auf "offline".
- * Entfernt die aktuellen Anmeldedaten und navigiert zur Startseite.
- * Bei Fehlern wird der Fehler protokolliert.
- * @throws Fehler beim Setzen des Status oder beim Abmelden.
- */
+   * Meldet den aktuellen Benutzer ab und setzt den Status auf "offline".
+   * Entfernt die aktuellen Anmeldedaten und navigiert zur Startseite.
+   * Bei Fehlern wird der Fehler protokolliert.
+   * @throws Fehler beim Setzen des Status oder beim Abmelden.
+   */
   async signOut() {
     try {
       // Setze den Benutzerstatus auf "offline", bevor der Logout erfolgt.
@@ -264,41 +326,41 @@ export class AuthService {
       // Navigiere zur Startseite nach erfolgreichem Logout.
       this.router.navigateByUrl('');
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
   /**
- * Speichert die Daten des aktuellen Benutzers in einer Signalstruktur.
- * @param user Ein Benutzerobjekt, das Informationen wie E-Mail, Benutzername, UID und Avatar enthält.
- */
+   * Speichert die Daten des aktuellen Benutzers in einer Signalstruktur.
+   * @param user Ein Benutzerobjekt, das Informationen wie E-Mail, Benutzername, UID und Avatar enthält.
+   */
   setCurrentUserData(user: any) {
     this.currentUserSig.set({
       email: user.email!,
       username: user.displayName!,
       uid: user.uid!,
-      avatar: user.photoURL!
+      avatar: user.photoURL!,
     });
   }
 
   /**
- * Setzt Standarddaten für einen Gastbenutzer in einer Signalstruktur.
- * Gastbenutzer haben keine E-Mail-Adresse oder UID.
- */
+   * Setzt Standarddaten für einen Gastbenutzer in einer Signalstruktur.
+   * Gastbenutzer haben keine E-Mail-Adresse oder UID.
+   */
   setGuestData() {
     this.currentUserSig.set({
       email: 'Keine email',
       username: 'Gast',
       uid: '',
-      avatar: 'img/avatars/avatar_default.png'
+      avatar: 'img/avatars/avatar_default.png',
     });
   }
 
   /**
- * Initialisiert die Authentifizierungsüberwachung und setzt den Benutzerstatus basierend 
- * auf der Authentifizierungsänderung. Falls ein Benutzer eingeloggt ist, werden relevante 
- * Daten geladen. Andernfalls werden die Benutzerdaten entfernt.
- */
+   * Initialisiert die Authentifizierungsüberwachung und setzt den Benutzerstatus basierend
+   * auf der Authentifizierungsänderung. Falls ein Benutzer eingeloggt ist, werden relevante
+   * Daten geladen. Andernfalls werden die Benutzerdaten entfernt.
+   */
   initialize() {
     const auth = getAuth();
 
@@ -313,7 +375,7 @@ export class AuthService {
         // Lade alle relevanten Daten
         this.fireService.initializeData(user.uid);
       } else {
-        // User wird ausgeloggt        
+        // User wird ausgeloggt
         this.currentUserSig.set(null);
       }
     });
@@ -342,7 +404,7 @@ export class AuthService {
     if (!user) {
       return Promise.reject('Kein Nutzer angemeldet.');
     }
-  
+
     const credential = EmailAuthProvider.credential(email, password);
     return reauthenticateWithCredential(user, credential)
       .then(() => {
@@ -351,7 +413,7 @@ export class AuthService {
       })
       .catch((error) => {
         //console.error('Passwortprüfung fehlgeschlagen:', error);
-        this.passwordWrong.set(true); 
+        this.passwordWrong.set(true);
       });
-}
+  }
 }
