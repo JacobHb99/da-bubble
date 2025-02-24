@@ -21,7 +21,7 @@ export class EditProfileComponent {
   authService = inject(AuthService);
   firebaseService = inject(FirebaseService);
   user: any;
-  currentAvatar:any;
+  currentAvatar: any;
   avatarIcons: string[] = [
     "img/avatars/avatar_big_0.png",
     "img/avatars/avatar_big_1.png",
@@ -38,7 +38,7 @@ export class EditProfileComponent {
   validUsername: boolean = true;
   showPasswordInput: boolean = false;
   isHoveredClose: boolean = false;
-  passwordWrong = computed(() => this.authService.passwordWrong()); // Signal als computed-Wert
+  // passwordWrong = computed(() => this.authService.passwordWrong()); // Signal als computed-Wert
   /**
  * Constructor for the EditProfileComponent.
  * Retrieves the current user's ID, subscribes to user data from Firebase, 
@@ -50,13 +50,13 @@ export class EditProfileComponent {
     let userId = this.authService.currentUserSig()?.uid;
     this.firebaseService.subscribeUserById(userId);
     this.dialogRef.afterClosed().subscribe(() => {
-      this.authService.passwordWrong.set(false);
+      this.authService.passwordWrong = false;
     });
 
     setTimeout(() => {
       this.inputName = this.firebaseService.user.username;
       this.inputEmail = this.firebaseService.user.email;
-      this.currentAvatar =this.firebaseService.user.avatar;
+      this.currentAvatar = this.firebaseService.user.avatar;
       this.setUser();
     }, 100);
   }
@@ -90,23 +90,24 @@ export class EditProfileComponent {
   changeProfil() {
     this.authService.checkPassword(this.user.email, this.inputPassword)
       .then(() => {
-        if (this.passwordWrong()) {
-          //console.log('Änderung gestoppt: Falsches Passwort');
+        if (this.authService.passwordWrong) {
+          console.log('Änderung gestoppt: Falsches Passwort');
+
           return;
         }
 
         this.user.username = this.inputName;
         this.user.avatar = this.currentAvatar;
         this.firebaseService.updateUserData(this.user);
-        this.authService.changeDatainAuthProfile(this.inputName,this.currentAvatar);
+        this.authService.changeDatainAuthProfile(this.inputName, this.currentAvatar);
         this.authService.currentUserSig.update((user) => {
           if (user) {
-            return { ...user, username: this.inputName, email: this.inputEmail, avatar:this.currentAvatar};
+            return { ...user, username: this.inputName, email: this.inputEmail, avatar: this.currentAvatar };
           }
           return user;
         });
         this.firebaseService.updateUserData(this.user);
-        this.inputPassword='';
+        this.inputPassword = '';
         this.dialogRef.close();
       });
   }
@@ -130,26 +131,26 @@ export class EditProfileComponent {
   }
 
   closeProfil(): void {
-    this.authService.passwordWrong.set(false);
+    this.authService.passwordWrong = false;
     this.dialogRef.close();
   }
 
-  checkUsername(){
-   // console.log(this.inputName.trim().length)
-    if(this.inputName.trim().length>0){
-      this.validUsername=true;
-    }else{
-      this.validUsername=false;
+  checkUsername() {
+    // console.log(this.inputName.trim().length)
+    if (this.inputName.trim().length > 0) {
+      this.validUsername = true;
+    } else {
+      this.validUsername = false;
     }
   }
 
-showAvatar(){
-  this.isEditingAvatar =  true;
-}
+  showAvatar() {
+    this.isEditingAvatar = true;
+  }
 
-  selectAvatar(avatar:string){
+  selectAvatar(avatar: string) {
     this.currentAvatar = avatar;
-    this.isEditingAvatar =  false;
+    this.isEditingAvatar = false;
   }
 
 }

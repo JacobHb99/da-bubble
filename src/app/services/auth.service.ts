@@ -56,12 +56,12 @@ export class AuthService {
   errorCode!: string;
   guestLoggedIn: boolean = false;
   currentUser: any = null;
-  passwordWrong = signal(false);
+  passwordWrong: boolean = false;
 
   constructor(
     private fireService: FirebaseService,
     private firestore: Firestore
-  ) {}
+  ) { }
 
   /**
    * Speichert die Registrierungsdaten des Benutzers vorübergehend in einer Instanzvariablen.
@@ -155,7 +155,7 @@ export class AuthService {
 
     reauthenticateWithCredential(user, credential)
       .then(() => {
-       // console.log('Re-authentication successful.');
+        // console.log('Re-authentication successful.');
 
         // Sende eine Verifizierungs-E-Mail
         sendEmailVerification(user)
@@ -407,11 +407,14 @@ export class AuthService {
     return reauthenticateWithCredential(user, credential)
       .then(() => {
         //console.log('Passwort erfolgreich überprüft.');
-        this.passwordWrong.set(false);
+        this.passwordWrong = false
       })
       .catch((error) => {
         //console.error('Passwortprüfung fehlgeschlagen:', error);
-        this.passwordWrong.set(true);
+        this.passwordWrong = true;
+
+        // console.error('Error code:', error.code); // 
+
       });
   }
 }
