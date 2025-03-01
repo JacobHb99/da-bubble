@@ -222,7 +222,7 @@ export class AuthService {
    * @returns Ein Observable, das den Erfolg oder Fehler des Logins enthält.
    */
   login(email: string, password: string) {
-    const promise = signInWithEmailAndPassword(this.auth, email, password).then(
+    const promise = signInWithEmailAndPassword(this.auth, email, password).then(      
       (userCredential) => {
         // Signed in
         this.currentCredentials = userCredential;
