@@ -69,48 +69,45 @@ export class EditProfileComponent {
    * Updates the user's profile information with the data entered in the input fields 
    * and saves the updated data to Firebase. Closes the dialog after updating.
    */
-  // changeProfil() {
-  //   this.user.username = this.inputName;
-  //   this.user.email = this.inputEmail;
-  //   //console.log('inputPasswort:',this.inputPassword )
-  //  // console.log('daten',this.authService.auth )
-  //   this.authService.checkPassword(this.user.email, this.user.username, this.user.avatar, this.inputPassword)
-
-  //  // this.authService.changeDatainAuthProfile(this.inputName, this.inputEmail, this.user.avatar, this.inputPassword);
-  //   this.firebaseService.updateUserData(this.user);
-  //   this.authService.currentUserSig.update((user) => {
-  //     if (user) {
-  //       return { ...user, username: this.inputName, email: this.inputEmail };
-  //     }
-  //     return user;
-  //   });
-  //   this.dialogRef.close();
-  // }
-
   changeProfil() {
-    this.authService.checkPassword(this.user.email, this.inputPassword)
-      .then(() => {
-        if (this.authService.passwordWrong) {
-          console.log('Änderung gestoppt: Falsches Passwort');
-
-          return;
-        }
-
-        this.user.username = this.inputName;
-        this.user.avatar = this.currentAvatar;
-        this.firebaseService.updateUserData(this.user);
-        this.authService.changeDatainAuthProfile(this.inputName, this.currentAvatar);
-        this.authService.currentUserSig.update((user) => {
-          if (user) {
-            return { ...user, username: this.inputName, email: this.inputEmail, avatar: this.currentAvatar };
-          }
-          return user;
-        });
-        this.firebaseService.updateUserData(this.user);
-        this.inputPassword = '';
-        this.dialogRef.close();
-      });
+    this.user.username = this.inputName;
+    this.user.avatar = this.currentAvatar;
+    this.firebaseService.updateUserData(this.user);
+    this.authService.changeDatainAuthProfile(this.inputName, this.currentAvatar);
+    this.authService.currentUserSig.update((user) => {
+      if (user) {
+        return { ...user, username: this.inputName, avatar: this.currentAvatar };
+      }
+      return user;
+    });
+    this.firebaseService.updateUserData(this.user);
+    this.dialogRef.close();
   }
+
+  // changeProfil() {
+  //   this.authService.checkPassword(this.user.email, this.inputPassword)
+  //     .then(() => {
+  //       if (this.authService.passwordWrong) {
+  //         console.log('Änderung gestoppt: Falsches Passwort');
+  //         this.inputPassword = '';
+  //         return;
+  //       }
+
+  //       this.user.username = this.inputName;
+  //       this.user.avatar = this.currentAvatar;
+  //       this.firebaseService.updateUserData(this.user);
+  //       this.authService.changeDatainAuthProfile(this.inputName, this.currentAvatar);
+  //       this.authService.currentUserSig.update((user) => {
+  //         if (user) {
+  //           return { ...user, username: this.inputName, email: this.inputEmail, avatar: this.currentAvatar };
+  //         }
+  //         return user;
+  //       });
+  //       this.firebaseService.updateUserData(this.user);
+  //       this.inputPassword = '';
+  //       this.dialogRef.close();
+  //     });
+  // }
 
   /**
    * Sets the `user` object with data fetched from Firebase.

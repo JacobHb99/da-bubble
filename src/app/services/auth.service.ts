@@ -397,24 +397,26 @@ export class AuthService {
     }
   }
 
-  checkPassword(email: string, password: string): Promise<void> {
-    const user = this.auth.currentUser;
-    if (!user) {
-      return Promise.reject('Kein Nutzer angemeldet.');
-    }
-
-    const credential = EmailAuthProvider.credential(email, password);
-    return reauthenticateWithCredential(user, credential)
-      .then(() => {
-        //console.log('Passwort erfolgreich überprüft.');
-        this.passwordWrong = false
-      })
-      .catch((error) => {
-        //console.error('Passwortprüfung fehlgeschlagen:', error);
-        this.passwordWrong = true;
-
-        // console.error('Error code:', error.code); // 
-
-      });
-  }
+  // checkPassword(email: string, password: string): Promise<void> {
+  //   const user = this.auth.currentUser;
+  //   if (!user) {
+  //     return Promise.reject('Kein Nutzer angemeldet.');
+  //   }
+  
+  //   const credential = EmailAuthProvider.credential(email, password);
+  //   return reauthenticateWithCredential(user, credential)
+  //     .then(() => {
+  //       this.passwordWrong = false;
+  //     })
+  //     .catch((error) => {
+  //       if (error.code === 'auth/wrong-password') {
+  //         this.passwordWrong = true; // Erwarte falsches Passwort, kein echtes "Problem"
+  //       } else {
+  //         // Nur unerwartete Fehler wirklich loggen
+  //         console.error('Ein unerwarteter Fehler ist aufgetreten:', error);
+  //       }
+  //       return Promise.resolve(); // WICHTIG: Verhindert unhandled Promise rejections
+  //     });
+  // }
+    
 }
